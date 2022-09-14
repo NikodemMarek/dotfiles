@@ -8,15 +8,18 @@ super + Return
 
 # program launcher
 super + @space
-	$HOME/.config/rofi/launchers/type-1/launcher.sh
+	$HOME/.config/rofi/launcher.sh
+# powermenu
+super + Escape
+	$HOME/.config/rofi/powermenu.sh
 
 # web browser (opera)
 super + a
 	opera
 
-# make sxhkd reload its configuration files:
-super + Escape
-	pkill -USR1 -x sxhkd
+# reload sxhkd and bspwm configuration files
+super + alt + Escape
+	pkill -USR1 -x sxhkd & bspc wm -r
 
 #
 # utility keys
@@ -47,9 +50,9 @@ XF86AudioRaiseVolume
 # bspwm hotkeys
 #
 
-# quit/restart bspwm
-super + alt + {q,r}
-	bspc {quit,wm -r}
+# quit bspwm
+super + alt + q
+	bspc quit
 
 # close and kill
 super + {_,shift + }w
