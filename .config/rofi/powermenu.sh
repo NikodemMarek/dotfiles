@@ -38,6 +38,10 @@ run_cmd() {
 	else
 		exit 0
 	fi
+
+  if [[ $2 == '--lock' ]]; then
+		env XSECURELOCK_SAVER=$HOME/.config/xsecurelock/lock.sh env XSECURELOCK_DISCARD_FIRST_KEYPRESS=0 env XSECURELOCK_SHOW_HOSTNAME=0 xsecurelock
+  fi
 }
 
 # Actions
@@ -56,9 +60,9 @@ case ${chosen} in
 		run_cmd --logout
         ;;
     $suspend)
-		run_cmd --suspend
+		run_cmd --suspend --lock
         ;;
     $hibernate)
-		run_cmd --hibernate
+		run_cmd --hibernate --lock
         ;;
 esac
