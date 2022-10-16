@@ -13,10 +13,6 @@ super + @space
 super + Escape
 	$HOME/.config/rofi/powermenu.sh
 
-# web browser (opera)
-super + a
-	opera
-
 # reload sxhkd and bspwm configuration files
 super + alt + Escape
 	pkill -USR1 -x sxhkd & bspc wm -r
@@ -115,6 +111,10 @@ super + {o,i}
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
+
+# focus on the browser desktop
+super + a
+	bspc desktop -f 'a'
 
 #
 # preselect
