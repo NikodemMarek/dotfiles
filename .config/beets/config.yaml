@@ -6,12 +6,23 @@ import:
   copy: yes
   write: yes
 
-plugins: chroma fetchart embedart ydl
+plugins: chroma fetchart embedart lastgenre lyrics #ydl
 
-ydl:
-    download: True         # download files from sources after getting information,
-    split_files: True       # try to split album files into separate tracks,
-    import: True           # import files on youtube-dl after downloading and splitting,
-    youtubedl_options: {}  # youtube-dl available options -- https://git.io/fN0c7
-    urls: []               # list of default urls to download when no arguments are provided, you
-                           # can provide a playlist to get checked every time
+lastgenre:
+  canonical: yes
+
+lyrics:
+  auto: no
+
+paths:
+    default: $albumartist/$album%aunique{}/$artist - $title
+    singleton: singles/$artist/$artist - $title
+    comp: compilations/$album%aunique{}/$track $title
+
+# ydl:
+#     download: True         # download files from sources after getting information,
+#     split_files: True       # try to split album files into separate tracks,
+#     import: True           # import files on youtube-dl after downloading and splitting,
+#     youtubedl_options: {}  # youtube-dl available options -- https://git.io/fN0c7
+#     urls: []               # list of default urls to download when no arguments are provided, you
+#                            # can provide a playlist to get checked every time
