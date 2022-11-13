@@ -1,0 +1,24 @@
+[user]
+	email = nikodemmarek11@gmail.com
+	name = nikodem
+[core]
+	editor = nvim
+	excludesfile = ~/.gitignore
+	quotepath = false
+[alias]
+	s = status
+	b = branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) %(color:red)[%(authorname)]' --sort=-committerdate
+	l = log --graph --pretty=format:'%C(yellow)%Creset %C(auto)%h%d%Creset | %C(cyan) %cr%Creset | %C(green) %cn%Creset |  %s'
+	aa = !git add . && git s &&;:
+	ci = commit -m
+	nb = !git branch $1 && git switch $1 && git b &&;:
+	sw = !sh -c 'git switch $1 && git b' -
+	u = !git checkout HEAD -- && git s &&;:
+	st = !git stash && git s &&;:
+	stp = !git stash pop && git s &&;:
+	rst = reset --soft --keep HEAD^
+	ua = checkout HEAD --
+	ph = push -u origin
+	logc = !git log --pretty=format:'- %h : %ae : %ad : %s' --date=format:'%Y-%m-%d %H:%M:%S' --author='nikodemmarek11@gmail.com' --since=$1 --all --no-merges &&;:
+[init]
+	defaultBranch = main
