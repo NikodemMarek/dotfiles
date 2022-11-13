@@ -6,7 +6,7 @@ import:
   copy: yes
   write: yes
 
-plugins: chroma fetchart embedart lastgenre lyrics #ydl
+plugins: chroma fetchart embedart lastgenre lyrics missing edit ftintitle play #ydl
 
 lastgenre:
   canonical: yes
@@ -15,9 +15,15 @@ lyrics:
   auto: no
 
 paths:
-    default: $albumartist/$album%aunique{}/$artist - $title
-    singleton: singles/$artist/$artist - $title
-    comp: compilations/$album%aunique{}/$track $title
+  default: $albumartist/$album%aunique{}/$artist - $title
+  singleton: $artist/singles/$artist - $title
+  comp: compilations/$album%aunique{}/$track $title
+
+ftintitle:
+  auto: yes
+
+play:
+  command: mpv --no-video --shuffle
 
 # ydl:
 #     download: True         # download files from sources after getting information,
