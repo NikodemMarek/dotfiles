@@ -1,0 +1,28 @@
+-- Nicer filetree than NetRW
+return {
+	-- {
+	-- 	"nvim-neo-tree/neo-tree.nvim",
+	-- 	branch = "v2.x",
+	-- 	dependencies = {
+	-- 		"nvim-lua/plenary.nvim",
+	-- 		"nvim-tree/nvim-web-devicons",
+	-- 		"MunifTanjim/nui.nvim",
+	-- 	},
+	-- 	config = function()
+	-- 		require("neo-tree").setup({
+	-- 			event_handlers = {
+	-- 				{
+	-- 					event = "file_opened",
+	-- 					handler = function()
+	-- 						require("neo-tree.command").execute({ action = "close" })
+	-- 					end,
+	-- 				},
+	-- 			},
+	-- 		})
+	--
+	-- 		local map = require("helpers.keys").map
+	-- 		map({ "n", "v" }, "<leader>e", "<cmd>NeoTreeReveal<cr>", "Open file explorer")
+	-- 		map({ "n", "v" }, "<C-n>", "<cmd>NeoTreeClose<cr>", "Close file explorer")
+	-- 	end,
+	-- },
+}

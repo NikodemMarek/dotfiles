@@ -1,0 +1,73 @@
+; powermenu
+(defwidget poweroff [] 
+	(button :class "powermenu_button powermenu_poweroff" :onclick "systemctl poweroff" ""))
+(defwidget reboot [] 
+	(button :class "powermenu_button powermenu_reboot" :onclick "systemctl reboot" ""))
+(defwidget lock [] 
+	(button :class "powermenu_button powermenu_lock" :onclick "gtklock -d" ""))
+(defwidget logout [] 
+	(button :class "powermenu_button powermenu_logout" :onclick "hyprctl dispatch exit" ""))
+(defwidget sleep [] 
+	(button :class "powermenu_button powermenu_sleep" :onclick "systemctl suspend ; gtklock -d" ""))
+(defwidget hibernate [] 
+	(button :class "powermenu_button powermenu_hibernate" :onclick "systemctl hibernate ; gtklock -d" ""))
+
+(defwidget powermenu []
+	(box :class "powermenu dashboard_window" :orientation "v" :space-evenly false
+		(box :vexpand true :hexpand true
+			(poweroff)
+			(lock)
+			(sleep))
+		(box :vexpand true :hexpand true
+			(reboot)
+			(logout)
+			(hibernate))))
+
+; system
+(defwidget system [] 
+	(box :class "system dashboard_window" :vexpand false :hexpand false 
+		(box :orientation "h" :spacing 35 :halign "center" :valign "center" :space-evenly false :vexpand false :hexpand false 
+			(box :class "system_cpu_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false
+				(scale :min 0 :max 100 :value { round(EWW_CPU.avg, 0) } :orientation "v" :flipped true :active false)
+				(label :class "system_iconcpu" :text ""))
+			(box :class "system_mem_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
+				(scale :min 0 :max 100 :value { round(EWW_RAM.used_mem_perc, 0) } :orientation "v" :flipped true :active false)
+				(label :class "system_iconmem" :text ""))
+			(box :class "system_drive_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
+				(scale :min 0 :max 100 :value { round(EWW_DISK['/home'].used_perc, 0) } :orientation "v" :flipped true :active false)
+				(label :class "system_icondrive" :text "󰋊")))))
+;			(box :class "system_bright_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+;				(label :class "system_iconbright" :text "")
+;				(scale :min 0 :max 100 :value BLIGHT :active "false"))
+;			(box :class "system_bat_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
+;				(label :class "system_iconbat" :text "")
+;				(scale :min 0 :max 100 :value { EWW_BATTERY.BAT1.capacity } :active "false")))))
+
+; clock
+(defpoll time_hour :interval "1m" "date '+%H'")
+(defpoll time_min :interval "1m" "date '+%M'")
+(defpoll time_sec :interval "1s" "date '+%S'")
+
+(defwidget time [] 
+	(box :class "time dashboard_window" :orientation "h" :spacing 20 :space-evenly true :vexpand true :hexpand true 
+		(label :class "time_hour" :text { time_hour })
+		(label :class "time_min" :text { time_min })
+		(label :class "time_sec" :text { time_sec })))
+
+; music
+(deflisten music_status :initial "err" `playerctl -F status`)
+(deflisten music_song :initial "title unknown" `playerctl -F metadata xesam:title`)
+(deflisten music_artist :initial "artist unknown" `playerctl -F metadata xesam:artist`)
+(deflisten music_cover :initial "" `playerctl -F metadata mpris:artUrl`)
+
+(defwidget music []
+	(box :class "music dashboard_window" :orientation "h" :space-evenly false :vexpand false :hexpand false
+		(box :class "music_cover" :vexpand "false" :hexpand false :style "background-image: url('${music_cover ?: "file:///home/nikodem/pictures/wallpapers/green-sun-small.jpg"}');")
+		(box :orientation "v" :valign "center" :spacing 30 :space-evenly false :vexpand true :hexpand true
+			(label :halign "center" :class "song" :wrap true :limit-width 20 :text music_song)
+			(label :halign "center" :class "artist" :wrap true :limit-width 15 :text music_artist)
+			(box :orientation "h" :spacing 20 :halign "center" :space-evenly true :vexpand false :hexpand false
+				(button :class "music_play_random" :onclick "beet play -y &" "")
+				(button :class "music_prev" :onclick "playerctl previous" "󰒮")
+				(button :class "music_status" :onclick "playerctl play-pause" { music_status == "Playing"? "": "" })
+				(button :class "music_next" :onclick "playerctl next" "󰒭")))))

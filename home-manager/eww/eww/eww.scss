@@ -1,0 +1,220 @@
+$rosewater: #f5e0dc;
+$flamingo: #f2cdcd;
+$pink: #f5c2e7;
+$mauve: #cba6f7;
+$red: #f38ba8;
+$maroon: #eba0ac;
+$peach: #fab387;
+$yellow: #f9e2af;
+$green: #a6e3a1;
+$teal: #94e2d5;
+$sky: #89dceb;
+$sapphire: #74c7ec;
+$blue: #89b4fa;
+$lavender: #b4befe;
+
+$text: #cdd6f4;
+$subtext1: #bac2de;
+$subtext0: #a6adc8;
+
+$overlay2: #9399b2;
+$overlay1: #7f849c;
+$overlay0: #6c7086;
+
+$surface2: #585b70;
+$surface1: #45475a;
+$surface0: #313244;
+
+$base: #1e1e2e;
+$mantle: #181825;
+$crust: #11111b;
+
+/** global styles *************************************/
+* {
+	all: unset;
+	font-family: 'RobotoMono Nerd Font';
+}
+
+scale slider {
+	background: transparent;
+	outline-color: transparent;
+	border-color: transparent;
+	color: transparent;
+	box-shadow: none;
+}
+
+.dashboard_window {
+  background-color: $mantle;
+  border-radius: 8px;
+}
+/******************************************************/
+
+.main_bar_widgets {
+  font-size: x-large;
+
+  margin: 5px;
+  padding: 5px;
+  
+  border: 2px solid;
+  border-radius: 8px;
+}
+
+.volume {
+  @extend .main_bar_widgets;
+  
+  color: $sapphire;
+}
+
+.brightness {
+  @extend .main_bar_widgets;
+  
+  color: $yellow;
+}
+
+.network {
+  @extend .main_bar_widgets;
+  
+  color: $teal;
+}
+
+.battery {
+  @extend .main_bar_widgets;
+  
+  color: $green;
+}
+
+.main_bar {
+  background-color: transparent;
+}
+.main_bar_content {
+  background-color: $mantle;
+  border-radius: 8px;
+  
+  margin: 5px;
+}
+
+/** powermenu *****************************************/
+.powermenu {
+  background-color: $mantle;
+  border-radius: 8px;
+}
+
+.powermenu_button {
+  margin: 5px;
+  font-size: xx-large;
+  background: none;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  outline: none;
+  box-shadow: none;
+}
+.powermenu_button:hover {
+  border: 2px solid $mauve;
+  color: $mauve;
+}
+
+/** system ********************************************/
+.system {
+	background-color: $mantle;
+	border-radius: 8px;
+	
+	margin: 5px;
+	padding: 5px;
+}
+
+.system_iconcpu, .system_iconmem, .system_icondrive, .system_iconbright, .system_iconbat {
+	font-size : 32px;
+	font-weight : normal;
+}
+.system_iconcpu {
+	color: $red;
+}
+.system_iconmem {
+	color: $green;
+	margin-top: -5px;
+	margin-left: -10px;
+}
+.system_icondrive {
+	color: $sapphire;
+	margin-top: -5px;
+	margin-left: -2px;
+}
+.system_iconbright {
+}
+.system_iconbat {
+}
+
+.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bright_bar, .system_bat_bar, scale trough {
+	all: unset;
+	background-color: $surface0;
+	border-radius: 16px;
+	min-width: 28px;
+	min-height: 240px;
+}
+
+.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bright_bar, .system_bat_bar, scale trough highlight {
+	all: unset;
+	background: none;
+	border-radius: 16px;
+}
+
+.system_cpu_bar scale trough highlight {
+	background-color: $red;
+}
+
+.system_mem_bar scale trough highlight {
+	background-color: $green;
+}
+.system_drive_bar scale trough highlight {
+	background-color: $sapphire;
+}
+.system_bright_bar scale trough highlight {
+}
+.system_bat_bar scale trough highlight {
+}
+
+/** clock *********************************************/
+.clock {
+	background-color: $mantle;
+	border-radius: 8px;
+	margin: 5px;
+	padding: 5px;
+}
+
+.time {
+	font-size: 200px;
+	font-weight: bold;
+	color: $lavender;
+}
+
+/** Music ***************************************/
+.music_cover {
+	min-height: 120px;
+	min-width: 120px;
+	margin: 20px;
+	border-radius: 14px;
+}
+
+.music_song {
+	font-size : 24px;
+	font-weight : bold;
+	margin : 40px 0px 0px 0px;
+}
+
+.music_artist {
+	font-size : 16px;
+	font-weight : normal;
+	margin : 0px 0px 15px 0px;
+}
+
+.music_play_random, .music_status {
+	padding-top: 2px;
+	font-size: 18px;
+}
+.music_prev, .music_next {
+	font-size: 32px;
+}
+
+.music_play_random:hover, .music_prev:hover, .music_status:hover, .music_next:hover {
+	color: $mauve;
+}
