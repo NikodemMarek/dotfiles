@@ -45,7 +45,6 @@ in {
   programs.fish.enable = true;
   programs.neovim.enable = true;
   programs.hyprland.enable = true;
-  programs.home-manager.enable = true;
 
   environment.etc = {
     "greetd/hyprregreet.conf".text = ''

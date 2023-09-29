@@ -11,7 +11,13 @@ in {
   imports = [
     ./shell.nix
     ./alacritty.nix
+    # ./gtklock.nix
   ] ++ builtins.map ( m: m.module ) modules;
+
+  xdg.configFile.assets = {
+    source = ./assets;
+    recursive = true;
+  };
 
   home.packages = builtins.map ( name: pkgs.${name} ) ( extraPkgs ++ ( lib.lists.flatten ( builtins.map ( m: m.extraPkgs ) modules ) ) );
 

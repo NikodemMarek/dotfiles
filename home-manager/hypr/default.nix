@@ -7,12 +7,11 @@
   ];
 
   module = { ... }: {
-    xdg.configFile."hypr/wallpaper.png".source = ./wallpaper.png;
     xdg.configFile."hypr/hyprpaper.conf".text = ''
       ipc = off
 
-      preload = ${config.home.homeDirectory}/${config.xdg.configFile."hypr/wallpaper.png".target}
-      wallpaper = , ${config.home.homeDirectory}/${config.xdg.configFile."hypr/wallpaper.png".target}
+      preload = ${config.home.homeDirectory}/${config.xdg.configFile."assets/background.png".target}
+      wallpaper = , ${config.home.homeDirectory}/${config.xdg.configFile."assets/background.png".target}
     '';
 
     wayland.windowManager.hyprland = {

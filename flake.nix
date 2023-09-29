@@ -29,7 +29,7 @@
             username = "nikodem";
             workDir = "~/tmp/";
             groups = [ "wheel" "networkmanager" ];
-            extraPkgs = [ "openjdk17" ];
+            extraPkgs = [  ];
           }
           {
             username = "work";
