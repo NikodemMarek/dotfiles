@@ -21,11 +21,8 @@ in {
   home.packages = builtins.map ( name: pkgs.${name} ) ( extraPkgs ++ ( lib.lists.flatten ( builtins.map ( m: m.extraPkgs ) modules ) ) );
 
   programs.home-manager.enable = true;
-  programs.neovim.enable = true;
   programs.firefox.enable = true;
-  programs.gitui.enable = true;
   programs.eza.enable = true;
-  programs.joshuto.enable = true;
 
   xdg.configFile."autorun.sh" = {
     executable = true;
