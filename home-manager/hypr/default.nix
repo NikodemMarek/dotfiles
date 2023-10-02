@@ -4,6 +4,8 @@
     "wl-clipboard"
     "alacritty"
     "joshuto"
+    "grim"
+    "slurp"
   ];
 
   module = { ... }: {
@@ -122,10 +124,10 @@
           workspace_swipe_forever = false
         }
 
-        # misc {
-        #   disable_hyprland_logo = true
-        #   disable_hypr_chan = true
-        # }
+        misc {
+          disable_hyprland_logo = true
+          # disable_hypr_chan = true
+        }
 
         $mod = SUPER
 
@@ -189,6 +191,7 @@
         bind = $mod, E, exec, alacritty -e joshuto --path ${workDir}
 
         bind = , PRINT, exec, grim -g "$(slurp)" - | wl-copy # screenshot
+        bind = SHIFT, PRINT, exec, grim -g "$(slurp)" ~/screenshots # screenshot
 
         bind = $mod, ESCAPE, exec, gtklock -d # lock session
         bind = $mod SHIFT, ESCAPE, exit # exit hyprland

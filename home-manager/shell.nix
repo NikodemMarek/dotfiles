@@ -5,6 +5,12 @@
 
   programs.zellij.enable = true;
 
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   programs.fish = {
     enable = true;
     interactiveShellInit = ''

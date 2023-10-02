@@ -3,8 +3,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
+			-- "williamboman/mason.nvim",
+			-- "williamboman/mason-lspconfig.nvim",
 			"j-hui/fidget.nvim",
 			"folke/neodev.nvim",
 			"RRethy/vim-illuminate",
@@ -12,16 +12,17 @@ return {
 		},
 		config = function()
 			-- Set up Mason before anything else
-			require("mason").setup()
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"pylsp",
-					"rust_analyzer",
-					"svelte",
-				},
-				automatic_installation = true,
-			})
+			-- require("mason").setup()
+			-- require("mason-lspconfig").setup({
+			-- 	ensure_installed = {
+			-- 		"lua_ls",
+			-- 		"rust_analyzer",
+			-- 		"gopls",
+			-- 		"pylsp",
+			-- 		"svelte",
+			-- 	},
+			-- 	automatic_installation = true,
+			-- })
 
 			-- Quick access via keymap
 			require("helpers.keys").map("n", "<leader>M", "<cmd>Mason<cr>", "Show Mason")
@@ -164,9 +165,35 @@ return {
 				},
 			})
 
+			-- Go
+			require("lspconfig")["gopls"].setup({
+				on_attach = on_attach,
+			})
+
 			-- Svelte
 			require("lspconfig")["svelte"].setup({
 				on_attach = on_attach,
+			})
+
+			-- Webdev wihth deno
+			vim.g.markdown_fenced_languages = {
+				"ts=typescript",
+			}
+			require("lspconfig").denols.setup({
+				settings = {
+					deno = {
+						enable = true,
+						suggest = {
+							imports = {
+								hosts = {
+									["https://crux.land"] = true,
+									["https://deno.land"] = true,
+									["https://x.nest.land"] = true,
+								},
+							},
+						},
+					},
+				},
 			})
 		end,
 	},

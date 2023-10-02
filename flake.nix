@@ -24,35 +24,50 @@
       {
         hostname = "laptop";
         system = "x86_64-linux";
+        resolution = { width = 1920; height = 1080; };
         users = [
           {
             username = "nikodem";
             workDir = "~/tmp/";
-            groups = [ "wheel" "networkmanager" ];
-            extraPkgs = [  ];
+            groups = [ "wheel" "networkmanager" "docker" ];
+            extraPkgs = [ ];
+            name = "nikodem";
+            email = "nikodemmarek11@gmail.com";
           }
           {
             username = "work";
             workDir = "~/projects/";
             groups = [ "networkmanager" ];
             extraPkgs = [ "nodejs_16" "nodePackages_latest.firebase-tools" ];
+            name = "nikodem";
+            email = "nikodemmarek11@gmail.com";
           }
           {
             username = "school";
             workDir = "~/projects/";
             groups = [ "networkmanager" ];
             extraPkgs = [ "openjdk17" "nodejs" ];
+            name = "nikodem";
+            email = "nikodemmarek11@gmail.com";
+          }
+          {
+            username = "hackyeah";
+            workDir = "~/projects/";
+            groups = [ "networkmanager" "docker" ];
+            extraPkgs = [ "python3" ];
+            name = "nikodem";
+            email = "nikodemmarekit@gmail.com";
           }
         ];
       }
     ];
 
-    mkHMUser = { system, username, extraPkgs, workDir, ... }:
+    mkHMUser = { system, username, extraPkgs, resolution, workDir, name, email, ... }:
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
           inherit inputs outputs;
-          inherit username extraPkgs workDir;
+          inherit username extraPkgs workDir resolution name email;
         };
         modules = [
           hyprland.homeManagerModules.default
@@ -88,7 +103,8 @@
           builtins.map ( user: {
             name = "${user.username}@${host.hostname}";
             value = mkHMUser {
-              inherit (user) username extraPkgs workDir;
+              inherit (host) resolution;
+              inherit (user) username extraPkgs workDir name email;
               inherit (host) system;
             };
           }) host.users

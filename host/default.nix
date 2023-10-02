@@ -45,6 +45,9 @@ in {
   programs.fish.enable = true;
   programs.neovim.enable = true;
   programs.hyprland.enable = true;
+  programs.git.enable = true;
+
+  virtualisation.docker.enable = true;
 
   environment.etc = {
     "greetd/hyprregreet.conf".text = ''

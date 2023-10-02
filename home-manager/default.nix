@@ -1,28 +1,26 @@
-{ inputs, outputs, lib, config, pkgs, username, extraPkgs, workDir, ... }:
+{
+  inputs, outputs, lib, config, pkgs,
+  username, extraPkgs, workDir, resolution, email, name,
+  ...
+}:
 let
   modules = builtins.map ( name:
     import ./${name} {
       inherit config pkgs lib;
-      inherit workDir;
-      resolution = { width = 1920; height = 1080; };
+      inherit workDir resolution name email;
     }
-  ) [ "eww" "neovim" "hypr" ];
+  ) [ "eww" "neovim" "hypr" "gtklock.nix" "git.nix" ];
 in {
+  xdg.configFile."assets/background.png".source = ./assets/background.png;
+
   imports = [
     ./shell.nix
     ./alacritty.nix
-    # ./gtklock.nix
   ] ++ builtins.map ( m: m.module ) modules;
-
-  xdg.configFile.assets = {
-    source = ./assets;
-    recursive = true;
-  };
 
   home.packages = builtins.map ( name: pkgs.${name} ) ( extraPkgs ++ ( lib.lists.flatten ( builtins.map ( m: m.extraPkgs ) modules ) ) );
 
   programs.home-manager.enable = true;
-  programs.git.enable = true;
   programs.neovim.enable = true;
   programs.firefox.enable = true;
   programs.gitui.enable = true;
@@ -47,6 +45,7 @@ in {
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
+      permittedInsecurePackages = [ "nodejs-16.20.2" ];
     };
   };
 
