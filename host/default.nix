@@ -51,7 +51,11 @@ in {
 
   environment.etc = {
     "greetd/hyprregreet.conf".text = ''
-      exec-once = ${pkgs.greetd.regreet}/bin/regreet; (sleep 5 && hyprctl dispatch exit)
+      misc {
+        disable_hyprland_logo = true
+        # disable_hypr_chan = true
+      }
+      exec-once = ${pkgs.greetd.regreet}/bin/regreet; hyprctl dispatch exit
     '';
     "greetd/regreetbg.png".source = ./wallpaper.png;
   };
