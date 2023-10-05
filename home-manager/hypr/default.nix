@@ -188,7 +188,7 @@
         bind = $mod, SPACE, exec, yofi
         bind = $mod, RETURN, exec, alacritty --working-directory ${workDir}
         bind = $mod SHIFT, RETURN, exec, alacritty --working-directory ~/projects/
-        bind = $mod, E, exec, alacritty -e joshuto --path ${workDir}
+        bind = $mod, E, exec, alacritty -e joshuto ${workDir}
 
         bind = , PRINT, exec, grim -g "$(slurp)" - | wl-copy # screenshot
         bind = SHIFT, PRINT, exec, grim -g "$(slurp)" ~/screenshots # screenshot

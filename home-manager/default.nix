@@ -9,7 +9,7 @@ let
       inherit config pkgs lib;
       inherit workDir resolution name email;
     }
-  ) [ "eww" "neovim" "hypr" "gtklock.nix" "git.nix" ];
+  ) [ "eww" "neovim" "hypr" "joshuto" "gtklock.nix" "git.nix" ];
 in {
   xdg.configFile."assets/background.png".source = ./assets/background.png;
 
@@ -22,7 +22,6 @@ in {
 
   programs.home-manager.enable = true;
   programs.firefox.enable = true;
-  programs.eza.enable = true;
 
   xdg.configFile."autorun.sh" = {
     executable = true;

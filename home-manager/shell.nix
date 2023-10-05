@@ -3,6 +3,8 @@
 
   programs.zoxide.enable = true;
 
+  programs.eza.enable = true;
+
   programs.zellij.enable = true;
   xdg.configFile."zellij/layouts/project.kdl".text = ''
     layout {
