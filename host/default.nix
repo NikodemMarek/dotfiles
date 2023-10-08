@@ -40,7 +40,11 @@ in {
     "/swap".options = [ "compress=lzo" ];
   };
 
-  time.timeZone = "Europe/Warsaw";
+  services.xserver = {
+    layout = "us";
+    xkbVariant = "dvp";
+  };
+  console.useXkbConfig = true; 
 
   programs.fish.enable = true;
   programs.neovim.enable = true;
