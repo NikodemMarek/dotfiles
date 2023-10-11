@@ -5,6 +5,7 @@ return {
 		lazy = false,
 		config = function()
 			vim.api.nvim_buf_set_keymap(0, "n", "o", "<Nop>", { noremap = true, silent = true })
+			-- vim.api.nvim_buf_set_keymap(0, "n", "q", ":bd<cr>", { noremap = true, silent = true })
 
 			require("netrw").setup({
 				use_devicons = true,

@@ -6,7 +6,6 @@ map({ "n", "i" }, "<C-s>", "<cmd>w<cr>", "Write")
 map("n", "<leader>fa", "<cmd>wa<cr>", "Write all")
 map("n", "<leader>qq", "<cmd>q<cr>", "Quit")
 map("n", "<leader>qa", "<cmd>qa!<cr>", "Quit all")
-map("n", "<leader>dw", "<cmd>close<cr>", "Window")
 
 -- Quick command
 map("n", ";", ":", "Quick command")
@@ -38,6 +37,7 @@ local buffers = require("helpers.buffers")
 map("n", "<leader>dd", buffers.delete_this, "Current buffer")
 map("n", "<leader>do", buffers.delete_others, "Other buffers")
 map("n", "<leader>da", buffers.delete_all, "All buffers")
+map("n", "<leader>dw", "<cmd>close<cr>", "Window")
 
 -- Navigate buffers
 map("n", "<S-l>", ":bnext<CR>")
@@ -46,15 +46,6 @@ map("n", "<S-h>", ":bprevious<CR>")
 -- Stay in indent mode
 map("v", "<", "<gv")
 map("v", ">", ">gv")
-
--- Switch between light and dark modes
-map("n", "<leader>ut", function()
-	if vim.o.background == "dark" then
-		vim.o.background = "light"
-	else
-		vim.o.background = "dark"
-	end
-end, "Toggle between light and dark themes")
 
 -- Clear after search
 map("n", "<leader>ur", "<cmd>nohl<cr>", "Clear highlights")

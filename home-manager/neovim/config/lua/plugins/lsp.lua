@@ -3,30 +3,12 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			-- "williamboman/mason.nvim",
-			-- "williamboman/mason-lspconfig.nvim",
 			"j-hui/fidget.nvim",
 			"folke/neodev.nvim",
 			"RRethy/vim-illuminate",
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-			-- Set up Mason before anything else
-			-- require("mason").setup()
-			-- require("mason-lspconfig").setup({
-			-- 	ensure_installed = {
-			-- 		"lua_ls",
-			-- 		"rust_analyzer",
-			-- 		"gopls",
-			-- 		"pylsp",
-			-- 		"svelte",
-			-- 	},
-			-- 	automatic_installation = true,
-			-- })
-
-			-- Quick access via keymap
-			require("helpers.keys").map("n", "<leader>M", "<cmd>Mason<cr>", "Show Mason")
-
 			-- Neodev setup before LSP config
 			require("neodev").setup()
 
@@ -60,6 +42,8 @@ return {
 			}
 			vim.diagnostic.config(config)
 
+			local augroup = vim.api.nvim_create_augroup("FormatAutogroup", {})
+
 			-- This function gets run when an LSP connects to a particular buffer.
 			local on_attach = function(client, bufnr)
 				local lsp_map = require("helpers.keys").lsp_map
@@ -79,8 +63,19 @@ return {
 				vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
 					vim.lsp.buf.format()
 				end, { desc = "Format current buffer with LSP" })
-
 				lsp_map("<leader>ff", "<cmd>Format<cr>", bufnr, "Format")
+
+				-- Format on save
+				if client.supports_method("textDocument/formatting") then
+					vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+					vim.api.nvim_create_autocmd("BufWritePre", {
+						group = augroup,
+						buffer = bufnr,
+						callback = function()
+							vim.lsp.buf.format({ async = false })
+						end,
+					})
+				end
 
 				-- Attach and configure vim-illuminate
 				require("illuminate").on_attach(client)
@@ -88,10 +83,20 @@ return {
 
 			-- nvim-cmp supports additional completion capabilities, so broadcast that to servers
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+			-- Completions
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
+			-- Folding
+			capabilities.textDocument.foldingRange = {
+				dynamicRegistration = false,
+				lineFoldingOnly = true,
+			}
+
+			local lspconf = require("lspconfig")
+
 			-- Lua
-			require("lspconfig")["lua_ls"].setup({
+			lspconf.lua_ls.setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
 				settings = {
@@ -112,8 +117,44 @@ return {
 				},
 			})
 
+			-- Rust
+			lspconf["rust_analyzer"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				settings = {
+					["rust-analyzer"] = {
+						imports = {
+							granularity = {
+								group = "module",
+							},
+							prefix = "self",
+						},
+						cargo = {
+							buildScripts = {
+								enable = true,
+							},
+						},
+						procMacro = {
+							enable = true,
+						},
+					},
+				},
+			})
+
+			-- Go
+			lspconf["gopls"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+
+			-- C / C++
+			lspconf["ccls"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+
 			-- Python
-			require("lspconfig")["pylsp"].setup({
+			lspconf["pylsp"].setup({
 				on_attach = on_attach,
 				capabilities = capabilities,
 				settings = {
@@ -142,44 +183,13 @@ return {
 				},
 			})
 
-			-- Rust
-			require("lspconfig")["rust_analyzer"].setup({
-				on_attach = on_attach,
-				settings = {
-					["rust-analyzer"] = {
-						imports = {
-							granularity = {
-								group = "module",
-							},
-							prefix = "self",
-						},
-						cargo = {
-							buildScripts = {
-								enable = true,
-							},
-						},
-						procMacro = {
-							enable = true,
-						},
-					},
-				},
-			})
-
-			-- Go
-			require("lspconfig")["gopls"].setup({
-				on_attach = on_attach,
-			})
-
-			-- Svelte
-			require("lspconfig")["svelte"].setup({
-				on_attach = on_attach,
-			})
-
 			-- Webdev wihth deno
 			vim.g.markdown_fenced_languages = {
 				"ts=typescript",
 			}
-			require("lspconfig").denols.setup({
+			lspconf.denols.setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
 				settings = {
 					deno = {
 						enable = true,
@@ -195,6 +205,17 @@ return {
 					},
 				},
 			})
+
+			-- Svelte
+			lspconf["svelte"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+			})
+
+			-- Java
+			-- lspconf["java_language_server"].setup({
+			-- 	on_attach = on_attach,
+			-- })
 		end,
 	},
 	{

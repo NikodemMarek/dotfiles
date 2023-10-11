@@ -1,30 +1,29 @@
 return {
 	{
-		"nvimtools/none-ls.nvim",
+		"mhartington/formatter.nvim",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
 		config = function()
-			local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-			local null_ls = require("null-ls")
-			null_ls.setup({
-				sources = {
-					null_ls.builtins.formatting.stylua,
-					null_ls.builtins.formatting.deno_fmt,
+			require("formatter").setup({
+				filetype = {
+					lua = {
+						require("formatter.filetypes.lua").stylua,
+					},
+
+					["*"] = {
+						require("formatter.filetypes.any").remove_trailing_whitespace,
+					},
 				},
-				on_attach = function(client, bufnr)
-					if client.supports_method("textDocument/formatting") then
-						vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-						vim.api.nvim_create_autocmd("BufWritePre", {
-							group = augroup,
-							buffer = bufnr,
-							callback = function()
-								vim.lsp.buf.format({ async = false })
-							end,
-						})
-					end
-				end,
 			})
+		end,
+	},
+	{
+		"mfussenegger/nvim-lint",
+		config = function()
+			require("lint").linters_by_ft = {
+				lua = { "luacheck" },
+			}
 		end,
 	},
 }

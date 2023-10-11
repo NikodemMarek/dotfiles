@@ -10,41 +10,13 @@ return {
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
 			"rafamadriz/friendly-snippets",
+			"nvim-tree/nvim-web-devicons"
 		},
 		config = function()
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
 
 			require("luasnip/loaders/from_vscode").lazy_load()
-
-			local kind_icons = {
-				Copilot = "",
-				Text = "",
-				Method = "m",
-				Function = "",
-				Constructor = "",
-				Field = "",
-				Variable = "",
-				Class = "",
-				Interface = "",
-				Module = "",
-				Property = "",
-				Unit = "",
-				Value = "",
-				Enum = "",
-				Keyword = "",
-				Snippet = "",
-				Color = "",
-				File = "",
-				Reference = "",
-				Folder = "",
-				EnumMember = "",
-				Constant = "",
-				Struct = "",
-				Event = "",
-				Operator = "",
-				TypeParameter = "",
-			}
 
 			local has_words_before = function()
 				if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
@@ -71,14 +43,8 @@ return {
 						select = false,
 					}),
 					["<Tab>"] = cmp.mapping(function(fallback)
-						-- if cmp.visible() then
-						-- 	cmp.select_next_item()
-						if cmp.visible() and has_words_before() then
-							cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-						elseif luasnip.expand_or_jumpable() then
-							luasnip.expand_or_jump()
-						else
-							fallback()
+						if cmp.visible() then
+							cmp.select_next_item()
 						end
 					end, { "i", "s" }),
 					["<S-Tab>"] = cmp.mapping(function(fallback)
@@ -90,24 +56,71 @@ return {
 							fallback()
 						end
 					end, { "i", "s" }),
-					["<c-space>"] = cmp.mapping({
-						i = cmp.mapping.complete(),
-					}),
+					["<c-space>"] = cmp.mapping.complete(),
+					["<C-e>"] = cmp.mapping.abort(),
 				}),
+				window = {
+					completion = {
+						border = "rounded",
+						winhighlight = "Normal:CmpNormal",
+					},
+					documentation = {
+						border = "rounded",
+						winhighlight = "Normal:CmpDocNormal",
+					},
+				},
 				formatting = {
 					fields = { "kind", "abbr", "menu" },
 					format = function(entry, vim_item)
-						-- Kind icons
-						vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-						vim_item.menu = ({
-							copilot = "[Copilot]",
-							nvim_lsp = "[LSP]",
-							luasnip = "[Snippet]",
-							buffer = "[Buffer]",
-							path = "[Path]",
-						})[entry.source.name]
+						local kind_icons = {
+							Text = "",
+							Method = "󰆧",
+							Function = "󰊕",
+							Constructor = "",
+							Field = "󰇽",
+							Variable = "󰂡",
+							Class = "󰠱",
+							Interface = "",
+							Module = "",
+							Property = "󰜢",
+							Unit = "",
+							Value = "󰎠",
+							Enum = "",
+							Keyword = "󰌋",
+							Snippet = "",
+							Color = "󰏘",
+							File = "󰈙",
+							Reference = "",
+							Folder = "󰉋",
+							EnumMember = "",
+							Constant = "󰏿",
+							Struct = "",
+							Event = "",
+							Operator = "󰆕",
+							TypeParameter = "󰅲",
+						}
+						vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
+
+						-- if vim.tbl_contains({ 'path' }, entry.source.name) then
+						-- 	local icon, hl_group = require('nvim-web-devicons')
+						-- 		.get_icon(entry:get_completion_item().label)
+						--
+						-- 	if icon then
+						-- 		vim_item.kind = icon
+						-- 		vim_item.kind_hl_group = hl_group
+						-- 	end
+						-- end
+
+						-- vim_item.menu = ({
+						-- 	copilot = "(copilot)",
+						-- 	nvim_lsp = "(lsp)",
+						-- 	luasnip = "(luasnip)",
+						-- 	buffer = "(buffer)",
+						-- 	path = "(path)",
+						-- })[entry.source.name]
+
 						return vim_item
-					end,
+					end
 				},
 				sources = {
 					{ name = "copilot", group_index = 2 },
