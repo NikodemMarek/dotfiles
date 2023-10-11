@@ -32,7 +32,7 @@ $crust: #11111b;
 /** global styles *************************************/
 * {
 	all: unset;
-	font-family: 'RobotoMono Nerd Font';
+	font-family: 'Hack Nerd Font';
 }
 
 scale slider {
@@ -122,29 +122,35 @@ scale slider {
 	padding: 5px;
 }
 
-.system_iconcpu, .system_iconmem, .system_icondrive, .system_iconbright, .system_iconbat {
+.system_iconcpu, .system_iconmem, .system_icondrive, .system_iconbat {
 	font-size : 32px;
 	font-weight : normal;
 }
 .system_iconcpu {
+	font-size : 30px;
 	color: $red;
+	margin-top: -5px;
+	margin-left: -12px;
 }
 .system_iconmem {
 	color: $green;
 	margin-top: -5px;
-	margin-left: -10px;
+	margin-left: -11px;
 }
 .system_icondrive {
+	font-size : 34px;
 	color: $sapphire;
-	margin-top: -5px;
+	margin-top: -6px;
 	margin-left: -2px;
 }
-.system_iconbright {
-}
 .system_iconbat {
+	font-size : 36px;
+	color: $yellow;
+	margin-top: -9px;
+	margin-left: 0px;
 }
 
-.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bright_bar, .system_bat_bar, scale trough {
+.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bat_bar, scale trough {
 	all: unset;
 	background-color: $surface0;
 	border-radius: 16px;
@@ -152,7 +158,7 @@ scale slider {
 	min-height: 240px;
 }
 
-.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bright_bar, .system_bat_bar, scale trough highlight {
+.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bat_bar, scale trough highlight {
 	all: unset;
 	background: none;
 	border-radius: 16px;
@@ -168,9 +174,8 @@ scale slider {
 .system_drive_bar scale trough highlight {
 	background-color: $sapphire;
 }
-.system_bright_bar scale trough highlight {
-}
 .system_bat_bar scale trough highlight {
+	background-color: $yellow;
 }
 
 /** clock *********************************************/

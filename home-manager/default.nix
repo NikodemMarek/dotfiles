@@ -1,13 +1,14 @@
 {
   inputs, outputs, lib, config, pkgs,
-  username, extraPkgs, workDir, resolution, email, name,
+  device, resolution,
+  username, extraPkgs, workDir, email, name,
   ...
 }:
 let
   modules = builtins.map ( name:
     import ./${name} {
       inherit config pkgs lib;
-      inherit workDir resolution name email;
+      inherit workDir resolution name email device;
     }
   ) [ "eww" "neovim" "hypr" "joshuto" "gtklock.nix" "git.nix" ];
 in {

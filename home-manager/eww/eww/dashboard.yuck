@@ -1,47 +1,27 @@
 ; powermenu
-(defwidget poweroff [] 
-	(button :class "powermenu_button powermenu_poweroff" :onclick "systemctl poweroff" ""))
-(defwidget reboot [] 
-	(button :class "powermenu_button powermenu_reboot" :onclick "systemctl reboot" ""))
-(defwidget lock [] 
+(defwidget powermenu_poweroff [] 
+	(button :class "powermenu_button powermenu_poweroff" :onclick "systemctl poweroff" ""))
+(defwidget powermenu_reboot [] 
+	(button :class "powermenu_button powermenu_reboot" :onclick "systemctl reboot" ""))
+(defwidget powermenu_lock [] 
 	(button :class "powermenu_button powermenu_lock" :onclick "gtklock -d" ""))
-(defwidget logout [] 
-	(button :class "powermenu_button powermenu_logout" :onclick "hyprctl dispatch exit" ""))
-(defwidget sleep [] 
-	(button :class "powermenu_button powermenu_sleep" :onclick "systemctl suspend ; gtklock -d" ""))
-(defwidget hibernate [] 
+(defwidget powermenu_logout [] 
+	(button :class "powermenu_button powermenu_logout" :onclick "hyprctl dispatch exit" ""))
+(defwidget powermenu_sleep [] 
+	(button :class "powermenu_button powermenu_sleep" :onclick "systemctl suspend ; gtklock -d" ""))
+(defwidget powermenu_hibernate [] 
 	(button :class "powermenu_button powermenu_hibernate" :onclick "systemctl hibernate ; gtklock -d" ""))
 
 (defwidget powermenu []
 	(box :class "powermenu dashboard_window" :orientation "v" :space-evenly false
 		(box :vexpand true :hexpand true
-			(poweroff)
-			(lock)
-			(sleep))
-		(box :vexpand true :hexpand true
-			(reboot)
-			(logout)
-			(hibernate))))
-
-; system
-(defwidget system [] 
-	(box :class "system dashboard_window" :vexpand false :hexpand false 
-		(box :orientation "h" :spacing 35 :halign "center" :valign "center" :space-evenly false :vexpand false :hexpand false 
-			(box :class "system_cpu_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false
-				(scale :min 0 :max 100 :value { round(EWW_CPU.avg, 0) } :orientation "v" :flipped true :active false)
-				(label :class "system_iconcpu" :text ""))
-			(box :class "system_mem_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
-				(scale :min 0 :max 100 :value { round(EWW_RAM.used_mem_perc, 0) } :orientation "v" :flipped true :active false)
-				(label :class "system_iconmem" :text ""))
-			(box :class "system_drive_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
-				(scale :min 0 :max 100 :value { round(EWW_DISK['/home'].used_perc, 0) } :orientation "v" :flipped true :active false)
-				(label :class "system_icondrive" :text "󰋊")))))
-;			(box :class "system_bright_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
-;				(label :class "system_iconbright" :text "")
-;				(scale :min 0 :max 100 :value BLIGHT :active "false"))
-;			(box :class "system_bat_bar" :orientation "h" :spacing 20 :space-evenly "false" :vexpand "false" :hexpand "false" 
-;				(label :class "system_iconbat" :text "")
-;				(scale :min 0 :max 100 :value { EWW_BATTERY.BAT1.capacity } :active "false")))))
+			(powermenu_poweroff)
+            (powermenu_lock)
+            (powermenu_sleep))
+        (box :vexpand true :hexpand true
+			(powermenu_reboot)
+            (powermenu_logout)
+            (powermenu_hibernate))))
 
 ; clock
 (defpoll time_hour :interval "1m" "date '+%H'")

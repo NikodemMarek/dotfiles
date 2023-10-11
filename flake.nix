@@ -24,6 +24,7 @@
       {
         hostname = "laptop";
         system = "x86_64-linux";
+        device = "laptop";
         resolution = { width = 1920; height = 1080; };
         users = [
           {
@@ -38,7 +39,7 @@
             username = "work";
             workDir = "~/projects/";
             groups = [ "networkmanager" ];
-            extraPkgs = [ "nodejs_16" "nodePackages_latest.firebase-tools" ];
+            extraPkgs = [ "nodejs_16" "firebase-tools" ];
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
           }
@@ -62,12 +63,17 @@
       }
     ];
 
-    mkHMUser = { system, username, extraPkgs, resolution, workDir, name, email, ... }:
+    mkHMUser = {
+      system,
+      device, resolution,
+      username, extraPkgs, workDir, name, email,
+      ...
+    }:
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${system};
         extraSpecialArgs = {
           inherit inputs outputs;
-          inherit username extraPkgs workDir resolution name email;
+          inherit username extraPkgs workDir device resolution name email;
         };
         modules = [
           hyprland.homeManagerModules.default
@@ -103,9 +109,9 @@
           builtins.map ( user: {
             name = "${user.username}@${host.hostname}";
             value = mkHMUser {
-              inherit (host) resolution;
-              inherit (user) username extraPkgs workDir name email;
               inherit (host) system;
+              inherit (host) device resolution;
+              inherit (user) username extraPkgs workDir name email;
             };
           }) host.users
         ) hosts
