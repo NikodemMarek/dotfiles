@@ -52,6 +52,8 @@ in {
   programs.git.enable = true;
 
   virtualisation.docker.enable = true;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   environment.etc = {
     "greetd/hyprregreet.conf".text = ''
