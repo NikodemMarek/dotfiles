@@ -4,8 +4,10 @@ local map = require("helpers.keys").map
 map("n", "<leader>fw", "<cmd>w<cr>", "Write")
 map({ "n", "i" }, "<C-s>", "<cmd>w<cr>", "Write")
 map("n", "<leader>fa", "<cmd>wa<cr>", "Write all")
+
 map("n", "<leader>qq", "<cmd>q<cr>", "Quit")
 map("n", "<leader>qa", "<cmd>qa!<cr>", "Quit all")
+map("n", "<leader>qd", "<cmd>SessionDelete<cr><cmd>qa!<cr>", "Quit all and kill session")
 
 -- Quick command
 map("n", ";", ":", "Quick command")
@@ -53,8 +55,8 @@ map("n", "<leader>ur", "<cmd>nohl<cr>", "Clear highlights")
 -- Register history
 map("n", "<leader>pp", ":Telescope neoclip<cr>", "Paste from register")
 
--- Open netrw
-map({ "n", "v" }, "<leader>e", "<cmd>Explore<cr>", "Open netrw")
+-- Open file explorer
+map({ "n", "v" }, "<leader>e", "<cmd>Oil<cr>", "Open file explorer")
 
 -- Open fold preview
 map("n", "zp", function()

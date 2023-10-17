@@ -31,7 +31,7 @@
             username = "nikodem";
             workDir = "~/tmp/";
             groups = [ "wheel" "networkmanager" "docker" ];
-            extraPkgs = [ ];
+            extraPkgs = [ "zip" "unzip" "qutebrowser" "zathura" "typst" "cargo-watch" ];
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
           }

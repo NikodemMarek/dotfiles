@@ -14,6 +14,7 @@
     "lua-language-server" "stylua"
     # "nodePackages_latest.svelte-check"
     "ccls"
+    "typst-lsp"
   ];
 
   module = { ... }: {
