@@ -71,32 +71,6 @@ return {
 				},
 			})
 
-			-- Rust
-			-- lspconf["rust_analyzer"].setup({
-			-- 	on_attach = on_attach,
-			-- 	capabilities = capabilities,
-			-- 	root_dir = util.root_pattern("Cargo.toml"),
-			-- 	settings = {
-			-- 		["rust-analyzer"] = {
-			-- 			imports = {
-			-- 				granularity = {
-			-- 					group = "module",
-			-- 				},
-			-- 				prefix = "self",
-			-- 			},
-			-- 			cargo = {
-			-- 				allFeatures = true,
-			-- 				buildScripts = {
-			-- 					enable = true,
-			-- 				},
-			-- 			},
-			-- 			procMacro = {
-			-- 				enable = true,
-			-- 			},
-			-- 		},
-			-- 	},
-			-- })
-
 			-- Go
 			lspconf["gopls"].setup({
 				on_attach = on_attach,
