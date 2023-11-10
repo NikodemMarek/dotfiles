@@ -10,6 +10,12 @@ return {
 					lua = {
 						require("formatter.filetypes.lua").stylua,
 					},
+					cpp = {
+						require("formatter.filetypes.cpp").ccls,
+					},
+					rust = {
+						require("formatter.filetypes.rust").rustfmt,
+					},
 
 					["*"] = {
 						require("formatter.filetypes.any").remove_trailing_whitespace,
@@ -23,6 +29,7 @@ return {
 		config = function()
 			require("lint").linters_by_ft = {
 				lua = { "luacheck" },
+				rust = { "cargo" },
 			}
 		end,
 	},
