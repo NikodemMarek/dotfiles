@@ -31,7 +31,7 @@
             username = "nikodem";
             workDir = "~/tmp/";
             groups = [ "wheel" "networkmanager" "docker" ];
-            extraPkgs = [ "zip" "unzip" "qutebrowser" "zathura" "typst" "cargo-watch" ];
+            extraPkgs = [ "zip" "unzip" "qutebrowser" "zathura" "typst" "beeper" ];
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
           }
@@ -39,7 +39,7 @@
             username = "work";
             workDir = "~/projects/";
             groups = [ "networkmanager" ];
-            extraPkgs = [ "nodejs_16" "firebase-tools" ];
+            extraPkgs = [ "nodejs_16" "firebase-tools" "zola" ];
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
           }
@@ -47,17 +47,17 @@
             username = "school";
             workDir = "~/projects/";
             groups = [ "networkmanager" ];
-            extraPkgs = [ "openjdk17" "nodejs" ];
+            extraPkgs = [ "openjdk17" "nodejs" "maven" "qutebrowser" ];
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
           }
           {
-            username = "hackyeah";
-            workDir = "~/projects/";
-            groups = [ "networkmanager" "docker" ];
-            extraPkgs = [ "python3" ];
+            username = "fun";
+            workDir = "~/tmp/";
+            groups = [ "wheel" "networkmanager" "docker" ];
+            extraPkgs = [ "qutebrowser" "beeper" "steam" ];
             name = "nikodem";
-            email = "nikodemmarekit@gmail.com";
+            email = "nikodemmarek11@gmail.com";
           }
         ];
       }
