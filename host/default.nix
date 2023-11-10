@@ -43,6 +43,7 @@ in {
   services.xserver = {
     layout = "us";
     xkbVariant = "dvp";
+    xkbOptions = "caps:escape, grp:alt_shift_toggle";
   };
   console.useXkbConfig = true; 
 
@@ -55,31 +56,11 @@ in {
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
-  environment.etc = {
-    "greetd/hyprregreet.conf".text = ''
-      misc {
-        disable_hyprland_logo = true
-        # disable_hypr_chan = true
-      }
-      exec-once = ${pkgs.greetd.regreet}/bin/regreet; hyprctl dispatch exit
-    '';
-    "greetd/regreetbg.png".source = ./wallpaper.png;
-  };
-  programs.regreet = {
-    enable = true;
-    settings = {
-      background = {
-        path = "/etc/greetd/regreetbg.png";
-        fit = "Contain";
-      };
-      GTK.application_prefer_dark_theme = true;
-    };
-  };
   services.greetd = {
     enable = true;
-    settings = {
+    settings = rec {
       default_session = {
-        command = "${pkgs.hyprland}/bin/Hyprland --config /etc/greetd/hyprregreet.conf";
+        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland -r -t";
       };
     };
   };
