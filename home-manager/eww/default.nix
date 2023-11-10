@@ -6,6 +6,7 @@ let
         [ "system" 0 2 4 3 ]
         [ "time" 4 2 8 5 ]
         [ "music" 0 5 4 2 ]
+        [ "launcher" 0 0 4 2 ]
     ];
 in {
   extraPkgs = [

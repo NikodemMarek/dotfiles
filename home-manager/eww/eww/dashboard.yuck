@@ -51,3 +51,15 @@
 				(button :class "music_prev" :onclick "playerctl previous" "󰒮")
 				(button :class "music_status" :onclick "playerctl play-pause" { music_status == "Playing"? "": "" })
 				(button :class "music_next" :onclick "playerctl next" "󰒭")))))
+
+; launcher
+(defwidget launcher [] 
+	(box :class "launcher dashboard_window" :orientation "v" :space-evenly false
+		(box :vexpand true :hexpand true
+			(button :class "launcher_button" :onclick "firefox &" "")
+			(button :class "launcher_button" :onclick "qutebrowser &" "󰖟")
+			(label :class "" :text ""))
+		(box :vexpand true :hexpand true
+			(button :class "launcher_button" :onclick "firefox https://mail.google.com/mail/u/0/#inbox &" "")
+			(button :class "launcher_button" :onclick "beeper --default-frame &" "󰵅")
+			(label :class "" :text ""))))

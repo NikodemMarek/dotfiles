@@ -44,73 +44,28 @@ scale slider {
 }
 
 .dashboard_window {
-  background-color: $mantle;
-  border-radius: 8px;
-}
-/******************************************************/
-
-.main_bar_widgets {
-  font-size: x-large;
-
-  margin: 5px;
-  padding: 5px;
-  
-  border: 2px solid;
-  border-radius: 8px;
-}
-
-.volume {
-  @extend .main_bar_widgets;
-  
-  color: $sapphire;
-}
-
-.brightness {
-  @extend .main_bar_widgets;
-  
-  color: $yellow;
-}
-
-.network {
-  @extend .main_bar_widgets;
-  
-  color: $teal;
-}
-
-.battery {
-  @extend .main_bar_widgets;
-  
-  color: $green;
-}
-
-.main_bar {
-  background-color: transparent;
-}
-.main_bar_content {
-  background-color: $mantle;
-  border-radius: 8px;
-  
-  margin: 5px;
+	background-color: $mantle;
+	border-radius: 8px;
 }
 
 /** powermenu *****************************************/
 .powermenu {
-  background-color: $mantle;
-  border-radius: 8px;
+	background-color: $mantle;
+	border-radius: 8px;
 }
 
 .powermenu_button {
-  margin: 5px;
-  font-size: xx-large;
-  background: none;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  outline: none;
-  box-shadow: none;
+	margin: 5px;
+	font-size: xx-large;
+	background: none;
+	border: 2px solid transparent;
+	border-radius: 8px;
+	outline: none;
+	box-shadow: none;
 }
 .powermenu_button:hover {
-  border: 2px solid $mauve;
-  color: $mauve;
+	border: 2px solid $mauve;
+	color: $mauve;
 }
 
 /** system ********************************************/
@@ -123,11 +78,11 @@ scale slider {
 }
 
 .system_iconcpu, .system_iconmem, .system_icondrive, .system_iconbat {
-	font-size : 32px;
+	font-size: 32px;
 	font-weight : normal;
 }
 .system_iconcpu {
-	font-size : 30px;
+	font-size: 30px;
 	color: $red;
 	margin-top: -5px;
 	margin-left: -12px;
@@ -192,7 +147,7 @@ scale slider {
 	color: $lavender;
 }
 
-/** Music ***************************************/
+/** music ***************************************/
 .music_cover {
 	min-height: 120px;
 	min-width: 120px;
@@ -221,5 +176,29 @@ scale slider {
 }
 
 .music_play_random:hover, .music_prev:hover, .music_status:hover, .music_next:hover {
+	color: $mauve;
+}
+
+/** launcher ************************************/
+.launcher {
+	background-color: $mantle;
+	border-radius: 8px;
+	margin: 5px;
+	padding: 5px;
+}
+
+.launcher_button {
+	font-size: 32px;
+	margin: 10px;
+	padding: 5px;
+	border-radius: 8px;
+	background: none;
+	border: 2px solid transparent;
+	outline: none;
+	box-shadow: none;
+}
+
+.launcher_button:hover {
+	border: 2px solid $mauve;
 	color: $mauve;
 }
