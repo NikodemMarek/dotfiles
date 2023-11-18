@@ -3,14 +3,10 @@
 , lib
 , config
 , pkgs
-, device
-, resolution
 , username
 , extraPkgs
 , programs
-, workDir
-, email
-, name
+, settings
 , ...
 }: {
   programs.home-manager.enable = true;

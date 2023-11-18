@@ -1,4 +1,4 @@
-{ config, pkgs, lib, device, resolution, ... }:
+{ config, pkgs, lib, settings, ... }:
 let
   windows = [
     # widget x y width height
@@ -9,7 +9,7 @@ let
     [ "launcher" 0 0 4 2 ]
   ];
 
-  grid = { width = resolution.width / 16; height = resolution.height / 9; };
+  grid = { width = settings.resolution.width / 16; height = settings.resolution.height / 9; };
   border = 10;
 
   str = builtins.toString;
@@ -39,7 +39,7 @@ in
                 (box :class "system_drive_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
                     (scale :min 0 :max 100 :value { EWW_DISK["/home"].used_perc } :orientation "v" :flipped true :active false)
                     (label :class "system_icondrive" :text "󰋊"))
-                ${if device == "laptop" then ''
+                ${if settings.device == "laptop" then ''
                   (box :class "system_bat_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
                       (scale :min 0 :max 100 :value { EWW_BATTERY.total_avg } :orientation "v" :flipped true :active false)
                       (label :class "system_iconbat" :text "󰁹"))

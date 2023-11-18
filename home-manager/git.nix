@@ -1,4 +1,4 @@
-{ config, pkgs, lib, email, name, ... }: {
+{ config, pkgs, lib, settings, ... }: {
   programs.git = {
     enable = true;
     aliases = {
@@ -15,10 +15,10 @@
       "ph" = "push -u origin";
       "stp" = "!git stash pop && git s &&;:";
       "rst" = "reset --soft --keep HEAD^";
-      "logc" = "!git log --pretty=format:'- %h : %ae : %ad : %s' --date=format:'%Y-%m-%d %H:%M:%S' --author='${email}' --since=$1 --all --no-merges &&;:";
+      "logc" = "!git log --pretty=format:'- %h : %ae : %ad : %s' --date=format:'%Y-%m-%d %H:%M:%S' --author='${settings.email}' --since=$1 --all --no-merges &&;:";
     };
-    userEmail = email;
-    userName = name;
+    userEmail = settings.email;
+    userName = settings.name;
     extraConfig = {
       init = {
         defaultBranch = "main";

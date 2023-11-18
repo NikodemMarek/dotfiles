@@ -1,4 +1,4 @@
-{ config, pkgs, lib, workDir, ... }: {
+{ config, pkgs, lib, settings, ... }: {
   imports = [
     ./hyprpaper.nix
 
@@ -183,9 +183,9 @@
 
       # Execs
       bind = $mod, SPACE, exec, yofi
-      bind = $mod, RETURN, exec, alacritty --working-directory ${workDir}
+      bind = $mod, RETURN, exec, alacritty --working-directory ${settings.workDir}
       bind = $mod SHIFT, RETURN, exec, alacritty --working-directory ~/projects/
-      bind = $mod, E, exec, alacritty -e joshuto ${workDir}
+      bind = $mod, E, exec, alacritty -e joshuto ${settings.workDir}
 
       bind = , PRINT, exec, grim -g "$(slurp)" - | wl-copy # screenshot
       bind = SHIFT, PRINT, exec, grim -g "$(slurp)" ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png # screenshot
