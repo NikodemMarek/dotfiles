@@ -1,4 +1,4 @@
-local augroup = require("helpers.autogroups").fmt
+local augroup = require("helpers.autogroups")
 
 -- This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(client, bufnr)
@@ -23,15 +23,22 @@ local on_attach = function(client, bufnr)
 
     -- Format on save
     if client.supports_method("textDocument/formatting") then
-        vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+        vim.api.nvim_clear_autocmds({ group = augroup.fmt, buffer = bufnr })
         vim.api.nvim_create_autocmd("BufWritePre", {
-            group = augroup,
+            group = augroup.fmt,
             buffer = bufnr,
             callback = function()
                 vim.lsp.buf.format({ async = false })
             end,
         })
     end
+
+    vim.api.nvim_create_autocmd({ "BufWritePost" }, {
+        group = augroup.lint,
+        callback = function()
+            require("lint").try_lint()
+        end,
+    })
 
     -- Attach and configure vim-illuminate
     require("illuminate").on_attach(client)

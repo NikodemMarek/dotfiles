@@ -4,20 +4,33 @@
     "ripgrep"
     "fd"
 
-    # Copilot
+    # copilot
     "nodejs_16"
 
-    # LSP
+    ## LSP
+    # go
     "go"
     "gopls"
-    "rustup" # Use rustup component add rust-analyzer to get lsp
-    "deno"
+
+    # rust
+    "rustup" # Use `rustup component add rust-analyzer` to get lsp
+
+    # lua
     "lua-language-server"
     "stylua"
+    # "luajitPackages.luacheck"
+
+    # web dev
     # "nodePackages_latest.svelte-check"
+    "deno"
+
     "ccls"
     # "vimPlugins.nvim-jdtls"
+
+    # typst
     "typst-lsp"
+
+    # nix
     "nixd"
     "nixpkgs-fmt"
   ];
