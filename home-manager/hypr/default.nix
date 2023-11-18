@@ -1,5 +1,7 @@
 { config, pkgs, lib, workDir, ... }: {
   imports = [
+    ./hyprpaper.nix
+
     ../alacritty.nix
     ../joshuto
     ../gtklock.nix
@@ -9,15 +11,7 @@
     wl-clipboard
     grim
     slurp
-    hyprpaper
   ];
-
-  xdg.configFile."hypr/hyprpaper.conf".text = ''
-    ipc = off
-
-    preload = ${config.home.homeDirectory}/${config.xdg.configFile."assets/background.png".target}
-    wallpaper = , ${config.home.homeDirectory}/${config.xdg.configFile."assets/background.png".target}
-  '';
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -213,12 +207,8 @@
       windowrule = workspace 1 silent, firefox
       workspace = 1, monitor:HDMI-A-1
 
+      exec-once = hyprpaper
       exec-once = ${config.home.homeDirectory}/${config.xdg.configFile."autorun.sh".target}
     '';
   };
-
-  # autorun = ''
-  #   firefox
-  #   hyprpaper
-  # '';
 }

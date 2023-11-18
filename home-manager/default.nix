@@ -17,21 +17,17 @@
 
   imports = [
     ./git.nix
-  ] ++ builtins.map (p: ./${ p }) programs;
+  ] ++ builtins.map (p: if builtins.pathExists ./${ p } then ./${ p } else ./${p}.nix) programs;
 
   xdg.configFile."assets/background.png".source = ./assets/background.png;
 
-  # FIXME: This is currently broken & I have no idea how to fix it, nice
   xdg.configFile."autorun.sh" = {
     executable = true;
     text = ''
       #!/bin/sh
+
+      ${lib.concatStrings (builtins.map (p: if builtins.pathExists ./${ p }/autorun.nix then import ./${ p }/autorun.nix { inherit lib; } else "") programs)}
     '';
-    # text = ''
-    #   #!/bin/sh
-    #   
-    #   ${lib.concatMapStrings ( m: m.autorun or "" ) modules}
-    # '';
   };
 
   nixpkgs = {

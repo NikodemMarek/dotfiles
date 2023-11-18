@@ -57,12 +57,4 @@ in
                 (${builtins.elemAt win 0}))
     '') windows )}
   '';
-
-  # autorun = ''
-  #   eww daemon
-  #
-  #   ${lib.concatStrings ( builtins.map ( win: ''
-  #     eww open ${builtins.elemAt win 0}
-  #   '') windows )}
-  # '';
 }
