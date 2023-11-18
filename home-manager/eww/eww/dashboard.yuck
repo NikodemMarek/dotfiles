@@ -63,3 +63,14 @@
 			(button :class "launcher_button" :onclick "firefox https://mail.google.com/mail/u/0/#inbox &" "")
 			(button :class "launcher_button" :onclick "beeper --default-frame &" "󰵅")
 			(label :class "" :text ""))))
+
+; volume
+(defpoll volume_level :interval "1s" `wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2 * 100}'`)
+(defpoll volume_muted :interval "1s" `wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3 == "[MUTED]"}'`)
+
+(defwidget volume []
+	(box :class "volume dashboard_window" :orientation "v" :space-evenly true
+		(box :class "" :orientation "h"
+			(button :class "volume_button" :onclick "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" { volume_muted == "0"? "": "" })
+			(label :class "volume_level" :text volume_level))
+		(scale :min 0 :max 101 :value volume_level :orientation "h" :flipped false :active true :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%")))

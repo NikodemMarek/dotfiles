@@ -7,6 +7,7 @@ let
     [ "time" 4 2 8 5 ]
     [ "music" 0 5 4 2 ]
     [ "launcher" 0 0 4 2 ]
+    [ "volume" 4 0 4 2 ]
   ];
 
   grid = { width = settings.resolution.width / 16; height = settings.resolution.height / 9; };
@@ -31,17 +32,17 @@ in
         (box :class "system dashboard_window" :vexpand false :hexpand false 
             (box :orientation "h" :spacing 35 :halign "center" :valign "center" :space-evenly false :vexpand false :hexpand false 
                 (box :class "system_cpu_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false
-                    (scale :min 0 :max 100 :value { EWW_CPU.avg } :orientation "v" :flipped true :active false)
+                    (progress :value { EWW_CPU.avg } :orientation "v" :flipped true)
                     (label :class "system_iconcpu" :text ""))
                 (box :class "system_mem_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
-                    (scale :min 0 :max 100 :value { EWW_RAM.used_mem_perc } :orientation "v" :flipped true :active false)
+                    (progress :value { EWW_RAM.used_mem_perc } :orientation "v" :flipped true)
                     (label :class "system_iconmem" :text ""))
                 (box :class "system_drive_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
-                    (scale :min 0 :max 100 :value { EWW_DISK["/home"].used_perc } :orientation "v" :flipped true :active false)
+                    (progress :value { EWW_DISK["/home"].used_perc } :orientation "v" :flipped true)
                     (label :class "system_icondrive" :text "󰋊"))
                 ${if settings.device == "laptop" then ''
                   (box :class "system_bat_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false 
-                      (scale :min 0 :max 100 :value { EWW_BATTERY.total_avg } :orientation "v" :flipped true :active false)
+                      (progress :value { EWW_BATTERY.total_avg } :orientation "v" :flipped true)
                       (label :class "system_iconbat" :text "󰁹"))
                 '' else ""})))
   '';

@@ -6,6 +6,7 @@ let
     "time"
     "music"
     "launcher"
+    "volume"
   ];
 in
 ''

@@ -105,31 +105,36 @@ scale slider {
 	margin-left: 0px;
 }
 
-.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bat_bar, scale trough {
+.system_cpu_bar progressbar trough, .system_mem_bar progressbar trough, .system_drive_bar progressbar trough, .system_bat_bar progressbar trough {
 	all: unset;
 	background-color: $surface0;
-	border-radius: 16px;
 	min-width: 28px;
 	min-height: 240px;
-}
-
-.system_cpu_bar, .system_mem_bar, .system_drive_bar, .system_bat_bar, scale trough highlight {
-	all: unset;
-	background: none;
 	border-radius: 16px;
 }
 
-.system_cpu_bar scale trough highlight {
+.system_progressbar {
+	all: unset;
+	background: none;
+	min-width: 28px;
+	border-radius: 16px;
+}
+
+.system_cpu_bar progressbar trough progress {
+	@extend .system_progressbar;
 	background-color: $red;
 }
 
-.system_mem_bar scale trough highlight {
+.system_mem_bar progressbar trough progress {
+	@extend .system_progressbar;
 	background-color: $green;
 }
-.system_drive_bar scale trough highlight {
+.system_drive_bar progressbar trough progress {
+	@extend .system_progressbar;
 	background-color: $sapphire;
 }
-.system_bat_bar scale trough highlight {
+.system_bat_bar progressbar trough progress {
+	@extend .system_progressbar;
 	background-color: $yellow;
 }
 
@@ -201,4 +206,38 @@ scale slider {
 .launcher_button:hover {
 	border: 2px solid $mauve;
 	color: $mauve;
+}
+
+/** volume **************************************/
+.volume {
+	background-color: $mantle;
+	border-radius: 8px;
+	margin: 5px;
+	padding: 10px;
+}
+
+.volume_button {
+	font-size: 32px;
+}
+.volume_button:hover {
+	color: $blue;
+}
+
+.volume_level {
+	font-size: 32px;
+}
+
+.volume scale trough {
+	all: unset;
+	background-color: $surface0;
+	border-radius: 16px;
+	min-width: 240px;
+	min-height: 28px;
+}
+
+.volume scale trough highlight {
+	all: unset;
+	background: none;
+	border-radius: 16px;
+	background-color: $blue;
 }
