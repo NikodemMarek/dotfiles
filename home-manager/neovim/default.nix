@@ -1,46 +1,48 @@
 { config, pkgs, lib, ... }: {
-  extraPkgs = [
-    "tree-sitter"
-    "ripgrep"
-    "fd"
+  home.packages = with pkgs; [
+    # general
+    tree-sitter
+    ripgrep
+    fd
 
     # copilot
-    "nodejs_16"
+    nodejs_16
+
+    # ascii image viewer
+    ascii-image-converter
 
     ## LSP
     # go
-    "go"
-    "gopls"
+    go
+    gopls
 
     # rust
-    "rustup" # Use `rustup component add rust-analyzer` to get lsp
+    rustup # Use `rustup component add rust-analyzer` to get lsp
 
     # lua
-    "lua-language-server"
-    "stylua"
-    # "luajitPackages.luacheck"
+    lua-language-server
+    stylua
+    # luajitPackages.luacheck
 
     # web dev
-    # "nodePackages_latest.svelte-check"
-    "deno"
+    # nodePackages_latest.svelte-check
+    deno
 
-    "ccls"
-    # "vimPlugins.nvim-jdtls"
+    ccls
+    # vimPlugins.nvim-jdtls
 
     # typst
-    "typst-lsp"
+    typst-lsp
 
     # nix
-    "nixd"
-    "nixpkgs-fmt"
+    nixd
+    nixpkgs-fmt
   ];
 
-  module = { ... }: {
-    programs.neovim.enable = true;
+  programs.neovim.enable = true;
 
-    xdg.configFile.nvim = {
-      source = ./config;
-      recursive = true;
-    };
+  xdg.configFile.nvim = {
+    source = ./config;
+    recursive = true;
   };
 }

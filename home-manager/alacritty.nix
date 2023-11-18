@@ -1,4 +1,8 @@
 { ... }: {
+  imports = [
+    ./shell.nix
+  ];
+
   programs.alacritty = {
     enable = true;
     settings = {

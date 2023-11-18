@@ -32,6 +32,7 @@
               workDir = "~/tmp/";
               groups = [ "wheel" "networkmanager" "docker" ];
               extraPkgs = [ "zip" "unzip" "qutebrowser" "zathura" "typst" "beeper" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" ];
               name = "nikodem";
               email = "nikodemmarek11@gmail.com";
             }
@@ -40,6 +41,7 @@
               workDir = "~/projects/";
               groups = [ "networkmanager" ];
               extraPkgs = [ "nodejs_16" "firebase-tools" "zola" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" ];
               name = "nikodem";
               email = "nikodemmarek11@gmail.com";
             }
@@ -48,6 +50,7 @@
               workDir = "~/projects/";
               groups = [ "networkmanager" ];
               extraPkgs = [ "openjdk17" "nodejs" "maven" "qutebrowser" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" ];
               name = "nikodem";
               email = "nikodemmarek11@gmail.com";
             }
@@ -56,6 +59,7 @@
               workDir = "~/tmp/";
               groups = [ "wheel" "networkmanager" "docker" ];
               extraPkgs = [ "qutebrowser" "beeper" "steam" ];
+              programs = [ "firefox" "eww" "hypr" ];
               name = "nikodem";
               email = "nikodemmarek11@gmail.com";
             }
@@ -69,6 +73,7 @@
         , resolution
         , username
         , extraPkgs
+        , programs
         , workDir
         , name
         , email
@@ -78,7 +83,7 @@
           pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {
             inherit inputs outputs;
-            inherit username extraPkgs workDir device resolution name email;
+            inherit username extraPkgs programs workDir device resolution name email;
           };
           modules = [
             hyprland.homeManagerModules.default
@@ -121,7 +126,7 @@
                   value = mkHMUser {
                     inherit (host) system;
                     inherit (host) device resolution;
-                    inherit (user) username extraPkgs workDir name email;
+                    inherit (user) username extraPkgs programs workDir name email;
                   };
                 })
                 host.users

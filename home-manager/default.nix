@@ -7,40 +7,31 @@
 , resolution
 , username
 , extraPkgs
+, programs
 , workDir
 , email
 , name
 , ...
-}:
-let
-  modules = builtins.map
-    (name:
-      import ./${name} {
-        inherit config pkgs lib;
-        inherit workDir resolution name email device;
-      }
-    ) [ "eww" "neovim" "hypr" "joshuto" "gtklock.nix" "git.nix" ];
-in
-{
-  xdg.configFile."assets/background.png".source = ./assets/background.png;
+}: {
+  programs.home-manager.enable = true;
 
   imports = [
-    ./shell.nix
-    ./alacritty.nix
-  ] ++ builtins.map (m: m.module) modules;
+    ./git.nix
+  ] ++ builtins.map (p: ./${ p }) programs;
 
-  home.packages = builtins.map (name: pkgs.${name}) (extraPkgs ++ (lib.lists.flatten (builtins.map (m: m.extraPkgs) modules)));
+  xdg.configFile."assets/background.png".source = ./assets/background.png;
 
-  programs.home-manager.enable = true;
-  programs.firefox.enable = true;
-
+  # FIXME: This is currently broken & I have no idea how to fix it, nice
   xdg.configFile."autorun.sh" = {
     executable = true;
     text = ''
       #!/bin/sh
-      
-      ${lib.concatMapStrings ( m: m.autorun or "" ) modules}
     '';
+    # text = ''
+    #   #!/bin/sh
+    #   
+    #   ${lib.concatMapStrings ( m: m.autorun or "" ) modules}
+    # '';
   };
 
   nixpkgs = {
