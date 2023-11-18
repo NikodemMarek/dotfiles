@@ -32,8 +32,7 @@
             {
               username = "nikodem";
               groups = [ "wheel" "networkmanager" "docker" ];
-              extraPkgs = [ "zip" "unzip" "qutebrowser" "zathura" "typst" "beeper" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" ];
               settings = {
                 workDir = "~/tmp/";
                 name = "nikodem";
@@ -43,8 +42,7 @@
             {
               username = "work";
               groups = [ "networkmanager" ];
-              extraPkgs = [ "nodejs_16" "firebase-tools" "zola" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" "nodejs_16" "firebase-tools" "zola" ];
               settings = {
                 workDir = "~/projects/";
                 name = "nikodem";
@@ -54,8 +52,7 @@
             {
               username = "school";
               groups = [ "networkmanager" ];
-              extraPkgs = [ "openjdk17" "nodejs" "maven" "qutebrowser" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" ];
               settings = {
                 workDir = "~/projects/";
                 name = "nikodem";
@@ -65,8 +62,7 @@
             {
               username = "fun";
               groups = [ "wheel" "networkmanager" "docker" ];
-              extraPkgs = [ "qutebrowser" "beeper" "steam" ];
-              programs = [ "firefox" "eww" "hypr" ];
+              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" ];
               settings = {
                 workDir = "~/tmp/";
                 name = "nikodem";
@@ -80,7 +76,6 @@
       mkHMUser =
         { system
         , username
-        , extraPkgs
         , programs
         , settings
         , ...
@@ -89,7 +84,7 @@
           pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {
             inherit inputs outputs;
-            inherit system username extraPkgs programs settings;
+            inherit system username programs settings;
           };
           modules = [
             hyprland.homeManagerModules.default
@@ -131,7 +126,7 @@
                   name = "${user.username}@${host.hostname}";
                   value = mkHMUser {
                     inherit (host) system;
-                    inherit (user) username extraPkgs programs;
+                    inherit (user) username programs;
                     settings = {
                       inherit (host.settings) device resolution;
                       inherit (user.settings) workDir name email;

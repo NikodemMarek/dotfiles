@@ -4,16 +4,23 @@
 , config
 , pkgs
 , username
-, extraPkgs
 , programs
 , settings
 , ...
-}: {
+}:
+let
+  rw = builtins.partition (p: builtins.pathExists ./${ p } || builtins.pathExists ./${ p }.nix) programs;
+  preconfigured = rw.right;
+  extra = rw.wrong;
+in
+{
   programs.home-manager.enable = true;
 
   imports = [
     ./git.nix
-  ] ++ builtins.map (p: if builtins.pathExists ./${ p } then ./${ p } else ./${p}.nix) programs;
+  ] ++ builtins.map (p: if builtins.pathExists ./${ p } then ./${ p } else ./${p}.nix) preconfigured;
+
+  home.packages = builtins.map (e: pkgs.${e}) extra;
 
   xdg.configFile."assets/background.png".source = ./assets/background.png;
 
