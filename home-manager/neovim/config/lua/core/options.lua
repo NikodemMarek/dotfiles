@@ -3,6 +3,7 @@ local opts = {
 	tabstop = 4,
 	expandtab = true,
 	termguicolors = true,
+	number = true,
 	relativenumber = true,
 	clipboard = "unnamedplus",
 	wrap = true,
