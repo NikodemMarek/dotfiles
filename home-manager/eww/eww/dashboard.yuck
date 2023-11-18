@@ -16,23 +16,17 @@
 	(box :class "powermenu dashboard_window" :orientation "v" :space-evenly false
 		(box :vexpand true :hexpand true
 			(powermenu_poweroff)
-            (powermenu_lock)
-            (powermenu_sleep))
-        (box :vexpand true :hexpand true
+			(powermenu_lock)
+			(powermenu_sleep))
+		(box :vexpand true :hexpand true
 			(powermenu_reboot)
-            (powermenu_logout)
-            (powermenu_hibernate))))
+			(powermenu_logout)
+			(powermenu_hibernate))))
 
 ; clock
-(defpoll time_hour :interval "1m" "date '+%H'")
-(defpoll time_min :interval "1m" "date '+%M'")
-(defpoll time_sec :interval "1s" "date '+%S'")
-
 (defwidget time [] 
 	(box :class "time dashboard_window" :orientation "h" :spacing 20 :space-evenly true :vexpand true :hexpand true 
-		(label :class "time_hour" :text { time_hour })
-		(label :class "time_min" :text { time_min })
-		(label :class "time_sec" :text { time_sec })))
+		(label :class "" :text { formattime(EWW_TIME, "%H %M %S") })))
 
 ; music
 (deflisten music_status :initial "err" `playerctl -F status`)
