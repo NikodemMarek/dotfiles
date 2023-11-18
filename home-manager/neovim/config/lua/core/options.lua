@@ -3,7 +3,6 @@ local opts = {
 	tabstop = 4,
 	expandtab = true,
 	termguicolors = true,
-	number = true,
 	relativenumber = true,
 	clipboard = "unnamedplus",
 	wrap = true,
@@ -12,6 +11,7 @@ local opts = {
 	foldlevel = 99,
 	foldlevelstart = 99,
 	foldenable = true,
+	signcolumn = "number",
 }
 local gopts = {
 	netrw_banner = 0,
