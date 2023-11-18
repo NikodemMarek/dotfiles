@@ -16,6 +16,9 @@ return {
 					rust = {
 						require("formatter.filetypes.rust").rustfmt,
 					},
+					nix = {
+						require("formatter.filetypes.nix").nixpkgs_fmt,
+					},
 
 					["*"] = {
 						require("formatter.filetypes.any").remove_trailing_whitespace,

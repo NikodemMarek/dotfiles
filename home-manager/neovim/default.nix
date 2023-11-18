@@ -8,14 +8,18 @@
     "nodejs_16"
 
     # LSP
-    "go" "gopls"
+    "go"
+    "gopls"
     "rustup" # Use rustup component add rust-analyzer to get lsp
     "deno"
-    "lua-language-server" "stylua"
+    "lua-language-server"
+    "stylua"
     # "nodePackages_latest.svelte-check"
     "ccls"
     # "vimPlugins.nvim-jdtls"
     "typst-lsp"
+    "nixd"
+    "nixpkgs-fmt"
   ];
 
   module = { ... }: {
