@@ -1,12 +1,13 @@
 { inputs, outputs, lib, config, pkgs, hostname, users, ... }:
 let
   mkSystemUser = { username, groups, ... }: {
-      initialPassword = username;
-      isNormalUser = true;
-      extraGroups = groups;
-      shell = pkgs.fish;
-    };
-in {
+    initialPassword = username;
+    isNormalUser = true;
+    extraGroups = groups;
+    shell = pkgs.fish;
+  };
+in
+{
   imports = [
     ./${hostname}/hardware-configuration.nix
   ];
@@ -45,7 +46,7 @@ in {
     xkbVariant = "dvp";
     xkbOptions = "caps:escape, grp:alt_shift_toggle";
   };
-  console.useXkbConfig = true; 
+  console.useXkbConfig = true;
 
   programs.fish.enable = true;
   programs.neovim.enable = true;
@@ -97,12 +98,14 @@ in {
     };
   };
 
-  users.users = builtins.listToAttrs ( builtins.map ( user: {
+  users.users = builtins.listToAttrs (builtins.map
+    (user: {
       name = user.username;
       value = mkSystemUser {
         inherit (user) username groups;
       };
-    }) users );
+    })
+    users);
 
   system.stateVersion = "23.05";
 }

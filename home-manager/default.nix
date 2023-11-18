@@ -1,25 +1,35 @@
-{
-  inputs, outputs, lib, config, pkgs,
-  device, resolution,
-  username, extraPkgs, workDir, email, name,
-  ...
+{ inputs
+, outputs
+, lib
+, config
+, pkgs
+, device
+, resolution
+, username
+, extraPkgs
+, workDir
+, email
+, name
+, ...
 }:
 let
-  modules = builtins.map ( name:
-    import ./${name} {
-      inherit config pkgs lib;
-      inherit workDir resolution name email device;
-    }
-  ) [ "eww" "neovim" "hypr" "joshuto" "gtklock.nix" "git.nix" ];
-in {
+  modules = builtins.map
+    (name:
+      import ./${name} {
+        inherit config pkgs lib;
+        inherit workDir resolution name email device;
+      }
+    ) [ "eww" "neovim" "hypr" "joshuto" "gtklock.nix" "git.nix" ];
+in
+{
   xdg.configFile."assets/background.png".source = ./assets/background.png;
 
   imports = [
     ./shell.nix
     ./alacritty.nix
-  ] ++ builtins.map ( m: m.module ) modules;
+  ] ++ builtins.map (m: m.module) modules;
 
-  home.packages = builtins.map ( name: pkgs.${name} ) ( extraPkgs ++ ( lib.lists.flatten ( builtins.map ( m: m.extraPkgs ) modules ) ) );
+  home.packages = builtins.map (name: pkgs.${name}) (extraPkgs ++ (lib.lists.flatten (builtins.map (m: m.extraPkgs) modules)));
 
   programs.home-manager.enable = true;
   programs.firefox.enable = true;

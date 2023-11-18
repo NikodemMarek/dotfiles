@@ -8,7 +8,7 @@
   # You can change versions, add patches, set compilation flags, anything really.
   # https://nixos.wiki/wiki/Overlays
   modifications = final: prev: {
-    eww = prev.eww-wayland.override {};
+    eww = prev.eww-wayland.override { };
   };
 
   # When applied, the unstable nixpkgs set (declared in the flake inputs) will

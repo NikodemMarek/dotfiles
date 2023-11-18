@@ -1,5 +1,5 @@
 { config, pkgs, lib, email, name, ... }: {
-  extraPkgs = [];
+  extraPkgs = [ ];
 
   module = { config, ... }: {
     programs.git = {
@@ -27,7 +27,7 @@
           defaultBranch = "main";
         };
         safe = {
-	      directory = "/dotfiles";
+          directory = "/dotfiles";
         };
       };
     };
