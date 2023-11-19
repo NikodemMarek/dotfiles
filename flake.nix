@@ -32,7 +32,7 @@
             {
               username = "nikodem";
               groups = [ "wheel" "networkmanager" "docker" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
               settings = {
                 workDir = "~/tmp/";
                 name = "nikodem";
