@@ -25,8 +25,10 @@
 
 ; clock
 (defwidget time [] 
-	(box :class "time dashboard_window" :orientation "h" :spacing 20 :space-evenly true :vexpand true :hexpand true 
-		(label :class "" :text { formattime(EWW_TIME, "%H %M %S") })))
+	(box :class "clock dashboard_window" :orientation "v" :vexpand true :hexpand true 
+		(box :class "" :orientation "v" :spacing 20 :space-evenly false :valign "center" :halign "center"
+			(label :class "time" :text { formattime(EWW_TIME, "%H %M %S") })
+			(label :class "date" :text { formattime(EWW_TIME, "%a, %b %e") }))))
 
 ; music
 (deflisten music_status :initial "err" `playerctl -F status`)
