@@ -167,11 +167,6 @@ return {
 		end,
 	},
 	{
-		"folke/trouble.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
-		opts = {},
-	},
-	{
 		"simrat39/rust-tools.nvim",
 		dependencies = "neovim/nvim-lspconfig",
 		ft = "rust",

@@ -14,7 +14,6 @@ map("n", ";", ":", "Quick command")
 
 -- Diagnostic keymaps
 map("n", "gx", vim.diagnostic.open_float, "Show diagnostics under cursor")
-map("n", "<leader>ll", ":TroubleToggle<CR>", "Toggle diagnostics list")
 
 -- Better window navigation
 map("n", "<C-h>", "<C-w><C-h>", "Navigate windows to the left")
