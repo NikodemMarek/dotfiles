@@ -21,10 +21,10 @@ return {
 		end,
 	},
 	-- ChatGPT
-	-- {
-	-- 	"robitx/gp.nvim",
-	-- 	config = function()
-	-- 		require("gp").setup()
-	-- 	end,
-	-- },
+	{
+		"robitx/gp.nvim",
+		config = function()
+			require("gp").setup()
+		end,
+	},
 }
