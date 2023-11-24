@@ -26,7 +26,7 @@ return {
 			end
 
 			local config = {
-				virtual_text = false,
+				virtual_text = true,
 				signs = {
 					active = signs,
 				},
