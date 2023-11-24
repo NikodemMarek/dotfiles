@@ -67,6 +67,6 @@
 (defwidget volume []
 	(box :class "volume dashboard_window" :orientation "v" :space-evenly true
 		(box :class "" :orientation "h"
-			(button :class "volume_button" :onclick "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" { volume_muted == "0"? "": "" })
+			(button :class "volume_button" :onclick "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" { volume_muted == "1"? "": "" })
 			(label :class "volume_level" :text volume_level))
 		(scale :min 0 :max 101 :value volume_level :orientation "h" :flipped false :active true :onchange "wpctl set-volume @DEFAULT_AUDIO_SINK@ {}%")))
