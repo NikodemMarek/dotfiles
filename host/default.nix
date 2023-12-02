@@ -41,13 +41,6 @@ in
     "/swap".options = [ "compress=lzo" ];
   };
 
-  services.xserver = {
-    layout = "us";
-    xkbVariant = "dvp";
-    xkbOptions = "caps:escape, grp:alt_shift_toggle";
-  };
-  console.useXkbConfig = true;
-
   programs.fish.enable = true;
   programs.neovim.enable = true;
   programs.hyprland.enable = true;
