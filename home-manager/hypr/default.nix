@@ -53,13 +53,13 @@
 
       input {
         kb_layout = pl, pl
-        kb_variant = dvp,
+        kb_variant = , dvp
         kb_model =
         kb_options = caps:escape, grp:alt_shift_toggle
         kb_rules =
         numlock_by_default = true
 
-        follow_mouse = 1
+        follow_mouse = 2
 
         touchpad {
           natural_scroll = false
@@ -133,6 +133,9 @@
       bind = $mod, F, fullscreen,
       bind = $mod, P, pseudo, # dwindle
       bind = $mod, J, togglesplit, # dwindle
+
+      # move focus between recent windows
+      bind = $mod, d, focuscurrentorlast,
 
       # Move focus with mod + arrow keys or hjkl
       bind = $mod, left, movefocus, l
