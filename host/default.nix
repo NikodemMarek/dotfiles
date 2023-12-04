@@ -38,7 +38,6 @@ in
     "/".options = [ "compress=lzo" ];
     "/home".options = [ "compress=lzo" ];
     "/nix".options = [ "compress=lzo" "noatime" ];
-    "/swap".options = [ "compress=lzo" ];
   };
 
   programs.fish.enable = true;
