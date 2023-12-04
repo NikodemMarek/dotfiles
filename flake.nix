@@ -71,6 +71,47 @@
             }
           ];
         }
+        {
+          hostname = "desktop";
+          system = "x86_64-linux";
+          settings = {
+            device = "desktop";
+            resolution = { width = 2560; height = 1440; };
+          };
+          users = [
+            {
+              username = "nikodem";
+              groups = [ "wheel" "networkmanager" "docker" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
+              settings = {
+                workDir = "~/tmp/";
+                name = "nikodem";
+                email = "nikodemmarek11@gmail.com";
+              };
+            }
+            # {
+            #   username = "school";
+            #   groups = [ "networkmanager" ];
+            #   programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" ];
+            #   settings = {
+            #     workDir = "~/projects/";
+            #     name = "nikodem";
+            #     email = "nikodemmarek11@gmail.com";
+            #   };
+            # }
+            {
+              username = "fun";
+              groups = [ "wheel" "networkmanager" "docker" ];
+              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" ];
+              settings = {
+                workDir = "~/tmp/";
+                name = "nikodem";
+                email = "nikodemmarek11@gmail.com";
+              };
+            }
+          ];
+        }
+
       ];
 
       mkHMUser =
