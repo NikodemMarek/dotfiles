@@ -49,12 +49,7 @@ in
     ; shortcuts
     (defwidget shortcuts [] 
         (box :class "shortcuts dashboard_window" :orientation "v" :space-evenly false
-            ${builtins.concatStringsSep "\n" ( builtins.map ( row: ''
-                (box :vexpand true :hexpand true
-                    ${builtins.concatStringsSep "\n" ( builtins.map ( item: ''
-                        (button :class "shortcuts_button" :onclick "${builtins.elemAt item 0} &" "${builtins.elemAt item 1}")
-                    '' ) row )})
-            '' ) settings.eww.shortcuts )})
+            ${builtins.concatStringsSep "\n\t" ( builtins.map ( row: "(box :vexpand true :hexpand true\n${builtins.concatStringsSep "\n" ( builtins.map ( item: "\t\t(button :class \"shortcuts_button\" :onclick \"${builtins.elemAt item 0} &\" \"${builtins.elemAt item 1}\")" ) row )})" ) settings.eww.shortcuts )}))
   '';
 
   xdg.configFile."eww/eww.yuck".text = ''
