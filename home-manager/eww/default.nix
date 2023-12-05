@@ -6,7 +6,7 @@ let
     [ "system" 0 2 4 3 ]
     [ "time" 4 2 8 5 ]
     [ "music" 0 5 4 2 ]
-    [ "launcher" 0 0 4 2 ]
+    [ "shortcuts" 0 0 4 2 ]
     [ "volume" 4 0 4 2 ]
   ];
 
@@ -45,6 +45,16 @@ in
                       (progress :value { EWW_BATTERY.total_avg } :orientation "v" :flipped true)
                       (label :class "system_iconbat" :text "󰁹"))
                 '' else ""})))
+
+    ; shortcuts
+    (defwidget shortcuts [] 
+        (box :class "shortcuts dashboard_window" :orientation "v" :space-evenly false
+            ${builtins.concatStringsSep "\n" ( builtins.map ( row: ''
+                (box :vexpand true :hexpand true
+                    ${builtins.concatStringsSep "\n" ( builtins.map ( item: ''
+                        (button :class "shortcuts_button" :onclick "${builtins.elemAt item 0} &" "${builtins.elemAt item 1}")
+                    '' ) row )})
+            '' ) settings.eww.shortcuts )})
   '';
 
   xdg.configFile."eww/eww.yuck".text = ''

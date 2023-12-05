@@ -48,18 +48,6 @@
 				(button :class "music_status" :onclick "playerctl play-pause" { music_status == "Playing"? "": "" })
 				(button :class "music_next" :onclick "playerctl next" "󰒭")))))
 
-; launcher
-(defwidget launcher [] 
-	(box :class "launcher dashboard_window" :orientation "v" :space-evenly false
-		(box :vexpand true :hexpand true
-			(button :class "launcher_button" :onclick "firefox &" "")
-			(button :class "launcher_button" :onclick "qutebrowser &" "󰖟")
-			(label :class "" :text ""))
-		(box :vexpand true :hexpand true
-			(button :class "launcher_button" :onclick "firefox https://mail.google.com/mail/u/0/#inbox &" "")
-			(button :class "launcher_button" :onclick "beeper --default-frame &" "󰵅")
-			(label :class "" :text ""))))
-
 ; volume
 (defpoll volume_level :interval "1s" `wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2 * 100}'`)
 (defpoll volume_muted :interval "1s" `wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $3 == "[MUTED]"}'`)

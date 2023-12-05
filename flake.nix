@@ -38,6 +38,20 @@
                 workDir = "~/tmp/";
                 name = "nikodem";
                 email = "nikodemmarek11@gmail.com";
+                eww = {
+                  shortcuts = [
+                    [
+
+                      [ "firefox" "" ]
+                      [ "qutebrowser" "󰖟" ]
+                    ]
+                    [
+
+                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                      [ "beeper --default-frame" "󰵅" ]
+                    ]
+                  ];
+                };
               };
             }
             {
@@ -48,6 +62,20 @@
                 workDir = "~/projects/";
                 name = "nikodem";
                 email = "nikodemmarek11@gmail.com";
+                eww = {
+                  shortcuts = [
+                    [
+
+                      [ "firefox" "" ]
+                      [ "qutebrowser" "󰖟" ]
+                    ]
+                    [
+
+                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                      [ "beeper --default-frame" "󰵅" ]
+                    ]
+                  ];
+                };
               };
             }
             {
@@ -58,6 +86,20 @@
                 workDir = "~/projects/";
                 name = "nikodem";
                 email = "nikodemmarek11@gmail.com";
+                eww = {
+                  shortcuts = [
+                    [
+
+                      [ "firefox" "" ]
+                      [ "qutebrowser" "󰖟" ]
+                    ]
+                    [
+
+                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                      [ "beeper --default-frame" "󰵅" ]
+                    ]
+                  ];
+                };
               };
             }
             {
@@ -68,6 +110,20 @@
                 workDir = "~/tmp/";
                 name = "nikodem";
                 email = "nikodemmarek11@gmail.com";
+                eww = {
+                  shortcuts = [
+                    [
+
+                      [ "firefox" "" ]
+                      [ "qutebrowser" "󰖟" ]
+                    ]
+                    [
+
+                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                      [ "beeper --default-frame" "󰵅" ]
+                    ]
+                  ];
+                };
               };
             }
           ];
@@ -89,6 +145,20 @@
                 workDir = "~/tmp/";
                 name = "nikodem";
                 email = "nikodemmarek11@gmail.com";
+                eww = {
+                  shortcuts = [
+                    [
+
+                      [ "firefox" "" ]
+                      [ "qutebrowser" "󰖟" ]
+                    ]
+                    [
+
+                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                      [ "beeper --default-frame" "󰵅" ]
+                    ]
+                  ];
+                };
               };
             }
             # {
@@ -109,6 +179,22 @@
                 workDir = "~/tmp/";
                 name = "nikodem";
                 email = "nikodemmarek11@gmail.com";
+                eww = {
+                  shortcuts = [
+                    [
+
+                      [ "firefox" "" ]
+                      [ "qutebrowser" "󰖟" ]
+                      [ "steam" "st" ]
+                    ]
+                    [
+
+                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                      [ "beeper --default-frame" "󰵅" ]
+                      [ "prismlauncher" "mc" ]
+                    ]
+                  ];
+                };
               };
             }
           ];
@@ -172,7 +258,7 @@
                     inherit (user) username programs;
                     settings = {
                       inherit (host.settings) device resolution;
-                      inherit (user.settings) workDir name email;
+                      inherit (user.settings) workDir name email eww;
                     };
                   };
                 })
