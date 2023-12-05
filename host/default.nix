@@ -1,4 +1,4 @@
-{ inputs, outputs, lib, config, pkgs, hostname, users, ... }:
+{ inputs, outputs, lib, config, pkgs, hostname, users, settings, ... }:
 let
   mkSystemUser = { username, groups, ... }: {
     initialPassword = username;
@@ -46,8 +46,11 @@ in
   programs.git.enable = true;
 
   virtualisation.docker.enable = true;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
+
+  hardware.bluetooth = {
+    enable = settings.bluetooth;
+    powerOnBoot = settings.bluetooth;
+  };
 
   services.greetd = {
     enable = true;

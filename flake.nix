@@ -27,6 +27,7 @@
           settings = {
             device = "laptop";
             resolution = { width = 1920; height = 1080; };
+            bluetooth = true;
           };
           users = [
             {
@@ -62,7 +63,7 @@
             {
               username = "fun";
               groups = [ "wheel" "networkmanager" "docker" ];
-              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" ];
+              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" ];
               settings = {
                 workDir = "~/tmp/";
                 name = "nikodem";
@@ -77,6 +78,7 @@
           settings = {
             device = "desktop";
             resolution = { width = 2560; height = 1440; };
+            bluetooth = false;
           };
           users = [
             {
@@ -102,7 +104,7 @@
             {
               username = "fun";
               groups = [ "wheel" "networkmanager" "docker" ];
-              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" ];
+              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" ];
               settings = {
                 workDir = "~/tmp/";
                 name = "nikodem";
@@ -149,7 +151,7 @@
           value = nixpkgs.lib.nixosSystem {
             specialArgs = {
               inherit inputs outputs;
-              inherit (host) hostname users;
+              inherit (host) hostname users settings;
             };
             modules = [
               ./host
