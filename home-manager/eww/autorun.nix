@@ -5,7 +5,7 @@ let
     "system"
     "time"
     "music"
-    "launcher"
+    "shortcuts"
     "volume"
   ];
 in
