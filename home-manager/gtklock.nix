@@ -1,4 +1,3 @@
-# FIXME: Not working because of pam (probably)
 { config, pkgs, lib, ... }: {
   home.packages = with pkgs; [
     gtklock
