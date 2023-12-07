@@ -47,6 +47,9 @@ in
 
   virtualisation.docker.enable = true;
 
+  # this is necesary for gtklock to work
+  security.pam.services.gtklock = { };
+
   hardware.bluetooth = {
     enable = settings.bluetooth;
     powerOnBoot = settings.bluetooth;
