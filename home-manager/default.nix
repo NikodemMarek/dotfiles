@@ -3,6 +3,7 @@
 , lib
 , config
 , pkgs
+, hostname
 , username
 , programs
 , settings
@@ -23,12 +24,18 @@ in
   home.packages = builtins.map (e: pkgs.${e}) extra;
 
   xdg.configFile."assets/background.png".source = ./assets/background.png;
+  xdg.configFile."../swhm.sh" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      home-manager switch --flake /dotfiles#${username}@${hostname}
+    '';
+  };
 
   xdg.configFile."autorun.sh" = {
     executable = true;
     text = ''
       #!/bin/sh
-
       ${lib.concatStrings (builtins.map (p: if builtins.pathExists ./${ p }/autorun.nix then import ./${ p }/autorun.nix { inherit lib; } else "") programs)}
     '';
   };

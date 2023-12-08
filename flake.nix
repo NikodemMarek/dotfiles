@@ -172,6 +172,24 @@
             #   };
             # }
             {
+              username = "rustchain";
+              groups = [ "networkmanager" ];
+              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "rustup" "solana-cli" "yarn" "pkg-config" "gcc" "openssl" ];
+              settings = {
+                workDir = "~/projects/";
+                name = "nikodem";
+                email = "nikodemmarekit@gmail.com";
+                eww = {
+                  shortcuts = [
+                    [
+                      [ "firefox" "" ]
+                      [ "qutebrowser" "󰖟" ]
+                    ]
+                  ];
+                };
+              };
+            }
+            {
               username = "fun";
               groups = [ "wheel" "networkmanager" "docker" ];
               programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" ];
@@ -204,6 +222,7 @@
 
       mkHMUser =
         { system
+        , hostname
         , username
         , programs
         , settings
@@ -213,7 +232,8 @@
           pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {
             inherit inputs outputs;
-            inherit system username programs settings;
+            inherit system hostname;
+            inherit username programs settings;
           };
           modules = [
             hyprland.homeManagerModules.default
@@ -254,7 +274,7 @@
                 (user: {
                   name = "${user.username}@${host.hostname}";
                   value = mkHMUser {
-                    inherit (host) system;
+                    inherit (host) system hostname;
                     inherit (user) username programs;
                     settings = {
                       inherit (host.settings) device resolution;
