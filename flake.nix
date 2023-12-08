@@ -28,6 +28,7 @@
             device = "laptop";
             resolution = { width = 1920; height = 1080; };
             bluetooth = true;
+            swap = 15;
           };
           users = [
             {
@@ -135,6 +136,7 @@
             device = "desktop";
             resolution = { width = 2560; height = 1440; };
             bluetooth = false;
+            swap = 38;
           };
           users = [
             {

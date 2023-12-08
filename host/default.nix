@@ -40,6 +40,15 @@ in
     "/nix".options = [ "compress=lzo" "noatime" ];
   };
 
+  swapDevices = [{
+    device = "/swapfile";
+    size = settings.swap * 1024;
+  }];
+  boot.kernelParams = [ "resume_offset=25928960" ];
+  boot.resumeDevice = "/dev/disk/by-uuid/fc60a589-f4e6-4f9e-b149-b372221e824b";
+  security.protectKernelImage = false;
+
+
   programs.fish.enable = true;
   programs.neovim.enable = true;
   programs.hyprland.enable = true;
