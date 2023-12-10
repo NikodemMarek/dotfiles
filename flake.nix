@@ -20,6 +20,122 @@
         "x86_64-linux"
       ];
 
+      users = {
+        nikodem = {
+          username = "nikodem";
+          groups = [ "wheel" "networkmanager" "docker" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
+          settings = {
+            workDir = "~/tmp/";
+            name = "nikodem";
+            email = "nikodemmarek11@gmail.com";
+            eww = {
+              shortcuts = [
+                [
+
+                  [ "firefox" "" ]
+                  [ "qutebrowser" "󰖟" ]
+                ]
+                [
+
+                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                  [ "beeper --default-frame" "󰵅" ]
+                ]
+              ];
+            };
+          };
+        };
+        work = {
+          username = "work";
+          groups = [ "networkmanager" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "nodejs_16" "firebase-tools" "zola" ];
+          settings = {
+            workDir = "~/projects/";
+            name = "nikodem";
+            email = "nikodemmarek11@gmail.com";
+            eww = {
+              shortcuts = [
+                [
+
+                  [ "firefox" "" ]
+                  [ "qutebrowser" "󰖟" ]
+                ]
+                [
+
+                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                  [ "beeper --default-frame" "󰵅" ]
+                ]
+              ];
+            };
+          };
+        };
+        school = {
+          username = "school";
+          groups = [ "networkmanager" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" ];
+          settings = {
+            workDir = "~/projects/";
+            name = "nikodem";
+            email = "nikodemmarek11@gmail.com";
+            eww = {
+              shortcuts = [
+                [
+
+                  [ "firefox" "" ]
+                  [ "qutebrowser" "󰖟" ]
+                ]
+                [
+
+                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                  [ "beeper --default-frame" "󰵅" ]
+                ]
+              ];
+            };
+          };
+        };
+        fun = {
+          username = "fun";
+          groups = [ "wheel" "networkmanager" "docker" ];
+          programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" ];
+          settings = {
+            workDir = "~/tmp/";
+            name = "nikodem";
+            email = "nikodemmarek11@gmail.com";
+            eww = {
+              shortcuts = [
+                [
+                  [ "firefox" "" ]
+                  [ "qutebrowser" "󰖟" ]
+                  [ "steam" "st" ]
+                ]
+                [
+                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                  [ "beeper --default-frame" "󰵅" ]
+                  [ "prismlauncher" "mc" ]
+                ];
+            };
+          };
+        };
+        rustchain = {
+          username = "rustchain";
+          groups = [ "networkmanager" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "rustup" "solana-cli" "yarn" "pkg-config" "gcc" "openssl" ];
+          settings = {
+            workDir = "~/projects/";
+            name = "nikodem";
+            email = "nikodemmarekit@gmail.com";
+            eww = {
+              shortcuts = [
+                [
+                  [ "firefox" "" ]
+                  [ "qutebrowser" "󰖟" ]
+                ]
+              ];
+            };
+          };
+        };
+      };
+
       hosts = [
         {
           hostname = "laptop";
@@ -30,103 +146,11 @@
             bluetooth = true;
             swap = 15;
           };
-          users = [
-            {
-              username = "nikodem";
-              groups = [ "wheel" "networkmanager" "docker" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
-              settings = {
-                workDir = "~/tmp/";
-                name = "nikodem";
-                email = "nikodemmarek11@gmail.com";
-                eww = {
-                  shortcuts = [
-                    [
-
-                      [ "firefox" "" ]
-                      [ "qutebrowser" "󰖟" ]
-                    ]
-                    [
-
-                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                      [ "beeper --default-frame" "󰵅" ]
-                    ]
-                  ];
-                };
-              };
-            }
-            {
-              username = "work";
-              groups = [ "networkmanager" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" "nodejs_16" "firebase-tools" "zola" ];
-              settings = {
-                workDir = "~/projects/";
-                name = "nikodem";
-                email = "nikodemmarek11@gmail.com";
-                eww = {
-                  shortcuts = [
-                    [
-
-                      [ "firefox" "" ]
-                      [ "qutebrowser" "󰖟" ]
-                    ]
-                    [
-
-                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                      [ "beeper --default-frame" "󰵅" ]
-                    ]
-                  ];
-                };
-              };
-            }
-            {
-              username = "school";
-              groups = [ "networkmanager" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" ];
-              settings = {
-                workDir = "~/projects/";
-                name = "nikodem";
-                email = "nikodemmarek11@gmail.com";
-                eww = {
-                  shortcuts = [
-                    [
-
-                      [ "firefox" "" ]
-                      [ "qutebrowser" "󰖟" ]
-                    ]
-                    [
-
-                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                      [ "beeper --default-frame" "󰵅" ]
-                    ]
-                  ];
-                };
-              };
-            }
-            {
-              username = "fun";
-              groups = [ "wheel" "networkmanager" "docker" ];
-              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" ];
-              settings = {
-                workDir = "~/tmp/";
-                name = "nikodem";
-                email = "nikodemmarek11@gmail.com";
-                eww = {
-                  shortcuts = [
-                    [
-
-                      [ "firefox" "" ]
-                      [ "qutebrowser" "󰖟" ]
-                    ]
-                    [
-
-                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                      [ "beeper --default-frame" "󰵅" ]
-                    ]
-                  ];
-                };
-              };
-            }
+          users = with users; [
+            nikodem
+            work
+            school
+            fun
           ];
         }
         {
@@ -138,88 +162,12 @@
             bluetooth = false;
             swap = 38;
           };
-          users = [
-            {
-              username = "nikodem";
-              groups = [ "wheel" "networkmanager" "docker" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
-              settings = {
-                workDir = "~/tmp/";
-                name = "nikodem";
-                email = "nikodemmarek11@gmail.com";
-                eww = {
-                  shortcuts = [
-                    [
-
-                      [ "firefox" "" ]
-                      [ "qutebrowser" "󰖟" ]
-                    ]
-                    [
-
-                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                      [ "beeper --default-frame" "󰵅" ]
-                    ]
-                  ];
-                };
-              };
-            }
-            # {
-            #   username = "school";
-            #   groups = [ "networkmanager" ];
-            #   programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" ];
-            #   settings = {
-            #     workDir = "~/projects/";
-            #     name = "nikodem";
-            #     email = "nikodemmarek11@gmail.com";
-            #   };
-            # }
-            {
-              username = "rustchain";
-              groups = [ "networkmanager" ];
-              programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "rustup" "solana-cli" "yarn" "pkg-config" "gcc" "openssl" ];
-              settings = {
-                workDir = "~/projects/";
-                name = "nikodem";
-                email = "nikodemmarekit@gmail.com";
-                eww = {
-                  shortcuts = [
-                    [
-                      [ "firefox" "" ]
-                      [ "qutebrowser" "󰖟" ]
-                    ]
-                  ];
-                };
-              };
-            }
-            {
-              username = "fun";
-              groups = [ "wheel" "networkmanager" "docker" ];
-              programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" ];
-              settings = {
-                workDir = "~/tmp/";
-                name = "nikodem";
-                email = "nikodemmarek11@gmail.com";
-                eww = {
-                  shortcuts = [
-                    [
-
-                      [ "firefox" "" ]
-                      [ "qutebrowser" "󰖟" ]
-                      [ "steam" "st" ]
-                    ]
-                    [
-
-                      [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                      [ "beeper --default-frame" "󰵅" ]
-                      [ "prismlauncher" "mc" ]
-                    ]
-                  ];
-                };
-              };
-            }
+          users = with users; [
+            nikodem
+            rustchain
+            fun
           ];
         }
-
       ];
 
       mkHMUser =
@@ -291,3 +239,4 @@
       );
     };
 }
+
