@@ -1,4 +1,4 @@
-{ inputs, outputs, lib, config, pkgs, hostname, users, settings, ... }:
+{ inputs, outputs, lib, config, pkgs, hostname, users, ... }:
 let
   mkSystemUser = { username, groups, ... }: {
     initialPassword = username;
@@ -33,21 +33,7 @@ in
   networking.firewall.enable = false;
   networking.networkmanager.enable = true;
 
-  # FIXME: Do something to abstract this.
-  fileSystems = {
-    "/".options = [ "compress=lzo" ];
-    "/home".options = [ "compress=lzo" ];
-    "/nix".options = [ "compress=lzo" "noatime" ];
-  };
-
-  swapDevices = [{
-    device = "/swapfile";
-    size = settings.swap * 1024;
-  }];
-  boot.kernelParams = [ "resume_offset=25928960" ];
-  boot.resumeDevice = "/dev/disk/by-uuid/fc60a589-f4e6-4f9e-b149-b372221e824b";
   security.protectKernelImage = false;
-
 
   programs.fish.enable = true;
   programs.neovim.enable = true;
@@ -58,11 +44,6 @@ in
 
   # this is necesary for gtklock to work
   security.pam.services.gtklock = { };
-
-  hardware.bluetooth = {
-    enable = settings.bluetooth;
-    powerOnBoot = settings.bluetooth;
-  };
 
   services.greetd = {
     enable = true;

@@ -35,12 +35,6 @@
       options = [ "subvol=home" ];
     };
 
-  fileSystems."/swap" =
-    {
-      device = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
-      fsType = "btrfs";
-    };
-
   fileSystems."/var/lib/docker/btrfs" =
     {
       device = "/swap/home/root/var/lib/docker/btrfs";

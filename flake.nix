@@ -112,7 +112,8 @@
                   [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
                   [ "beeper --default-frame" "󰵅" ]
                   [ "prismlauncher" "mc" ]
-                ];
+                ]
+              ];
             };
           };
         };
@@ -207,10 +208,11 @@
           value = nixpkgs.lib.nixosSystem {
             specialArgs = {
               inherit inputs outputs;
-              inherit (host) hostname users settings;
+              inherit (host) hostname users;
             };
             modules = [
               ./host
+              ./host/${host.hostname}
             ];
           };
         })
