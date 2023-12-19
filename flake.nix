@@ -96,7 +96,7 @@
         fun = {
           username = "fun";
           groups = [ "wheel" "networkmanager" "docker" ];
-          programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" ];
+          programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" "lutris" "wine" ];
           settings = {
             workDir = "~/tmp/";
             name = "nikodem";
@@ -109,7 +109,7 @@
                   [ "steam" "st" ]
                 ]
                 [
-                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                  [ "lutris" "lt" ]
                   [ "beeper --default-frame" "󰵅" ]
                   [ "prismlauncher" "mc" ]
                 ]

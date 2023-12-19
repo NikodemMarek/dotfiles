@@ -12,4 +12,14 @@
   boot.kernelParams = [ "resume_offset=25928960" ];
   boot.resumeDevice = "/dev/disk/by-uuid/fc60a589-f4e6-4f9e-b149-b372221e824b";
   security.protectKernelImage = false;
+
+  boot.extraModulePackages = [
+    config.boot.kernelPackages.rtl8821au
+  ];
+
+  environment.systemPackages = with pkgs; [
+    mesa
+    linuxKernel.packages.linux_6_1.rtl8821au
+  ];
+  hardware.opengl.driSupport32Bit = true;
 }
