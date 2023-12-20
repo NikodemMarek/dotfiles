@@ -28,6 +28,7 @@
     # nodePackages_latest.svelte-check
     deno
 
+    gcc
     ccls
     # vimPlugins.nvim-jdtls
 

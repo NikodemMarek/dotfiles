@@ -3,7 +3,6 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			"j-hui/fidget.nvim",
 			"folke/neodev.nvim",
 			"RRethy/vim-illuminate",
 			"hrsh7th/cmp-nvim-lsp",
@@ -14,9 +13,6 @@ return {
 		config = function(_, opts)
 			-- Neodev setup before LSP config
 			require("neodev").setup()
-
-			-- Turn on LSP status information
-			require("fidget").setup()
 
 			-- Diagnostic
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
