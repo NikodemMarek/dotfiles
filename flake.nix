@@ -72,7 +72,7 @@
         school = {
           username = "school";
           groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" ];
           settings = {
             workDir = "~/projects/";
             name = "nikodem";
@@ -167,6 +167,7 @@
             nikodem
             rustchain
             fun
+            school
           ];
         }
       ];
