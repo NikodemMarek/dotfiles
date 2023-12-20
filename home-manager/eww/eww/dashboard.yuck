@@ -8,9 +8,9 @@
 (defwidget powermenu_logout [] 
 	(button :class "powermenu_button powermenu_logout" :onclick "hyprctl dispatch exit" ""))
 (defwidget powermenu_sleep [] 
-	(button :class "powermenu_button powermenu_sleep" :onclick "systemctl suspend ; gtklock -d" ""))
+	(button :class "powermenu_button powermenu_sleep" :onclick "gtklock -d ; systemctl suspend ; eww reload" ""))
 (defwidget powermenu_hibernate [] 
-	(button :class "powermenu_button powermenu_hibernate" :onclick "systemctl hibernate ; gtklock -d" ""))
+	(button :class "powermenu_button powermenu_hibernate" :onclick "gtklock -d ; systemctl hibernate ; eww reload" ""))
 
 (defwidget powermenu []
 	(box :class "powermenu dashboard_window" :orientation "v" :space-evenly false
