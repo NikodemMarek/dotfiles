@@ -72,7 +72,7 @@
         school = {
           username = "school";
           groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" ];
           settings = {
             workDir = "~/projects/";
             name = "nikodem";
