@@ -4,6 +4,7 @@
     tree-sitter
     ripgrep
     fd
+    gcc
 
     # copilot
     nodejs_16
@@ -28,9 +29,9 @@
     # nodePackages_latest.svelte-check
     deno
 
-    gcc
+    # random lsps
     ccls
-    # vimPlugins.nvim-jdtls
+    jdt-language-server
 
     # typst
     typst-lsp

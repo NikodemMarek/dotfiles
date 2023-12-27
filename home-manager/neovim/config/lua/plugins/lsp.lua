@@ -144,10 +144,15 @@ return {
 			})
 
 			-- Java
-			-- lspconf["jdtls"].setup({
-			-- 	on_attach = on_attach,
-			-- 	capabilities = capabilities,
-			-- })
+			lspconf["jdtls"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				cmd = {
+					"jdt-language-server",
+					"-configuration", "$HOME/.cache/jdtls/config",
+					"-data", "$HOME/.cache/jdtls/workspace"
+				}
+			})
 
 			-- Typst
 			lspconf["typst_lsp"].setup {

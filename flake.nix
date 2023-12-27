@@ -119,7 +119,7 @@
         };
         rustchain = {
           username = "rustchain";
-          groups = [ "networkmanager" ];
+          groups = [ "networkmanager" "docker" ];
           programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "rustup" "solana-cli" "yarn" "pkg-config" "gcc" "openssl" ];
           settings = {
             workDir = "~/projects/";
@@ -151,6 +151,7 @@
             nikodem
             work
             school
+            rustchain
             fun
           ];
         }

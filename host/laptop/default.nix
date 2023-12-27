@@ -16,4 +16,7 @@
     enable = true;
     powerOnBoot = true;
   };
+
+  services.thermald.enable = true;
+  services.auto-cpufreq.enable = true;
 }
