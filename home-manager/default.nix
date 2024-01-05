@@ -49,7 +49,7 @@ in
     config = {
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [ "nodejs-16.20.2" ];
+      permittedInsecurePackages = [ ];
     };
   };
 

@@ -48,7 +48,7 @@
         work = {
           username = "work";
           groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "nodejs_16" "firebase-tools" "zola" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "firebase-tools" "zola" ];
           settings = {
             workDir = "~/projects/";
             name = "nikodem";
@@ -72,7 +72,7 @@
         school = {
           username = "school";
           groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" ];
+          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" "bruno" ];
           settings = {
             workDir = "~/projects/";
             name = "nikodem";

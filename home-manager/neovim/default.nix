@@ -7,7 +7,7 @@
     gcc
 
     # copilot
-    nodejs_16
+    # nodejs_16
 
     # ascii image viewer
     ascii-image-converter
