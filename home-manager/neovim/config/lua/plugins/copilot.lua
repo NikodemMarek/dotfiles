@@ -20,11 +20,4 @@ return {
 			require("copilot_cmp").setup()
 		end,
 	},
-	-- ChatGPT
-	{
-		"robitx/gp.nvim",
-		config = function()
-			require("gp").setup()
-		end,
-	},
 }
