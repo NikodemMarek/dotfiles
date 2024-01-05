@@ -28,6 +28,7 @@
     # web dev
     # nodePackages_latest.svelte-check
     deno
+    vscode-langservers-extracted
 
     # random lsps
     ccls

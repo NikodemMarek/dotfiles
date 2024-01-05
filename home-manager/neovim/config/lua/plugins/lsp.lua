@@ -137,6 +137,20 @@ return {
 				},
 			})
 
+			-- HTML
+			lspconf["html"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
+				init_options = {
+					configurationSection = { "html", "css", "javascript" },
+					embeddedLanguages = {
+						css = true,
+						javascript = true
+					},
+					provideFormatter = true
+				}
+			})
+
 			-- Svelte
 			lspconf["svelte"].setup({
 				on_attach = on_attach,
@@ -149,8 +163,8 @@ return {
 				capabilities = capabilities,
 				cmd = {
 					"jdt-language-server",
-					"-configuration", "$HOME/.cache/jdtls/config",
-					"-data", "$HOME/.cache/jdtls/workspace"
+					"-configuration", "~/.cache/jdtls/config",
+					"-data", "~/.cache/jdtls/workspace"
 				}
 			})
 
