@@ -148,7 +148,13 @@ return {
 						javascript = true
 					},
 					provideFormatter = true
-				}
+				},
+			})
+
+			-- JSON
+			lspconf["jsonls"].setup({
+				on_attach = on_attach,
+				capabilities = capabilities,
 			})
 
 			-- Svelte

@@ -19,6 +19,9 @@ return {
 					nix = {
 						require("formatter.filetypes.nix").nixpkgs_fmt,
 					},
+					json = {
+						require("formatter.filetypes.json").denofmt,
+					},
 
 					["*"] = {
 						require("formatter.filetypes.any").remove_trailing_whitespace,
