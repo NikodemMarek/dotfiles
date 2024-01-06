@@ -12,10 +12,15 @@
   boot.kernelParams = [ "resume_offset=25442627" ];
   boot.resumeDevice = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
 
+  environment.systemPackages = with pkgs; [
+    mesa
+  ];
+
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
   };
+  hardware.opengl.driSupport32Bit = true;
 
   services.thermald.enable = true;
   services.auto-cpufreq.enable = true;
