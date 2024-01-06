@@ -23,8 +23,5 @@
       function fish_greeting
       end
     '';
-    shellAliases = {
-      zop = "zellij -l 'project'";
-    };
   };
 }

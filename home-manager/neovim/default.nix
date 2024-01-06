@@ -39,7 +39,14 @@
     nixpkgs-fmt
   ];
 
-  programs.neovim.enable = true;
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
+
+  programs.fish.shellAliases = {
+    n = "nvim";
+  };
 
   xdg.configFile.nvim = {
     source = ./config;

@@ -36,9 +36,14 @@ in
   security.protectKernelImage = false;
 
   programs.fish.enable = true;
-  programs.neovim.enable = true;
   programs.hyprland.enable = true;
   programs.git.enable = true;
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
+  environment.variables.EDITOR = "nvim";
 
   virtualisation.docker.enable = true;
 
