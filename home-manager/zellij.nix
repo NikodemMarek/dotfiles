@@ -19,7 +19,7 @@
     }
   '';
 
-  programs.fish.shellAliases = {
+  home.shellAliases = {
     zop = "zellij -l 'project'";
   };
 }

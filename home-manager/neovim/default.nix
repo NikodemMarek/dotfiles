@@ -44,7 +44,7 @@
     defaultEditor = true;
   };
 
-  programs.fish.shellAliases = {
+  home.shellAliases = {
     n = "nvim";
   };
 

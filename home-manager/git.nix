@@ -28,4 +28,8 @@
       };
     };
   };
+
+  home.shellAliases = {
+    g = "git";
+  };
 }
