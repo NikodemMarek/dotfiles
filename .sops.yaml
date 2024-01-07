@@ -1,0 +1,11 @@
+keys:
+  - &hosts
+    - &laptop age1ewkj7e6wy9d400s75hcpappul0fy9vqg0pyj3vvsv2q00urkmdzqq6j28n
+  - &users
+    - &nikodem age1a4nt9mlgxf6u9z4kaj7cy6j4l4mf642d5zzn20geta0fw6808pxs85s6fh
+creation_rules:
+  - path_regex: secrets.yaml$
+    key_groups:
+    - age:
+      - *nikodem
+      - *laptop

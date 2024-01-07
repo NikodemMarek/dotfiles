@@ -10,6 +10,8 @@ in
 {
   imports = [
     ./${hostname}/hardware-configuration.nix
+
+    ./sops.nix
   ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -96,6 +98,8 @@ in
       name = user.username;
       value = mkSystemUser {
         inherit (user) username groups;
+        isNormalUser = true;
+        hashedPasswordFile = config.sops.secrets."passwords/${user.username}".path;
       };
     })
     users);

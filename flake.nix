@@ -10,6 +10,8 @@
     };
 
     hyprland.url = "github:hyprwm/Hyprland";
+
+    sops-nix.url = "github:Mic92/sops-nix";
   };
 
   outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
