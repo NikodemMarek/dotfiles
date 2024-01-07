@@ -11,7 +11,8 @@
   sops.defaultSopsFormat = "yaml";
 
   # FIXME: This does not seem right
-  sops.age.keyFile = "/home/nikodem/.config/sops/age/keys.txt";
+  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
+  sops.age.generateKey = true;
 
   sops.secrets = builtins.listToAttrs
     (builtins.map

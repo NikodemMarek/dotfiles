@@ -1,11 +1,15 @@
 keys:
   - &hosts
     - &laptop age1ewkj7e6wy9d400s75hcpappul0fy9vqg0pyj3vvsv2q00urkmdzqq6j28n
+    - &desktop age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
   - &users
-    - &nikodem age1a4nt9mlgxf6u9z4kaj7cy6j4l4mf642d5zzn20geta0fw6808pxs85s6fh
+    - &laptop_nikodem age1a4nt9mlgxf6u9z4kaj7cy6j4l4mf642d5zzn20geta0fw6808pxs85s6fh
+    - &desktop_nikodem age1944c7z4v3un2j6lxhym88pc48rayhgtd70vxephnt979hdp3cdqsgqwn73
 creation_rules:
   - path_regex: secrets.yaml$
     key_groups:
     - age:
-      - *nikodem
       - *laptop
+      - *laptop_nikodem
+      - *desktop
+      - *desktop_nikodem
