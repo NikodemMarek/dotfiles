@@ -18,6 +18,8 @@ in
   programs.home-manager.enable = true;
 
   imports = [
+    ./sops.nix
+
     ./git.nix
   ] ++ builtins.map (p: if builtins.pathExists ./${ p } then ./${ p } else ./${p}.nix) preconfigured;
 

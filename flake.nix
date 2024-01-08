@@ -14,7 +14,7 @@
     sops-nix.url = "github:Mic92/sops-nix";
   };
 
-  outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, ... }@inputs:
     let
       inherit (self) outputs;
 
@@ -191,7 +191,9 @@
             inherit username programs settings;
           };
           modules = [
-            hyprland.homeManagerModules.default
+            inputs.hyprland.homeManagerModules.default
+            inputs.sops-nix.homeManagerModules.sops
+
             ./home-manager
           ];
         };

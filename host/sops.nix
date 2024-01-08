@@ -4,7 +4,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
-    age
+    rage
   ];
 
   sops.defaultSopsFile = ../secrets.yaml;
@@ -14,7 +14,12 @@
   sops.age.keyFile = "/var/lib/sops-nix/key.txt";
   sops.age.generateKey = true;
 
-  sops.secrets = builtins.listToAttrs
+  sops.secrets = {
+    "configs/openai_api_key" = {
+      mode = "0440";
+      group = "users";
+    };
+  } // builtins.listToAttrs
     (builtins.map
       (user: {
         name = "passwords/${user.username}";
