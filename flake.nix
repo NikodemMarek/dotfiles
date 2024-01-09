@@ -12,6 +12,8 @@
     hyprland.url = "github:hyprwm/Hyprland";
 
     sops-nix.url = "github:Mic92/sops-nix";
+
+    nix-colors.url = "github:misterio77/nix-colors";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -182,11 +184,12 @@
           pkgs = nixpkgs.legacyPackages.${system};
           extraSpecialArgs = {
             inherit inputs outputs;
+            inherit (inputs) nix-colors;
+
             inherit system hostname;
             inherit username programs settings;
           };
           modules = [
-            inputs.hyprland.homeManagerModules.default
             inputs.sops-nix.homeManagerModules.sops
 
             ./home
