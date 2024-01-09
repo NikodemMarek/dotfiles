@@ -12,8 +12,7 @@
         y = 5;
       };
       cursor = {
-        shape = "Block";
-        blinking = "On";
+        style = "Block";
         unfocused_hollow = true;
       };
     };
