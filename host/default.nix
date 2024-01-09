@@ -1,8 +1,8 @@
 { inputs, outputs, lib, config, pkgs, hostname, users, ... }:
 let
   mkSystemUser = { username, groups, ... }: {
-    initialPassword = username;
     isNormalUser = true;
+    hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
     extraGroups = groups;
     shell = pkgs.fish;
   };
@@ -98,8 +98,6 @@ in
       name = user.username;
       value = mkSystemUser {
         inherit (user) username groups;
-        isNormalUser = true;
-        hashedPasswordFile = config.sops.secrets."passwords/${user.username}".path;
       };
     })
     users);

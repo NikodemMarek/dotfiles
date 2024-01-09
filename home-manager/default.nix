@@ -30,7 +30,7 @@ in
     executable = true;
     text = ''
       #!/bin/sh
-      home-manager switch --flake /dotfiles#${username}@${hostname}
+      home-manager switch --flake /dotfiles#${username}@${hostname} --impure
     '';
   };
 
