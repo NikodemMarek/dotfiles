@@ -9,6 +9,9 @@
     # ascii image viewer
     ascii-image-converter
 
+    # copilot
+    nodejs
+
     ## LSP
     # go
     go

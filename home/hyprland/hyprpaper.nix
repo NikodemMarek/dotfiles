@@ -1,4 +1,4 @@
-{ config, pkgs, lib, workDir, ... }: {
+{ config, pkgs, lib, ... }: {
   home.packages = with pkgs; [
     hyprpaper
   ];

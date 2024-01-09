@@ -26,9 +26,8 @@
         nikodem = {
           username = "nikodem";
           groups = [ "wheel" "networkmanager" "docker" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
+          programs = [ "firefox" "neovim" "eww" "hyprland" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
           settings = {
-            workDir = "~/tmp/";
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
             eww = {
@@ -50,9 +49,8 @@
         work = {
           username = "work";
           groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "firebase-tools" "zola" ];
+          programs = [ "firefox" "neovim" "eww" "hyprland" "firebase-tools" "zola" ];
           settings = {
-            workDir = "~/projects/";
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
             eww = {
@@ -74,9 +72,8 @@
         school = {
           username = "school";
           groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" "bruno" ];
+          programs = [ "firefox" "neovim" "eww" "hyprland" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" "bruno" ];
           settings = {
-            workDir = "~/projects/";
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
             eww = {
@@ -98,9 +95,8 @@
         fun = {
           username = "fun";
           groups = [ "wheel" "networkmanager" "docker" ];
-          programs = [ "firefox" "eww" "hypr" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" "lutris" "wine" ];
+          programs = [ "firefox" "eww" "hyprland" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" "lutris" "wine" ];
           settings = {
-            workDir = "~/tmp/";
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
             eww = {
@@ -122,9 +118,8 @@
         rustchain = {
           username = "rustchain";
           groups = [ "networkmanager" "docker" ];
-          programs = [ "firefox" "neovim" "eww" "hypr" "qutebrowser" "rustup" "solana-cli" "yarn" "pkg-config" "gcc" "openssl" ];
+          programs = [ "firefox" "neovim" "eww" "hyprland" "qutebrowser" "rustup" "solana-cli" "yarn" "pkg-config" "gcc" "openssl" ];
           settings = {
-            workDir = "~/projects/";
             name = "nikodem";
             email = "nikodemmarekit@gmail.com";
             eww = {
@@ -175,7 +170,7 @@
         }
       ];
 
-      mkHMUser =
+      mkUser =
         { system
         , hostname
         , username
@@ -194,7 +189,7 @@
             inputs.hyprland.homeManagerModules.default
             inputs.sops-nix.homeManagerModules.sops
 
-            ./home-manager
+            ./home
           ];
         };
     in
@@ -231,12 +226,12 @@
               builtins.map
                 (user: {
                   name = "${user.username}@${host.hostname}";
-                  value = mkHMUser {
+                  value = mkUser {
                     inherit (host) system hostname;
                     inherit (user) username programs;
                     settings = {
                       inherit (host.settings) device resolution;
-                      inherit (user.settings) workDir name email eww;
+                      inherit (user.settings) name email eww;
                     };
                   };
                 })
