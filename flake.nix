@@ -14,6 +14,11 @@
     sops-nix.url = "github:Mic92/sops-nix";
 
     nix-colors.url = "github:misterio77/nix-colors";
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -191,6 +196,7 @@
           };
           modules = [
             inputs.sops-nix.homeManagerModules.sops
+            inputs.nixvim.homeManagerModules.nixvim
 
             ./home
           ];
