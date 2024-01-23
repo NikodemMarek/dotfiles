@@ -17,6 +17,10 @@
     ./plugins/lualine.nix
     ./plugins/cursorline.nix
     ./plugins/mini.nix
+    ./plugins/crates-nvim.nix
+    ./plugins/rust-tools.nix
+    ./plugins/luasnip.nix
+    ./plugins/spider.nix
   ];
 
   programs.neovim.defaultEditor = true;

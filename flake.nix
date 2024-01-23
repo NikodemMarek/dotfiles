@@ -33,7 +33,7 @@
         nikodem = {
           username = "nikodem";
           groups = [ "wheel" "networkmanager" "docker" ];
-          programs = [ "firefox" "neovim" "eww" "hyprland" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" ];
+          programs = [ "firefox" "neovim" "eww" "hyprland" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" "xxd" ];
           settings = {
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";

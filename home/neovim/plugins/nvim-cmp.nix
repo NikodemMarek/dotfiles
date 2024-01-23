@@ -24,6 +24,7 @@
                     { name = "path"; }
                 ];
                 formatting.fields = [ "kind" "abbr" "menu" ];
+                snippet.expand = "luasnip";
             };
             cmp-nvim-lsp.enable = true;
             cmp-buffer.enable = true;
