@@ -20,11 +20,17 @@
                 };
                 sources = [
                     { name = "nvim_lsp"; }
+                    { name = "copilot"; }
+                    { name = "luasnip"; }
                     { name = "buffer"; }
                     { name = "path"; }
+                    { name = "spell"; }
                 ];
                 formatting.fields = [ "kind" "abbr" "menu" ];
                 snippet.expand = "luasnip";
+                experimental = {
+                    ghost_text = true;
+                };
             };
             cmp-nvim-lsp.enable = true;
             cmp-buffer.enable = true;
