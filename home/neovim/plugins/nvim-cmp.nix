@@ -37,6 +37,10 @@
             cmp-path.enable = true;
             cmp-nvim-lsp-signature-help.enable = true;
             cmp-spell.enable = true;
+            lspkind = {
+                enable = true;
+                cmp.enable = true;
+            };
         };
     };
 }

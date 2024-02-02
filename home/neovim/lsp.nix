@@ -1,4 +1,4 @@
-{
+{ config, pkgs, lib, settings, ... }: {
     programs.nixvim = {
         keymaps = [
             # Lsp symbols
@@ -26,8 +26,23 @@
                         installCargo = false;
                         installRustc = false;
                     };
+
+                    denols.enable = true;
+                    tailwindcss.enable = true;
+
+                    kotlin-language-server.enable = true;
+                    java-language-server.enable = true;
                 };
             };
+            nvim-jdtls = {
+                enable = true;
+                cmd = [
+                    "$/{pkgs.jdt-language-server}/bin/jdt-language-server"
+                    "-data" ".cache/jdtls/data"
+                    "-configuration" ".cache/jdtls/configuration"
+                ];
+            };
+            lsp-format.enable = true;
         };
     };
 }

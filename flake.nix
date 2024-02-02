@@ -79,7 +79,7 @@
         school = {
           username = "school";
           groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hyprland" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" "bruno" ];
+          programs = [ "firefox" "neovim" "eww" "hyprland" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" "android-studio" ];
           settings = {
             name = "nikodem";
             email = "nikodemmarek11@gmail.com";
@@ -92,7 +92,7 @@
                 ]
                 [
 
-                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
+                  [ "android-studio" "as" ]
                   [ "beeper --default-frame" "󰵅" ]
                 ]
               ];
