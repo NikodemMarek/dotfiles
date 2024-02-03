@@ -19,6 +19,11 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    anyrun = {
+      url = "github:Kirottu/anyrun";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -197,6 +202,7 @@
           modules = [
             inputs.sops-nix.homeManagerModules.sops
             inputs.nixvim.homeManagerModules.nixvim
+            inputs.anyrun.homeManagerModules.anyrun
 
             ./home
           ];

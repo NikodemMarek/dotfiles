@@ -5,6 +5,7 @@
     ../alacritty.nix
     ../joshuto
     ../gtklock.nix
+    ../anyrun.nix
   ];
 
   home.packages = with pkgs; [
@@ -185,7 +186,7 @@
       bind = $mod, W, killactive,
 
       # Execs
-      bind = $mod, SPACE, exec, yofi
+      bind = $mod, SPACE, exec, anyrun
       bind = $mod, RETURN, exec, alacritty
       bind = $mod SHIFT, RETURN, exec, alacritty --working-directory ~/projects/
       bind = $mod, E, exec, alacritty -e joshuto
