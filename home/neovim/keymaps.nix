@@ -1,7 +1,7 @@
 {
   programs.nixvim.keymaps = [
         # Write actions
-        { mode = "n"; key = "<leader>fw"; action = "<cmd>w<cr>"; options.desc = "Write"; }
+        { mode = "n"; key = "<leader>ff"; action = "<cmd>w<cr>"; options.desc = "Write"; }
         { mode = "n"; key = "<leader>fa"; action = "<cmd>wa<cr>"; options.desc = "Write all"; }
 
         # Quit actions

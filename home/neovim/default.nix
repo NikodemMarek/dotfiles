@@ -20,7 +20,7 @@
     ./plugins/crates-nvim.nix
     ./plugins/rust-tools.nix
     ./plugins/luasnip.nix
-    ./plugins/spider.nix
+    ./plugins/gitsigns.nix
   ];
 
   programs.neovim.defaultEditor = true;
@@ -36,6 +36,8 @@
         register = "unnamedplus";
     };
   };
+
+  programs.ripgrep.enable = true;
 
   home.shellAliases = {
     n = "nvim";
