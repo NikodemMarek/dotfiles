@@ -8,6 +8,7 @@ let
     [ "music" 0 5 4 2 ]
     [ "shortcuts" 0 0 4 2 ]
     [ "volume" 4 0 4 2 ]
+    [ "app_list" 12 2 4 7 ]
   ];
 
   grid = { width = settings.resolution.width / 16; height = settings.resolution.height / 9; };

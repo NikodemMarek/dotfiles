@@ -248,3 +248,21 @@ scale slider {
 	border-radius: 16px;
 	background-color: $blue;
 }
+
+/** app_list ************************************/
+.app_list {
+    padding: 10px;
+}
+
+.app_list_item {
+    padding: 5px;
+    border-radius: 8px;
+    background: none;
+    border: 2px solid transparent;
+    outline: none;
+    box-shadow: none;
+}
+.app_list_item:hover {
+    border: 2px solid $mauve;
+    color: $mauve;
+}

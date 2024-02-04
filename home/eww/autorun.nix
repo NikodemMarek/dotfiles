@@ -7,6 +7,7 @@ let
     "music"
     "shortcuts"
     "volume"
+    "app_list"
   ];
 in
 ''
