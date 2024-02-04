@@ -194,7 +194,7 @@
       bind = , PRINT, exec, grim -g "$(slurp)" - | wl-copy # screenshot
       bind = SHIFT, PRINT, exec, grim -g "$(slurp)" ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png # screenshot
 
-      bind = $mod, ESCAPE, exec, gtklock -d # lock session
+      bind = $mod, ESCAPE, exec, gtklock -d --no-input-inhibit # lock session
       bind = $mod SHIFT, ESCAPE, exit # exit hyprland
 
       # Media keys
