@@ -56,7 +56,7 @@
         kb_layout = pl, pl
         kb_variant = , dvp
         kb_model =
-        kb_options = caps:escape, grp:alt_shift_toggle
+        kb_options = caps:escape
         kb_rules =
         numlock_by_default = true
 
