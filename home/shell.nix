@@ -1,16 +1,12 @@
 { config, pkgs, lib, ... }: {
   imports = [
     ./zellij.nix
+    ./direnv.nix
   ];
 
   programs.starship.enable = true;
   programs.zoxide.enable = true;
   programs.eza.enable = true;
-  programs.direnv = {
-    enable = true;
-    enableBashIntegration = true;
-    nix-direnv.enable = true;
-  };
 
   programs.fish = {
     enable = true;
