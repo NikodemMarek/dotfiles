@@ -34,57 +34,14 @@
         "x86_64-linux"
       ];
 
-      users = {
-        nikodem = {
-            username = "nikodem";
-            groups = [ "wheel" "networkmanager" "docker" ];
-        };
-        school = {
-            username = "school";
-            groups = [ "networkmanager" ];
-        };
-        fun = {
-            username = "fun";
-            groups = [ "wheel" "networkmanager" "docker" ];
-        };
-        rustchain = {
-            username = "rustchain";
-            groups = [ "networkmanager" "docker" ];
-        };
-      };
-
       hosts = [
         {
           hostname = "laptop";
           system = "x86_64-linux";
-          settings = {
-            device = "laptop";
-            resolution = { width = 1920; height = 1080; };
-            bluetooth = true;
-            swap = 15;
-          };
-          users = with users; [
-            nikodem
-            school
-            rustchain
-            fun
-          ];
         }
         {
           hostname = "desktop";
           system = "x86_64-linux";
-          settings = {
-            device = "desktop";
-            resolution = { width = 2560; height = 1440; };
-            bluetooth = false;
-            swap = 38;
-          };
-          users = with users; [
-            nikodem
-            rustchain
-            fun
-            school
-          ];
         }
       ];
 
@@ -101,16 +58,20 @@
       homeManagerModules = import ./modules/home-manager;
 
       nixosConfigurations = builtins.listToAttrs (builtins.map
-        (host: {
+        (host: let
+          system-config = import ./host/${host.hostname};
+        in {
           name = host.hostname;
           value = nixpkgs.lib.nixosSystem {
             specialArgs = {
               inherit inputs outputs;
-              inherit (host) hostname users;
+
+              inherit (host) hostname;
+              inherit (system-config) users settings;
             };
             modules = [
+              system-config.module
               ./host
-              ./host/${host.hostname}
             ];
           };
         })
@@ -119,10 +80,11 @@
       homeConfigurations = builtins.listToAttrs (
         nixpkgs.lib.lists.flatten (
           builtins.map
-            (host:
-              builtins.map
+            (host: let
+              system-config = import ./host/${host.hostname};
+            in builtins.map
                 (user: let
-                    user-config = import ./home/${user.username}.nix;
+                  user-config = import ./home/${user.username}.nix;
                 in {
                   name = "${user.username}@${host.hostname}";
                   value = home-manager.lib.homeManagerConfiguration {
@@ -135,7 +97,7 @@
                         inherit (host) system hostname;
                         inherit (user) username groups;
 
-                        settings = user-config.settings // host.settings;
+                        settings = system-config.settings // user-config.settings;
                       };
                       modules = [
                         inputs.sops-nix.homeManagerModules.sops
@@ -147,7 +109,7 @@
                       ];
                     };
                 })
-                host.users
+                system-config.users
             )
             hosts
         )
