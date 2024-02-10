@@ -212,7 +212,7 @@
       workspace = 1, monitor:HDMI-A-1
 
       exec-once = hyprpaper
-      exec-once = ${config.home.homeDirectory}/${config.xdg.configFile."autorun.sh".target}
     '';
+    # exec-once = ${config.home.homeDirectory}/${config.xdg.configFile."autorun.sh".target}
   };
 }

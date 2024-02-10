@@ -36,113 +36,20 @@
 
       users = {
         nikodem = {
-          username = "nikodem";
-          groups = [ "wheel" "networkmanager" "docker" ];
-          programs = [ "firefox" "neovim" "eww" "hyprland" "qutebrowser" "zip" "unzip" "zathura" "typst" "beeper" "bottom" "xxd" "rnote" ];
-          settings = {
-            name = "nikodem";
-            email = "nikodemmarek11@gmail.com";
-            eww = {
-              shortcuts = [
-                [
-
-                  [ "firefox" "" ]
-                  [ "qutebrowser" "󰖟" ]
-                ]
-                [
-
-                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                  [ "beeper --default-frame" "󰵅" ]
-                ]
-              ];
-            };
-          };
-        };
-        work = {
-          username = "work";
-          groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hyprland" "firebase-tools" "zola" ];
-          settings = {
-            name = "nikodem";
-            email = "nikodemmarek11@gmail.com";
-            eww = {
-              shortcuts = [
-                [
-
-                  [ "firefox" "" ]
-                  [ "qutebrowser" "󰖟" ]
-                ]
-                [
-
-                  [ "firefox https://mail.google.com/mail/u/0/#inbox" "" ]
-                  [ "beeper --default-frame" "󰵅" ]
-                ]
-              ];
-            };
-          };
+            username = "nikodem";
+            groups = [ "wheel" "networkmanager" "docker" ];
         };
         school = {
-          username = "school";
-          groups = [ "networkmanager" ];
-          programs = [ "firefox" "neovim" "eww" "hyprland" "openjdk17" "nodejs" "maven" "qutebrowser" "bun" "android-tools" "android-studio" ];
-          settings = {
-            name = "nikodem";
-            email = "nikodemmarek11@gmail.com";
-            eww = {
-              shortcuts = [
-                [
-
-                  [ "firefox" "" ]
-                  [ "qutebrowser" "󰖟" ]
-                ]
-                [
-
-                  [ "android-studio" "as" ]
-                  [ "beeper --default-frame" "󰵅" ]
-                ]
-              ];
-            };
-          };
+            username = "school";
+            groups = [ "networkmanager" ];
         };
         fun = {
-          username = "fun";
-          groups = [ "wheel" "networkmanager" "docker" ];
-          programs = [ "firefox" "eww" "hyprland" "qutebrowser" "beeper" "steam" "ferium" "prismlauncher" "lutris" "wine" ];
-          settings = {
-            name = "nikodem";
-            email = "nikodemmarek11@gmail.com";
-            eww = {
-              shortcuts = [
-                [
-                  [ "firefox" "" ]
-                  [ "qutebrowser" "󰖟" ]
-                  [ "steam" "st" ]
-                ]
-                [
-                  [ "lutris" "lt" ]
-                  [ "beeper --default-frame" "󰵅" ]
-                  [ "prismlauncher" "mc" ]
-                ]
-              ];
-            };
-          };
+            username = "fun";
+            groups = [ "wheel" "networkmanager" "docker" ];
         };
         rustchain = {
-          username = "rustchain";
-          groups = [ "networkmanager" "docker" ];
-          programs = [ "firefox" "neovim" "eww" "hyprland" "qutebrowser" "rustup" "solana-cli" "yarn" "pkg-config" "gcc" "openssl" ];
-          settings = {
-            name = "nikodem";
-            email = "nikodemmarekit@gmail.com";
-            eww = {
-              shortcuts = [
-                [
-                  [ "firefox" "" ]
-                  [ "qutebrowser" "󰖟" ]
-                ]
-              ];
-            };
-          };
+            username = "rustchain";
+            groups = [ "networkmanager" "docker" ];
         };
       };
 
@@ -158,7 +65,6 @@
           };
           users = with users; [
             nikodem
-            work
             school
             rustchain
             fun
@@ -182,31 +88,7 @@
         }
       ];
 
-      mkUser =
-        { system
-        , hostname
-        , username
-        , programs
-        , settings
-        , ...
-        }:
-        home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages.${system};
-          extraSpecialArgs = {
-            inherit inputs outputs;
-            inherit (inputs) nix-colors;
-
-            inherit system hostname;
-            inherit username programs settings;
-          };
-          modules = [
-            inputs.sops-nix.homeManagerModules.sops
-            inputs.nixvim.homeManagerModules.nixvim
-            inputs.anyrun.homeManagerModules.anyrun
-
-            ./home
-          ];
-        };
+      utils = import ./utils;
     in
     rec {
       packages = forAllSystems (system:
@@ -239,16 +121,31 @@
           builtins.map
             (host:
               builtins.map
-                (user: {
+                (user: let
+                    user-config = import ./home/${user.username}.nix;
+                in {
                   name = "${user.username}@${host.hostname}";
-                  value = mkUser {
-                    inherit (host) system hostname;
-                    inherit (user) username programs;
-                    settings = {
-                      inherit (host.settings) device resolution;
-                      inherit (user.settings) name email eww;
+                  value = home-manager.lib.homeManagerConfiguration {
+                      pkgs = nixpkgs.legacyPackages.${host.system};
+                      extraSpecialArgs = {
+                        inherit inputs outputs;
+                        inherit (inputs) nix-colors;
+                        inherit utils;
+
+                        inherit (host) system hostname;
+                        inherit (user) username groups;
+
+                        settings = user-config.settings // host.settings;
+                      };
+                      modules = [
+                        inputs.sops-nix.homeManagerModules.sops
+                        inputs.nixvim.homeManagerModules.nixvim
+                        inputs.anyrun.homeManagerModules.anyrun
+
+                        user-config.module
+                        ./home
+                      ];
                     };
-                  };
                 })
                 host.users
             )

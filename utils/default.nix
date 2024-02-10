@@ -1,0 +1,3 @@
+{
+    autorun = import ./autorun.nix;
+}
