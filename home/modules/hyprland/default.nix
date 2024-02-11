@@ -60,7 +60,7 @@
         kb_rules =
         numlock_by_default = true
 
-        follow_mouse = 2
+        follow_mouse = 1
 
         touchpad {
           natural_scroll = false
