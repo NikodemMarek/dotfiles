@@ -2,5 +2,6 @@
 # You can build them using 'nix build .#example' or (legacy) 'nix-build -A example'
 
 { pkgs ? (import ../nixpkgs.nix) { } }: {
-  # example = pkgs.callPackage ./example { };
+    solana-cli = pkgs.callPackage ./solana-cli.nix { };
+    anchor-cli = pkgs.callPackage ./anchor-cli.nix { };
 }

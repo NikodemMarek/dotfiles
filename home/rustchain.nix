@@ -33,6 +33,11 @@
         home.packages = with pkgs; [
             beeper
             zathura
+            yarn
+            cargo
+            gcc
+            solana-cli
+            anchor-cli
         ];
     };
 }
