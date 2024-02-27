@@ -8,7 +8,7 @@ rustPlatform.buildRustPackage rec {
         owner = "coral-xyz";
         repo = "anchor";
         rev = "master";
-        sha256 = "sha256-Tnc2cEFxrONjHCYWEzosfOGMbEgXJq96I5KBjFmjrBo=";
+        sha256 = "sha256-4kax0FU1PM5/kAFRWVCrucE5uo339h/AaCBlQm2ulNs=";
     };
 
     cargoLock = {

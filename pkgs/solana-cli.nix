@@ -13,10 +13,10 @@
 # Taken from https://github.com/solana-labs/solana/blob/master/scripts/cargo-install-all.sh#L84
 , solanaPkgs ? [
     "solana"
-    "cargo-build-bpf"
     "cargo-build-sbf"
-    "cargo-test-bpf"
+    "cargo-build-bpf"
     "cargo-test-sbf"
+    "cargo-test-bpf"
     "rbpf-cli"
     "solana-bench-tps"
     "solana-dos"
@@ -92,6 +92,8 @@ rustPlatform.buildRustPackage rec {
   postInstall = ''
     mkdir -p $out/bin/sdk/bpf
     cp -a ./sdk/bpf/* $out/bin/sdk/bpf/
+    mkdir -p $out/bin/sdk/sbf
+    cp -a ./sdk/sbf/* $out/bin/sdk/sbf/
   '';
 
   # Used by build.rs in the rocksdb-sys crate. If we don't set these, it would

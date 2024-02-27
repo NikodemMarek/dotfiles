@@ -31,11 +31,13 @@
         ];
 
         home.packages = with pkgs; [
+            patchelf
             beeper
             zathura
             yarn
-            cargo
+            bun
             gcc
+            solana-platform-tools
             solana-cli
             anchor-cli
         ];
