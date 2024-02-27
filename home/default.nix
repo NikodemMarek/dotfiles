@@ -20,6 +20,7 @@
     executable = true;
     text = ''
       #!/bin/sh
+      export NIXPKGS_ALLOW_UNFREE=1
       home-manager switch --flake /dotfiles#${username}@${hostname} --impure
     '';
   };
