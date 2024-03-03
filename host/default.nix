@@ -47,6 +47,8 @@ in
   };
   environment.variables.EDITOR = "nvim";
 
+  programs.nix-ld.dev.enable = true;
+
   virtualisation.docker.enable = true;
 
   # this is necesary for gtklock to work

@@ -29,6 +29,11 @@
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-ld = {
+        url = "github:Mic92/nix-ld";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs:
@@ -75,6 +80,8 @@
               inherit (system-config) users settings;
             };
             modules = [
+              inputs.nix-ld.nixosModules.nix-ld
+
               system-config.module
               ./host
             ];
