@@ -27,9 +27,9 @@ let
         '';
     };
 in {
-    imports = [
-        autorun
-    ];
+    # imports = [
+    #     autorun
+    # ];
 
     home.packages = with pkgs; [
         eww
