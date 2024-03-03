@@ -26,7 +26,7 @@
         imports = [
             ./modules/neovim
             ./modules/hyprland
-            ./modules/eww
+            # ./modules/eww
 
             ./modules/git.nix
             ./modules/tools.nix

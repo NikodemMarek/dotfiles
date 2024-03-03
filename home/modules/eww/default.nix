@@ -19,10 +19,10 @@ let
     autorun = utils.autorun { 
         name = "eww";
         script = ''
-            ${pkgs.eww-wayland}/bin/eww daemon
+            ${pkgs.eww}/bin/eww daemon
 
             ${lib.concatStrings ( builtins.map ( win: ''
-                ${pkgs.eww-wayland}/bin/eww open ${builtins.elemAt win 0}
+                ${pkgs.eww}/bin/eww open ${builtins.elemAt win 0}
             '') windows )}
         '';
     };
@@ -32,7 +32,7 @@ in {
     ];
 
     home.packages = with pkgs; [
-        eww-wayland
+        eww
         playerctl
     ];
 
