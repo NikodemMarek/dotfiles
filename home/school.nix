@@ -32,11 +32,20 @@
             ./modules/tools.nix
             ./modules/firefox.nix
             ./modules/qutebrowser.nix
+            ./modules/beets.nix
+            ./modules/yt-dlp.nix
         ];
 
         home.packages = with pkgs; [
             beeper
             zathura
+            openjdk17
+            nodejs
+            maven
+            android-tools
+            android-studio
+            hurl
+            xh
         ];
     };
 }
