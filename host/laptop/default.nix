@@ -2,15 +2,15 @@
     users = [
         {
             username = "nikodem";
-            groups = [ "wheel" "networkmanager" "docker" ];
+            groups = [ "wheel" "networkmanager" "docker" "music" ];
         }
         {
             username = "school";
-            groups = [ "networkmanager" ];
+            groups = [ "networkmanager" "docker" "music" ];
         }
         {
             username = "fun";
-            groups = [ "wheel" "networkmanager" "docker" ];
+            groups = [ "wheel" "networkmanager" "docker" "music" ];
         }
         {
             username = "rustchain";
@@ -24,6 +24,10 @@
     };
 
     module = { inputs, outputs, lib, config, pkgs, ... }: {
+      imports = [
+        ../music.nix
+      ];
+        
       fileSystems = {
         "/".options = [ "compress=lzo" ];
         "/home".options = [ "compress=lzo" ];
