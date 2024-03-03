@@ -24,7 +24,7 @@
     ./plugins/dap.nix
     ./plugins/wtf.nix
     ./plugins/rainbow-delimiters.nix
-    ./plugins/terminal-auto-insert-mode.nix
+    ./plugins/toggleterm.nix
   ];
 
   programs.neovim.defaultEditor = true;

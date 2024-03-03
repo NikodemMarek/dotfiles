@@ -12,6 +12,7 @@
                     "<leader>l" = "LSP";
                     "<leader>u" = "UI";
                     "<leader>b" = "Debugging";
+                    "<leader>t" = "Terminal";
                 };
             };
         };
