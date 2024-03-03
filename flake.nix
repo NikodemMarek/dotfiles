@@ -112,6 +112,7 @@
                         settings = system-config.settings // user-config.settings;
                       };
                       modules = [
+                        inputs.hyprland.homeManagerModules.default
                         inputs.sops-nix.homeManagerModules.sops
                         inputs.nixvim.homeManagerModules.nixvim
                         inputs.anyrun.homeManagerModules.anyrun
