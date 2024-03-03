@@ -6,7 +6,7 @@
       "b" = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) %(color:red)[%(authorname)]' --sort=-committerdate";
       "l" = "log --graph --pretty=format:'%C(yellow)%Creset %C(auto)%h%d%Creset | %C(cyan) %cr%Creset | %C(green) %cn%Creset |  %s'";
       "u" = "!git checkout HEAD -- && git s &&;:";
-      "aa" = "!git add . && git s &&;:";
+      "aa" = "!git add --all && git s && :";
       "ci" = "commit -m";
       "nb" = "!git branch $1 && git switch $1 && git b &&;:";
       "sw" = "!sh -c 'git switch $1 && git b' -";

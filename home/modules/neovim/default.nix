@@ -22,6 +22,9 @@
     ./plugins/luasnip.nix
     ./plugins/gitsigns.nix
     ./plugins/dap.nix
+    ./plugins/wtf.nix
+    ./plugins/rainbow-delimiters.nix
+    ./plugins/terminal-auto-insert-mode.nix
   ];
 
   programs.neovim.defaultEditor = true;
