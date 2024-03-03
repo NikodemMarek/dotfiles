@@ -32,6 +32,8 @@
 
                     kotlin-language-server.enable = true;
                     java-language-server.enable = true;
+
+                    lemminx.enable = true;
                 };
             };
             nvim-jdtls = {
