@@ -1,4 +1,4 @@
-{ config, pkgs, lib, settings, ... }: {
+{
   imports = [
     ./options.nix
     ./keymaps.nix
@@ -25,23 +25,23 @@
     ./plugins/wtf.nix
     ./plugins/rainbow-delimiters.nix
     ./plugins/toggleterm.nix
+    ./plugins/none-ls.nix
   ];
 
-  programs.neovim.defaultEditor = true;
-  programs.nixvim = {
-    enable = true;
-
-    colorschemes.catppuccin.enable = true;
-
-    globals.mapleader = " ";
-
-    clipboard = {
+  programs = {
+    nixvim = {
+      enable = true;
+      colorschemes.catppuccin.enable = true;
+      globals.mapleader = " ";
+      clipboard = {
         providers.wl-copy.enable = true;
         register = "unnamedplus";
+      };
     };
-  };
 
-  programs.ripgrep.enable = true;
+    ripgrep.enable = true;
+    neovim.defaultEditor = true;
+  };
 
   home.shellAliases = {
     n = "nvim";

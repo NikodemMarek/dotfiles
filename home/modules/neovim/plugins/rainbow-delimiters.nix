@@ -1,5 +1,5 @@
 {
-    programs.nixvim.plugins.rainbow-delimiters = {
-        enable = true;
-    };
+  programs.nixvim.plugins.rainbow-delimiters = {
+    enable = true;
+  };
 }

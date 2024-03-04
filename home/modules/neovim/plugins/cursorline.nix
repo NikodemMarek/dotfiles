@@ -1,14 +1,14 @@
 {
-    programs.nixvim = {
-        plugins = {
-            cursorline = {
-                enable = true;
+  programs.nixvim = {
+    plugins = {
+      cursorline = {
+        enable = true;
 
-                cursorline.number = true;
-                cursorline.timeout = 0;
+        cursorline.number = true;
+        cursorline.timeout = 0;
 
-                cursorword.enable = true;
-            };
-         };
+        cursorword.enable = true;
+      };
     };
+  };
 }

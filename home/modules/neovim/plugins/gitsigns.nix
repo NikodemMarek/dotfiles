@@ -1,10 +1,6 @@
 {
-    programs.nixvim = {
-        plugins = {
-            gitsigns = {
-                enable = true;
-                currentLineBlame = true;
-            };
-        };
-    };
+  programs.nixvim.plugins.gitsigns = {
+    enable = true;
+    currentLineBlame = true;
+  };
 }

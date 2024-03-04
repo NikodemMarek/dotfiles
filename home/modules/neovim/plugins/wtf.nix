@@ -1,6 +1,6 @@
 {
-    programs.nixvim.plugins.wtf = {
-        enable = true;
-        popupType = "vertical";
-    };
+  programs.nixvim.plugins.wtf = {
+    enable = true;
+    popupType = "vertical";
+  };
 }
