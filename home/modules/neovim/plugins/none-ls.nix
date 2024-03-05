@@ -7,9 +7,12 @@
       };
       diagnostics = {
         statix.enable = true;
+        ktlint.enable = true;
       };
       formatting = {
         alejandra.enable = true;
+        rustfmt.enable = true;
+        ktlint.enable = true;
       };
     };
   };

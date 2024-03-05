@@ -6,7 +6,6 @@
 
         extensions = {
           fzf-native.enable = true;
-          ui-select.enable = true;
           media_files.enable = true;
           frecency.enable = true;
         };

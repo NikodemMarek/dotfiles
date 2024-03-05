@@ -31,7 +31,7 @@
         key = "<leader>tr";
         action = ''
           function()
-              local command = vim.fn.input("cmd: ", "", "shellcmd")
+              local command = vim.ui.input("cmd: ", "", "shellcmd")
               if command == "" then
                   return
               end

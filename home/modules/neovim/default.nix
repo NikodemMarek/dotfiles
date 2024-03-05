@@ -5,27 +5,35 @@
     ./lsp.nix
 
     ./plugins/treesitter.nix
-    ./plugins/which-key.nix
     ./plugins/telescope.nix
+
     ./plugins/oil.nix
-    ./plugins/stay-centered.nix
-    ./plugins/bufferline.nix
-    ./plugins/auto-session.nix
-    ./plugins/nvim-cmp.nix
-    ./plugins/copilot.nix
+    ./plugins/mini.nix
     ./plugins/comment-nvim.nix
+    ./plugins/auto-session.nix
+    ./plugins/stay-centered.nix
+    ./plugins/toggleterm.nix
+    ./plugins/dressing.nix
+    ./plugins/notify.nix
+
+    ./plugins/which-key.nix
+    ./plugins/rainbow-delimiters.nix
+    ./plugins/bufferline.nix
     ./plugins/lualine.nix
     ./plugins/cursorline.nix
-    ./plugins/mini.nix
-    ./plugins/crates-nvim.nix
-    ./plugins/rustaceanvim.nix
-    ./plugins/luasnip.nix
-    ./plugins/gitsigns.nix
-    ./plugins/dap.nix
-    ./plugins/wtf.nix
-    ./plugins/rainbow-delimiters.nix
-    ./plugins/toggleterm.nix
+
     ./plugins/none-ls.nix
+    ./plugins/nvim-cmp.nix
+    ./plugins/luasnip.nix
+    ./plugins/dap.nix
+    ./plugins/rustaceanvim.nix
+    ./plugins/crates-nvim.nix
+
+    ./plugins/wtf.nix
+    ./plugins/copilot.nix
+
+    ./plugins/gitsigns.nix
+    ./plugins/gitui.nix
   ];
 
   programs = {
