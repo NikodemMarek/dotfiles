@@ -1,13 +1,14 @@
-{ inputs
-, outputs
-, lib
-, config
-, pkgs
-, utils
-, hostname
-, username
-, settings
-, ...
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  utils,
+  hostname,
+  username,
+  settings,
+  ...
 }: {
   programs.home-manager.enable = true;
 
@@ -15,15 +16,6 @@
     ./sops.nix
     ./assets
   ];
-
-  xdg.configFile."../swhm.sh" = {
-    executable = true;
-    text = ''
-      #!/bin/sh
-      export NIXPKGS_ALLOW_UNFREE=1
-      home-manager switch --flake /dotfiles#${username}@${hostname} --impure
-    '';
-  };
 
   nixpkgs = {
     overlays = [
@@ -33,14 +25,17 @@
     ];
     config = {
       allowUnfree = true;
-      allowUnfreePredicate = (_: true);
-      permittedInsecurePackages = [ ];
+      allowUnfreePredicate = _: true;
+      permittedInsecurePackages = [];
     };
   };
 
   home = {
     inherit username;
     homeDirectory = "/home/${username}";
+    shellAliases = {
+      swhome = "NIXPKGS_ALLOW_UNFREE=1 home-manager switch --flake /dotfiles#${username}@${hostname} --impure";
+    };
   };
 
   systemd.user.startServices = "sd-switch";
