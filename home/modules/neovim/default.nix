@@ -4,12 +4,12 @@
     ./keymaps.nix
     ./lsp.nix
 
-    ./plugins/treesitter.nix
     ./plugins/telescope.nix
-
-    ./plugins/oil.nix
     ./plugins/mini.nix
     ./plugins/comment-nvim.nix
+    ./plugins/overseer.nix
+
+    ./plugins/oil.nix
     ./plugins/auto-session.nix
     ./plugins/stay-centered.nix
     ./plugins/toggleterm.nix
@@ -22,6 +22,7 @@
     ./plugins/lualine.nix
     ./plugins/cursorline.nix
 
+    ./plugins/treesitter.nix
     ./plugins/none-ls.nix
     ./plugins/nvim-cmp.nix
     ./plugins/luasnip.nix
@@ -31,6 +32,7 @@
 
     ./plugins/wtf.nix
     ./plugins/copilot.nix
+    ./plugins/model.nix
 
     ./plugins/gitsigns.nix
     ./plugins/gitui.nix

@@ -2,15 +2,15 @@
   programs.nixvim = {
     extraPlugins = [
       (pkgs.vimUtils.buildVimPlugin {
-        name = "dressing";
+        name = "overseer";
         src = pkgs.fetchFromGitHub {
           owner = "stevearc";
-          repo = "dressing.nvim";
+          repo = "overseer.nvim";
           rev = "master";
-          hash = "sha256-Y+ABLhb3GIaPKOuQzkxsZsTo1WfgURAYVioP/eCSp/Y=";
+          hash = "sha256-T5sRHOU+voBs4b7GKN2+undVd5rXOhuaGooyjITJrNw=";
         };
       })
     ];
-    extraConfigLua = "require('dressing').setup({})";
+    extraConfigLua = "require('overseer').setup({})";
   };
 }
