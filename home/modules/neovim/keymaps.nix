@@ -13,6 +13,12 @@
       action = "<cmd>wa<cr>";
       options.desc = "Write all";
     }
+    {
+      mode = "n";
+      key = "<leader>fn";
+      action = "<cmd>noa w<cr>";
+      options.desc = "Write without autocommands";
+    }
 
     # Quit actions
     {

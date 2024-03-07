@@ -39,6 +39,9 @@
           java-language-server.enable = true;
 
           lemminx.enable = true;
+          jsonls.enable = true;
+
+          dockerls.enable = true;
         };
       };
       nvim-jdtls = {

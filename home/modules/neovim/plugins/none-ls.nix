@@ -13,6 +13,7 @@
         alejandra.enable = true;
         rustfmt.enable = true;
         ktlint.enable = true;
+        prettier.enable = true;
       };
     };
   };
