@@ -34,6 +34,10 @@
     pkgs,
     ...
   }: {
+    imports = [
+      ../music.nix
+    ];
+
     fileSystems = {
       "/".options = ["compress=lzo"];
       "/home".options = ["compress=lzo"];
