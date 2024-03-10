@@ -22,20 +22,26 @@
     lib,
     config,
     pkgs,
+    settings,
     ...
   }: {
-    imports = [
-      ./modules/neovim
-      ./modules/hyprland
-      ./modules/eww
+    imports =
+      [
+        ./modules/neovim
+        ./modules/hyprland
+        ./modules/eww
 
-      ./modules/git.nix
-      ./modules/tools.nix
-      ./modules/firefox.nix
-      ./modules/qutebrowser.nix
-      ./modules/wired-notify.nix
-      ./modules/battery-notifier.nix
-    ];
+        ./modules/git.nix
+        ./modules/tools.nix
+        ./modules/firefox.nix
+        ./modules/qutebrowser.nix
+        ./modules/wired-notify.nix
+      ]
+      ++ (
+        if settings.device == "laptop"
+        then [./modules/battery-notifier.nix]
+        else []
+      );
 
     home.packages = with pkgs; [
       rnote

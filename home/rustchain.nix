@@ -1,45 +1,53 @@
 {
-    settings = {
-        name = "nikodem";
-        email = "nikodemmarekit@gmail.com";
-        eww = {
-            shortcuts = [
-                [
-                    [ "firefox" "" ]
-                    [ "qutebrowser" "󰖟" ]
-                ]
-            ];
-        };
+  settings = {
+    name = "nikodem";
+    email = "nikodemmarekit@gmail.com";
+    eww = {
+      shortcuts = [
+        [
+          ["firefox" ""]
+          ["qutebrowser" "󰖟"]
+        ]
+      ];
     };
+  };
 
-    module = { inputs
-    , outputs
-    , lib
-    , config
-    , pkgs
-    , ...
-    }: {
-        imports = [
-            ./modules/neovim
-            ./modules/hyprland
-            ./modules/eww
+  module = {
+    inputs,
+    outputs,
+    lib,
+    config,
+    pkgs,
+    settings,
+    ...
+  }: {
+    imports =
+      [
+        ./modules/neovim
+        ./modules/hyprland
+        ./modules/eww
 
-            ./modules/git.nix
-            ./modules/tools.nix
-            ./modules/firefox.nix
-            ./modules/qutebrowser.nix
-        ];
+        ./modules/git.nix
+        ./modules/tools.nix
+        ./modules/firefox.nix
+        ./modules/qutebrowser.nix
+      ]
+      ++ (
+        if settings.device == "laptop"
+        then [./modules/battery-notifier.nix]
+        else []
+      );
 
-        home.packages = with pkgs; [
-            patchelf
-            beeper
-            zathura
-            yarn
-            bun
-            gcc
-            solana-platform-tools
-            solana-cli
-            anchor-cli
-        ];
-    };
+    home.packages = with pkgs; [
+      patchelf
+      beeper
+      zathura
+      yarn
+      bun
+      gcc
+      solana-platform-tools
+      solana-cli
+      anchor-cli
+    ];
+  };
 }
