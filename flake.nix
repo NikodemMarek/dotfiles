@@ -31,102 +31,117 @@
     };
 
     nix-ld = {
-        url = "github:Mic92/nix-ld";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:Mic92/nix-ld";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    wired.url = "github:Toqozz/wired-notify";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
-    let
-      inherit (self) outputs;
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: let
+    inherit (self) outputs;
 
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "x86_64-linux"
-      ];
+    forAllSystems = nixpkgs.lib.genAttrs [
+      "x86_64-linux"
+    ];
 
-      hosts = [
-        {
-          hostname = "laptop";
-          system = "x86_64-linux";
-        }
-        {
-          hostname = "desktop";
-          system = "x86_64-linux";
-        }
-      ];
+    hosts = [
+      {
+        hostname = "laptop";
+        system = "x86_64-linux";
+      }
+      {
+        hostname = "desktop";
+        system = "x86_64-linux";
+      }
+    ];
 
-      utils = import ./utils;
-    in
-    rec {
-      packages = forAllSystems (system:
-        let pkgs = nixpkgs.legacyPackages.${system};
-        in import ./pkgs { inherit pkgs; }
-      );
+    utils = import ./utils;
+    pkgsFor = nixpkgs.lib.genAttrs ["x86_64-linux"] (system:
+      import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+        overlays = [inputs.wired.overlays.default];
+      });
+  in rec {
+    packages = forAllSystems (
+      system: let
+        pkgs = nixpkgs.legacyPackages.${system};
+      in
+        import ./pkgs {inherit pkgs;}
+    );
 
-      overlays = import ./overlays { inherit inputs; };
-      nixosModules = import ./modules/nixos;
-      homeManagerModules = import ./modules/home-manager;
+    overlays = import ./overlays {inherit inputs;};
+    nixosModules = import ./modules/nixos;
+    homeManagerModules = import ./modules/home-manager;
 
-      nixosConfigurations = builtins.listToAttrs (builtins.map
-        (host: let
-          system-config = import ./host/${host.hostname};
-        in {
-          name = host.hostname;
-          value = nixpkgs.lib.nixosSystem {
-            specialArgs = {
-              inherit inputs outputs;
+    nixosConfigurations = builtins.listToAttrs (builtins.map
+      (host: let
+        system-config = import ./host/${host.hostname};
+      in {
+        name = host.hostname;
+        value = nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs outputs;
 
-              inherit (host) hostname;
-              inherit (system-config) users settings;
-            };
-            modules = [
-              inputs.nix-ld.nixosModules.nix-ld
-
-              system-config.module
-              ./host
-            ];
+            inherit (host) hostname;
+            inherit (system-config) users settings;
           };
-        })
-        hosts);
+          modules = [
+            inputs.nix-ld.nixosModules.nix-ld
 
-      homeConfigurations = builtins.listToAttrs (
-        nixpkgs.lib.lists.flatten (
-          builtins.map
-            (host: let
-              system-config = import ./host/${host.hostname};
-            in builtins.map
-                (user: let
-                  user-config = import ./home/${user.username}.nix;
-                in {
-                  name = "${user.username}@${host.hostname}";
-                  value = home-manager.lib.homeManagerConfiguration {
-                      pkgs = nixpkgs.legacyPackages.${host.system};
-                      extraSpecialArgs = {
-                        inherit inputs outputs;
-                        inherit (inputs) nix-colors;
-                        inherit utils;
+            system-config.module
+            ./host
+          ];
+        };
+      })
+      hosts);
 
-                        inherit (host) system hostname;
-                        inherit (user) username groups;
+    homeConfigurations = builtins.listToAttrs (
+      nixpkgs.lib.lists.flatten (
+        builtins.map
+        (
+          host: let
+            system-config = import ./host/${host.hostname};
+          in
+            builtins.map
+            (user: let
+              user-config = import ./home/${user.username}.nix;
+            in {
+              name = "${user.username}@${host.hostname}";
+              value = home-manager.lib.homeManagerConfiguration {
+                pkgs = pkgsFor.${host.system};
+                extraSpecialArgs = {
+                  inherit inputs outputs;
+                  inherit (inputs) nix-colors;
+                  inherit utils;
 
-                        settings = system-config.settings // user-config.settings;
-                      };
-                      modules = [
-                        inputs.hyprland.homeManagerModules.default
-                        inputs.sops-nix.homeManagerModules.sops
-                        inputs.nixvim.homeManagerModules.nixvim
-                        inputs.anyrun.homeManagerModules.anyrun
+                  inherit (host) system hostname;
+                  inherit (user) username groups;
 
-                        user-config.module
-                        ./home
-                      ];
-                    };
-                })
-                system-config.users
-            )
-            hosts
+                  settings = system-config.settings // user-config.settings;
+                };
+                modules = [
+                  inputs.hyprland.homeManagerModules.default
+                  inputs.sops-nix.homeManagerModules.sops
+                  inputs.nixvim.homeManagerModules.nixvim
+                  inputs.anyrun.homeManagerModules.anyrun
+                  inputs.wired.homeManagerModules.default
+
+                  user-config.module
+                  ./home
+                ];
+              };
+            })
+            system-config.users
         )
-      );
-    };
+        hosts
+      )
+    );
+  };
 }
-
