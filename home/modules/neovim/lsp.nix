@@ -36,23 +36,12 @@
           tailwindcss.enable = true;
 
           kotlin-language-server.enable = true;
-          java-language-server.enable = true;
 
           lemminx.enable = true;
           jsonls.enable = true;
 
           dockerls.enable = true;
         };
-      };
-      nvim-jdtls = {
-        enable = true;
-        cmd = [
-          "$/{pkgs.jdt-language-server}/bin/jdt-language-server"
-          "-data"
-          ".cache/jdtls/data"
-          "-configuration"
-          ".cache/jdtls/configuration"
-        ];
       };
       lsp-format.enable = true;
     };

@@ -29,6 +29,7 @@
     ./plugins/dap.nix
     ./plugins/rustaceanvim.nix
     ./plugins/crates-nvim.nix
+    ./plugins/nvim-jdtls.nix
 
     ./plugins/wtf.nix
     ./plugins/copilot.nix
