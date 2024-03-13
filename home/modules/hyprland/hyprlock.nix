@@ -21,9 +21,9 @@
         dots_size = 0.33
         dots_spacing = 0.15
         dots_center = true
-        outer_color = 0xff1e1e2e
-        inner_color = 0xff45475a
-        font_color = 0xffcdd6f4
+        outer_color = 0xff${config.colorScheme.palette.base00}
+        inner_color = 0xff${config.colorScheme.palette.base03}
+        font_color = 0xff${config.colorScheme.palette.base05}
         fade_on_empty = true
         placeholder_text = <i>password</i>
         hide_input = false
@@ -36,7 +36,7 @@
     label {
         monitor =
         text = $TIME
-        color = 0xffcdd6f4
+        color = 0xff${config.colorScheme.palette.base05}
         font_size = 25
 
         position = 0, 0

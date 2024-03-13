@@ -15,6 +15,8 @@
   imports = [
     ./sops.nix
     ./assets
+
+    ./modules/nix-colors.nix
   ];
 
   nixpkgs = {
