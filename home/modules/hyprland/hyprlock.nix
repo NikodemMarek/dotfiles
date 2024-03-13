@@ -11,7 +11,7 @@
   xdg.configFile."hypr/hyprlock.conf".text = ''
     background {
         monitor =
-        path = ${config.home.homeDirectory}/${config.xdg.configFile."assets/background.png".target}
+        path = ${./../../../assets/background.png}
     }
 
     input-field {
