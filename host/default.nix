@@ -1,20 +1,31 @@
-{ inputs, outputs, lib, config, pkgs, hostname, users, ... }:
-let
-  mkSystemUser = { username, groups, ... }: {
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  hostname,
+  users,
+  ...
+}: let
+  mkSystemUser = {
+    username,
+    groups,
+    ...
+  }: {
     isNormalUser = true;
     hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
     extraGroups = groups;
     shell = pkgs.fish;
   };
-in
-{
+in {
   imports = [
     ./${hostname}/hardware-configuration.nix
 
     ./sops.nix
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
   nixpkgs = {
     overlays = [
@@ -50,9 +61,6 @@ in
   programs.nix-ld.dev.enable = true;
 
   virtualisation.docker.enable = true;
-
-  # this is necesary for gtklock to work
-  security.pam.services.gtklock = { };
 
   services.greetd = {
     enable = true;
@@ -90,7 +98,7 @@ in
     ];
     fontconfig = {
       defaultFonts = {
-        monospace = [ "Hack" ];
+        monospace = ["Hack"];
       };
     };
   };

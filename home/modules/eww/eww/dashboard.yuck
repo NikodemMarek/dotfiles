@@ -4,13 +4,13 @@
 (defwidget powermenu_reboot [] 
 	(button :class "powermenu_button powermenu_reboot" :onclick "systemctl reboot" ""))
 (defwidget powermenu_lock [] 
-	(button :class "powermenu_button powermenu_lock" :onclick "gtklock -d --no-input-inhibit" ""))
+	(button :class "powermenu_button powermenu_lock" :onclick "hyprlock" ""))
 (defwidget powermenu_logout [] 
 	(button :class "powermenu_button powermenu_logout" :onclick "hyprctl dispatch exit" ""))
 (defwidget powermenu_sleep [] 
-	(button :class "powermenu_button powermenu_sleep" :onclick "gtklock -d --no-input-inhibit ; systemctl suspend ; eww reload" ""))
+	(button :class "powermenu_button powermenu_sleep" :onclick "hyprlock ; systemctl suspend ; eww reload" ""))
 (defwidget powermenu_hibernate [] 
-	(button :class "powermenu_button powermenu_hibernate" :onclick "gtklock -d --no-input-inhibit ; systemctl hibernate ; eww reload" ""))
+	(button :class "powermenu_button powermenu_hibernate" :onclick "hyprlock ; systemctl hibernate ; eww reload" ""))
 
 (defwidget powermenu []
 	(box :class "powermenu dashboard_window" :orientation "v" :space-evenly false
