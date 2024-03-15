@@ -25,6 +25,7 @@ in {
     ./sops.nix
 
     ./modules/networking.nix
+    ./modules/dnscrypt-proxy2.nix
     ./modules/docker.nix
   ];
 
