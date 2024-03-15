@@ -35,7 +35,7 @@
     ...
   }: {
     imports = [
-      ../music.nix
+      ../modules/music.nix
     ];
 
     fileSystems = {

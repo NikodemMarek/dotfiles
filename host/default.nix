@@ -23,6 +23,8 @@ in {
     ./${hostname}/hardware-configuration.nix
 
     ./sops.nix
+
+    ./modules/networking.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -38,53 +40,51 @@ in {
     };
   };
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.systemd-boot.configurationLimit = 30;
-  boot.loader.timeout = 0;
-
-  networking.hostName = hostname;
-  networking.firewall.enable = false;
-  networking.networkmanager.enable = true;
+  boot.loader = {
+    systemd-boot.enable = true;
+    systemd-boot.configurationLimit = 30;
+    timeout = 0;
+  };
 
   security.protectKernelImage = false;
 
-  programs.fish.enable = true;
-  programs.hyprland.enable = true;
-  programs.git.enable = true;
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
+  programs = {
+    fish.enable = true;
+    hyprland.enable = true;
+    git.enable = true;
+    nix-ld.dev.enable = true;
+    ssh.startAgent = true;
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+    };
   };
   environment.variables.EDITOR = "nvim";
 
-  programs.nix-ld.dev.enable = true;
-
   virtualisation.docker.enable = true;
 
-  services.greetd = {
-    enable = true;
-    settings = rec {
-      default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland -r -t";
+  services = {
+    greetd = {
+      enable = true;
+      settings = rec {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland -r -t";
+        };
       };
     };
-  };
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "prohibit-password";
-      PasswordAuthentication = true;
+    openssh = {
+      enable = true;
+      settings = {
+        PermitRootLogin = "prohibit-password";
+        PasswordAuthentication = true;
+      };
     };
-  };
-  programs.ssh.startAgent = true;
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
   };
 
   fonts.enableDefaultPackages = false;
