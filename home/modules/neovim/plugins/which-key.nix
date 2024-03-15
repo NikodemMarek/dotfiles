@@ -13,6 +13,7 @@
           "<leader>u" = "UI";
           "<leader>b" = "Debugging";
           "<leader>t" = "Terminal";
+          "<leader>a" = "AI";
         };
       };
     };
