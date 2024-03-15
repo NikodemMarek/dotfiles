@@ -25,6 +25,7 @@ in {
     ./sops.nix
 
     ./modules/networking.nix
+    ./modules/docker.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -60,8 +61,6 @@ in {
     };
   };
   environment.variables.EDITOR = "nvim";
-
-  virtualisation.docker.enable = true;
 
   services = {
     greetd = {

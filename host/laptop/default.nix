@@ -6,15 +6,15 @@
     }
     {
       username = "school";
-      groups = ["networkmanager" "docker" "music"];
+      groups = ["networkmanager" "music"];
     }
     {
       username = "fun";
-      groups = ["wheel" "networkmanager" "docker" "music"];
+      groups = ["wheel" "networkmanager" "music"];
     }
     {
       username = "rustchain";
-      groups = ["networkmanager" "docker"];
+      groups = ["networkmanager"];
     }
   ];
 
