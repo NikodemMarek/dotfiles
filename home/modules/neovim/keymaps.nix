@@ -123,20 +123,6 @@
       options.desc = "Buffer";
     }
 
-    # Navigate buffers
-    {
-      mode = "n";
-      key = "<s-l>";
-      action = "<cmd>bnext<cr>";
-      options.desc = "Next buffer";
-    }
-    {
-      mode = "n";
-      key = "<s-h>";
-      action = "<cmd>bprevious<cr>";
-      options.desc = "Previous buffer";
-    }
-
     # Indent
     {
       mode = "v";

@@ -11,8 +11,7 @@
       relativenumber = true;
 
       wrap = true;
-      foldcolumn = "1";
-      # fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]];
+      foldcolumn = "0";
       foldlevel = 99;
       foldlevelstart = 99;
       foldenable = true;

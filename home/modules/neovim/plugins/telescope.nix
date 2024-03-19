@@ -15,7 +15,7 @@
       # Search in buffer
       {
         mode = "n";
-        key = "<leader>sf";
+        key = "<leader>sg";
         action = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
         options.desc = "Search in buffer";
       }
@@ -23,15 +23,15 @@
       # Open
       {
         mode = "n";
-        key = "<leader>sf";
-        action = "<cmd>Telescope oldfiles<cr>";
-        options.desc = "Recently opened";
-      }
-      {
-        mode = "n";
         key = "<leader><space>";
         action = "<cmd>Telescope buffers<cr>";
         options.desc = "Open buffers";
+      }
+      {
+        mode = "n";
+        key = "<leader>sj";
+        action = "<cmd>Telescope jumplist<cr>";
+        options.desc = "Open jumplist";
       }
 
       # Search
@@ -43,7 +43,7 @@
       }
       {
         mode = "n";
-        key = "<leader>sg";
+        key = "<leader>ss";
         action = "<cmd>Telescope live_grep<cr>";
         options.desc = "Grep";
       }

@@ -5,20 +5,21 @@
     ./lsp.nix
 
     ./plugins/telescope.nix
+    ./plugins/oil.nix
     ./plugins/mini.nix
     ./plugins/comment-nvim.nix
     ./plugins/overseer.nix
+    ./plugins/toggleterm.nix
 
-    ./plugins/oil.nix
     ./plugins/auto-session.nix
     ./plugins/stay-centered.nix
-    ./plugins/toggleterm.nix
+    ./plugins/trailblazer.nix
     ./plugins/dressing.nix
     ./plugins/notify.nix
+    ./plugins/hbac.nix
 
     ./plugins/which-key.nix
     ./plugins/rainbow-delimiters.nix
-    ./plugins/bufferline.nix
     ./plugins/lualine.nix
     ./plugins/cursorline.nix
 
