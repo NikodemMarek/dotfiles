@@ -22,7 +22,11 @@
             {name = "spell";}
           ];
           formatting.fields = ["kind" "abbr" "menu"];
-          snippet.expand = "luasnip";
+          snippet.expand = ''
+            function(args)
+              require('luasnip').lsp_expand(args.body)
+            end
+          '';
           experimental = {
             ghost_text = true;
           };
