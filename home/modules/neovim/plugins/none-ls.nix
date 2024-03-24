@@ -11,7 +11,6 @@
       };
       formatting = {
         alejandra.enable = true;
-        rustfmt.enable = true;
         ktlint.enable = true;
         google_java_format.enable = true;
         prettier.enable = true;
