@@ -32,6 +32,7 @@
         ./modules/eww
 
         ./modules/git.nix
+        ./modules/gh.nix
         ./modules/tools.nix
         ./modules/firefox.nix
         ./modules/qutebrowser.nix
