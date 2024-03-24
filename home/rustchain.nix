@@ -45,8 +45,8 @@
       yarn
       bun
       gcc
-      solana-platform-tools
       solana-cli
+      solana-platform-tools
       anchor-cli
     ];
   };
