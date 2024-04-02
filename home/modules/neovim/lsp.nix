@@ -40,6 +40,8 @@
           lemminx.enable = true;
           jsonls.enable = true;
 
+          pylsp.enable = true;
+
           dockerls.enable = true;
         };
       };

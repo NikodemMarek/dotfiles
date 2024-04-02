@@ -55,6 +55,7 @@
       android-studio
       hurl
       xh
+      python3
     ];
   };
 }

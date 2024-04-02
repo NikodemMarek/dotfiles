@@ -8,12 +8,14 @@
       diagnostics = {
         statix.enable = true;
         ktlint.enable = true;
+        pylint.enable = true;
       };
       formatting = {
         alejandra.enable = true;
         ktlint.enable = true;
         google_java_format.enable = true;
         prettier.enable = true;
+        black.enable = true;
       };
     };
   };
