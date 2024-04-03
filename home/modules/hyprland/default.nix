@@ -43,20 +43,14 @@
       };
 
       general = {
-        "col.active_border" = "0xff${config.colorScheme.palette.base06}";
-        "col.inactive_border" = "0xff${config.colorScheme.palette.base03}";
-        gaps_in = 1;
-        gaps_out = 2;
-        border_size = 1;
+        gaps_in = 5;
+        gaps_out = 5;
+        border_size = 0;
         layout = "dwindle";
       };
 
       decoration = {
-        rounding = 0;
-        drop_shadow = true;
-        shadow_range = 4;
-        shadow_render_power = 3;
-        "col.shadow" = "0xff${config.colorScheme.palette.base02}";
+        rounding = 8;
       };
 
       animations = {
