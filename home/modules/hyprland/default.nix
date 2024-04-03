@@ -97,25 +97,24 @@
           # Toggle window states
           "$mod, V, togglefloating,"
           "$mod, F, fullscreen,"
-          "$mod, P, pseudo," # dwindle
-          "$mod, J, togglesplit," # dwindle
 
-          # move focus between recent windows
+          # Move focus between recent windows
           "$mod, d, focuscurrentorlast,"
 
-          # Move focus with mod + arrow keys or hjkl
+          # Move focus with mod + arrow keys or hl
           "$mod, left, movefocus, l"
           "$mod, right, movefocus, r"
           "$mod, up, movefocus, u"
           "$mod, down, movefocus, d"
           "$mod, h, movefocus, l"
           "$mod, l, movefocus, r"
-          "$mod, k, movefocus, u"
-          "$mod, j, movefocus, d"
 
-          # Move primary workspaces with mod + {A, S}
-          "$mod, A, workspace, 1"
-          "$mod, S, workspace, 2"
+          # Go to {next, prev, empty, 1, 2} workspace with mod + {j, k, n, a, s}
+          "$mod, k, workspace, r-1"
+          "$mod, j, workspace, r+1"
+          "$mod, n, workspace, empty"
+          "$mod, a, workspace, 1"
+          "$mod, s, workspace, 2"
 
           # Kill active window
           "$mod, W, killactive,"
