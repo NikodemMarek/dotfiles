@@ -5,7 +5,19 @@
 
   programs.nixvim = {
     plugins = {
-      rustaceanvim.enable = true;
+      rustaceanvim = {
+        enable = true;
+        server.settings = {
+          cargo = {
+            buildScripts = {
+              enable = true;
+            };
+          };
+          procMacro = {
+            enable = true;
+          };
+        };
+      };
     };
   };
 }
