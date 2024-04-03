@@ -116,6 +116,13 @@
           "$mod, a, workspace, 1"
           "$mod, s, workspace, 2"
 
+          # Move window to {next, prev, empty, 1, 2} workspace with mod + shift + {j, k, n, a, s}
+          "$mod SHIFT, k, movetoworkspace, r-1"
+          "$mod SHIFT, j, movetoworkspace, r+1"
+          "$mod SHIFT, n, movetoworkspace, empty"
+          "$mod SHIFT, a, movetoworkspace, 1"
+          "$mod SHIFT, s, movetoworkspace, 2"
+
           # Kill active window
           "$mod, W, killactive,"
 
@@ -132,7 +139,7 @@
           "$mod ALT, ESCAPE, exit" # exit hyprland
         ]
         ++ (
-          # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
+          # binds $mod + [shift +] {1..10} to go to [/ move to] workspace {1..10}
           builtins.concatLists (builtins.genList (
               x: let
                 ws = let
