@@ -46,7 +46,7 @@
         gaps_in = 5;
         gaps_out = 5;
         border_size = 0;
-        layout = "dwindle";
+        layout = "master";
       };
 
       decoration = {
@@ -78,6 +78,9 @@
 
       master = {
         new_is_master = true;
+        mfact = 0.75;
+        orientation = "right";
+        inherit_fullscreen = true;
       };
 
       gestures = {
@@ -97,6 +100,11 @@
           # Toggle window states
           "$mod, V, togglefloating,"
           "$mod, F, fullscreen,"
+
+          # Master layout
+          "$mod, o, layoutmsg, focusmaster"
+          "$mod SHIFT, o, layoutmsg, swapwithmaster"
+          "$mod, t, layoutmsg, swapnext"
 
           # Move focus between recent windows
           "$mod, d, focuscurrentorlast,"
