@@ -104,7 +104,7 @@
           # Master layout
           "$mod, o, layoutmsg, focusmaster"
           "$mod SHIFT, o, layoutmsg, swapwithmaster"
-          "$mod, t, layoutmsg, swapnext"
+          "$mod, t, layoutmsg, rollnext"
 
           # Move focus between recent windows
           "$mod, d, focuscurrentorlast,"
