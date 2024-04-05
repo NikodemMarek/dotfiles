@@ -56,6 +56,7 @@
       hurl
       xh
       python3
+      bun
     ];
   };
 }
