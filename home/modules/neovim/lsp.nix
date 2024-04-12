@@ -32,7 +32,7 @@
             installRustc = false;
           };
 
-          denols.enable = true;
+          tsserver.enable = true;
           tailwindcss.enable = true;
 
           kotlin-language-server.enable = true;
