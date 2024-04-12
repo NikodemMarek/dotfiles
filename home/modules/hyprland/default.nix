@@ -140,8 +140,8 @@
           "$mod SHIFT, RETURN, exec, alacritty --working-directory ~/projects/"
           "$mod, E, exec, alacritty -e joshuto"
 
-          ", PRINT, exec, grim -g '$(slurp)' - | wl-copy" # screenshot
-          "SHIFT, PRINT, exec, grim -g '$(slurp)' ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png" # screenshot
+          ", PRINT, exec, grim -g \"$(slurp)\" - | wl-copy" # screenshot
+          "SHIFT, PRINT, exec, grim -g \"$(slurp)\" ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png" # screenshot
 
           "$mod SHIFT, ESCAPE, exec, hyprlock" # lock session
           "$mod ALT, ESCAPE, exit" # exit hyprland
