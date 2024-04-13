@@ -37,6 +37,8 @@
         ./modules/firefox.nix
         ./modules/qutebrowser.nix
         ./modules/wired-notify.nix
+        ./modules/beets.nix
+        ./modules/yt-dlp.nix
       ]
       ++ (
         if settings.device == "laptop"
