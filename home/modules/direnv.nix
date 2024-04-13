@@ -8,4 +8,8 @@
 
     bash.enable = true;
   };
+
+  home.shellAliases = {
+    direnvenable = "echo use nix > .envrc; direnv allow";
+  };
 }
