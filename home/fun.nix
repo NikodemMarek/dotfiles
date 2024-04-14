@@ -45,6 +45,7 @@
       rnote
       beeper
       zathura
+      lutris
     ];
   };
 }

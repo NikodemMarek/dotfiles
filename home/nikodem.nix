@@ -51,6 +51,7 @@
       beeper
       typst
       zathura
+      xh
     ];
   };
 }
