@@ -46,6 +46,9 @@
       beeper
       zathura
       lutris
+      prismlauncher
+      atlauncher
+      jdk8
     ];
   };
 }

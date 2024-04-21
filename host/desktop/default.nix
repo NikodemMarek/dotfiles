@@ -5,10 +5,6 @@
       groups = ["wheel" "networkmanager" "docker" "music"];
     }
     {
-      username = "school";
-      groups = ["networkmanager" "music"];
-    }
-    {
       username = "fun";
       groups = ["wheel" "networkmanager"];
     }
@@ -64,6 +60,10 @@
       mesa
       linuxKernel.packages.linux_6_1.rtl8821au
     ];
-    hardware.opengl.driSupport32Bit = true;
+    hardware.opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+    };
   };
 }

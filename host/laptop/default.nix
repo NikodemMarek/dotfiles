@@ -5,10 +5,6 @@
       groups = ["wheel" "networkmanager" "docker" "music"];
     }
     {
-      username = "school";
-      groups = ["networkmanager" "music"];
-    }
-    {
       username = "fun";
       groups = ["wheel" "networkmanager" "music"];
     }
