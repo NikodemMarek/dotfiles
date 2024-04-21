@@ -4,10 +4,9 @@
       enable = true;
       defaultFileExplorer = true;
 
-      columns = {
-        icon.enable = true;
-        permissions.enable = true;
-        size.enable = true;
+      settings = {
+        columns = ["icon" "permissions" "size"];
+        experimental_watch_for_changes = true;
       };
     };
     keymaps = [
