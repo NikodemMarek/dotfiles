@@ -14,6 +14,7 @@
 
   imports = [
     ./sops.nix
+    ./modules/nh.nix
 
     ./modules/nix-colors.nix
   ];
@@ -27,16 +28,12 @@
     config = {
       allowUnfree = true;
       allowUnfreePredicate = _: true;
-      permittedInsecurePackages = [];
     };
   };
 
   home = {
     inherit username;
     homeDirectory = "/home/${username}";
-    shellAliases = {
-      swhome = "NIXPKGS_ALLOW_UNFREE=1 home-manager switch --flake /dotfiles#${username}@${hostname} --impure";
-    };
   };
 
   systemd.user.startServices = "sd-switch";
