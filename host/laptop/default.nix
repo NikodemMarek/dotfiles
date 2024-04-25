@@ -16,10 +16,16 @@
 
   settings = {
     device = "laptop";
-    resolution = {
-      width = 1920;
-      height = 1080;
-    };
+    monitors = [
+      # primary display first
+      {
+        name = "";
+        width = 1920;
+        height = 1080;
+        refreshRate = 60;
+        transform = 0;
+      }
+    ];
   };
 
   module = {

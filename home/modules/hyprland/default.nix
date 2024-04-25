@@ -2,9 +2,12 @@
   config,
   pkgs,
   lib,
+  utils,
   settings,
   ...
-}: {
+}: let
+  inherit (utils) str;
+in {
   imports = [
     ./hyprpaper.nix
     ./hyprlock.nix
@@ -24,9 +27,9 @@
     enable = true;
     xwayland.enable = true;
     settings = {
-      monitor = [
-        ", preferred, auto, 1"
-      ];
+      monitor =
+        builtins.map (m: "${m.name}, ${str m.width}x${str m.height}@${str m.refreshRate}, auto, 1, transform, ${str m.transform}") settings.monitors
+        ++ [", preferred, auto, 1"];
 
       input = {
         kb_layout = "pl";
