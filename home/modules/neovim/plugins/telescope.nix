@@ -57,6 +57,13 @@
       # Diagnostics
       {
         mode = "n";
+        key = "gx";
+        action = "vim.diagnostic.open_float";
+        lua = true;
+        options.desc = "Open diagnostic under cursor";
+      }
+      {
+        mode = "n";
         key = "<leader>sd";
         action = "<cmd>Telescope diagnostics<cr>";
         options.desc = "Diagnostics";
