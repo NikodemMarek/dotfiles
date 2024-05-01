@@ -9,6 +9,10 @@
     extraConfig = ''
       config.load_autoconfig(False)
 
+      config.set('auto_save.session', True)
+
+      config.set('downloads.location.directory', '~/tmp')
+
       config.set('content.cookies.accept', 'all', 'chrome-devtools://*')
       config.set('content.cookies.accept', 'all', 'devtools://*')
 
