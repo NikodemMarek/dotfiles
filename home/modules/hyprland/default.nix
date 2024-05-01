@@ -183,9 +183,6 @@ in {
         ", XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +5%" # raise audio volume
       ];
 
-      windowrule = [
-        "workspace 1 silent, firefox"
-      ];
       workspace = "1, monitor:HDMI-A-1";
 
       exec-once = ["hyprpaper"];
