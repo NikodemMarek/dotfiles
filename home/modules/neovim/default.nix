@@ -17,6 +17,7 @@
     ./plugins/dressing.nix
     ./plugins/notify.nix
     ./plugins/hbac.nix
+    ./plugins/autoread.nix
 
     ./plugins/which-key.nix
     ./plugins/rainbow-delimiters.nix
