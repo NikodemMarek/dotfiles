@@ -23,6 +23,8 @@
         width = 2560;
         height = 1440;
         refreshRate = 144;
+        offsetX = 0;
+        offsetY = 0;
         transform = 0;
       }
       {
@@ -30,6 +32,8 @@
         width = 1920;
         height = 1080;
         refreshRate = 60;
+        offsetX = 2560;
+        offsetY = -240;
         transform = 3;
       }
     ];

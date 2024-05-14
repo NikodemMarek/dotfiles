@@ -23,6 +23,8 @@
         width = 1920;
         height = 1080;
         refreshRate = 60;
+        offsetX = 0;
+        offsetY = 0;
         transform = 0;
       }
     ];
