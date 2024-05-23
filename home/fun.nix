@@ -47,8 +47,8 @@
       zathura
       lutris
       prismlauncher
-      atlauncher
       jdk8
+      steam
     ];
   };
 }
