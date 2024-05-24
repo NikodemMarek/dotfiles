@@ -3,7 +3,7 @@
     enable = true;
     storageDriver = "btrfs";
     rootless = {
-      enable = true;
+      enable = false;
       setSocketVariable = true;
     };
   };
