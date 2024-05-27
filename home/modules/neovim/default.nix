@@ -7,7 +7,7 @@
     ./plugins/telescope.nix
     ./plugins/oil.nix
     ./plugins/mini.nix
-    ./plugins/comment-nvim.nix
+    ./plugins/comment.nix
     ./plugins/overseer.nix
     ./plugins/toggleterm.nix
 
@@ -44,6 +44,7 @@
   programs = {
     nixvim = {
       enable = true;
+      defaultEditor = true;
       colorschemes.catppuccin.enable = true;
       globals.mapleader = " ";
       clipboard = {

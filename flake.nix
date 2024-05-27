@@ -9,8 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
-
     sops-nix.url = "github:Mic92/sops-nix";
 
     nix-colors.url = "github:misterio77/nix-colors";
@@ -127,7 +125,6 @@
                   settings = system-config.settings // user-config.settings;
                 };
                 modules = [
-                  inputs.hyprland.homeManagerModules.default
                   inputs.sops-nix.homeManagerModules.sops
                   inputs.nixvim.homeManagerModules.nixvim
                   inputs.anyrun.homeManagerModules.anyrun

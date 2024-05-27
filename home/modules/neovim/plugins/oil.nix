@@ -2,9 +2,8 @@
   programs.nixvim = {
     plugins.oil = {
       enable = true;
-      defaultFileExplorer = true;
-
       settings = {
+        default_file_explorer = true;
         columns = ["icon" "permissions" "size"];
         experimental_watch_for_changes = true;
       };

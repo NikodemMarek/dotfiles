@@ -7,7 +7,7 @@
     plugins = {
       rustaceanvim = {
         enable = true;
-        server.settings = {
+        settings.server.settings = {
           cargo = {
             buildScripts = {
               enable = true;

@@ -6,7 +6,7 @@
 
         extensions = {
           fzf-native.enable = true;
-          media_files.enable = true;
+          media-files.enable = true;
           frecency.enable = true;
         };
       };
@@ -58,8 +58,7 @@
       {
         mode = "n";
         key = "gx";
-        action = "vim.diagnostic.open_float";
-        lua = true;
+        action.__raw = "vim.diagnostic.open_float";
         options.desc = "Open diagnostic under cursor";
       }
       {

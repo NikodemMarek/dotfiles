@@ -2,16 +2,18 @@
   programs.nixvim = {
     plugins.toggleterm = {
       enable = true;
-      direction = "vertical";
-      size = ''
-        function(term)
-          if term.direction == "horizontal" then
-            return 15
-          elseif term.direction == "vertical" then
-            return vim.o.columns * 0.35
+      settings = {
+        direction = "vertical";
+        size = ''
+          function(term)
+            if term.direction == "horizontal" then
+              return 15
+            elseif term.direction == "vertical" then
+              return vim.o.columns * 0.35
+            end
           end
-        end
-      '';
+        '';
+      };
     };
     keymaps = [
       {
@@ -29,7 +31,7 @@
       {
         mode = "n";
         key = "<leader>tr";
-        action = ''
+        action.__raw = ''
           function()
               local command = vim.ui.input("cmd: ", "", "shellcmd")
               if command == "" then
@@ -39,7 +41,6 @@
               vim.cmd("TermExec cmd='" .. command .. "'")
           end
         '';
-        lua = true;
         options.desc = "Run in terminal";
       }
     ];

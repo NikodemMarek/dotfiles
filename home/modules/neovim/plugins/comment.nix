@@ -1,7 +1,7 @@
 {
   programs.nixvim = {
     plugins = {
-      comment-nvim = {
+      comment = {
         enable = true;
       };
     };
