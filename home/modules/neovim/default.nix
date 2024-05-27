@@ -23,6 +23,7 @@
     ./plugins/rainbow-delimiters.nix
     ./plugins/lualine.nix
     ./plugins/cursorline.nix
+    ./plugins/highlight.nix
 
     ./plugins/treesitter.nix
     ./plugins/none-ls.nix
