@@ -2,11 +2,11 @@
   users = [
     {
       username = "nikodem";
-      groups = ["wheel" "networkmanager" "docker" "music"];
+      groups = ["wheel" "networkmanager" "docker"];
     }
     {
       username = "fun";
-      groups = ["wheel" "networkmanager" "music"];
+      groups = ["wheel" "networkmanager"];
     }
     {
       username = "rustchain";

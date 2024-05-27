@@ -1,4 +1,12 @@
-{ inputs, outputs, lib, config, pkgs, users, ... }: {
+{
+  inputs,
+  outputs,
+  lib,
+  config,
+  pkgs,
+  users,
+  ...
+}: {
   imports = [
     inputs.sops-nix.nixosModules.sops
   ];
@@ -7,19 +15,29 @@
     rage
   ];
 
-  sops.defaultSopsFile = ../secrets.yaml;
-  sops.defaultSopsFormat = "yaml";
+  sops = {
+    defaultSopsFile = ../secrets.yaml;
+    defaultSopsFormat = "yaml";
 
-  # FIXME: This does not seem right
-  sops.age.keyFile = "/var/lib/sops-nix/key.txt";
-  sops.age.generateKey = true;
-
-  sops.secrets = {
-    "configs/openai_api_key" = {
-      mode = "0440";
-      group = "users";
+    # FIXME: This does not seem right
+    age = {
+      keyFile = "/var/lib/sops-nix/key.txt";
+      generateKey = true;
     };
-  } // builtins.listToAttrs
+  };
+
+  sops.secrets =
+    {
+      "configs/openai_api_key" = {
+        mode = "0440";
+        group = "users";
+      };
+      "passwords/music" = {
+        sopsFile = ../secrets.yaml;
+        neededForUsers = true;
+      };
+    }
+    // builtins.listToAttrs
     (builtins.map
       (user: {
         name = "passwords/${user.username}";

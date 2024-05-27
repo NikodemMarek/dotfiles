@@ -60,6 +60,7 @@ in {
       enable = true;
       defaultEditor = true;
     };
+    direnv.enable = true;
   };
   environment.variables.EDITOR = "nvim";
 
