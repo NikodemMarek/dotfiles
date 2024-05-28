@@ -18,10 +18,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    anyrun = {
-      url = "github:Kirottu/anyrun";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    walker.url = "github:abenz1267/walker";
 
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
@@ -66,7 +63,7 @@
         config.allowUnfree = true;
         overlays = [inputs.wired.overlays.default];
       });
-  in rec {
+  in {
     packages = forAllSystems (
       system: let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -127,7 +124,7 @@
                 modules = [
                   inputs.sops-nix.homeManagerModules.sops
                   inputs.nixvim.homeManagerModules.nixvim
-                  inputs.anyrun.homeManagerModules.anyrun
+                  inputs.walker.homeManagerModules.walker
                   inputs.wired.homeManagerModules.default
 
                   user-config.module

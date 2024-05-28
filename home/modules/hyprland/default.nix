@@ -14,7 +14,7 @@ in {
 
     ../alacritty.nix
     ../joshuto
-    ../anyrun.nix
+    ../walker
   ];
 
   home.packages = with pkgs; [
@@ -138,7 +138,7 @@ in {
           "$mod, W, killactive,"
 
           # Execs
-          "$mod, SPACE, exec, anyrun"
+          "$mod, SPACE, exec, walker"
           "$mod, RETURN, exec, alacritty"
           "$mod SHIFT, RETURN, exec, alacritty --working-directory ~/projects/"
           "$mod, E, exec, alacritty -e joshuto"
