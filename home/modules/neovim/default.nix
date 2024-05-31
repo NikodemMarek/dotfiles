@@ -58,6 +58,8 @@
     neovim.defaultEditor = true;
   };
 
+  stylix.targets.nixvim.enable = false;
+
   home.shellAliases = {
     n = "nvim";
   };

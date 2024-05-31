@@ -51,14 +51,14 @@
 
     style = ''
       * {
-        color: #${config.colorScheme.palette.base00};
+        color: #${config.stylix.base16Scheme.base00};
       }
 
       #window {
       }
 
       #box {
-        background: #${config.colorScheme.palette.base00};
+        background: #${config.stylix.base16Scheme.base00};
         padding: 10px;
         border-radius: 2px;
       }
@@ -74,7 +74,7 @@
         box-shadow: none;
         border-bottom: none;
         border: none;
-        background: #${config.colorScheme.palette.base02};
+        background: #${config.stylix.base16Scheme.base02};
         padding-left: 10px;
         padding-right: 10px;
         padding-top: 0px;
@@ -103,7 +103,7 @@
       }
 
       row:selected {
-        background: #${config.colorScheme.palette.base02};
+        background: #${config.stylix.base16Scheme.base02};
       }
 
       .item {
@@ -131,7 +131,7 @@
 
       .activation .activationlabel {
         opacity: 1;
-        color: #${config.colorScheme.palette.base00};
+        color: #${config.stylix.base16Scheme.base00};
       }
 
       .activation .textwrapper,

@@ -1,7 +1,5 @@
 {
-  inputs,
   outputs,
-  lib,
   config,
   pkgs,
   hostname,
@@ -27,6 +25,7 @@ in {
     ./modules/networking.nix
     ./modules/dnscrypt-proxy2.nix
     ./modules/docker.nix
+    ../modules/stylix.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -67,7 +66,7 @@ in {
   services = {
     greetd = {
       enable = true;
-      settings = rec {
+      settings = {
         default_session = {
           command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland -r -t";
         };
@@ -85,22 +84,6 @@ in {
       alsa.enable = true;
       alsa.support32Bit = true;
       pulse.enable = true;
-    };
-  };
-
-  fonts.enableDefaultPackages = false;
-  fonts = {
-    packages = with pkgs; [
-      (nerdfonts.override {
-        fonts = [
-          "Hack"
-        ];
-      })
-    ];
-    fontconfig = {
-      defaultFonts = {
-        monospace = ["Hack"];
-      };
     };
   };
 

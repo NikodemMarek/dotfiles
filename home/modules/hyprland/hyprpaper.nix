@@ -11,7 +11,7 @@
   xdg.configFile."hypr/hyprpaper.conf".text = ''
     ipc = off
 
-    preload = ${./../../../assets/background.png}
-    wallpaper = , ${./../../../assets/background.png}
+    preload = ${config.stylix.image}
+    wallpaper = , ${config.stylix.image}
   '';
 }

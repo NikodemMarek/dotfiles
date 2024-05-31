@@ -11,7 +11,7 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
 
-    nix-colors.url = "github:misterio77/nix-colors";
+    stylix.url = "github:danth/stylix";
 
     nixvim = {
       url = "github:nix-community/nixvim";
@@ -88,6 +88,7 @@
             inherit (system-config) users settings;
           };
           modules = [
+            inputs.stylix.nixosModules.stylix
             inputs.nix-ld.nixosModules.nix-ld
 
             system-config.module
@@ -113,7 +114,6 @@
                 pkgs = pkgsFor.${host.system};
                 extraSpecialArgs = {
                   inherit inputs outputs;
-                  inherit (inputs) nix-colors;
                   inherit utils;
 
                   inherit (host) system hostname;
@@ -123,6 +123,7 @@
                 };
                 modules = [
                   inputs.sops-nix.homeManagerModules.sops
+                  inputs.stylix.homeManagerModules.stylix
                   inputs.nixvim.homeManagerModules.nixvim
                   inputs.walker.homeManagerModules.walker
                   inputs.wired.homeManagerModules.default

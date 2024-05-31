@@ -1,13 +1,6 @@
 {
-  inputs,
   outputs,
-  lib,
-  config,
-  pkgs,
-  utils,
-  hostname,
   username,
-  settings,
   ...
 }: {
   programs.home-manager.enable = true;
@@ -15,8 +8,7 @@
   imports = [
     ./sops.nix
     ./modules/nh.nix
-
-    ./modules/nix-colors.nix
+    ../modules/stylix.nix
   ];
 
   nixpkgs = {
