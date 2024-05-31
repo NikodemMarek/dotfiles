@@ -1,22 +1,14 @@
 {
-  inputs,
-  outputs,
-  lib,
-  config,
   pkgs,
   users,
   ...
 }: {
-  imports = [
-    inputs.sops-nix.nixosModules.sops
-  ];
-
   environment.systemPackages = with pkgs; [
     rage
   ];
 
   sops = {
-    defaultSopsFile = ../secrets.yaml;
+    defaultSopsFile = ../../secrets.yaml;
     defaultSopsFormat = "yaml";
 
     # FIXME: This does not seem right
@@ -33,7 +25,7 @@
         group = "users";
       };
       "passwords/music" = {
-        sopsFile = ../secrets.yaml;
+        sopsFile = ../../secrets.yaml;
         neededForUsers = true;
       };
     }
@@ -42,7 +34,7 @@
       (user: {
         name = "passwords/${user.username}";
         value = {
-          sopsFile = ../secrets.yaml;
+          sopsFile = ../../secrets.yaml;
           neededForUsers = true;
         };
       })

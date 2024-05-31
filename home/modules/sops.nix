@@ -1,11 +1,11 @@
-{ config, pkgs, lib, ... }: {
+{config, ...}: {
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ../secrets.yaml;
+    defaultSopsFile = ../../secrets.yaml;
   };
 
   sops.secrets = {
-    "configs/openai_api_key" = { };
+    "configs/openai_api_key" = {};
   };
 
   home.sessionVariables = {

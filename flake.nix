@@ -72,8 +72,6 @@
     );
 
     overlays = import ./overlays {inherit inputs;};
-    nixosModules = import ./modules/nixos;
-    homeManagerModules = import ./modules/home-manager;
 
     nixosConfigurations = builtins.listToAttrs (builtins.map
       (host: let
@@ -88,6 +86,7 @@
             inherit (system-config) users settings;
           };
           modules = [
+            inputs.sops-nix.nixosModules.sops
             inputs.stylix.nixosModules.stylix
             inputs.nix-ld.nixosModules.nix-ld
 

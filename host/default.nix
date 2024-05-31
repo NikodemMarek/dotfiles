@@ -20,12 +20,11 @@ in {
   imports = [
     ./${hostname}/hardware-configuration.nix
 
-    ./sops.nix
-
+    ./modules/sops.nix
+    ./modules/stylix.nix
     ./modules/networking.nix
     ./modules/dnscrypt-proxy2.nix
     ./modules/docker.nix
-    ../modules/stylix.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
