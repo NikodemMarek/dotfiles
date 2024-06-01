@@ -16,6 +16,7 @@
 
   settings = {
     device = "laptop";
+    system = "x86_64-linux";
     configPath = "/dotfiles";
     monitors = [
       # primary display first
