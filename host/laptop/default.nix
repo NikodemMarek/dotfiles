@@ -16,6 +16,7 @@
 
   settings = {
     device = "laptop";
+    configPath = "/dotfiles";
     monitors = [
       # primary display first
       {
@@ -30,14 +31,7 @@
     ];
   };
 
-  module = {
-    inputs,
-    outputs,
-    lib,
-    config,
-    pkgs,
-    ...
-  }: {
+  module = {pkgs, ...}: {
     imports = [
       ../modules/music.nix
     ];

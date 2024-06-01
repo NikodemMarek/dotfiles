@@ -1,4 +1,4 @@
-{ config, pkgs, lib, settings, ... }: {
+{settings, ...}: {
   programs.git = {
     enable = true;
     aliases = {
@@ -24,7 +24,7 @@
         defaultBranch = "main";
       };
       safe = {
-        directory = "/dotfiles";
+        directory = settings.configPath;
       };
     };
   };

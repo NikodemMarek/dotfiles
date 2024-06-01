@@ -16,6 +16,7 @@
 
   settings = {
     device = "desktop";
+    configPath = "/dotfiles";
     monitors = [
       # primary display first
       {
@@ -40,9 +41,6 @@
   };
 
   module = {
-    inputs,
-    outputs,
-    lib,
     config,
     pkgs,
     ...

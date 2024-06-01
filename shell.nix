@@ -1,17 +1,14 @@
 {pkgs ? import <nixpkgs> {}}: let
-  alias-host-switch = pkgs.writeShellScriptBin "host-switch" ''git add --all ; nh os switch /dotfiles'';
-  alias-host-update = pkgs.writeShellScriptBin "host-update" ''nh os switch /dotfiles --update'';
+  alias-host-switch = pkgs.writeShellScriptBin "host-switch" ''git add --all ; nh os switch .'';
+  alias-host-update = pkgs.writeShellScriptBin "host-update" ''nh os switch . --update'';
 
   alias-sops-update = pkgs.writeShellScriptBin "sops-update" ''sops secrets.yaml'';
 
-  alial-build = pkgs.writeShellScriptBin "build" ''nix build /dotfiles#$1'';
+  alial-build = pkgs.writeShellScriptBin "build" ''nix build .#$1'';
 in
   pkgs.mkShell {
-    buildInputs = with pkgs;
-      [
-        nh
-        sops
-      ]
+    buildInputs =
+      [pkgs.nh pkgs.sops]
       ++ [alias-host-switch alias-host-update alias-sops-update alial-build];
     shellHook = ''
       printf "\e[33m
