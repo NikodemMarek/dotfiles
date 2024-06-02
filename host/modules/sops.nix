@@ -13,11 +13,11 @@
 
     # FIXME: This does not seem right
     age = {
-      keyFile = "/var/lib/sops-nix/key.txt";
-      generateKey = true;
+      sshKeyPaths = ["/etc/ssh/ssh_host_ed25519_key"];
     };
   };
 
+  users.mutableUsers = false;
   sops.secrets =
     {
       "configs/openai_api_key" = {
