@@ -4,6 +4,7 @@
       "projects"
       "documents"
       "screenshots"
+      ".config"
 
       ".ssh"
       ".local/share/keyrings"
