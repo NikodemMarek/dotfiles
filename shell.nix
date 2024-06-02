@@ -55,13 +55,13 @@
         }
         trap cleanup EXIT
 
-        install -d -m755 "$temp/etc/ssh"
+        install -d -m755 "$temp/persist/etc/ssh"
 
-        cat ./host/$1/ssh_host_ed25519_key > "$temp/etc/ssh/ssh_host_ed25519_key"
-        cat ./host/$1/ssh_host_rsa_key > "$temp/etc/ssh/ssh_host_rsa_key"
+        cat ./host/$1/ssh_host_ed25519_key > "$temp/persist/etc/ssh/ssh_host_ed25519_key"
+        cat ./host/$1/ssh_host_rsa_key > "$temp/persist/etc/ssh/ssh_host_rsa_key"
 
-        chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
-        chmod 600 "$temp/etc/ssh/ssh_host_rsa_key"
+        chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
+        chmod 600 "$temp/persist/etc/ssh/ssh_host_rsa_key"
 
         nixos-anywhere --extra-files "$temp" --flake .#$1 $2
       '';

@@ -129,6 +129,7 @@
                 };
                 modules = [
                   inputs.sops-nix.homeManagerModules.sops
+                  inputs.impermanence.homeManagerModules.impermanence
                   inputs.stylix.homeManagerModules.stylix
                   inputs.nixvim.homeManagerModules.nixvim
                   inputs.walker.homeManagerModules.walker
