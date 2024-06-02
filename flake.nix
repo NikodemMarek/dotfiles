@@ -11,6 +11,13 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
 
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    impermanence.url = "github:nix-community/impermanence";
+
     stylix.url = "github:danth/stylix";
 
     nixvim = {
@@ -46,14 +53,8 @@
     ];
 
     hosts = [
-      {
-        hostname = "laptop";
-        system = "x86_64-linux";
-      }
-      {
-        hostname = "desktop";
-        system = "x86_64-linux";
-      }
+      "laptop"
+      "desktop"
     ];
 
     utils = import ./utils;
@@ -63,6 +64,28 @@
         config.allowUnfree = true;
         overlays = [inputs.wired.overlays.default];
       });
+
+    mkhost = hostname: let
+      system-config = import ./host/${hostname};
+    in
+      nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs outputs;
+
+          inherit hostname;
+          inherit (system-config) users settings;
+        };
+        modules = [
+          inputs.sops-nix.nixosModules.sops
+          inputs.impermanence.nixosModules.impermanence
+          inputs.stylix.nixosModules.stylix
+          inputs.nix-ld.nixosModules.nix-ld
+
+          system-config.module
+          ./host
+          ./installation/disko.nix
+        ];
+      };
   in {
     packages = forAllSystems (
       system: let
@@ -74,26 +97,9 @@
     overlays = import ./overlays {inherit inputs;};
 
     nixosConfigurations = builtins.listToAttrs (builtins.map
-      (host: let
-        system-config = import ./host/${host.hostname};
-      in {
-        name = host.hostname;
-        value = nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs outputs;
-
-            inherit (host) hostname;
-            inherit (system-config) users settings;
-          };
-          modules = [
-            inputs.sops-nix.nixosModules.sops
-            inputs.stylix.nixosModules.stylix
-            inputs.nix-ld.nixosModules.nix-ld
-
-            system-config.module
-            ./host
-          ];
-        };
+      (host: {
+        name = host;
+        value = mkhost host;
       })
       hosts);
 
@@ -101,27 +107,29 @@
       nixpkgs.lib.lists.flatten (
         builtins.map
         (
-          host: let
-            system-config = import ./host/${host.hostname};
+          hostname: let
+            system-config = import ./host/${hostname};
           in
             builtins.map
             (user: let
               user-config = import ./home/${user.username}.nix;
             in {
-              name = "${user.username}@${host.hostname}";
+              name = "${user.username}@${hostname}";
               value = home-manager.lib.homeManagerConfiguration {
-                pkgs = pkgsFor.${host.system};
+                pkgs = pkgsFor.${system-config.settings.system};
                 extraSpecialArgs = {
                   inherit inputs outputs;
                   inherit utils;
 
-                  inherit (host) system hostname;
+                  inherit hostname;
                   inherit (user) username groups;
+                  inherit (system-config.settings) system;
 
                   settings = system-config.settings // user-config.settings;
                 };
                 modules = [
                   inputs.sops-nix.homeManagerModules.sops
+                  inputs.impermanence.nixosModules.home-manager.impermanence
                   inputs.stylix.homeManagerModules.stylix
                   inputs.nixvim.homeManagerModules.nixvim
                   inputs.walker.homeManagerModules.walker

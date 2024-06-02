@@ -12,6 +12,9 @@
 
   settings = {
     device = "laptop";
+    system = "x86_64-linux";
+    drive = "/dev/nvme0n1";
+    swap = 15;
     configPath = "/dotfiles";
     monitors = [
       # primary display first
@@ -30,24 +33,13 @@
   module = {pkgs, ...}: {
     imports = [
       ../modules/music.nix
+      ../modules/impermanence.nix
     ];
 
-    fileSystems = {
-      "/".options = ["compress=lzo"];
-      "/home".options = ["compress=lzo"];
-      "/nix".options = ["compress=lzo" "noatime"];
-    };
-
-    swapDevices = [
-      {
-        device = "/swapfile";
-        size = 15 * 1024;
-      }
-    ];
-    boot = {
-      kernelParams = ["resume_offset=25442627"];
-      resumeDevice = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
-    };
+    # boot = {
+    #   kernelParams = ["resume_offset=25442627"];
+    #   resumeDevice = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
+    # };
 
     environment.systemPackages = with pkgs; [
       mesa
