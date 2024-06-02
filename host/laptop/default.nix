@@ -8,10 +8,6 @@
       username = "fun";
       groups = ["wheel" "networkmanager"];
     }
-    {
-      username = "rustchain";
-      groups = ["networkmanager"];
-    }
   ];
 
   settings = {
