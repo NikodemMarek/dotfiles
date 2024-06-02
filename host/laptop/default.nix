@@ -14,6 +14,7 @@
     device = "laptop";
     system = "x86_64-linux";
     drive = "/dev/nvme0n1";
+    swap = 15;
     configPath = "/dotfiles";
     monitors = [
       # primary display first

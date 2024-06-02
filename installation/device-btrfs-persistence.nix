@@ -1,7 +1,12 @@
-{settings, ...}: {
+# run with: sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./device-btrfs-persistence.nix --arg device '"eg. /dev/sda"' --arg swap 'number'
+{
+  device,
+  swap ? 4,
+  ...
+}: {
   disko.devices = {
     disk.vdb = {
-      device = settings.drive;
+      inherit device;
       type = "disk";
       content = {
         type = "gpt";
@@ -46,7 +51,7 @@
 
                 "/swap" = {
                   mountpoint = "/.swapvol";
-                  swap.swapfile.size = "15G";
+                  swap.swapfile.size = "${builtins.toString swap}G";
                 };
 
                 "/nix" = {

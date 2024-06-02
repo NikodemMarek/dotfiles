@@ -77,14 +77,13 @@
         };
         modules = [
           inputs.sops-nix.nixosModules.sops
-          inputs.disko.nixosModules.disko
           inputs.impermanence.nixosModules.impermanence
           inputs.stylix.nixosModules.stylix
           inputs.nix-ld.nixosModules.nix-ld
 
           system-config.module
           ./host
-          ./disk-config.nix
+          ./installation/disko.nix
         ];
       };
   in {

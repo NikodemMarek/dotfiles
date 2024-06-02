@@ -33,6 +33,7 @@
       "/var/lib/bluetooth"
       "/var/lib/nixos"
       "/var/lib/systemd/coredump"
+      "/var/lib/sops-nix"
       "/etc/NetworkManager/system-connections"
       {
         directory = "/dotfiles";
@@ -62,7 +63,6 @@
     ];
     files = [
       "/etc/machine-id"
-      "/var/lib/sops-nix/key.txt"
       # music
       {
         file = "/home/music/musiclib.db";
