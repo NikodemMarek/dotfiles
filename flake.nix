@@ -16,6 +16,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    impermanence.url = "github:nix-community/impermanence";
+
     stylix.url = "github:danth/stylix";
 
     nixvim = {
@@ -76,6 +78,7 @@
         modules = [
           inputs.sops-nix.nixosModules.sops
           inputs.disko.nixosModules.disko
+          inputs.impermanence.nixosModules.impermanence
           inputs.stylix.nixosModules.stylix
           inputs.nix-ld.nixosModules.nix-ld
 

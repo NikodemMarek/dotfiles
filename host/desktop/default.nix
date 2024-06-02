@@ -17,6 +17,7 @@
   settings = {
     device = "desktop";
     system = "x86_64-linux";
+    drive = "/dev/nvme0n1";
     configPath = "/dotfiles";
     monitors = [
       # primary display first
@@ -50,22 +51,10 @@
       ../modules/music.nix
     ];
 
-    fileSystems = {
-      "/".options = ["compress=lzo"];
-      "/home".options = ["compress=lzo"];
-      "/nix".options = ["compress=lzo" "noatime"];
-    };
-
-    swapDevices = [
-      {
-        device = "/swapfile";
-        size = 38 * 1024;
-      }
-    ];
-    boot = {
-      kernelParams = ["resume_offset=25928960"];
-      resumeDevice = "/dev/disk/by-uuid/fc60a589-f4e6-4f9e-b149-b372221e824b";
-    };
+    # boot = {
+    #   kernelParams = ["resume_offset=25928960"];
+    #   resumeDevice = "/dev/disk/by-uuid/fc60a589-f4e6-4f9e-b149-b372221e824b";
+    # };
     security.protectKernelImage = false;
 
     boot.extraModulePackages = [
