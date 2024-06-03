@@ -12,7 +12,7 @@
     ...
   }: {
     isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
+    hashedPasswordFile = config.sops.secrets."hosts/${hostname}/users/${username}/password".path;
     extraGroups = groups;
     shell = pkgs.fish;
   };

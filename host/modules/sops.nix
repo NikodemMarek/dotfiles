@@ -1,13 +1,8 @@
 {
-  pkgs,
   users,
   hostname,
   ...
 }: {
-  environment.systemPackages = with pkgs; [
-    rage
-  ];
-
   sops = {
     defaultSopsFile = ../../secrets.yaml;
     defaultSopsFormat = "yaml";
@@ -29,7 +24,7 @@
     // builtins.listToAttrs
     (builtins.map
       (user: {
-        name = "${hostname}/users/${user.username}/password";
+        name = "hosts/${hostname}/users/${user.username}/password";
         value = {
           sopsFile = ../../secrets.yaml;
           neededForUsers = true;

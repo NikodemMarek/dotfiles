@@ -14,6 +14,16 @@
       description = "update host config";
     }
     {
+      name = "ssh-new-user-key";
+      command = ''
+        ssh-keygen -f ./host/$1/$2_id_ed25519 -t ed25519 -C $2@$1
+
+        printf "\nage key:\n"
+        ssh-to-age < ./host/$1/$2_id_ed25519.pub
+      '';
+      description = "[host user] create a new user key";
+    }
+    {
       name = "ssh-new-host-key";
       command = ''
         ssh-keygen -f ./host/$1/ssh_host_ed25519_key -t ed25519 -C root@$1
