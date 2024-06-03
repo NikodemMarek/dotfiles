@@ -2,6 +2,7 @@ keys:
   - &hosts
     - &laptop age1ulsnsuz6e5l8qwy9mtwwauyvfk80uw6qnwzwefd8p659e0ap9phqnluwgc
     - &desktop age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
+    - &softnet age1ulsnsuz6e5l8qwy9mtwwauyvfk80uw6qnwzwefd8p659e0ap9phqnluwgc
   - &users
     - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
     - &desktop_nikodem age1944c7z4v3un2j6lxhym88pc48rayhgtd70vxephnt979hdp3cdqsgqwn73
@@ -14,3 +15,4 @@ creation_rules:
       - *laptop_nikodem
       - *desktop
       - *desktop_nikodem
+      - *softnet
