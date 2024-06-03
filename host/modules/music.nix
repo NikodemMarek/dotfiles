@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  hostname,
   ...
 }: let
   base-path = "/home/music";
@@ -45,12 +46,17 @@
       }
   '';
 in {
+  sops.secrets."${hostname}/users/music/password" = {
+    sopsFile = ../../secrets.yaml;
+    neededForUsers = true;
+  };
+
   users.groups.music = {};
   users.users.music = {
     isNormalUser = true;
     uid = 1100;
     createHome = false;
-    hashedPasswordFile = config.sops.secrets."passwords/music".path;
+    hashedPasswordFile = config.sops.secrets."${hostname}/users/music/password".path;
     extraGroups = ["music"];
 
     # TODO: change this to custom shell

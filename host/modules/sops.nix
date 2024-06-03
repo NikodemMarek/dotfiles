@@ -1,6 +1,7 @@
 {
   pkgs,
   users,
+  hostname,
   ...
 }: {
   environment.systemPackages = with pkgs; [
@@ -20,19 +21,15 @@
   users.mutableUsers = false;
   sops.secrets =
     {
-      "configs/openai_api_key" = {
-        mode = "0440";
-        group = "users";
-      };
-      "passwords/music" = {
-        sopsFile = ../../secrets.yaml;
-        neededForUsers = true;
-      };
+      # "configs/openai_api_key" = {
+      #   mode = "0440";
+      #   group = "users";
+      # };
     }
     // builtins.listToAttrs
     (builtins.map
       (user: {
-        name = "passwords/${user.username}";
+        name = "${hostname}/users/${user.username}/password";
         value = {
           sopsFile = ../../secrets.yaml;
           neededForUsers = true;
