@@ -16,10 +16,10 @@
   users.mutableUsers = false;
   sops.secrets =
     {
-      # "configs/openai_api_key" = {
-      #   mode = "0440";
-      #   group = "users";
-      # };
+      "config/openai_api_key" = {
+        mode = "0440";
+        group = "users";
+      };
     }
     // builtins.listToAttrs
     (builtins.map
@@ -28,6 +28,17 @@
         value = {
           sopsFile = ../../secrets.yaml;
           neededForUsers = true;
+        };
+      })
+      users)
+    // builtins.listToAttrs
+    (builtins.map
+      (user: {
+        name = "hosts/${hostname}/users/${user.username}/ed_25519_priv";
+        value = {
+          sopsFile = ../../secrets.yaml;
+          mode = "0400";
+          owner = user.username;
         };
       })
       users);

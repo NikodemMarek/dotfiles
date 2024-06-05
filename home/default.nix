@@ -10,6 +10,7 @@
     ./modules/sops.nix
     ./modules/nh.nix
     ./modules/stylix.nix
+    ./modules/ssh.nix
   ];
 
   nixpkgs = {
@@ -27,8 +28,6 @@
   home = {
     inherit username;
     homeDirectory = "/home/${username}";
-
-    file.".ssh/id_ed25519_test".source = "/run/secrets/hosts/${hostname}/users/${username}/ssh_ed25519_priv";
   };
 
   systemd.user.startServices = "sd-switch";
