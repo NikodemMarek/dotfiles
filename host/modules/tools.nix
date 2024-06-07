@@ -1,4 +1,8 @@
-{
+{inputs, ...}: {
+  imports = [
+    inputs.nix-ld.nixosModules.nix-ld
+  ];
+
   programs = {
     fish.enable = true;
     git.enable = true;

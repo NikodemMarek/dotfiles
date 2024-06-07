@@ -76,11 +76,6 @@
           inherit (system-config) users settings;
         };
         modules = [
-          inputs.sops-nix.nixosModules.sops
-          inputs.impermanence.nixosModules.impermanence
-          inputs.stylix.nixosModules.stylix
-          inputs.nix-ld.nixosModules.nix-ld
-
           system-config.module
           ./host
           ./installation/disko.nix
@@ -128,13 +123,6 @@
                   settings = system-config.settings // user-config.settings;
                 };
                 modules = [
-                  inputs.sops-nix.homeManagerModules.sops
-                  inputs.impermanence.nixosModules.home-manager.impermanence
-                  inputs.stylix.homeManagerModules.stylix
-                  inputs.nixvim.homeManagerModules.nixvim
-                  inputs.walker.homeManagerModules.walker
-                  inputs.wired.homeManagerModules.default
-
                   user-config.module
                   ./home
                 ];

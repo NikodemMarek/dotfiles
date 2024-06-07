@@ -1,4 +1,12 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  imports = [
+    inputs.wired.homeManagerModules.default
+  ];
+
   home.packages = with pkgs; [
     libnotify
   ];

@@ -34,6 +34,8 @@
     imports = [
       ../modules/music.nix
       ../modules/impermanence.nix
+
+      (import ../modules/users.nix (import ./default.nix).users)
     ];
 
     # boot = {

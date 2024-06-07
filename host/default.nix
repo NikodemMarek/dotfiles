@@ -7,7 +7,6 @@
     ./${hostname}/hardware-configuration.nix
 
     ./modules/sops.nix
-    ./modules/users.nix
     ./modules/stylix.nix
     ./modules/networking.nix
     ./modules/dnscrypt-proxy2.nix

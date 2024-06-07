@@ -1,12 +1,12 @@
 {
   outputs,
-  hostname,
   username,
   ...
 }: {
   programs.home-manager.enable = true;
 
   imports = [
+    ./modules/impermanence.nix
     ./modules/sops.nix
     ./modules/nh.nix
     ./modules/stylix.nix

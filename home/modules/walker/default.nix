@@ -1,5 +1,11 @@
-{config, ...}: {
+{
+  inputs,
+  config,
+  ...
+}: {
   imports = [
+    inputs.walker.homeManagerModules.walker
+
     ./powermodule.nix
   ];
 

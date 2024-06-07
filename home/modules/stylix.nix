@@ -1,4 +1,12 @@
-{pkgs, ...}: {
+{
+  inputs,
+  pkgs,
+  ...
+}: {
+  imports = [
+    inputs.stylix.homeManagerModules.stylix
+  ];
+
   stylix = {
     image = ../../assets/background.png;
     polarity = "dark";
