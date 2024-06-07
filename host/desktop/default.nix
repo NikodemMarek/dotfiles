@@ -46,13 +46,9 @@
   }: {
     imports = [
       ../modules/music.nix
-    ];
 
-    # boot = {
-    #   kernelParams = ["resume_offset=25928960"];
-    #   resumeDevice = "/dev/disk/by-uuid/fc60a589-f4e6-4f9e-b149-b372221e824b";
-    # };
-    security.protectKernelImage = false;
+      (import ../modules/users.nix (import ./default.nix).users)
+    ];
 
     boot.extraModulePackages = [
       config.boot.kernelPackages.rtl8821au

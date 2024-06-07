@@ -1,30 +1,22 @@
 {
   outputs,
-  config,
-  pkgs,
   hostname,
-  users,
   ...
-}: let
-  mkSystemUser = {
-    username,
-    groups,
-    ...
-  }: {
-    isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets."hosts/${hostname}/users/${username}/password".path;
-    extraGroups = groups;
-    shell = pkgs.fish;
-  };
-in {
+}: {
   imports = [
     ./${hostname}/hardware-configuration.nix
 
     ./modules/sops.nix
+    ./modules/users.nix
     ./modules/stylix.nix
     ./modules/networking.nix
     ./modules/dnscrypt-proxy2.nix
     ./modules/docker.nix
+    ./modules/openssh.nix
+    ./modules/pipewire.nix
+    ./modules/greetd.nix
+    ./modules/tools.nix
+    ./modules/hyprland.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
@@ -47,60 +39,6 @@ in {
   };
 
   security.protectKernelImage = false;
-
-  programs = {
-    fish.enable = true;
-    hyprland.enable = true;
-    git.enable = true;
-    nix-ld.dev.enable = true;
-    ssh.startAgent = true;
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-    };
-    direnv.enable = true;
-  };
-  environment.variables.EDITOR = "nvim";
-
-  services = {
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland -r -t";
-        };
-      };
-    };
-    openssh = {
-      enable = true;
-      settings = {
-        PermitRootLogin = "prohibit-password";
-        PasswordAuthentication = true;
-      };
-
-      hostKeys = [
-        {
-          path = "/persist/etc/ssh/ssh_host_ed25519_key";
-          type = "ed25519";
-        }
-      ];
-    };
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-  };
-
-  users.users = builtins.listToAttrs (builtins.map
-    (user: {
-      name = user.username;
-      value = mkSystemUser {
-        inherit (user) username groups;
-      };
-    })
-    users);
 
   system.stateVersion = "23.11";
 }
