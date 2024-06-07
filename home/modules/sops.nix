@@ -11,11 +11,11 @@
 
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ../../secrets.yaml;
+    defaultSopsFile = ../${hostname}/secrets.yaml;
   };
 
   sops.secrets = {
-    "hosts/${hostname}/users/${username}/ssh_ed25519_priv" = {};
+    "users/${username}/ssh_ed25519_priv" = {};
     "config/openai_api_key" = {};
   };
 

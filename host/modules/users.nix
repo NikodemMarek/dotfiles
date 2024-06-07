@@ -1,9 +1,8 @@
 users: {
-  lib,
   pkgs,
   config,
-  users,
   hostname,
+  users,
   ...
 }: let
   mkSystemUser = {
@@ -12,7 +11,7 @@ users: {
     ...
   }: {
     isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets."hosts/${hostname}/users/${username}/password".path;
+    hashedPasswordFile = config.sops.secrets."users/${username}/password".path;
     extraGroups = groups;
     shell = pkgs.fish;
   };
@@ -21,18 +20,18 @@ in {
     builtins.listToAttrs
     ((builtins.map
         (user: {
-          name = "hosts/${hostname}/users/${user.username}/password";
+          name = "users/${user.username}/password";
           value = {
-            sopsFile = ../../secrets.yaml;
+            sopsFile = ../${hostname}/secrets.yaml;
             neededForUsers = true;
           };
         })
         users)
       ++ (builtins.map
         (user: {
-          name = "hosts/${hostname}/users/${user.username}/ssh_ed25519_priv";
+          name = "users/${user.username}/ssh_ed25519_priv";
           value = {
-            sopsFile = ../../secrets.yaml;
+            sopsFile = ../${hostname}/secrets.yaml;
             mode = "0400";
             owner = user.username;
           };

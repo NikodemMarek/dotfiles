@@ -46,8 +46,8 @@
       }
   '';
 in {
-  sops.secrets."${hostname}/users/music/password" = {
-    sopsFile = ../../secrets.yaml;
+  sops.secrets."users/music/password" = {
+    sopsFile = ../${hostname}/secrets.yaml;
     neededForUsers = true;
   };
 
@@ -56,7 +56,7 @@ in {
     isNormalUser = true;
     uid = 1100;
     createHome = false;
-    hashedPasswordFile = config.sops.secrets."${hostname}/users/music/password".path;
+    hashedPasswordFile = config.sops.secrets."users/music/password".path;
     extraGroups = ["music"];
 
     # TODO: change this to custom shell

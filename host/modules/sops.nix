@@ -1,10 +1,14 @@
-{inputs, ...}: {
+{
+  inputs,
+  hostname,
+  ...
+}: {
   imports = [
     inputs.sops-nix.nixosModules.sops
   ];
 
   sops = {
-    defaultSopsFile = ../../secrets.yaml;
+    defaultSopsFile = ../${hostname}/secrets.yaml;
     defaultSopsFormat = "yaml";
 
     # FIXME: This does not seem right

@@ -36,9 +36,9 @@
       description = "[host] create a new host key";
     }
     {
-      name = "sops-update";
-      command = "sops secrets.yaml";
-      description = "update secrets.yaml";
+      name = "sops";
+      command = "sops";
+      description = "[file] update secrets";
     }
     {
       name = "sops-mkpasswd";
@@ -46,9 +46,9 @@
       description = "[password] generate password";
     }
     {
-      name = "sops-update-keys";
-      command = "sops updatekeys secrets.yaml";
-      description = "update secrets.yaml keys";
+      name = "sops-updatekeys";
+      command = "sops updatekeys";
+      description = "[file] update secrets keys";
     }
     {
       name = "build";
