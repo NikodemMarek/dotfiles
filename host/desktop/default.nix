@@ -64,6 +64,8 @@
       ../modules/graphics.nix
     ];
 
+    networking.hostName = "desktop";
+
     boot.extraModulePackages = [
       config.boot.kernelPackages.rtl8821au
     ];

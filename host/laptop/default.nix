@@ -53,6 +53,8 @@
       ../modules/graphics.nix
     ];
 
+    networking.hostName = "laptop";
+
     services = {
       music = {
         enable = true;

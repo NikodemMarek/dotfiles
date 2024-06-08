@@ -17,10 +17,6 @@
   };
 
   module = {
-    inputs,
-    outputs,
-    lib,
-    config,
     pkgs,
     settings,
     ...
