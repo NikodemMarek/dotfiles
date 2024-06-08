@@ -38,11 +38,6 @@
       (import ../modules/users.nix (import ./default.nix).users)
     ];
 
-    # boot = {
-    #   kernelParams = ["resume_offset=25442627"];
-    #   resumeDevice = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
-    # };
-
     environment.systemPackages = with pkgs; [
       mesa
     ];

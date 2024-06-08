@@ -84,7 +84,7 @@
     ];
     users = builtins.listToAttrs (builtins.map
       (user: {
-        name = "users/${user.username}/password";
+        name = user.username;
         value = {
           directories = [
             ".config"
