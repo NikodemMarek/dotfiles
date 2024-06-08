@@ -1,6 +1,7 @@
 {
   inputs,
   lib,
+  users,
   ...
 }: {
   imports = [
@@ -81,5 +82,33 @@
         parentDirectory = {mode = "u=rx,g=rx,o=rx";};
       }
     ];
+    users = builtins.listToAttrs (builtins.map
+      (user: {
+        name = "users/${user.username}/password";
+        value = {
+          directories = [
+            ".config"
+
+            "projects"
+            "documents"
+            "screenshots"
+
+            ".ssh"
+            ".local/share/keyrings"
+            ".local/share/direnv"
+
+            ".cache"
+            ".mozilla"
+            ".npm"
+            ".cargo"
+            ".java"
+            ".hyprland"
+            ".gradle"
+            ".docker"
+            ".dockercache"
+          ];
+        };
+      })
+      users);
   };
 }

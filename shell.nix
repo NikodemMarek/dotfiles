@@ -27,7 +27,6 @@
       name = "ssh-new-host-key";
       command = ''
         ssh-keygen -f ./host/$1/ssh_host_ed25519_key -t ed25519 -C root@$1
-        ssh-keygen -f ./host/$1/ssh_host_rsa_key -t rsa -C root@$1
 
         printf "\nadd this key to .sops.yaml\n"
         ssh-to-age < ./host/$1/ssh_host_ed25519_key.pub
@@ -68,10 +67,8 @@
         install -d -m755 "$temp/persist/etc/ssh"
 
         cat ./host/$1/ssh_host_ed25519_key > "$temp/persist/etc/ssh/ssh_host_ed25519_key"
-        cat ./host/$1/ssh_host_rsa_key > "$temp/persist/etc/ssh/ssh_host_rsa_key"
 
         chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
-        chmod 600 "$temp/persist/etc/ssh/ssh_host_rsa_key"
 
         nixos-anywhere --extra-files "$temp" --flake .#$1 $2
       '';
