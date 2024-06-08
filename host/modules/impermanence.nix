@@ -1,7 +1,7 @@
 {
   inputs,
   lib,
-  users,
+  settings,
   ...
 }: {
   imports = [
@@ -45,70 +45,17 @@
       "/var/lib/sops-nix"
       "/etc/NetworkManager/system-connections"
       {
-        directory = "/dotfiles";
+        directory = settings.configPath;
         user = "root";
         group = "users";
         mode = "u=rwx,g=rwx,o=rx";
       }
-      # music
-      {
-        directory = "/home/music";
-        user = "music";
-        group = "music";
-        mode = "u=rwx,g=rwx,o=rx";
-      }
-      {
-        directory = "/home/music/data";
-        user = "music";
-        group = "music";
-        mode = "u=rwx,g=rwx,o=rx";
-      }
-      {
-        directory = "/home/music/to-add";
-        user = "music";
-        group = "music";
-        mode = "u=rwx,g=rwx,o=rx";
-      }
+
+      # FIXME: Temporary workaround, because I don't know how to make home persistance work.
+      "/home"
     ];
     files = [
       "/etc/machine-id"
-      # music
-      {
-        file = "/home/music/musiclib.db";
-        parentDirectory = {mode = "u=rwx,g=rwx,o=rx";};
-      }
-      {
-        file = "/home/music/.envrc";
-        parentDirectory = {mode = "u=rx,g=rx,o=rx";};
-      }
     ];
-    users = builtins.listToAttrs (builtins.map
-      (user: {
-        name = user.username;
-        value = {
-          directories = [
-            ".config"
-
-            "projects"
-            "documents"
-            "screenshots"
-
-            ".ssh"
-            ".local/share/keyrings"
-            ".local/share/direnv"
-
-            ".cache"
-            ".mozilla"
-            ".npm"
-            ".cargo"
-            ".java"
-            ".hyprland"
-            ".gradle"
-            ".docker"
-            ".dockercache"
-          ];
-        };
-      })
-      users);
   };
 }

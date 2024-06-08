@@ -48,20 +48,35 @@
       ../modules/music.nix
 
       (import ../modules/users.nix (import ./default.nix).users)
+
+      ../modules/impermanence.nix
+      ../modules/sops.nix
+      ../modules/stylix.nix
+      ../modules/networking.nix
+      ../modules/openssh.nix
+      ../modules/pipewire.nix
+      ../modules/greetd.nix
+      ../modules/hyprland.nix
+      ../modules/docker.nix
+      ../modules/dnscrypt-proxy2.nix
+      ../modules/tools.nix
+      ../modules/music.nix
+      ../modules/graphics.nix
     ];
 
     boot.extraModulePackages = [
       config.boot.kernelPackages.rtl8821au
     ];
-
     environment.systemPackages = with pkgs; [
-      mesa
       linuxKernel.packages.linux_6_1.rtl8821au
     ];
-    hardware.opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
+
+    services = {
+      music = {
+        enable = true;
+        anysync = true;
+        persistent = true;
+      };
     };
   };
 }

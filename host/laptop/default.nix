@@ -30,25 +30,35 @@
     ];
   };
 
-  module = {pkgs, ...}: {
+  module = {
     imports = [
-      ../modules/music.nix
-      ../modules/impermanence.nix
+      ./hardware-configuration.nix
 
       (import ../modules/users.nix (import ./default.nix).users)
+
+      ../modules/impermanence.nix
+      ../modules/sops.nix
+      ../modules/stylix.nix
+      ../modules/networking.nix
+      ../modules/openssh.nix
+      ../modules/pipewire.nix
+      ../modules/greetd.nix
+      ../modules/hyprland.nix
+      ../modules/docker.nix
+      ../modules/dnscrypt-proxy2.nix
+      ../modules/tools.nix
+      ../modules/music.nix
+      ../modules/battery-saver.nix
+      ../modules/bluetooth.nix
+      ../modules/graphics.nix
     ];
 
-    environment.systemPackages = with pkgs; [
-      mesa
-    ];
-
-    hardware.bluetooth = {
-      enable = true;
-      powerOnBoot = true;
+    services = {
+      music = {
+        enable = true;
+        anysync = true;
+        persistent = true;
+      };
     };
-    hardware.opengl.driSupport32Bit = true;
-
-    services.thermald.enable = true;
-    services.auto-cpufreq.enable = true;
   };
 }
