@@ -7,7 +7,7 @@
           owner = "axkirillov";
           repo = "hbac.nvim";
           rev = "main";
-          hash = "sha256-7+e+p+0zMHPJjpnKNkL7QQHZJGQ1DFZ6fsofcsVNXaY=";
+          hash = "sha256-JDMP7Nmh5S7eDLd2sJMYrEDZ9W1J/iAtJ8Zuo0rfzEE=";
         };
       })
     ];
