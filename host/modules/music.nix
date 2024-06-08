@@ -62,12 +62,12 @@ in {
     persistent = lib.mkEnableOption "Enable if persistence is needed";
   };
 
-  sops.secrets."users/music/password" = {
-    sopsFile = ../${hostname}/secrets.yaml;
-    neededForUsers = true;
-  };
-
   config = lib.mkIf cfg.enable {
+    sops.secrets."users/music/password" = {
+      sopsFile = ../${hostname}/secrets.yaml;
+      neededForUsers = true;
+    };
+
     users = {
       groups.music = {};
       users.music = {
