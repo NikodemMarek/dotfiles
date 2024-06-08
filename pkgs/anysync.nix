@@ -10,7 +10,7 @@ rustPlatform.buildRustPackage rec {
     owner = "NikodemMarek";
     repo = "anysync";
     rev = "main";
-    sha256 = "sha256-9g9r6z58i3ycTyN3rsoFX30pNKQk0dD1/quE4sty4pc=";
+    sha256 = "sha256-+uhEwQ+/OHCSGF+9x6Fdf2EWvdHc1SXEB/aTJc4y3UQ=";
   };
 
   nativeBuildInputs = with pkgs; [pkg-config];
