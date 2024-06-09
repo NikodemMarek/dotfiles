@@ -13,6 +13,8 @@
     ../modules/music.nix
     ../modules/battery-saver.nix
     ../modules/bluetooth.nix
+
+    ./samba.nix
   ];
 
   networking.hostName = "LP-043";
