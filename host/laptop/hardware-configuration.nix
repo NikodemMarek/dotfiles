@@ -4,7 +4,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: {
@@ -16,39 +15,6 @@
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
   boot.extraModulePackages = [];
-
-  # fileSystems."/" =
-  #   {
-  #     device = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
-  #     fsType = "btrfs";
-  #     options = [ "subvol=root" ];
-  #   };
-  #
-  # fileSystems."/nix" =
-  #   {
-  #     device = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
-  #     fsType = "btrfs";
-  #     options = [ "subvol=nix" ];
-  #   };
-  #
-  # fileSystems."/home" = {
-  #   device = "/dev/disk/by-uuid/b537105a-8de8-4724-807c-039e5b23f3bb";
-  #   fsType = "btrfs";
-  #   options = ["subvol=home"];
-  # };
-  #
-  # fileSystems."/var/lib/docker/btrfs" =
-  #   {
-  #     device = "/swap/home/root/var/lib/docker/btrfs";
-  #     fsType = "none";
-  #     options = [ "bind" ];
-  #   };
-  #
-  # fileSystems."/boot" =
-  #   {
-  #     device = "/dev/disk/by-uuid/878E-0F6D";
-  #     fsType = "vfat";
-  #   };
 
   swapDevices = [];
 

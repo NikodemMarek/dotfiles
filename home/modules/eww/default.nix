@@ -10,7 +10,7 @@
   inherit (lib) types;
   inherit (utils) str at;
 
-  primaryMonitor = at config.wm.monitors 0;
+  primaryMonitor = at config.settings.monitors 0;
   grid = {
     width = primaryMonitor.width / 16;
     height = primaryMonitor.height / 9;

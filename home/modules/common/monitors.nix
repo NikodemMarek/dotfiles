@@ -45,7 +45,7 @@
     };
   };
 in {
-  options.wm.monitors = lib.mkOption {
+  options.settings.monitors = lib.mkOption {
     type = lib.types.listOf monitor;
     default = [];
     description = "A list of monitors to place widgets on, first monitor is the primary monitor.";

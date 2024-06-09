@@ -1,65 +1,47 @@
 {
-  users = [
-    {
-      username = "softnet";
-      groups = ["wheel" "networkmanager" "docker"];
-    }
+  imports = [
+    (import ../modules/disko/device-btrfs-persistence.nix {
+      device = "/dev/nvme0n1";
+      swap = 38;
+    })
+
+    ../modules/disko
+    ../modules/impermanence.nix
+    ../modules/sops.nix
+    ../modules/hyprland.nix
+    ../modules/docker.nix
+    ../modules/dnscrypt-proxy2.nix
+    ../modules/music.nix
+    ../modules/battery-saver.nix
+    ../modules/bluetooth.nix
   ];
 
-  settings = {
-    device = "softnet";
-    system = "x86_64-linux";
-    drive = "/dev/nvme0n1";
-    swap = 38;
-    configPath = "/dotfiles";
-    monitors = [
-      # primary display first
-      {
-        name = "eDP-1";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        offsetX = 0;
-        offsetY = 0;
-        transform = 0;
-      }
-      {
-        name = "DP-3";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        offsetX = 0;
-        offsetY = 0;
-        transform = 0;
-      }
-      {
-        name = "DP-4";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        offsetX = 0;
-        offsetY = 0;
-        transform = 0;
-      }
-    ];
-  };
-
-  module = {pkgs, ...}: {
-    imports = [
-      ../modules/impermanence.nix
-    ];
-
-    environment.systemPackages = with pkgs; [
-      mesa
-    ];
-
-    hardware.bluetooth = {
-      enable = true;
-      powerOnBoot = true;
-    };
-    hardware.opengl.driSupport32Bit = true;
-
-    services.thermald.enable = true;
-    services.auto-cpufreq.enable = true;
-  };
+  networking.hostName = "LP-043";
 }
+# {
+#   name = "eDP-1";
+#   width = 1920;
+#   height = 1080;
+#   refreshRate = 60;
+#   offsetX = 0;
+#   offsetY = 0;
+#   transform = 0;
+# }
+# {
+#   name = "DP-3";
+#   width = 1920;
+#   height = 1080;
+#   refreshRate = 60;
+#   offsetX = 0;
+#   offsetY = 0;
+#   transform = 0;
+# }
+# {
+#   name = "DP-4";
+#   width = 1920;
+#   height = 1080;
+#   refreshRate = 60;
+#   offsetX = 0;
+#   offsetY = 0;
+#   transform = 0;
+# }

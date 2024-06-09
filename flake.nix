@@ -71,36 +71,28 @@
         overlays = [inputs.wired.overlays.default];
       });
 
-    mkhost = hostname: let
-      system-config = import ./host/${hostname};
-    in
+    mkhost = host:
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs outputs;
+          inherit utils;
 
-          inherit hostname;
-          inherit (system-config) users settings;
+          hostname = host;
         };
         modules = [
-          system-config.module
+          ./host/${host}
           ./host
-          ./installation/disko.nix
         ];
       };
-    mkhome = host: user: let
-      system-config = import ./host/${host};
-    in
+    mkhome = host: user:
       home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsFor.${system-config.settings.system};
+        pkgs = pkgsFor."x86_64-linux";
         extraSpecialArgs = {
           inherit inputs outputs;
           inherit utils;
 
           hostname = host;
           username = user;
-          inherit (system-config.settings) system;
-
-          inherit (system-config) settings;
         };
         modules = [
           ./host/${host}/users/${user}

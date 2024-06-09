@@ -5,17 +5,15 @@
 }: {
   imports = [
     ./${hostname}/hardware-configuration.nix
+    (import ./modules/users.nix (import ./${hostname}/users.nix))
 
-    ./modules/sops.nix
     ./modules/stylix.nix
     ./modules/networking.nix
-    ./modules/dnscrypt-proxy2.nix
-    ./modules/docker.nix
     ./modules/openssh.nix
     ./modules/pipewire.nix
     ./modules/greetd.nix
     ./modules/tools.nix
-    ./modules/hyprland.nix
+    ./modules/graphics.nix
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
