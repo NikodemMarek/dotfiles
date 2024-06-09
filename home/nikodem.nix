@@ -17,10 +17,7 @@
   };
 
   module = {
-    inputs,
-    outputs,
     lib,
-    config,
     pkgs,
     settings,
     ...
@@ -45,6 +42,17 @@
         then [./modules/battery-notifier.nix]
         else []
       );
+
+    config = lib.mkIf (settings.device
+      == "laptop") {
+      services = {
+        battery-notifier = {
+          enable = true;
+          capacityPath = "/sys/class/power_supply/BAT1/capacity";
+          statusPath = "/sys/class/power_supply/BAT1/status";
+        };
+      };
+    };
 
     home.packages = with pkgs; [
       rnote

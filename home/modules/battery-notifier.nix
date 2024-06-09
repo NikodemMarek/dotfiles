@@ -1,10 +1,43 @@
-{utils, ...}: let
-  autorun = utils.autorun {
-    name = "battery-notifier";
-    script = ''
-      while true; do
-          BAT=$(cat /sys/class/power_supply/BAT1/capacity)
-          STATUS=$(cat /sys/class/power_supply/BAT1/status)
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.services.battery-notifier;
+in {
+  options.services.battery-notifier = {
+    enable = lib.mkEnableOption "Battery Notifier";
+
+    capacityPath = lib.mkOption {
+      type = lib.types.path;
+      default = "/sys/class/power_supply/BAT0/capacity";
+      description = "Path to battery capacity file";
+    };
+    statusPath = lib.mkOption {
+      type = lib.types.path;
+      default = "/sys/class/power_supply/BAT0/status";
+      description = "Path to battery status file";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    systemd.user.timers.battery-notifier = {
+      Timer = {
+        OnBootSec = "0m";
+        OnCalendar = "*:0/1";
+      };
+      Install = {
+        WantedBy = ["graphical.target"];
+      };
+    };
+
+    systemd.user.services.battery-notifier = {
+      Service = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.writeShellScriptBin "battery-notifier-execstart" ''
+          BAT=$(cat ${cfg.capacityPath})
+          STATUS=$(cat ${cfg.statusPath})
 
           echo $BAT $STATUS
 
@@ -13,14 +46,8 @@
           elif [[ $BAT -ge 100 && $STATUS == "Charging" ]]; then
             notify-send "Battery full"
           fi
-
-          sleep 60
-      done
-    '';
+        ''}/bin/battery-notifier-execstart";
+      };
+    };
   };
-in {
-  imports = [
-    autorun
-    ./wired-notify.nix
-  ];
 }
