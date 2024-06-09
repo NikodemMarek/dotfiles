@@ -2,7 +2,6 @@ users: {
   pkgs,
   config,
   hostname,
-  users,
   ...
 }: let
   mkSystemUser = {
