@@ -3,6 +3,7 @@
   lib,
   utils,
   config,
+  username,
   ...
 }: let
   cfg = config.services.battery-notifier;
@@ -49,6 +50,10 @@ in {
       Service = {
         Type = "oneshot";
         ExecStart = "${pkgs.writeShellScriptBin "battery-notifier-execstart" ''
+          #!${pkgs.stdenv.shell}
+          # FIXME: This is the dirtiest solution ever, maybe there is PATH variable in home manager?
+          PATH=$PATH:/home/${username}/.nix-profile/bin:/nix/profile/bin:/home/${username}/.local/state/nix/profile/bin:/etc/profiles/per-user/${username}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin
+
           BAT=$(cat ${cfg.capacityPath})
           STATUS=$(cat ${cfg.statusPath})
 
