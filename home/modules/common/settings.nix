@@ -45,9 +45,16 @@
     };
   };
 in {
-  options.settings.monitors = lib.mkOption {
-    type = lib.types.listOf monitor;
-    default = [];
-    description = "A list of monitors to place widgets on, first monitor is the primary monitor.";
+  options.settings = {
+    configPath = lib.mkOption {
+      type = lib.types.path;
+      default = "/dotfiles";
+    };
+
+    monitors = lib.mkOption {
+      type = lib.types.listOf monitor;
+      default = [];
+      description = "A list of monitors to place widgets on, first monitor is the primary monitor.";
+    };
   };
 }

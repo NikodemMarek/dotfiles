@@ -8,7 +8,6 @@
   ];
 
   settings = {
-    configPath = "/dotfiles";
     monitors = [
       {
         name = "DP-3";

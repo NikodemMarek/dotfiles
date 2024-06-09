@@ -11,7 +11,6 @@
   ];
 
   settings = {
-    configPath = "/dotfiles";
     monitors = [
       {
         name = "eDP-1";

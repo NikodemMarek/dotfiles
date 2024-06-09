@@ -1,5 +1,6 @@
 {
   imports = [
+    ./settings.nix
     ./nh.nix
     ./git.nix
     ./gitui.nix
@@ -13,6 +14,5 @@
     ./alacritty.nix
     ./qutebrowser.nix
     ./wired-notify.nix
-    ./monitors.nix
   ];
 }
