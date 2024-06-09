@@ -104,8 +104,7 @@ in {
       };
     };
 
-    environment.persistence."/music" = lib.mkIf cfg.persistent {
-      hideMounts = true;
+    environment.persistence."/persist" = lib.mkIf cfg.persistent {
       directories = [
         {
           directory = cfg.path;
