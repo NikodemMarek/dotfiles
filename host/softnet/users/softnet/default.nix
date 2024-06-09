@@ -1,16 +1,16 @@
 {pkgs, ...}: {
   imports = [
-    ./modules/neovim
-    ./modules/hyprland
+    ../../../../home/modules/neovim
+    ../../../../home/modules/hyprland
 
-    ./modules/git.nix
-    ./modules/gh.nix
-    ./modules/tools.nix
-    ./modules/firefox.nix
-    ./modules/qutebrowser.nix
-    ./modules/wired-notify.nix
-    ./modules/battery-notifier.nix
-    ./modules/openfortivpn.nix
+    ../../../../home/modules/git.nix
+    ../../../../home/modules/gh.nix
+    ../../../../home/modules/tools.nix
+    ../../../../home/modules/firefox.nix
+    ../../../../home/modules/qutebrowser.nix
+    ../../../../home/modules/wired-notify.nix
+    ../../../../home/modules/battery-notifier.nix
+    ../../../../home/modules/openfortivpn.nix
   ];
 
   settings.monitors = [
