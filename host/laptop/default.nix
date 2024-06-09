@@ -48,7 +48,9 @@
       ../modules/dnscrypt-proxy2.nix
       ../modules/tools.nix
       ../modules/music.nix
+      ../modules/wired-notify.nix
       ../modules/battery-saver.nix
+      ../modules/battery-notifier.nix
       ../modules/bluetooth.nix
       ../modules/graphics.nix
     ];
@@ -60,6 +62,11 @@
         enable = true;
         anysync = true;
         persistent = true;
+      };
+      battery-notifier = {
+        enable = true;
+        capacityPath = "/sys/class/power_supply/BAT1/capacity";
+        statusPath = "/sys/class/power_supply/BAT1/status";
       };
     };
   };

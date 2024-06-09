@@ -1,10 +1,4 @@
-{
-  pkgs,
-  lib,
-  utils,
-  username,
-  ...
-}: let
+{utils, ...}: let
   autorun = utils.autorun {
     name = "battery-notifier";
     script = ''
