@@ -61,6 +61,10 @@
         name = "desktop";
         users = ["nikodem" "fun"];
       }
+      {
+        name = "softnet";
+        users = ["softnet"];
+      }
     ];
 
     utils = import ./utils;
