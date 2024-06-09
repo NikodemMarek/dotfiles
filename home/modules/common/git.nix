@@ -1,4 +1,4 @@
-{settings, ...}: {
+{config, ...}: {
   programs.git = {
     enable = true;
     aliases = {
@@ -18,7 +18,7 @@
     };
     extraConfig = {
       init.defaultBranch = "main";
-      safe.directory = settings.configPath;
+      safe.directory = config.settings.configPath;
     };
   };
 

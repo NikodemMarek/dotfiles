@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  settings,
-  ...
-}: {
+{pkgs, ...}: {
   programs.gh = {
     enable = true;
     settings = {

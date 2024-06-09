@@ -1,6 +1,6 @@
 {
   pkgs,
-  settings,
+  config,
   ...
 }: {
   home.packages = with pkgs; [
@@ -8,6 +8,6 @@
   ];
 
   home.shellAliases = {
-    swhome = "NIXPKGS_ALLOW_UNFREE=1 nh home switch ${settings.configPath} -- --impure";
+    swhome = "NIXPKGS_ALLOW_UNFREE=1 nh home switch ${config.settings.configPath} -- --impure";
   };
 }

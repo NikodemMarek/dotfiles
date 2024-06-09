@@ -7,6 +7,7 @@
     ./${hostname}/hardware-configuration.nix
     (import ./modules/users.nix (import ./${hostname}/users.nix))
 
+    ./modules/settings.nix
     ./modules/stylix.nix
     ./modules/networking.nix
     ./modules/openssh.nix

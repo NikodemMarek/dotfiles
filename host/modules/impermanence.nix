@@ -1,7 +1,7 @@
 {
   inputs,
   lib,
-  settings,
+  config,
   ...
 }: {
   imports = [
@@ -45,7 +45,7 @@
       "/var/lib/sops-nix"
       "/etc/NetworkManager/system-connections"
       {
-        directory = settings.configPath;
+        directory = config.settings.configPath;
         user = "root";
         group = "users";
         mode = "u=rwx,g=rwx,o=rx";
