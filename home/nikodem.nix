@@ -41,6 +41,13 @@
       };
     };
 
+    programs = {
+      git = {
+        userEmail = "nikodemmarek11@gmail.com";
+        userName = "NikodemMarek";
+      };
+    };
+
     home.packages = with pkgs; [
       rnote
       beeper

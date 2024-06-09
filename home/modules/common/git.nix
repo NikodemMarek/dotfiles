@@ -15,17 +15,10 @@
       "ph" = "push -u origin";
       "stp" = "!git stash pop && git s &&;:";
       "rst" = "reset --soft --keep HEAD^";
-      "logc" = "!git log --pretty=format:'- %h : %ae : %ad : %s' --date=format:'%Y-%m-%d %H:%M:%S' --author='${settings.email}' --since=$1 --all --no-merges &&;:";
     };
-    userEmail = settings.email;
-    userName = settings.name;
     extraConfig = {
-      init = {
-        defaultBranch = "main";
-      };
-      safe = {
-        directory = settings.configPath;
-      };
+      init.defaultBranch = "main";
+      safe.directory = settings.configPath;
     };
   };
 
