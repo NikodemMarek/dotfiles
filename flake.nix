@@ -89,7 +89,6 @@
         pkgs = pkgsFor."x86_64-linux";
         extraSpecialArgs = {
           inherit inputs outputs;
-          inherit utils;
 
           hostname = host;
           username = user;

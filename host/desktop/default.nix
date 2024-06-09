@@ -9,7 +9,6 @@
       swap = 38;
     })
 
-    ../modules/disko
     ../modules/impermanence.nix
     ../modules/sops.nix
     ../modules/hyprland.nix
