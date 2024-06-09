@@ -106,9 +106,7 @@
             system-config = import ./host/${hostname};
           in
             builtins.map
-            (user: let
-              user-config = import ./home/${user.username}.nix;
-            in {
+            (user: {
               name = "${user.username}@${hostname}";
               value = home-manager.lib.homeManagerConfiguration {
                 pkgs = pkgsFor.${system-config.settings.system};
@@ -120,10 +118,10 @@
                   inherit (user) username groups;
                   inherit (system-config.settings) system;
 
-                  settings = system-config.settings // user-config.settings;
+                  inherit (system-config) settings;
                 };
                 modules = [
-                  user-config.module
+                  ./home/${user.username}.nix
                   ./home
                 ];
               };

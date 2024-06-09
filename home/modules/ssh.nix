@@ -9,7 +9,7 @@
 
     home.file = {
       ".ssh/id_ed25519.pub".source = ../../host/${hostname}/${username}_id_ed25519.pub;
-      ".ssh/id_ed25519".source = "/run/secrets/users/${username}/ssh_ed25519_priv";
+      ".ssh/id_ed25519".source = /run/secrets/users/${username}/ssh_ed25519_priv;
     };
   };
 }

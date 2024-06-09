@@ -6,10 +6,7 @@
   programs.home-manager.enable = true;
 
   imports = [
-    ./modules/sops.nix
-    ./modules/nh.nix
-    ./modules/stylix.nix
-    ./modules/ssh.nix
+    ./modules/common
   ];
 
   nixpkgs = {

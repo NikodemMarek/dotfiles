@@ -1,50 +1,29 @@
 {
-  settings = {
-    eww = {
-      shortcuts = [
-        [
-          ["firefox" ""]
-          ["qutebrowser" "󰖟"]
-          ["steam" "st"]
-        ]
-        [
-          ["lutris" "lt"]
-          ["beeper --default-frame" "󰵅"]
-          ["prismlauncher" "mc"]
-        ]
-      ];
-    };
-  };
+  pkgs,
+  settings,
+  ...
+}: {
+  imports =
+    [
+      ./modules/neovim
+      ./modules/hyprland
 
-  module = {
-    pkgs,
-    settings,
-    ...
-  }: {
-    imports =
-      [
-        ./modules/neovim
-        ./modules/hyprland
-        ./modules/eww
+      ./modules/sops.nix
+      ./modules/ssh.nix
+    ]
+    ++ (
+      if settings.device == "laptop"
+      then [./modules/battery-notifier.nix]
+      else []
+    );
 
-        ./modules/tools.nix
-        ./modules/firefox.nix
-        ./modules/qutebrowser.nix
-      ]
-      ++ (
-        if settings.device == "laptop"
-        then [./modules/battery-notifier.nix]
-        else []
-      );
-
-    home.packages = with pkgs; [
-      rnote
-      beeper
-      zathura
-      lutris
-      prismlauncher
-      jdk8
-      steam
-    ];
-  };
+  home.packages = with pkgs; [
+    rnote
+    beeper
+    zathura
+    lutris
+    prismlauncher
+    jdk8
+    steam
+  ];
 }
