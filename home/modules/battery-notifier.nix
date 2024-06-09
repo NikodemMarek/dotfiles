@@ -1,6 +1,7 @@
 {
   pkgs,
   lib,
+  utils,
   config,
   ...
 }: let
@@ -19,13 +20,25 @@ in {
       default = "/sys/class/power_supply/BAT0/status";
       description = "Path to battery status file";
     };
+
+    lowThreshold = lib.mkOption {
+      type = lib.types.int;
+      default = 10;
+      description = "Low battery threshold";
+    };
+
+    checkInterval = lib.mkOption {
+      type = lib.types.int;
+      default = 1;
+      description = "Interval in minutes to check battery status";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     systemd.user.timers.battery-notifier = {
       Timer = {
         OnBootSec = "0m";
-        OnCalendar = "*:0/1";
+        OnCalendar = "*:0/${utils.str cfg.checkInterval}";
       };
       Install = {
         WantedBy = ["graphical.target"];
@@ -41,7 +54,7 @@ in {
 
           echo $BAT $STATUS
 
-          if [[ $BAT -le 10 && $STATUS == "Discharging" ]]; then
+          if [[ $BAT -le ${utils.str cfg.lowThreshold} && $STATUS == "Discharging" ]]; then
             notify-send "Battery low ($BAT%)"
           elif [[ $BAT -ge 100 && $STATUS == "Charging" ]]; then
             notify-send "Battery full"
