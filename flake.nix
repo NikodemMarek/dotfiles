@@ -96,7 +96,7 @@
           inherit inputs outputs;
           inherit utils;
 
-          hostname = host.name;
+          hostname = host;
           username = user;
           inherit (system-config.settings) system;
 
