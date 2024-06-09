@@ -8,7 +8,6 @@
     [
       ./modules/neovim
       ./modules/hyprland
-      ./modules/eww
 
       ./modules/sops.nix
       ./modules/ssh.nix
