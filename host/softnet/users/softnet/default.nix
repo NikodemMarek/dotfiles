@@ -47,7 +47,8 @@
     };
     openfortivpn = {
       enable = true;
-      server = "80.82.19.178";
+      host = "80.82.19.178";
+      port = 10443;
       username = "nm1";
     };
   };
