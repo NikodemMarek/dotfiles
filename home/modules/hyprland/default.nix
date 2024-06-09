@@ -1,7 +1,5 @@
 {
-  config,
   pkgs,
-  lib,
   utils,
   settings,
   ...
@@ -12,7 +10,7 @@ in {
     ./hyprpaper.nix
     ./hyprlock.nix
 
-    ../alacritty.nix
+    ../common/alacritty.nix
     ../joshuto
     ../walker
   ];
