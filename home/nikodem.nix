@@ -22,7 +22,7 @@
 
   config = lib.mkIf (settings.device
     == "laptop") {
-    monitors = [
+    wm.monitors = [
       {
         name = "eDP-1";
         width = 1920;

@@ -17,7 +17,7 @@
       else []
     );
 
-  monitors = [
+  wm.monitors = [
     {
       name = "eDP-1";
       width = 1920;
