@@ -1,21 +1,12 @@
-{
-  pkgs,
-  settings,
-  ...
-}: {
-  imports =
-    [
-      ./modules/neovim
-      ./modules/hyprland
+{pkgs, ...}: {
+  imports = [
+    ../../../../home/modules/neovim
+    ../../../../home/modules/hyprland
 
-      ./modules/sops.nix
-      ./modules/ssh.nix
-    ]
-    ++ (
-      if settings.device == "laptop"
-      then [./modules/battery-notifier.nix]
-      else []
-    );
+    ../../../../home/modules/sops.nix
+    ../../../../home/modules/ssh.nix
+    ../../../../home/modules/battery-notifier.nix
+  ];
 
   wm.monitors = [
     {

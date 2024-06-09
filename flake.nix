@@ -53,8 +53,14 @@
     ];
 
     hosts = [
-      "laptop"
-      "desktop"
+      {
+        name = "laptop";
+        users = ["nikodem" "fun"];
+      }
+      {
+        name = "desktop";
+        users = ["nikodem" "fun"];
+      }
     ];
 
     utils = import ./utils;
@@ -81,6 +87,26 @@
           ./installation/disko.nix
         ];
       };
+    mkhome = host: user: let
+      system-config = import ./host/${host};
+    in
+      home-manager.lib.homeManagerConfiguration {
+        pkgs = pkgsFor.${system-config.settings.system};
+        extraSpecialArgs = {
+          inherit inputs outputs;
+          inherit utils;
+
+          hostname = host.name;
+          username = user;
+          inherit (system-config.settings) system;
+
+          inherit (system-config) settings;
+        };
+        modules = [
+          ./host/${host}/users/${user}
+          ./home
+        ];
+      };
   in {
     packages = forAllSystems (
       system: let
@@ -93,40 +119,21 @@
 
     nixosConfigurations = builtins.listToAttrs (builtins.map
       (host: {
-        name = host;
-        value = mkhost host;
+        inherit (host) name;
+        value = mkhost host.name;
       })
       hosts);
 
     homeConfigurations = builtins.listToAttrs (
       nixpkgs.lib.lists.flatten (
-        builtins.map
-        (
-          hostname: let
-            system-config = import ./host/${hostname};
-          in
+        builtins.map (
+          host:
             builtins.map
             (user: {
-              name = "${user.username}@${hostname}";
-              value = home-manager.lib.homeManagerConfiguration {
-                pkgs = pkgsFor.${system-config.settings.system};
-                extraSpecialArgs = {
-                  inherit inputs outputs;
-                  inherit utils;
-
-                  inherit hostname;
-                  inherit (user) username groups;
-                  inherit (system-config.settings) system;
-
-                  inherit (system-config) settings;
-                };
-                modules = [
-                  ./home/${user.username}.nix
-                  ./home
-                ];
-              };
+              name = "${user}@${host.name}";
+              value = mkhome host.name user;
             })
-            system-config.users
+            host.users
         )
         hosts
       )
