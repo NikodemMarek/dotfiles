@@ -14,5 +14,6 @@
     ./alacritty.nix
     ./qutebrowser.nix
     ./wired-notify.nix
+    ./eza.nix
   ];
 }

@@ -10,6 +10,7 @@
     ./modules/qutebrowser.nix
     ./modules/wired-notify.nix
     ./modules/battery-notifier.nix
+    ./modules/openfortivpn.nix
   ];
 
   settings.monitors = [
@@ -42,8 +43,33 @@
     }
   ];
 
+  services = {
+    battery-notifier = {
+      enable = true;
+      capacityPath = "/sys/class/power_supply/BAT1/capacity";
+      statusPath = "/sys/class/power_supply/BAT1/status";
+    };
+    openfortivpn = {
+      enable = true;
+      server = "80.82.19.178";
+      username = "nm1";
+    };
+  };
+
+  programs = {
+    git = {
+      userEmail = "nikodem.marek@softnet.com.pl";
+      userName = "nm1";
+    };
+  };
+
   home.packages = with pkgs; [
+    rocketchat-desktop
     zathura
     xh
+
+    android-studio
+    jetbrains.idea-community
+    jetbrains.pycharm-community
   ];
 }
