@@ -26,7 +26,7 @@ in {
     xwayland.enable = true;
     settings = {
       monitor =
-        builtins.map (m: "${m.name}, ${str m.width}x${str m.height}@${str m.refreshRate}, ${str m.x}x${str m.y}, 1, transform, ${str m.transform}") config.monitors
+        builtins.map (m: "${m.name}, ${str m.width}x${str m.height}@${str m.refreshRate}, ${str m.x}x${str m.y}, 1, transform, ${str m.transform}") config.wm.monitors
         ++ [", preferred, auto, 1"];
 
       input = {
