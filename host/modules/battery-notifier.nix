@@ -5,10 +5,6 @@
 }: let
   cfg = config.services.battery-notifier;
 in {
-  imports = [
-    ./wired-notify.nix
-  ];
-
   options.services.battery-notifier = {
     enable = lib.mkEnableOption "Battery Notifier";
 

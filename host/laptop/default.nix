@@ -48,7 +48,6 @@
       ../modules/dnscrypt-proxy2.nix
       ../modules/tools.nix
       ../modules/music.nix
-      ../modules/wired-notify.nix
       ../modules/battery-saver.nix
       ../modules/battery-notifier.nix
       ../modules/bluetooth.nix
