@@ -16,10 +16,10 @@
     {
       name = "ssh-new-user-key";
       command = ''
-        ssh-keygen -f ./host/$1/$2_id_ed25519 -t ed25519 -C $2@$1
+        ssh-keygen -f ./host/$1/users/$2/id_ed25519 -t ed25519 -C $2@$1
 
         printf "\nage key:\n"
-        ssh-to-age < ./host/$1/$2_id_ed25519.pub
+        ssh-to-age < ./host/$1/users/$2/id_ed25519.pub
       '';
       description = "[host user] create a new user key";
     }

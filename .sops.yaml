@@ -7,6 +7,7 @@ keys:
   - &users
     - &desktop_nikodem age1944c7z4v3un2j6lxhym88pc48rayhgtd70vxephnt979hdp3cdqsgqwn73
     - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
+    - &softnet_softnet age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
 
 creation_rules:
   - path_regex: host/desktop/secrets.ya?ml$
@@ -25,3 +26,4 @@ creation_rules:
     key_groups:
     - age:
       - *softnet
+      - *softnet_softnet
