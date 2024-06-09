@@ -13,5 +13,6 @@
     ./alacritty.nix
     ./qutebrowser.nix
     ./wired-notify.nix
+    ./monitors.nix
   ];
 }

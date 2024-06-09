@@ -1,7 +1,7 @@
 {
   pkgs,
   utils,
-  settings,
+  config,
   ...
 }: let
   inherit (utils) str;
@@ -26,7 +26,7 @@ in {
     xwayland.enable = true;
     settings = {
       monitor =
-        builtins.map (m: "${m.name}, ${str m.width}x${str m.height}@${str m.refreshRate}, ${str m.offsetX}x${str m.offsetY}, 1, transform, ${str m.transform}") settings.monitors
+        builtins.map (m: "${m.name}, ${str m.width}x${str m.height}@${str m.refreshRate}, ${str m.x}x${str m.y}, 1, transform, ${str m.transform}") config.monitors
         ++ [", preferred, auto, 1"];
 
       input = {
