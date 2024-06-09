@@ -3,12 +3,8 @@
     ../../../../home/modules/neovim
     ../../../../home/modules/hyprland
 
-    ../../../../home/modules/git.nix
-    ../../../../home/modules/gh.nix
-    ../../../../home/modules/tools.nix
-    ../../../../home/modules/firefox.nix
-    ../../../../home/modules/qutebrowser.nix
-    ../../../../home/modules/wired-notify.nix
+    ../../../../home/modules/sops.nix
+    ../../../../home/modules/ssh.nix
     ../../../../home/modules/battery-notifier.nix
     ../../../../home/modules/openfortivpn.nix
   ];
