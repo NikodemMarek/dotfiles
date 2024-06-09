@@ -52,14 +52,14 @@
           statusPath = "/sys/class/power_supply/BAT1/status";
         };
       };
-    };
 
-    home.packages = with pkgs; [
-      rnote
-      beeper
-      typst
-      zathura
-      xh
-    ];
+      home.packages = with pkgs; [
+        rnote
+        beeper
+        typst
+        zathura
+        xh
+      ];
+    };
   };
 }
