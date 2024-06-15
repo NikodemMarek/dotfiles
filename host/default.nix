@@ -9,6 +9,7 @@
 
     ./modules/disko
     ./modules/settings.nix
+    ./modules/time.nix
     ./modules/stylix.nix
     ./modules/networking.nix
     ./modules/openssh.nix
