@@ -34,6 +34,7 @@
   '';
 
   fileSystems."/persist".neededForBoot = true;
+  programs.fuse.userAllowOther = true;
 
   environment.persistence."/persist" = {
     hideMounts = true;
@@ -41,7 +42,7 @@
       "/var/log"
       "/var/lib/bluetooth"
       "/var/lib/nixos"
-      "/var/lib/systemd/coredump"
+      "/var/lib/systemd"
       "/var/lib/sops-nix"
       "/etc/NetworkManager/system-connections"
       {
@@ -50,12 +51,20 @@
         group = "users";
         mode = "u=rwx,g=rwx,o=rx";
       }
-
-      # FIXME: Temporary workaround, because I don't know how to make home persistance work.
-      "/home"
     ];
     files = [
       "/etc/machine-id"
     ];
   };
+
+  system.activationScripts.persistent-dirs.text = let
+    mkHomePersist = user:
+      lib.optionalString user.createHome ''
+        mkdir -p /persist/${user.home}
+        chown ${user.name}:${user.group} /persist/${user.home}
+        chmod ${user.homeMode} /persist/${user.home}
+      '';
+    users = lib.attrValues config.users.users;
+  in
+    lib.concatLines (map mkHomePersist users);
 }

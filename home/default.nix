@@ -1,29 +1,13 @@
-{
-  outputs,
-  username,
-  ...
-}: {
+{config, ...}: {
   programs.home-manager.enable = true;
 
   imports = [
     ./modules/common
   ];
 
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-    ];
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = _: true;
-    };
-  };
-
   home = {
-    inherit username;
-    homeDirectory = "/home/${username}";
+    inherit (config.settings) username;
+    homeDirectory = "/home/${config.settings.username}";
   };
 
   systemd.user.startServices = "sd-switch";

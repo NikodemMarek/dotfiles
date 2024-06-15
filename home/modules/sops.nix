@@ -2,7 +2,6 @@
   inputs,
   config,
   hostname,
-  username,
   ...
 }: {
   imports = [
@@ -15,11 +14,11 @@
   };
 
   sops.secrets = {
-    "users/${username}/ssh_ed25519_priv" = {};
+    "users/${config.settings.username}/ssh_ed25519_priv" = {};
     "config/openai_api_key" = {};
   };
 
   home.sessionVariables = {
-    OPENAI_API_KEY = builtins.readFile /run/secrets/config/openai_api_key;
+    # OPENAI_API_KEY = builtins.readFile /run/secrets/config/openai_api_key;
   };
 }

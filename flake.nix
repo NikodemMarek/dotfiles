@@ -72,7 +72,6 @@
       import nixpkgs {
         inherit system;
         config.allowUnfree = true;
-        overlays = [inputs.wired.overlays.default];
       });
 
     mkhost = host:

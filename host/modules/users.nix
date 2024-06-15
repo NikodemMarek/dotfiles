@@ -48,4 +48,11 @@ in {
       })
       users);
   };
+
+  home-manager.users = builtins.listToAttrs (builtins.map
+    (user: {
+      name = user.username;
+      value = import ../${hostname}/users/${user.username};
+    })
+    users);
 }

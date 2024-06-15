@@ -8,7 +8,6 @@
     ./shell.nix
     ./tools.nix
     ./direnv.nix
-    ./stylix.nix
     ./zellij.nix
     ./firefox.nix
     ./alacritty.nix

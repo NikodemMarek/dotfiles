@@ -1,5 +1,6 @@
 {pkgs, ...}: {
   imports = [
+    ../../../../home
     ../../../../home/modules/neovim
     ../../../../home/modules/hyprland
 
@@ -9,6 +10,7 @@
   ];
 
   settings = {
+    username = "fun";
     monitors = [
       {
         name = "eDP-1";

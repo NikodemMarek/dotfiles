@@ -1,8 +1,10 @@
 {pkgs, ...}: {
   imports = [
+    ../../../../home
     ../../../../home/modules/neovim
     ../../../../home/modules/hyprland
 
+    ../../../../home/modules/impermanence.nix
     ../../../../home/modules/sops.nix
     ../../../../home/modules/ssh.nix
     ../../../../home/modules/beets.nix
@@ -11,6 +13,7 @@
   ];
 
   settings = {
+    username = "nikodem";
     monitors = [
       {
         name = "eDP-1";

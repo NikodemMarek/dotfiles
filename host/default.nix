@@ -1,4 +1,5 @@
 {
+  inputs,
   outputs,
   hostname,
   ...
@@ -8,6 +9,7 @@
     (import ./modules/users.nix (import ./${hostname}/users.nix))
 
     ./modules/disko
+    ./modules/home-manager.nix
     ./modules/settings.nix
     ./modules/time.nix
     ./modules/stylix.nix
@@ -26,6 +28,7 @@
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      inputs.wired.overlays.default
     ];
     config = {
       allowUnfree = true;

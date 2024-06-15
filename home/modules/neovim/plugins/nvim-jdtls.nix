@@ -1,7 +1,6 @@
 {
   pkgs,
   config,
-  username,
   ...
 }: {
   programs.nixvim.plugins = {
