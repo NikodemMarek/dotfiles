@@ -51,11 +51,6 @@ in {
       default = /dotfiles;
     };
 
-    username = lib.mkOption {
-      type = lib.types.str;
-      description = "The username of the user.";
-    };
-
     monitors = lib.mkOption {
       type = lib.types.listOf monitor;
       default = [];

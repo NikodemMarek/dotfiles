@@ -7,13 +7,12 @@
     inputs.impermanence.nixosModules.home-manager.impermanence
   ];
 
-  home.persistence."/persist/home/${config.settings.username}" = {
+  home.persistence."/persist/home/${config.home.username}" = {
     directories = [
       "projects"
       "documents"
       "screenshots"
 
-      ".ssh"
       ".local/share/keyrings"
       ".local/share/direnv"
 

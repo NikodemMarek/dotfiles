@@ -6,11 +6,9 @@
   ];
 
   home = {
-    inherit (config.settings) username;
-    homeDirectory = "/home/${config.settings.username}";
+    homeDirectory = "/home/${config.home.username}";
+    stateVersion = "23.11";
   };
 
   systemd.user.startServices = "sd-switch";
-
-  home.stateVersion = "23.11";
 }

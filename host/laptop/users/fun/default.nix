@@ -9,8 +9,9 @@
     ../../../../home/modules/battery-notifier.nix
   ];
 
+  home.username = "fun";
+
   settings = {
-    username = "fun";
     monitors = [
       {
         name = "eDP-1";
