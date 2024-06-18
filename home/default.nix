@@ -1,9 +1,15 @@
-{config, ...}: {
+{
+  outputs,
+  config,
+  ...
+}: {
   programs.home-manager.enable = true;
 
-  imports = [
-    ./modules/common
-  ];
+  imports =
+    [
+      ./modules/common
+    ]
+    ++ (builtins.attrValues outputs.homeManagerModules);
 
   home = {
     homeDirectory = "/home/${config.home.username}";

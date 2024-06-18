@@ -1,7 +1,7 @@
 {
   imports = [
-    ./settings.nix
     ./nh.nix
+    ./sops.nix
     ./git.nix
     ./gitui.nix
     ./gh.nix

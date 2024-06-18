@@ -5,8 +5,6 @@
 
     ../../../../home/modules/sops.nix
     ../../../../home/modules/ssh.nix
-    ../../../../home/modules/battery-notifier.nix
-    ../../../../home/modules/openfortivpn.nix
   ];
 
   settings.monitors = [

@@ -103,6 +103,9 @@
         ];
       };
   in {
+    nixosModules = import ./modules/host;
+    homeManagerModules = import ./modules/home;
+
     packages = forAllSystems (
       system: let
         pkgs = nixpkgs.legacyPackages.${system};

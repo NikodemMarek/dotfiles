@@ -61,9 +61,7 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home = {
-      packages = [pkgs.openfortivpn];
-    };
+    home.packages = [pkgs.openfortivpn];
 
     xdg.configFile."openfortivpn/config".text = ''
       ${lib.optionalString (cfg.host != null) "host = ${utils.str cfg.host}"}

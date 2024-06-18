@@ -14,7 +14,6 @@
     ../modules/hyprland.nix
     ../modules/docker.nix
     ../modules/dnscrypt-proxy2.nix
-    ../modules/music.nix
   ];
 
   networking.hostName = "desktop";

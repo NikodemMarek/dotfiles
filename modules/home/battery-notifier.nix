@@ -59,6 +59,7 @@ in {
           echo $BAT $STATUS
 
           if [[ $BAT -le ${utils.str cfg.lowThreshold} && $STATUS == "Discharging" ]]; then
+            # TODO: use direct path to notify-send
             notify-send "Battery low ($BAT%)"
           elif [[ $BAT -ge 100 && $STATUS == "Charging" ]]; then
             notify-send "Battery full"

@@ -4,9 +4,7 @@
     ../../../../home/modules/neovim
     ../../../../home/modules/hyprland
 
-    ../../../../home/modules/sops.nix
     ../../../../home/modules/ssh.nix
-    ../../../../home/modules/battery-notifier.nix
   ];
 
   home.username = "fun";

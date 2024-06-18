@@ -5,11 +5,9 @@
     ../../../../home/modules/hyprland
 
     ../../../../home/modules/impermanence.nix
-    ../../../../home/modules/sops.nix
     ../../../../home/modules/ssh.nix
     ../../../../home/modules/beets.nix
     ../../../../home/modules/yt-dlp.nix
-    ../../../../home/modules/battery-notifier.nix
   ];
 
   home.username = "nikodem";

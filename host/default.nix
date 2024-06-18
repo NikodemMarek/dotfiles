@@ -4,22 +4,23 @@
   hostname,
   ...
 }: {
-  imports = [
-    ./${hostname}/hardware-configuration.nix
-    (import ./modules/users.nix (import ./${hostname}/users.nix))
+  imports =
+    [
+      ./${hostname}/hardware-configuration.nix
+      (import ./modules/users.nix (import ./${hostname}/users.nix))
 
-    ./modules/disko
-    ./modules/home-manager.nix
-    ./modules/settings.nix
-    ./modules/time.nix
-    ./modules/stylix.nix
-    ./modules/networking.nix
-    ./modules/openssh.nix
-    ./modules/pipewire.nix
-    ./modules/greetd.nix
-    ./modules/tools.nix
-    ./modules/graphics.nix
-  ];
+      ./modules/disko
+      ./modules/home-manager.nix
+      ./modules/time.nix
+      ./modules/stylix.nix
+      ./modules/networking.nix
+      ./modules/openssh.nix
+      ./modules/pipewire.nix
+      ./modules/greetd.nix
+      ./modules/tools.nix
+      ./modules/graphics.nix
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
