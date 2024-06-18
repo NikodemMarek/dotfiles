@@ -14,7 +14,7 @@
   };
 
   sops.secrets = {
-    "users/${config.settings.username}/ssh_ed25519_priv" = {};
+    "users/${config.home.username}/ssh_ed25519_priv" = {};
     "config/openai_api_key" = {};
   };
 
