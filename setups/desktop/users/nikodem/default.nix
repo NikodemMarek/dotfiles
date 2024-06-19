@@ -1,10 +1,13 @@
 {pkgs, ...}: {
   imports = [
-    ../../../../home/modules/neovim
-    ../../../../home/modules/hyprland
+    ../../../../home
+    ../../../../home/neovim
+    ../../../../home/hyprland
 
-    ../../../../home/modules/sops.nix
-    ../../../../home/modules/ssh.nix
+    ../../../../home/impermanence.nix
+    ../../../../home/ssh.nix
+    ../../../../home/beets.nix
+    ../../../../home/yt-dlp.nix
   ];
 
   settings = {
@@ -30,13 +33,18 @@
     ];
   };
 
+  programs = {
+    git = {
+      userEmail = "nikodemmarek11@gmail.com";
+      userName = "NikodemMarek";
+    };
+  };
+
   home.packages = with pkgs; [
     rnote
     beeper
+    typst
     zathura
-    lutris
-    prismlauncher
-    jdk8
-    steam
+    xh
   ];
 }

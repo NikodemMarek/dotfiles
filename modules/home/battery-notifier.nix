@@ -1,7 +1,6 @@
 {
   pkgs,
   lib,
-  utils,
   config,
   ...
 }: let
@@ -38,7 +37,7 @@ in {
     systemd.user.timers.battery-notifier = {
       Timer = {
         OnBootSec = "0m";
-        OnCalendar = "*:0/${utils.str cfg.checkInterval}";
+        OnCalendar = "*:0/${toString cfg.checkInterval}";
       };
       Install = {
         WantedBy = ["graphical.target"];
@@ -58,7 +57,7 @@ in {
 
           echo $BAT $STATUS
 
-          if [[ $BAT -le ${utils.str cfg.lowThreshold} && $STATUS == "Discharging" ]]; then
+          if [[ $BAT -le ${toString cfg.lowThreshold} && $STATUS == "Discharging" ]]; then
             # TODO: use direct path to notify-send
             notify-send "Battery low ($BAT%)"
           elif [[ $BAT -ge 100 && $STATUS == "Charging" ]]; then

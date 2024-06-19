@@ -67,7 +67,6 @@
       }
     ];
 
-    utils = import ./utils;
     pkgsFor = nixpkgs.lib.genAttrs ["x86_64-linux"] (system:
       import nixpkgs {
         inherit system;
@@ -83,7 +82,7 @@
           hostname = host;
         };
         modules = [
-          ./host/${host}
+          ./setups/${host}
           ./host
         ];
       };
@@ -92,13 +91,11 @@
         pkgs = pkgsFor."x86_64-linux";
         extraSpecialArgs = {
           inherit inputs outputs;
-          inherit utils;
 
           hostname = host;
-          username = user;
         };
         modules = [
-          ./host/${host}/users/${user}
+          ./setups/${host}/users/${user}
           ./home
         ];
       };
@@ -112,7 +109,6 @@
       in
         import ./pkgs {inherit pkgs;}
     );
-
     overlays = import ./overlays {inherit inputs;};
 
     nixosConfigurations = builtins.listToAttrs (builtins.map

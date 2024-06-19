@@ -12,7 +12,6 @@
     useGlobalPkgs = true;
     extraSpecialArgs = {
       inherit inputs outputs hostname;
-      utils = import ../../utils;
     };
   };
 }

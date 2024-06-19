@@ -6,19 +6,19 @@
 }: {
   imports =
     [
-      ./${hostname}/hardware-configuration.nix
-      (import ./modules/users.nix (import ./${hostname}/users.nix))
+      ../setups/${hostname}/hardware-configuration.nix
+      (import ./users.nix (import ../setups/${hostname}/users.nix))
 
-      ./modules/disko
-      ./modules/home-manager.nix
-      ./modules/time.nix
-      ./modules/stylix.nix
-      ./modules/networking.nix
-      ./modules/openssh.nix
-      ./modules/pipewire.nix
-      ./modules/greetd.nix
-      ./modules/tools.nix
-      ./modules/graphics.nix
+      ./disko
+      ./home-manager.nix
+      ./time.nix
+      ./stylix.nix
+      ./networking.nix
+      ./openssh.nix
+      ./pipewire.nix
+      ./greetd.nix
+      ./tools.nix
+      ./graphics.nix
     ]
     ++ (builtins.attrValues outputs.nixosModules);
 

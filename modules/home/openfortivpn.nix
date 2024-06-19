@@ -1,7 +1,6 @@
 {
   config,
   lib,
-  utils,
   pkgs,
   ...
 }: let
@@ -64,8 +63,8 @@ in {
     home.packages = [pkgs.openfortivpn];
 
     xdg.configFile."openfortivpn/config".text = ''
-      ${lib.optionalString (cfg.host != null) "host = ${utils.str cfg.host}"}
-      port = ${utils.str cfg.port}
+      ${lib.optionalString (cfg.host != null) "host = ${toString cfg.host}"}
+      port = ${toString cfg.port}
       ${lib.optionalString (cfg.realm != null) "realm = ${cfg.realm}"}
 
       ${lib.optionalString (cfg.username != null) "username = ${cfg.username}"}

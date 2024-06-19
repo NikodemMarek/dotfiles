@@ -7,7 +7,7 @@
 
   imports =
     [
-      ./modules/common
+      ./common
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);
 

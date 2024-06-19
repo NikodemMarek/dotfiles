@@ -4,16 +4,16 @@
   ...
 }: {
   imports = [
-    (import ../modules/disko/device-btrfs-persistence.nix {
+    (import ../../host/disko/device-btrfs-persistence.nix {
       device = "/dev/nvme0n1";
       swap = 38;
     })
 
-    ../modules/impermanence.nix
-    ../modules/sops.nix
-    ../modules/hyprland.nix
-    ../modules/docker.nix
-    ../modules/dnscrypt-proxy2.nix
+    ../../host/impermanence.nix
+    ../../host/sops.nix
+    ../../host/hyprland.nix
+    ../../host/docker.nix
+    ../../host/dnscrypt-proxy2.nix
   ];
 
   networking.hostName = "desktop";

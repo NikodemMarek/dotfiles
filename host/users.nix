@@ -21,7 +21,7 @@ in {
         (user: {
           name = "users/${user.username}/password";
           value = {
-            sopsFile = ../${hostname}/secrets.yaml;
+            sopsFile = ../setups/${hostname}/secrets.yaml;
             neededForUsers = true;
           };
         })
@@ -30,7 +30,7 @@ in {
         (user: {
           name = "users/${user.username}/ssh_ed25519_priv";
           value = {
-            sopsFile = ../${hostname}/secrets.yaml;
+            sopsFile = ../setups/${hostname}/secrets.yaml;
             mode = "0400";
             owner = user.username;
           };
@@ -52,7 +52,7 @@ in {
   home-manager.users = builtins.listToAttrs (builtins.map
     (user: {
       name = user.username;
-      value = import ../${hostname}/users/${user.username};
+      value = import ../setups/${hostname}/users/${user.username};
     })
     users);
 }

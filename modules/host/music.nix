@@ -64,7 +64,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     sops.secrets."users/music/password" = {
-      sopsFile = ../../host/${hostname}/secrets.yaml;
+      sopsFile = ../../setups/${hostname}/secrets.yaml;
       neededForUsers = true;
     };
 

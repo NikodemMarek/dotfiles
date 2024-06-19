@@ -1,11 +1,8 @@
 {
   pkgs,
-  utils,
   config,
   ...
-}: let
-  inherit (utils) str;
-in {
+}: {
   imports = [
     ./hyprpaper.nix
     ./hyprlock.nix
@@ -26,7 +23,7 @@ in {
     xwayland.enable = true;
     settings = {
       monitor =
-        builtins.map (m: "${m.name}, ${str m.width}x${str m.height}@${str m.refreshRate}, ${str m.x}x${str m.y}, 1, transform, ${str m.transform}") config.settings.monitors
+        builtins.map (m: "${m.name}, ${toString m.width}x${toString m.height}@${toString m.refreshRate}, ${toString m.x}x${toString m.y}, 1, transform, ${toString m.transform}") config.settings.monitors
         ++ [", preferred, auto, 1"];
 
       input = {

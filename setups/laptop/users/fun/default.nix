@@ -1,10 +1,13 @@
 {pkgs, ...}: {
   imports = [
     ../../../../home
-    ../../../../home/modules/neovim
-    ../../../../home/modules/hyprland
+    ../../../../home/neovim
+    ../../../../home/hyprland
 
-    ../../../../home/modules/ssh.nix
+    ../../../../home/impermanence.nix
+    ../../../../home/ssh.nix
+    ../../../../home/beets.nix
+    ../../../../home/yt-dlp.nix
   ];
 
   home.username = "fun";

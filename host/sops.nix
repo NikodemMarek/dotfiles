@@ -8,7 +8,7 @@
   ];
 
   sops = {
-    defaultSopsFile = ../${hostname}/secrets.yaml;
+    defaultSopsFile = ../setups/${hostname}/secrets.yaml;
     defaultSopsFormat = "yaml";
 
     # FIXME: This does not seem right
