@@ -10,7 +10,6 @@
     ../modules/hyprland.nix
     ../modules/docker.nix
     ../modules/dnscrypt-proxy2.nix
-    ../modules/music.nix
     ../modules/battery-saver.nix
     ../modules/bluetooth.nix
   ];
