@@ -10,7 +10,7 @@
       extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
         ublock-origin
         darkreader
-        languagetool
+        # languagetool
         simple-translate
       ];
       settings = {
