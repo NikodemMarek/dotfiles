@@ -1,7 +1,6 @@
 {
   inputs,
   outputs,
-  hostname,
   ...
 }: {
   imports = [
@@ -11,7 +10,7 @@
   home-manager = {
     useGlobalPkgs = true;
     extraSpecialArgs = {
-      inherit inputs outputs hostname;
+      inherit inputs outputs;
     };
   };
 }

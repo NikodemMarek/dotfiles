@@ -1,6 +1,6 @@
 {
   inputs,
-  hostname,
+  config,
   ...
 }: {
   imports = [
@@ -8,7 +8,7 @@
   ];
 
   sops = {
-    defaultSopsFile = ../setups/${hostname}/secrets.yaml;
+    defaultSopsFile = ../setups/${config.networking.hostName}/secrets.yaml;
     defaultSopsFormat = "yaml";
 
     # FIXME: This does not seem right

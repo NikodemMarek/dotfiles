@@ -1,15 +1,12 @@
 {
   inputs,
   outputs,
-  hostname,
   ...
 }: {
   imports =
     [
-      ../setups/${hostname}/hardware-configuration.nix
-      (import ./users.nix (import ../setups/${hostname}/users.nix))
-
       ./disko
+      ./sops.nix
       ./home-manager.nix
       ./time.nix
       ./stylix.nix

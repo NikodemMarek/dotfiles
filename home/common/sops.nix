@@ -1,7 +1,6 @@
 {
   inputs,
   config,
-  hostname,
   ...
 }: {
   imports = [
@@ -10,7 +9,7 @@
 
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ../../setups/${hostname}/secrets.yaml;
+    defaultSopsFile = ../../setups/${config.settings.hostname}/secrets.yaml;
   };
 
   sops.secrets = {

@@ -62,8 +62,8 @@
         users = ["nikodem" "fun"];
       }
       {
-        name = "softnet";
-        users = ["softnet"];
+        name = "LP-043";
+        users = ["nm1"];
       }
     ];
 
@@ -78,12 +78,9 @@
       nixpkgs.lib.nixosSystem {
         specialArgs = {
           inherit inputs outputs;
-
-          hostname = host;
         };
         modules = [
           ./setups/${host}
-          ./host
         ];
       };
     mkhome = host: user:
@@ -91,12 +88,9 @@
         pkgs = pkgsFor."x86_64-linux";
         extraSpecialArgs = {
           inherit inputs outputs;
-
-          hostname = host;
         };
         modules = [
           ./setups/${host}/users/${user}
-          ./home
         ];
       };
   in {

@@ -51,6 +51,11 @@ in {
       default = /dotfiles;
     };
 
+    hostname = lib.mkOption {
+      type = lib.types.str;
+      default = "default";
+    };
+
     monitors = lib.mkOption {
       type = lib.types.listOf monitor;
       default = [];

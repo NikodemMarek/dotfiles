@@ -2,7 +2,6 @@
   lib,
   config,
   pkgs,
-  hostname,
   ...
 }: let
   cfg = config.services.music;
@@ -64,7 +63,7 @@ in {
 
   config = lib.mkIf cfg.enable {
     sops.secrets."users/music/password" = {
-      sopsFile = ../../setups/${hostname}/secrets.yaml;
+      sopsFile = ../../setups/${config.networking.hostName}/secrets.yaml;
       neededForUsers = true;
     };
 

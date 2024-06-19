@@ -1,12 +1,15 @@
 {pkgs, ...}: {
   imports = [
+    ./hardware-configuration.nix
+
     (import ../../host/disko/device-btrfs-persistence.nix {
       device = "/dev/nvme0n1";
       swap = 38;
     })
+    (import ../../host/users.nix (import ./users.nix))
 
+    ../../host
     ../../host/impermanence.nix
-    ../../host/sops.nix
     ../../host/hyprland.nix
     ../../host/docker.nix
     ../../host/dnscrypt-proxy2.nix
@@ -49,13 +52,13 @@
     };
     "openfortivpn/user_cert" = {
       sopsFile = ./openfortivpn_cert.pem;
-      format = "pem";
+      format = "binary";
       mode = "0440";
       group = "users";
     };
     "openfortivpn/user_key" = {
       sopsFile = ./openfortivpn_key.pem;
-      format = "pem";
+      format = "binary";
       mode = "0440";
       group = "users";
     };
