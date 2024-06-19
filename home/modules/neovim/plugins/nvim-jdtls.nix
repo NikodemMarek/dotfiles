@@ -8,6 +8,8 @@
       enable = true;
       cmd = [
         "${pkgs.jdt-language-server}/bin/jdtls"
+        "--java-executable"
+        "${pkgs.jdk}/bin/java"
         "-data"
         "${config.home.homeDirectory}/.cache/jdtls/data"
         "-configuration"

@@ -20,6 +20,7 @@
     ./plugins/notify.nix
     ./plugins/hbac.nix
     ./plugins/autoread.nix
+    ./plugins/bufdelete.nix
 
     ./plugins/which-key.nix
     ./plugins/rainbow-delimiters.nix

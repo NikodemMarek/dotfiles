@@ -115,13 +115,6 @@
       action = "<cmd>close<cr>";
       options.desc = "Window";
     }
-    # Delete buffer
-    {
-      mode = "n";
-      key = "<leader>dd";
-      action = "<cmd>bdelete<cr>";
-      options.desc = "Buffer";
-    }
 
     # Indent
     {
