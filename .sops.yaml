@@ -22,7 +22,7 @@ creation_rules:
       - *laptop
       - *laptop_nikodem
 
-  - path_regex: host/softnet/secrets.ya?ml$
+  - path_regex: host/softnet/secrets.ya?ml|host/softnet/openfortivpn_key.pem|host/softnet/openfortivpn_cert.pem$
     key_groups:
     - age:
       - *softnet

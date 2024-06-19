@@ -16,6 +16,51 @@
 
   networking.hostName = "LP-043";
 
+  sops.secrets = {
+    "openfortivpn/host" = {
+      sopsFile = ./secrets.yaml;
+      mode = "0440";
+      group = "users";
+    };
+    "openfortivpn/port" = {
+      sopsFile = ./secrets.yaml;
+      mode = "0440";
+      group = "users";
+    };
+    "openfortivpn/username" = {
+      sopsFile = ./secrets.yaml;
+      mode = "0440";
+      group = "users";
+    };
+    "openfortivpn/password" = {
+      sopsFile = ./secrets.yaml;
+      mode = "0440";
+      group = "users";
+    };
+    "openfortivpn/realm" = {
+      sopsFile = ./secrets.yaml;
+      mode = "0440";
+      group = "users";
+    };
+    "openfortivpn/trusted_cert" = {
+      sopsFile = ./secrets.yaml;
+      mode = "0440";
+      group = "users";
+    };
+    "openfortivpn/user_cert" = {
+      sopsFile = ./openfortivpn_cert.pem;
+      format = "pem";
+      mode = "0440";
+      group = "users";
+    };
+    "openfortivpn/user_key" = {
+      sopsFile = ./openfortivpn_key.pem;
+      format = "pem";
+      mode = "0440";
+      group = "users";
+    };
+  };
+
   environment.systemPackages = [pkgs.cifs-utils];
 
   fileSystems."/mnt/softnet_fs" = {
