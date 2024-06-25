@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -20,43 +24,43 @@
   networking.hostName = "LP-043";
 
   sops.secrets = {
-    "openfortivpn/host" = {
+    "users/nm1/openfortivpn/host" = {
       sopsFile = ./secrets.yaml;
       mode = "0440";
       group = "users";
     };
-    "openfortivpn/port" = {
+    "users/nm1/openfortivpn/port" = {
       sopsFile = ./secrets.yaml;
       mode = "0440";
       group = "users";
     };
-    "openfortivpn/username" = {
+    "users/nm1/openfortivpn/username" = {
       sopsFile = ./secrets.yaml;
       mode = "0440";
       group = "users";
     };
-    "openfortivpn/password" = {
+    "users/nm1/openfortivpn/password" = {
       sopsFile = ./secrets.yaml;
       mode = "0440";
       group = "users";
     };
-    "openfortivpn/realm" = {
+    "users/nm1/openfortivpn/realm" = {
       sopsFile = ./secrets.yaml;
       mode = "0440";
       group = "users";
     };
-    "openfortivpn/trusted_cert" = {
+    "users/nm1/openfortivpn/trusted_cert" = {
       sopsFile = ./secrets.yaml;
       mode = "0440";
       group = "users";
     };
-    "openfortivpn/user_cert" = {
+    "users/nm1/openfortivpn/user_cert" = {
       sopsFile = ./openfortivpn_cert.pem;
       format = "binary";
       mode = "0440";
       group = "users";
     };
-    "openfortivpn/user_key" = {
+    "users/nm1/openfortivpn/user_key" = {
       sopsFile = ./openfortivpn_key.pem;
       format = "binary";
       mode = "0440";

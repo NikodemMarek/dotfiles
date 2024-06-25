@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   config,
   ...
 }: {
@@ -48,14 +49,20 @@
   };
 
   sops.secrets = {
-    "openfortivpn/host" = {};
-    "openfortivpn/port" = {};
-    "openfortivpn/username" = {};
-    "openfortivpn/password" = {};
-    "openfortivpn/realm" = {};
-    "openfortivpn/trusted_cert" = {};
-    "openfortivpn/user_cert" = {};
-    "openfortivpn/user_key" = {};
+    "users/nm1/openfortivpn/host" = {};
+    "users/nm1/openfortivpn/port" = {};
+    "users/nm1/openfortivpn/username" = {};
+    "users/nm1/openfortivpn/password" = {};
+    "users/nm1/openfortivpn/realm" = {};
+    "users/nm1/openfortivpn/trusted_cert" = {};
+    "users/nm1/openfortivpn/user_cert" = {
+      sopsFile = ../../openfortivpn_cert.pem;
+      format = "binary";
+    };
+    "users/nm1/openfortivpn/user_key" = {
+      sopsFile = ../../openfortivpn_key.pem;
+      format = "binary";
+    };
   };
 
   services = {
@@ -65,16 +72,27 @@
       statusPath = "/sys/class/power_supply/BAT0/status";
     };
 
-    openfortivpn = {
+    openfortivpn = let
+      # FIXME: Temporary solution that only works if secrets are already present on the host.
+      readIfExists = path:
+        if builtins.pathExists path
+        then builtins.readFile path
+        else null;
+    in {
       enable = true;
-      host = builtins.readFile config.sops.secrets."openfortivpn/host".path;
-      port = builtins.readFile config.sops.secrets."openfortivpn/port".path;
-      username = builtins.readFile config.sops.secrets."openfortivpn/username".path;
-      password = builtins.readFile config.sops.secrets."openfortivpn/password".path;
-      realm = builtins.readFile config.sops.secrets."openfortivpn/realm".path;
-      trusted-cert = builtins.readFile config.sops.secrets."openfortivpn/trusted_cert".path;
-      user-cert = config.sops.secrets."openfortivpn/user_cert".path;
-      user-key = config.sops.secrets."openfortivpn/user_key".path;
+      port =
+        if builtins.pathExists config.sops.secrets."users/nm1/openfortivpn/port".path
+        then builtins.readFile config.sops.secrets."users/nm1/openfortivpn/port".path
+        else 8443;
+
+      host = readIfExists config.sops.secrets."users/nm1/openfortivpn/host".path;
+      username = readIfExists config.sops.secrets."users/nm1/openfortivpn/username".path;
+      password = readIfExists config.sops.secrets."users/nm1/openfortivpn/password".path;
+      realm = readIfExists config.sops.secrets."users/nm1/openfortivpn/realm".path;
+      trusted-cert = readIfExists config.sops.secrets."users/nm1/openfortivpn/trusted_cert".path;
+
+      user-cert = config.sops.secrets."users/nm1/openfortivpn/user_cert".path;
+      user-key = config.sops.secrets."users/nm1/openfortivpn/user_key".path;
     };
   };
 

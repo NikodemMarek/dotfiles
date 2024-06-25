@@ -70,7 +70,7 @@
 
         chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
 
-        nixos-anywhere --extra-files "$temp" --flake .#$1 $2
+        nixos-anywhere --extra-files "$temp" --flake .#$1 $2 --option pure-eval false
       '';
       description = "[host user@ip] install on remote host";
     }

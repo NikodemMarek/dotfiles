@@ -57,6 +57,12 @@ in {
       default = null;
       description = "User key";
     };
+
+    extraConfig = lib.mkOption {
+      type = types.str;
+      default = "";
+      description = "Extra configuration options";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -74,6 +80,8 @@ in {
 
       ${lib.optionalString (cfg.user-cert != null) "user-cert = ${cfg.user-cert}"}
       ${lib.optionalString (cfg.user-key != null) "user-key = ${cfg.user-key}"}
+
+      ${cfg.extraConfig}
     '';
   };
 }
