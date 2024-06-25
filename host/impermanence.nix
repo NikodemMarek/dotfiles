@@ -46,7 +46,7 @@
       "/var/lib/sops-nix"
       "/etc/NetworkManager/system-connections"
       {
-        directory = "${config.settings.configPath}";
+        directory = config.settings.configPath;
         user = "root";
         group = "users";
         mode = "u=rwx,g=rwx,o=rx";

@@ -47,8 +47,8 @@
 in {
   options.settings = {
     configPath = lib.mkOption {
-      type = lib.types.path;
-      default = /dotfiles;
+      type = lib.types.str;
+      default = "/dotfiles";
     };
 
     monitors = lib.mkOption {

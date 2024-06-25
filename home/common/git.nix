@@ -18,7 +18,7 @@
     };
     extraConfig = {
       init.defaultBranch = "main";
-      safe.directory = "${config.settings.configPath}";
+      safe.directory = config.settings.configPath;
     };
   };
 
