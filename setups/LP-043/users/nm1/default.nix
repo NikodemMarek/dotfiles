@@ -12,41 +12,6 @@
     ../../../../home/ssh.nix
   ];
 
-  home.username = "nm1";
-
-  settings = {
-    hostname = "LP-043";
-    monitors = [
-      {
-        name = "eDP-1";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        x = 0;
-        y = 0;
-        transform = 0;
-      }
-      {
-        name = "DP-3";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        x = 0;
-        y = -1080;
-        transform = 0;
-      }
-      {
-        name = "DP-4";
-        width = 1920;
-        height = 1080;
-        refreshRate = 60;
-        x = 1920;
-        y = -1260;
-        transform = 3;
-      }
-    ];
-  };
-
   sops.secrets = {
     "users/nm1/openfortivpn/host" = {};
     "users/nm1/openfortivpn/port" = {};

@@ -5,18 +5,18 @@ keys:
     - &softnet age1ulsnsuz6e5l8qwy9mtwwauyvfk80uw6qnwzwefd8p659e0ap9phqnluwgc
 
   - &users
-    - &desktop_nikodem age1944c7z4v3un2j6lxhym88pc48rayhgtd70vxephnt979hdp3cdqsgqwn73
+    - &desktop_nikodem age1xnfwt3rv36ywju0mrrw95hrarjycrumaa3zdwyhzecrzhzm454rq4r4xsg
     - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
     - &softnet_softnet age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
 
 creation_rules:
-  - path_regex: host/desktop/secrets.ya?ml$
+  - path_regex: setups/desktop/secrets.ya?ml$
     key_groups:
     - age:
       - *desktop
       - *desktop_nikodem
 
-  - path_regex: host/laptop/secrets.ya?ml$
+  - path_regex: setups/laptop/secrets.ya?ml$
     key_groups:
     - age:
       - *laptop

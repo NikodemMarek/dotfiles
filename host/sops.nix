@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   config,
   ...
 }: {
@@ -17,10 +18,28 @@
     };
   };
 
-  sops.secrets = {
-    "config/openai_api_key" = {
-      mode = "0440";
-      group = "users";
-    };
-  };
+  sops.secrets =
+    {
+      "config/openai_api_key" = {
+        mode = "0440";
+        group = "users";
+      };
+    }
+    // builtins.listToAttrs (lib.lists.flatten
+      (
+        builtins.map
+        (user: [
+          {
+            name = "users/${user.home.username}/password";
+            value = {
+              neededForUsers = true;
+            };
+          }
+          {
+            name = "users/${user.home.username}/ssh_ed25519_priv";
+            value = {};
+          }
+        ])
+        (lib.attrValues config.home-manager.users)
+      ));
 }

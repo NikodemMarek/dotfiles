@@ -53,7 +53,6 @@ in {
 
     hostname = lib.mkOption {
       type = lib.types.str;
-      default = "default";
     };
 
     monitors = lib.mkOption {

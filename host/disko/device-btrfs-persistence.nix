@@ -70,4 +70,6 @@
       };
     };
   };
+
+  boot.resumeDevice = "/dev/root_vg/.swapvol/swapfile";
 }
