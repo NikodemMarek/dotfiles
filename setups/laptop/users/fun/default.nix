@@ -10,6 +10,14 @@
     ../../../../home/yt-dlp.nix
   ];
 
+  services = {
+    battery-notifier = {
+      enable = true;
+      capacityPath = "/sys/class/power_supply/BAT1/capacity";
+      statusPath = "/sys/class/power_supply/BAT1/status";
+    };
+  };
+
   home.packages = with pkgs; [
     rnote
     beeper
