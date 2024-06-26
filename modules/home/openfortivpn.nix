@@ -95,7 +95,7 @@ in {
         WantedBy = ["graphical-session.target"];
       };
       Service = {
-        Type = "forking";
+        Type = "simple";
         ExecStart = let
           openfortivpn-askpass = pkgs.writeShellScriptBin "openfortivpn-askpass" "${pkgs.gnome.zenity}/bin/zenity --password";
         in "${pkgs.writeShellScriptBin "openfortivpn-execstart" ''
