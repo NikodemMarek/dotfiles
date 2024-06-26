@@ -1,34 +1,20 @@
 {
   outputs,
-  username,
+  config,
   ...
 }: {
   programs.home-manager.enable = true;
 
-  imports = [
-    ./modules/sops.nix
-    ./modules/nh.nix
-    ./modules/stylix.nix
-  ];
-
-  nixpkgs = {
-    overlays = [
-      outputs.overlays.additions
-      outputs.overlays.modifications
-      outputs.overlays.unstable-packages
-    ];
-    config = {
-      allowUnfree = true;
-      allowUnfreePredicate = _: true;
-    };
-  };
+  imports =
+    [
+      ./common
+    ]
+    ++ (builtins.attrValues outputs.homeManagerModules);
 
   home = {
-    inherit username;
-    homeDirectory = "/home/${username}";
+    homeDirectory = "/home/${config.home.username}";
+    stateVersion = "23.11";
   };
 
   systemd.user.startServices = "sd-switch";
-
-  home.stateVersion = "23.11";
 }

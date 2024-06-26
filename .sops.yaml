@@ -1,16 +1,29 @@
 keys:
   - &hosts
-    - &laptop age1ulsnsuz6e5l8qwy9mtwwauyvfk80uw6qnwzwefd8p659e0ap9phqnluwgc
     - &desktop age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
+    - &laptop age1hl0hkstkuu292skpuxc0kh49sm9lajg4ugns8zez000hdgfs0ausmv326a
+    - &softnet age1ulsnsuz6e5l8qwy9mtwwauyvfk80uw6qnwzwefd8p659e0ap9phqnluwgc
+
   - &users
-    - &laptop_nikodem age1a4nt9mlgxf6u9z4kaj7cy6j4l4mf642d5zzn20geta0fw6808pxs85s6fh
-    - &desktop_nikodem age1944c7z4v3un2j6lxhym88pc48rayhgtd70vxephnt979hdp3cdqsgqwn73
+    - &desktop_nikodem age1xnfwt3rv36ywju0mrrw95hrarjycrumaa3zdwyhzecrzhzm454rq4r4xsg
+    - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
+    - &softnet_softnet age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
 
 creation_rules:
-  - path_regex: secrets.yaml$
+  - path_regex: setups/desktop/secrets.ya?ml$
+    key_groups:
+    - age:
+      - *desktop
+      - *desktop_nikodem
+
+  - path_regex: setups/laptop/secrets.ya?ml$
     key_groups:
     - age:
       - *laptop
       - *laptop_nikodem
-      - *desktop
-      - *desktop_nikodem
+
+  - path_regex: setups/LP-043/secrets.ya?ml|setups/LP-043/openfortivpn_key.pem|setups/LP-043/openfortivpn_cert.pem$
+    key_groups:
+    - age:
+      - *softnet
+      - *softnet_softnet

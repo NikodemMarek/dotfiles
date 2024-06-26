@@ -4,7 +4,7 @@
       name = "host-switch";
       command = ''
         git add --all
-        nh os switch .
+        nh os switch . -- --impure
       '';
       description = "switch host config";
     }
@@ -14,21 +14,30 @@
       description = "update host config";
     }
     {
+      name = "ssh-new-user-key";
+      command = ''
+        ssh-keygen -f ./setups/$1/users/$2/id_ed25519 -t ed25519 -C $2@$1
+
+        printf "\nage key:\n"
+        ssh-to-age < ./setups/$1/users/$2/id_ed25519.pub
+      '';
+      description = "[host user] create a new user key";
+    }
+    {
       name = "ssh-new-host-key";
       command = ''
-        ssh-keygen -f ./host/$1/ssh_host_ed25519_key -t ed25519 -C root@$1
-        ssh-keygen -f ./host/$1/ssh_host_rsa_key -t rsa -C root@$1
+        ssh-keygen -f ./setups/$1/ssh_host_ed25519_key -t ed25519 -C root@$1
 
         printf "\nadd this key to .sops.yaml\n"
-        ssh-to-age < ./host/$1/ssh_host_ed25519_key.pub
+        ssh-to-age < ./setups/$1/ssh_host_ed25519_key.pub
         printf "\nand run sops-update-keys\n"
       '';
       description = "[host] create a new host key";
     }
     {
-      name = "sops-update";
-      command = "sops secrets.yaml";
-      description = "update secrets.yaml";
+      name = "sops";
+      command = "sops";
+      description = "[file] update secrets";
     }
     {
       name = "sops-mkpasswd";
@@ -36,9 +45,9 @@
       description = "[password] generate password";
     }
     {
-      name = "sops-update-keys";
-      command = "sops updatekeys secrets.yaml";
-      description = "update secrets.yaml keys";
+      name = "sops-updatekeys";
+      command = "sops updatekeys";
+      description = "[file] update secrets keys";
     }
     {
       name = "build";
@@ -57,13 +66,11 @@
 
         install -d -m755 "$temp/persist/etc/ssh"
 
-        cat ./host/$1/ssh_host_ed25519_key > "$temp/persist/etc/ssh/ssh_host_ed25519_key"
-        cat ./host/$1/ssh_host_rsa_key > "$temp/persist/etc/ssh/ssh_host_rsa_key"
+        cat ./setups/$1/ssh_host_ed25519_key > "$temp/persist/etc/ssh/ssh_host_ed25519_key"
 
         chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
-        chmod 600 "$temp/persist/etc/ssh/ssh_host_rsa_key"
 
-        nixos-anywhere --extra-files "$temp" --flake .#$1 $2
+        nixos-anywhere --extra-files "$temp" --flake .#$1 $2 --option pure-eval false
       '';
       description = "[host user@ip] install on remote host";
     }

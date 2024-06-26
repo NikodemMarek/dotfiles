@@ -1,0 +1,69 @@
+{inputs, ...}: {
+  imports = [
+    inputs.nixvim.homeManagerModules.nixvim
+
+    ./options.nix
+    ./keymaps.nix
+    ./lsp.nix
+
+    ./plugins/telescope.nix
+    ./plugins/oil.nix
+    ./plugins/mini.nix
+    ./plugins/comment.nix
+    ./plugins/overseer.nix
+    ./plugins/toggleterm.nix
+
+    ./plugins/auto-session.nix
+    ./plugins/stay-centered.nix
+    ./plugins/trailblazer.nix
+    ./plugins/dressing.nix
+    ./plugins/notify.nix
+    ./plugins/hbac.nix
+    ./plugins/autoread.nix
+    ./plugins/bufdelete.nix
+
+    ./plugins/which-key.nix
+    ./plugins/rainbow-delimiters.nix
+    ./plugins/lualine.nix
+    ./plugins/cursorline.nix
+    ./plugins/highlight.nix
+
+    ./plugins/treesitter.nix
+    ./plugins/none-ls.nix
+    ./plugins/nvim-cmp.nix
+    ./plugins/luasnip.nix
+    ./plugins/dap.nix
+    ./plugins/rustaceanvim.nix
+    ./plugins/crates-nvim.nix
+    ./plugins/nvim-jdtls.nix
+
+    ./plugins/wtf.nix
+    ./plugins/copilot.nix
+    ./plugins/model.nix
+
+    ./plugins/gitsigns.nix
+    ./plugins/gitui.nix
+  ];
+
+  programs = {
+    nixvim = {
+      enable = true;
+      defaultEditor = true;
+      colorschemes.catppuccin.enable = true;
+      globals.mapleader = " ";
+      clipboard = {
+        providers.wl-copy.enable = true;
+        register = "unnamedplus";
+      };
+    };
+
+    ripgrep.enable = true;
+    neovim.defaultEditor = true;
+  };
+
+  stylix.targets.nixvim.enable = false;
+
+  home.shellAliases = {
+    n = "nvim";
+  };
+}

@@ -1,31 +1,24 @@
 {
+  inputs,
   outputs,
-  config,
-  pkgs,
-  hostname,
-  users,
   ...
-}: let
-  mkSystemUser = {
-    username,
-    groups,
-    ...
-  }: {
-    isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets."passwords/${username}".path;
-    extraGroups = groups;
-    shell = pkgs.fish;
-  };
-in {
-  imports = [
-    ./${hostname}/hardware-configuration.nix
-
-    ./modules/sops.nix
-    ./modules/stylix.nix
-    ./modules/networking.nix
-    ./modules/dnscrypt-proxy2.nix
-    ./modules/docker.nix
-  ];
+}: {
+  imports =
+    [
+      ./disko
+      ./sops.nix
+      ./sudo.nix
+      ./home-manager.nix
+      ./time.nix
+      ./stylix.nix
+      ./networking.nix
+      ./openssh.nix
+      ./pipewire.nix
+      ./greetd.nix
+      ./tools.nix
+      ./graphics.nix
+    ]
+    ++ (builtins.attrValues outputs.nixosModules);
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
@@ -34,9 +27,11 @@ in {
       outputs.overlays.additions
       outputs.overlays.modifications
       outputs.overlays.unstable-packages
+      inputs.wired.overlays.default
     ];
     config = {
       allowUnfree = true;
+      allowUnfreePredicate = _: true;
     };
   };
 
@@ -47,60 +42,6 @@ in {
   };
 
   security.protectKernelImage = false;
-
-  programs = {
-    fish.enable = true;
-    hyprland.enable = true;
-    git.enable = true;
-    nix-ld.dev.enable = true;
-    ssh.startAgent = true;
-    neovim = {
-      enable = true;
-      defaultEditor = true;
-    };
-    direnv.enable = true;
-  };
-  environment.variables.EDITOR = "nvim";
-
-  services = {
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --cmd ${pkgs.hyprland}/bin/Hyprland -r -t";
-        };
-      };
-    };
-    openssh = {
-      enable = true;
-      settings = {
-        PermitRootLogin = "prohibit-password";
-        PasswordAuthentication = true;
-      };
-
-      hostKeys = [
-        {
-          path = "/persist/etc/ssh/ssh_host_ed25519_key";
-          type = "ed25519";
-        }
-      ];
-    };
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-  };
-
-  users.users = builtins.listToAttrs (builtins.map
-    (user: {
-      name = user.username;
-      value = mkSystemUser {
-        inherit (user) username groups;
-      };
-    })
-    users);
 
   system.stateVersion = "23.11";
 }
