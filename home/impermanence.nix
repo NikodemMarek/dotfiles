@@ -15,6 +15,7 @@
 
       ".local/share/keyrings"
       ".local/share/direnv"
+      ".local/share/nvim"
 
       ".cache"
       ".mozilla"
@@ -25,6 +26,10 @@
       ".gradle"
       ".docker"
       ".dockercache"
+    ];
+    files = [
+      ".local/share/fish/fish_history"
+      ".local/share/zoxide/db.zo"
     ];
     allowOther = true;
   };

@@ -16,6 +16,7 @@
     wl-clipboard
     grim
     slurp
+    pulseaudio
   ];
 
   wayland.windowManager.hyprland = {
