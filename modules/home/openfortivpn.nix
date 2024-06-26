@@ -18,7 +18,7 @@ in {
     };
 
     port = lib.mkOption {
-      type = types.int;
+      type = types.either types.str types.int;
       default = 8443;
       description = "VPN gateway port";
     };
@@ -63,6 +63,12 @@ in {
       default = "";
       description = "Extra configuration options";
     };
+
+    autorun = lib.mkOption {
+      type = types.bool;
+      default = false;
+      description = "Run openfortivpn on system startup";
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -83,5 +89,25 @@ in {
 
       ${cfg.extraConfig}
     '';
+
+    systemd.user.services.openfortivpn = lib.mkIf cfg.autorun {
+      Install = {
+        WantedBy = ["graphical-session.target"];
+      };
+      Service = {
+        Type = "forking";
+        ExecStart = let
+          openfortivpn-askpass = pkgs.writeShellScriptBin "openfortivpn-askpass" "${pkgs.gnome.zenity}/bin/zenity --password";
+        in "${pkgs.writeShellScriptBin "openfortivpn-execstart" ''
+          TOKEN=$(${pkgs.gnome.zenity}/bin/zenity --entry --text "podaj token")
+
+          echo token: $TOKEN
+
+          echo $TOKEN | SUDO_ASKPASS=${openfortivpn-askpass}/bin/openfortivpn-askpass /run/wrappers/bin/sudo -A ${pkgs.openfortivpn}/bin/openfortivpn --config ${config.home.homeDirectory}/${config.xdg.configFile."openfortivpn/config".target}
+        ''}/bin/openfortivpn-execstart";
+        Restart = "always";
+        RestartSec = 5;
+      };
+    };
   };
 }

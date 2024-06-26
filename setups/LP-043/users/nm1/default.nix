@@ -79,6 +79,7 @@
         else null;
     in {
       enable = true;
+      autorun = true;
       port =
         if builtins.pathExists config.sops.secrets."users/nm1/openfortivpn/port".path
         then builtins.readFile config.sops.secrets."users/nm1/openfortivpn/port".path

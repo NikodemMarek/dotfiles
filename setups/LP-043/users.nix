@@ -1,6 +1,6 @@
 [
   {
     username = "nm1";
-    groups = ["wheel" "networkmanager" "docker"];
+    groups = ["wheel" "networkmanager" "docker" "openfortivpn"];
   }
 ]

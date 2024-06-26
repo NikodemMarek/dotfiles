@@ -4,7 +4,7 @@
       name = "host-switch";
       command = ''
         git add --all
-        nh os switch .
+        nh os switch . -- --impure
       '';
       description = "switch host config";
     }

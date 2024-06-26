@@ -15,6 +15,7 @@
     ../../host/dnscrypt-proxy2.nix
     ../../host/battery-saver.nix
     ../../host/bluetooth.nix
+    ../../host/openfortivpn.nix
   ];
 
   networking.hostName = "LP-043";
@@ -22,53 +23,24 @@
     matchConfig.Name = "enp0s13f0u2u1";
     networkConfig = {
       Description = "softnet ethernet";
-      DHCP = "ipv4";
-      IPv6AcceptRA = true;
+      DHCP = "yes";
     };
   };
 
   sops.secrets = {
-    "users/nm1/openfortivpn/host" = {
-      sopsFile = ./secrets.yaml;
-      mode = "0440";
-      group = "users";
-    };
-    "users/nm1/openfortivpn/port" = {
-      sopsFile = ./secrets.yaml;
-      mode = "0440";
-      group = "users";
-    };
-    "users/nm1/openfortivpn/username" = {
-      sopsFile = ./secrets.yaml;
-      mode = "0440";
-      group = "users";
-    };
-    "users/nm1/openfortivpn/password" = {
-      sopsFile = ./secrets.yaml;
-      mode = "0440";
-      group = "users";
-    };
-    "users/nm1/openfortivpn/realm" = {
-      sopsFile = ./secrets.yaml;
-      mode = "0440";
-      group = "users";
-    };
-    "users/nm1/openfortivpn/trusted_cert" = {
-      sopsFile = ./secrets.yaml;
-      mode = "0440";
-      group = "users";
-    };
+    "users/nm1/openfortivpn/host" = {};
+    "users/nm1/openfortivpn/port" = {};
+    "users/nm1/openfortivpn/username" = {};
+    "users/nm1/openfortivpn/password" = {};
+    "users/nm1/openfortivpn/realm" = {};
+    "users/nm1/openfortivpn/trusted_cert" = {};
     "users/nm1/openfortivpn/user_cert" = {
       sopsFile = ./openfortivpn_cert.pem;
       format = "binary";
-      mode = "0440";
-      group = "users";
     };
     "users/nm1/openfortivpn/user_key" = {
       sopsFile = ./openfortivpn_key.pem;
       format = "binary";
-      mode = "0440";
-      group = "users";
     };
   };
 

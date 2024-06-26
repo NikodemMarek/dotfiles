@@ -7,6 +7,7 @@
     [
       ./disko
       ./sops.nix
+      ./sudo.nix
       ./home-manager.nix
       ./time.nix
       ./stylix.nix
