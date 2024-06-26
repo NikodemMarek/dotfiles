@@ -18,6 +18,14 @@
   ];
 
   networking.hostName = "LP-043";
+  systemd.network.networks."10-softnet-ethernet" = {
+    matchConfig.Name = "enp0s13f0u2u1";
+    networkConfig = {
+      Description = "softnet ethernet";
+      DHCP = "ipv4";
+      IPv6AcceptRA = true;
+    };
+  };
 
   sops.secrets = {
     "users/nm1/openfortivpn/host" = {
