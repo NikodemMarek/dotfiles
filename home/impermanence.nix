@@ -30,6 +30,8 @@
       ".dockercache"
     ];
     files = [
+      ".config/sops/age/keys.txt"
+
       ".local/share/fish/fish_history"
       ".local/share/zoxide/db.zo"
     ];

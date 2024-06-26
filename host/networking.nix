@@ -1,4 +1,11 @@
 {
+  systemd.network.networks."default.network" = {
+    networkConfig = {
+      Description = "default ethernet";
+      DHCP = "yes";
+    };
+  };
+
   networking = {
     useNetworkd = true;
     nftables.enable = true;
