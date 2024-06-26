@@ -1,5 +1,6 @@
 {
   systemd.network.networks."default.network" = {
+    matchConfig.Name = "en*";
     networkConfig = {
       Description = "default ethernet";
       DHCP = "yes";
@@ -7,7 +8,6 @@
   };
 
   networking = {
-    useNetworkd = true;
     nftables.enable = true;
     firewall = {
       enable = true;
