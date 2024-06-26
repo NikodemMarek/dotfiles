@@ -26,6 +26,9 @@
       ];
     };
 
-    networkmanager.enable = true;
+    networkmanager = {
+      enable = true;
+      dns = "systemd-resolved";
+    };
   };
 }

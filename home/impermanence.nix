@@ -14,10 +14,14 @@
       "screenshots"
 
       ".config/Rocket.Chat"
+      ".config/JetBrains"
+      ".config/github-copilot"
 
       ".local/share/keyrings"
       ".local/share/direnv"
       ".local/share/nvim"
+      ".local/share/gh"
+      ".local/share/JetBrains"
 
       ".cache"
       ".mozilla"
@@ -27,6 +31,7 @@
       ".hyprland"
       ".gradle"
       ".docker"
+      ".m2"
       ".dockercache"
     ];
     files = [
