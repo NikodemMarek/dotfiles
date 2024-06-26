@@ -13,6 +13,8 @@
       "documents"
       "screenshots"
 
+      ".config/Rocket.Chat"
+
       ".local/share/keyrings"
       ".local/share/direnv"
       ".local/share/nvim"
