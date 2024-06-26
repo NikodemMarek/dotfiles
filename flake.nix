@@ -43,7 +43,6 @@
   outputs = {
     self,
     nixpkgs,
-    home-manager,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -51,48 +50,6 @@
     forAllSystems = nixpkgs.lib.genAttrs [
       "x86_64-linux"
     ];
-
-    hosts = [
-      {
-        name = "laptop";
-        users = ["nikodem" "fun"];
-      }
-      {
-        name = "desktop";
-        users = ["nikodem" "fun"];
-      }
-      {
-        name = "LP-043";
-        users = ["nm1"];
-      }
-    ];
-
-    pkgsFor = nixpkgs.lib.genAttrs ["x86_64-linux"] (system:
-      import nixpkgs {
-        inherit system;
-        config.allowUnfree = true;
-        config.allowUnfreePredicate = _: true;
-      });
-
-    mkhost = host:
-      nixpkgs.lib.nixosSystem {
-        specialArgs = {
-          inherit inputs outputs;
-        };
-        modules = [
-          ./setups/${host}
-        ];
-      };
-    mkhome = host: user:
-      home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsFor."x86_64-linux";
-        extraSpecialArgs = {
-          inherit inputs outputs;
-        };
-        modules = [
-          ./setups/${host}/users/${user}
-        ];
-      };
   in {
     nixosModules = import ./modules/host;
     homeManagerModules = import ./modules/home;
@@ -105,26 +62,16 @@
     );
     overlays = import ./overlays {inherit inputs;};
 
-    nixosConfigurations = builtins.listToAttrs (builtins.map
-      (host: {
-        inherit (host) name;
-        value = mkhost host.name;
-      })
-      hosts);
-
-    homeConfigurations = builtins.listToAttrs (
-      nixpkgs.lib.lists.flatten (
-        builtins.map (
-          host:
-            builtins.map
-            (user: {
-              name = "${user}@${host.name}";
-              value = mkhome host.name user;
-            })
-            host.users
-        )
-        hosts
-      )
-    );
+    nixosConfigurations = let
+      mkhost = host:
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {inherit inputs outputs;};
+          modules = [./setups/${host}];
+        };
+    in {
+      laptop = mkhost "laptop";
+      desktop = mkhost "desktop";
+      LP-043 = mkhost "LP-043";
+    };
   };
 }
