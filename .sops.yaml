@@ -1,4 +1,6 @@
 keys:
+  - &super age12ud73504ccl26mrrqncsj204cyv0k2y7tepc64qerqts8xywja0qrn8uwq
+
   - &hosts
     - &desktop age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
     - &laptop age1hl0hkstkuu292skpuxc0kh49sm9lajg4ugns8zez000hdgfs0ausmv326a
@@ -13,17 +15,20 @@ creation_rules:
   - path_regex: setups/desktop/secrets.ya?ml$
     key_groups:
     - age:
+      - *super
       - *desktop
       - *desktop_nikodem
 
   - path_regex: setups/laptop/secrets.ya?ml$
     key_groups:
     - age:
+      - *super
       - *laptop
       - *laptop_nikodem
 
   - path_regex: setups/LP-043/secrets.ya?ml|setups/LP-043/openfortivpn_key.pem|setups/LP-043/openfortivpn_cert.pem$
     key_groups:
     - age:
+      - *super
       - *softnet
       - *softnet_softnet
