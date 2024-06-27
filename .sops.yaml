@@ -5,7 +5,7 @@ keys:
     - &softnet age1ulsnsuz6e5l8qwy9mtwwauyvfk80uw6qnwzwefd8p659e0ap9phqnluwgc
 
   - &users
-    - &desktop_nikodem age1xnfwt3rv36ywju0mrrw95hrarjycrumaa3zdwyhzecrzhzm454rq4r4xsg
+    - &desktop_nikodem age1hpumue8adqykuyyurjyhaask392uue8j43wp3yhnxkjmsvxuwp8qatvctz
     - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
     - &softnet_softnet age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
 
