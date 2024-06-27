@@ -1,9 +1,12 @@
 {
-  systemd.network.networks."default.network" = {
-    matchConfig.Name = "en*";
-    networkConfig = {
-      Description = "default ethernet";
-      DHCP = "yes";
+  systemd.network = {
+    enable = true;
+    networks."default.network" = {
+      matchConfig.Name = "en*";
+      networkConfig = {
+        Description = "default ethernet";
+        DHCP = "yes";
+      };
     };
   };
 
