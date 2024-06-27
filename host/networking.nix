@@ -9,17 +9,15 @@
     };
   };
 
+  sops.secrets.networks = {};
+
   networking = {
+    useNetworkd = true;
     wireless = {
       userControlled.enable = true;
-      networks = let
-        # FIXME: Temporary solution that only works if secrets are already present on the host.
-        readIfExists = path:
-          if builtins.pathExists path
-          then builtins.readFile path
-          else null;
-      in {
-        "Meshki56".psk = readIfExists config.sops.secrets."networks/Meshki56/psk";
+      environmentFile = config.sops.secrets.networks.path;
+      networks = {
+        "Meshki56".psk = "@PSK_Meshki56@";
       };
     };
 
