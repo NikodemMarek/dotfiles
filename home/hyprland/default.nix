@@ -8,7 +8,7 @@
     ./hyprlock.nix
 
     ../common/alacritty.nix
-    ../joshuto
+    ../yazi.nix
     ../walker
   ];
 
@@ -137,7 +137,7 @@
           "$mod, SPACE, exec, walker"
           "$mod, RETURN, exec, alacritty"
           "$mod SHIFT, RETURN, exec, alacritty --working-directory ~/projects/"
-          "$mod, E, exec, alacritty -e joshuto"
+          "$mod, E, exec, alacritty -e ${pkgs.yazi}/bin/yazi"
 
           ", PRINT, exec, grim -g \"$(slurp)\" - | wl-copy" # screenshot
           "SHIFT, PRINT, exec, grim -g \"$(slurp)\" ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png" # screenshot
