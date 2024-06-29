@@ -29,6 +29,11 @@
       hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
       extraGroups = ["wheel" "networkmanager" "docker"];
       shell = pkgs.fish;
+      openssh.authorizedKeys.keyFiles = [
+        ../desktop/users/nikodem/id_ed25519.pub
+        ../laptop/users/nikodem/id_ed25519.pub
+        ../LP-043/users/nm1/id_ed25519.pub
+      ];
     };
     fun = {
       isNormalUser = true;
