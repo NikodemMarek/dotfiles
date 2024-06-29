@@ -21,6 +21,7 @@
       ".local/share/direnv"
       ".local/share/nvim"
       ".local/share/gh"
+      ".local/share/zoxide"
       ".local/share/JetBrains"
 
       ".cache"
@@ -38,7 +39,6 @@
       ".config/sops/age/keys.txt"
 
       ".local/share/fish/fish_history"
-      ".local/share/zoxide/db.zo"
     ];
     allowOther = true;
   };
