@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   programs.nixvim = {
     keymaps = [
       # Lsp symbols

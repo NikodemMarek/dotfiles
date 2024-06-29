@@ -42,7 +42,7 @@
     ./plugins/model.nix
 
     ./plugins/gitsigns.nix
-    ./plugins/gitui.nix
+    ./plugins/neogit.nix
   ];
 
   programs = {
