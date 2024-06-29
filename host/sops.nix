@@ -20,6 +20,7 @@
 
   sops.secrets =
     {
+      "host_ssh_ed25519_priv" = {};
       "config/openai_api_key" = {
         mode = "0440";
         group = "users";
@@ -42,4 +43,9 @@
         ])
         (lib.attrValues config.home-manager.users)
       ));
+
+  environment.etc = {
+    "ssh/ssh_host_ed25519_key".source = config.sops.secrets."host_ssh_ed25519_priv".path;
+    "ssh/ssh_host_ed25519_key.pub".source = ../setups/${config.networking.hostName}/ssh_host_ed25519_key.pub;
+  };
 }
