@@ -24,13 +24,13 @@
     nikodem = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
-      extraGroups = ["wheel" "networkmanager" "docker"];
+      extraGroups = ["wheel" "networkmanager" "docker" "music"];
       shell = pkgs.fish;
     };
     fun = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/fun/password".path;
-      extraGroups = ["wheel" "networkmanager"];
+      extraGroups = ["wheel" "networkmanager" "music"];
       shell = pkgs.fish;
     };
   };

@@ -16,6 +16,7 @@
       ".config/Rocket.Chat"
       ".config/JetBrains"
       ".config/github-copilot"
+      ".config/Google"
 
       ".local/share/keyrings"
       ".local/share/direnv"

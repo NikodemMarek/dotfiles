@@ -23,5 +23,6 @@
     typst
     zathura
     xh
+    android-studio
   ];
 }
