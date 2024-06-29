@@ -14,6 +14,7 @@
   networking = {
     useNetworkd = true;
     wireless = {
+      enable = true;
       userControlled.enable = true;
       environmentFile = config.sops.secrets.networks.path;
       networks = {
