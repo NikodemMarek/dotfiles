@@ -4,16 +4,17 @@
     aliases = {
       "s" = "status";
       "b" = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) %(color:red)[%(authorname)]' --sort=-committerdate";
-      "l" = "log --graph --pretty=format:'%C(yellow)%Creset %C(auto)%h%d%Creset | %C(cyan) %cr%Creset | %C(green) %cn%Creset |  %s'";
-      "u" = "!git checkout HEAD -- && git s &&;:";
+      "l" = "log --graph --pretty=format:'%C(yellow)%Creset %C(auto)%h%d%Creset | %C(cyan) %cr%Creset | %C(green) %cn%Creset |  %s'";
+      "w" = "worktree";
       "aa" = "!git add --all && git s && :";
       "ci" = "commit -m";
-      "nb" = "!git branch $1 && git switch $1 && git b &&;:";
-      "sw" = "!sh -c 'git switch $1 && git b' -";
-      "st" = "!git stash && git s &&;:";
+      "nb" = "checkout -b";
+      "sw" = "switch";
+      "st" = "stash -u";
+      "stp" = "stash pop";
+      "std" = "stash drop";
       "ua" = "checkout HEAD --";
       "ph" = "push -u origin";
-      "stp" = "!git stash pop && git s &&;:";
       "rst" = "reset --soft --keep HEAD^";
     };
     extraConfig = {
