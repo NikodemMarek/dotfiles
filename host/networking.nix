@@ -4,7 +4,17 @@
     networks = {
       "10-wired-default" = {
         matchConfig.Name = "en*";
-        networkConfig.DHCP = "yes";
+        networkConfig = {
+          DHCP = "ipv4";
+        };
+      };
+      "20-wireless-default" = {
+        matchConfig.Name = "wl*";
+        networkConfig = {
+          DHCP = "ipv4";
+          IgnoreCarrierLoss = "3s";
+          IPv6AcceptRA = "yes";
+        };
       };
     };
   };

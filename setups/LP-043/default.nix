@@ -15,14 +15,16 @@
     ../../host/impermanence.nix
     ../../host/hyprland.nix
     ../../host/docker.nix
-    ../../host/dnscrypt-proxy2.nix
 
     ../../host/battery-saver.nix
     ../../host/bluetooth.nix
     ../../host/openfortivpn.nix
   ];
 
-  networking.hostName = "LP-043";
+  networking = {
+    hostName = "LP-043";
+    wireless.networks."SoftNet".psk = "@PSK_SoftNet@";
+  };
 
   users.users = {
     nm1 = {
