@@ -35,6 +35,7 @@
       ".docker"
       ".m2"
       ".dockercache"
+      ".android"
     ];
     files = [
       ".ssh/known_hosts"
