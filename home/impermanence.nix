@@ -37,6 +37,8 @@
       ".dockercache"
     ];
     files = [
+      ".ssh/known_hosts"
+
       ".config/sops/age/keys.txt"
 
       ".local/share/fish/fish_history"
