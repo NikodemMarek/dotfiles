@@ -14,7 +14,10 @@
       formatting = {
         alejandra.enable = true;
         ktlint.enable = true;
-        google_java_format.enable = true;
+        google_java_format = {
+          enable = true;
+          withArgs = ''{ extra_args = { "--aosp" } }'';
+        };
         black.enable = true;
       };
     };
