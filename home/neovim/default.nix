@@ -17,7 +17,7 @@
     ./plugins/stay-centered.nix
     ./plugins/trailblazer.nix
     ./plugins/dressing.nix
-    ./plugins/notify.nix
+    ./plugins/noice.nix
     ./plugins/hbac.nix
     ./plugins/autoread.nix
     ./plugins/bufdelete.nix
@@ -27,6 +27,7 @@
     ./plugins/lualine.nix
     ./plugins/cursorline.nix
     ./plugins/highlight.nix
+    ./plugins/markview.nix
 
     ./plugins/treesitter.nix
     ./plugins/none-ls.nix
