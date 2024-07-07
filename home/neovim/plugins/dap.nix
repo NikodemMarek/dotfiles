@@ -9,7 +9,7 @@
             {
               elements = [
                 {
-                  id = "scopes";
+                  id = "console";
                   size = 0.25;
                 }
                 {
@@ -17,7 +17,7 @@
                   size = 0.25;
                 }
                 {
-                  id = "stacks";
+                  id = "repl";
                   size = 0.25;
                 }
                 {
@@ -31,11 +31,11 @@
             {
               elements = [
                 {
-                  id = "repl";
+                  id = "stacks";
                   size = 0.5;
                 }
                 {
-                  id = "console";
+                  id = "scopes";
                   size = 0.5;
                 }
               ];
