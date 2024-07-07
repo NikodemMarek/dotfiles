@@ -12,11 +12,13 @@
       "projects"
       "documents"
       "screenshots"
+      "vaults"
 
       ".config/Rocket.Chat"
       ".config/JetBrains"
       ".config/github-copilot"
       ".config/Google"
+      ".config/obsidian"
 
       ".local/share/keyrings"
       ".local/share/direnv"

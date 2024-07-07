@@ -8,6 +8,7 @@
     ../../../../home/ssh.nix
     ../../../../home/beets.nix
     ../../../../home/yt-dlp.nix
+    ../../../../home/obsidian.nix
   ];
 
   programs = {
