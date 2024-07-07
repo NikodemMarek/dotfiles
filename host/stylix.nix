@@ -15,8 +15,8 @@
 
     fonts = {
       monospace = {
-        package = pkgs.hack-font;
-        name = "Hack";
+        package = pkgs.fira-code-nerdfont;
+        name = "FiraCode Nerd Font";
       };
     };
   };
