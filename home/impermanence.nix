@@ -24,6 +24,7 @@
       ".local/share/gh"
       ".local/share/zoxide"
       ".local/share/JetBrains"
+      ".local/share/Google"
 
       ".cache"
       ".mozilla"
