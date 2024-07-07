@@ -7,5 +7,6 @@
     xxd
     fd
     ripgrep
+    bat
   ];
 }
