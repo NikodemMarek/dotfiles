@@ -27,6 +27,10 @@
       sopsFile = ../../openfortivpn_key.pem;
       format = "binary";
     };
+    "users/nm1/m2_settings" = {
+      sopsFile = ../../m2_settings.xml;
+      format = "binary";
+    };
   };
 
   services = {
@@ -68,23 +72,27 @@
     };
   };
 
-  home.packages = with pkgs; [
-    rocketchat-desktop
-    zathura
-    kooha
-    obs-studio
-    xh
-    # pnpm
-    bun
-    jdk11
-    sshpass
-    maven
-    remmina
-    nodejs_22
-    google-chrome
-    android-studio
-    jetbrains.idea-ultimate
-    jetbrains.pycharm-community
-    jetbrains.datagrip
-  ];
+  home = {
+    file.".m2/settings.xml".source = config.sops.secrets."users/nm1/m2_settings".path;
+    packages = with pkgs; [
+      rocketchat-desktop
+      zathura
+      kooha
+      obs-studio
+      xh
+      # pnpm
+      bun
+      jdk11
+      sshpass
+      maven
+      remmina
+      nodejs_22
+      google-chrome
+      android-studio
+      jetbrains.idea-ultimate
+      jetbrains.pycharm-community
+      jetbrains.datagrip
+      jaspersoft-studio
+    ];
+  };
 }

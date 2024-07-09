@@ -26,7 +26,7 @@ creation_rules:
       - *laptop
       - *laptop_nikodem
 
-  - path_regex: setups/LP-043/secrets.ya?ml|setups/LP-043/openfortivpn_key.pem|setups/LP-043/openfortivpn_cert.pem$
+  - path_regex: setups/LP-043/secrets.ya?ml|setups/LP-043/openfortivpn_key.pem|setups/LP-043/openfortivpn_cert.pem|setups/LP-043/m2_settings.xml$
     key_groups:
     - age:
       - *super

@@ -55,6 +55,10 @@
       sopsFile = ./openfortivpn_key.pem;
       format = "binary";
     };
+    "users/nm1/m2_settings" = {
+      sopsFile = ./m2_settings.xml;
+      format = "binary";
+    };
   };
 
   environment.systemPackages = [pkgs.cifs-utils];
