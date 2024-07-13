@@ -8,6 +8,8 @@
   ];
 
   stylix = {
+    enable = true;
+
     image = ../assets/background.png;
     polarity = "dark";
 

@@ -13,7 +13,7 @@
 
   home = {
     homeDirectory = "/home/${config.home.username}";
-    stateVersion = "23.11";
+    stateVersion = "24.05";
   };
 
   systemd.user.startServices = "sd-switch";
