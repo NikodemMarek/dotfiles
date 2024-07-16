@@ -2,7 +2,13 @@
   pkgs,
   config,
   ...
-}: {
+}: let
+  # FIXME: Temporary solution that only works if secrets are already present on the host.
+  readIfExists = path:
+    if builtins.pathExists path
+    then builtins.readFile path
+    else null;
+in {
   imports = [
     ../../../../home
     ../../../../home/neovim
@@ -10,6 +16,7 @@
 
     ../../../../home/impermanence.nix
     ../../../../home/ssh.nix
+    ../../../../home/bun.nix
   ];
 
   sops.secrets = {
@@ -31,6 +38,9 @@
       sopsFile = ../../m2_settings.xml;
       format = "binary";
     };
+    "users/nm1/npm/url" = {};
+    "users/nm1/npm/username" = {};
+    "users/nm1/npm/password" = {};
   };
 
   services = {
@@ -40,13 +50,7 @@
       statusPath = "/sys/class/power_supply/BAT0/status";
     };
 
-    openfortivpn = let
-      # FIXME: Temporary solution that only works if secrets are already present on the host.
-      readIfExists = path:
-        if builtins.pathExists path
-        then builtins.readFile path
-        else null;
-    in {
+    openfortivpn = {
       enable = true;
       autorun = true;
       port =
@@ -81,7 +85,6 @@
       obs-studio
       xh
       # pnpm
-      bun
       jdk11
       sshpass
       maven
@@ -93,6 +96,18 @@
       jetbrains.pycharm-community
       jetbrains.datagrip
       jaspersoft-studio
+      anysync
     ];
+  };
+
+  programs.bun.settings = {
+    install."@softnet-ng" = {
+      url = readIfExists config.sops.secrets."users/nm1/npm/url".path;
+      username = readIfExists config.sops.secrets."users/nm1/npm/username".path;
+      password = readIfExists config.sops.secrets."users/nm1/npm/password".path;
+      https-proxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
+      noproxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
+      strict-ssl = true;
+    };
   };
 }

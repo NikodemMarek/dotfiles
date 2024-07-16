@@ -23,7 +23,20 @@
 
   networking = {
     hostName = "LP-043";
-    wireless.networks."SoftNet".psk = "@PSK_SoftNet@";
+    wireless.networks = {
+      "SoftNet_CT" = {
+        auth = ''
+          key_mgmt=WPA-EAP
+          eap=TLS
+          identity="@IDENTITY_SoftNet_CT@"
+          client_cert="${config.sops.secrets."users/nm1/openfortivpn/user_cert".path}"
+          private_key="${config.sops.secrets."users/nm1/openfortivpn/user_key".path}"
+          private_key_passwd="@PRIVATE_KEY_PASSWD_SoftNet_CT@"
+        '';
+        priority = 20;
+      };
+      "SoftNet".psk = "@PSK_SoftNet@";
+    };
   };
 
   users.users = {
@@ -59,9 +72,14 @@
       sopsFile = ./m2_settings.xml;
       format = "binary";
     };
+    "users/nm1/npm/url" = {};
+    "users/nm1/npm/username" = {};
+    "users/nm1/npm/password" = {};
   };
 
   environment.systemPackages = [pkgs.cifs-utils];
+
+  boot.kernelParams = ["resume_offset=533760"];
 
   fileSystems."/mnt/softnet_fs" = {
     device = "//fs.corp.softnet.com.pl/home/nm1";
