@@ -13,7 +13,6 @@
         networkConfig = {
           DHCP = "ipv4";
           IgnoreCarrierLoss = "3s";
-          IPv6AcceptRA = "yes";
         };
       };
     };
@@ -29,6 +28,10 @@
       environmentFile = config.sops.secrets.networks.path;
       networks = {
         "Meshki56".psk = "@PSK_Meshki56@";
+        "hot_pot" = {
+          psk = "@PSK_hot_pot@";
+          priority = -10;
+        };
       };
     };
 
