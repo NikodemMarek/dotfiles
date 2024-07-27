@@ -11,6 +11,9 @@
       device = "/dev/nvme0n1";
       swap = 38;
     })
+    (import ../../host/disko/btrfs-single-partition.nix {
+      device = "/dev/sda";
+    })
 
     ../../host/impermanence.nix
     ../../host/hyprland.nix
