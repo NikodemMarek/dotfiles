@@ -19,6 +19,7 @@
     ../../host/hyprland.nix
     ../../host/docker.nix
     ../../host/dnscrypt-proxy2.nix
+    ../../host/zerotier.nix
   ];
 
   networking.hostName = "desktop";
