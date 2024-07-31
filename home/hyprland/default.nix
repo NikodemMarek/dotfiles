@@ -23,9 +23,7 @@
     enable = true;
     xwayland.enable = true;
     settings = {
-      monitor =
-        builtins.map (m: "${m.name}, ${toString m.width}x${toString m.height}@${toString m.refreshRate}, ${toString m.x}x${toString m.y}, 1, transform, ${toString m.transform}") config.settings.monitors
-        ++ [", preferred, auto, 1"];
+      monitor = [", preferred, auto, 1"];
 
       input = {
         kb_layout = "pl";
