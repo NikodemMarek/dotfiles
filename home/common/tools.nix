@@ -8,5 +8,6 @@
     fd
     ripgrep
     bat
+    feh
   ];
 }
