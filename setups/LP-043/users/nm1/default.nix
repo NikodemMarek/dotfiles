@@ -10,6 +10,8 @@
     else null;
 in {
   imports = [
+    ../../kanshi.nix
+
     ../../../../home
     ../../../../home/neovim
     ../../../../home/hyprland
