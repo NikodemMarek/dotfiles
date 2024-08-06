@@ -27,7 +27,7 @@
     ./plugins/lualine.nix
     ./plugins/cursorline.nix
     ./plugins/highlight.nix
-    ./plugins/markview.nix
+    ./plugins/markdown.nix
 
     ./plugins/treesitter.nix
     ./plugins/none-ls.nix
