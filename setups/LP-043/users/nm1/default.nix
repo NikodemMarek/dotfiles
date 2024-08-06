@@ -10,7 +10,7 @@
     else null;
 in {
   imports = [
-    ../../kanshi.nix
+    ./kanshi.nix
 
     ../../../../home
     ../../../../home/neovim
@@ -112,4 +112,10 @@ in {
       strict-ssl = true;
     };
   };
+
+  wayland.windowManager.hyprland.settings.exec-once = [
+    "[workspace 1 silent] ${pkgs.rocketchat-desktop}/bin/rocketchat-desktop"
+    "[workspace 2 silent] ${pkgs.firefox}/bin/firefox"
+    "[workspace 3 silent] ${pkgs.alacritty}/bin/alacritty"
+  ];
 }
