@@ -97,7 +97,6 @@ in {
       jetbrains.idea-ultimate
       jetbrains.pycharm-community
       jetbrains.datagrip
-      jaspersoft-studio
       anysync
     ];
   };
