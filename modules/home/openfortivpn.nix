@@ -97,9 +97,9 @@ in {
       Service = {
         Type = "simple";
         ExecStart = let
-          openfortivpn-askpass = pkgs.writeShellScriptBin "openfortivpn-askpass" "${pkgs.gnome.zenity}/bin/zenity --password";
+          openfortivpn-askpass = pkgs.writeShellScriptBin "openfortivpn-askpass" "${pkgs.zenity}/bin/zenity --password";
         in "${pkgs.writeShellScriptBin "openfortivpn-execstart" ''
-          TOKEN=$(${pkgs.gnome.zenity}/bin/zenity --entry --text "podaj token")
+          TOKEN=$(${pkgs.zenity}/bin/zenity --entry --text "podaj token")
 
           echo token: $TOKEN
 

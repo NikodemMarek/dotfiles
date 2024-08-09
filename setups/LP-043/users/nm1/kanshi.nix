@@ -116,9 +116,38 @@
             position = "0,0";
           }
           {
-            criteria = "HDMI-A-1";
+            criteria = "LG HDMI-A-1";
             mode = "2560x1440";
             position = "-2560,-1180";
+          }
+        ];
+      };
+      home_small = {
+        exec = [
+          ''
+            ${
+              pkgs.writeShellScriptBin
+              "move-workspaces-home"
+              ''
+                hyprctl dispatch moveworkspacetomonitor "1 eDP-1"
+                hyprctl dispatch moveworkspacetomonitor "2 eDP-1"
+                hyprctl dispatch moveworkspacetomonitor "3 HDMI-A-1"
+              ''
+            }/bin/move-workspaces-home
+          ''
+        ];
+        outputs = [
+          {
+            criteria = "eDP-1";
+            mode = "1920x1080";
+            position = "0,0";
+          }
+
+          {
+            criteria = "Acer Technologies QG241Y TGHEE0018511";
+            mode = "1920x1080";
+            position = "1920,-1260";
+            transform = "270";
           }
         ];
       };

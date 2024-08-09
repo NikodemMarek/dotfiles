@@ -23,6 +23,7 @@
 
   networking = {
     hostName = "LP-043";
+    interfaces.ppp0.virtual = true;
     wireless.networks = {
       "SoftNet_CT" = {
         auth = ''
