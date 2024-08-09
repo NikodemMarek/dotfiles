@@ -1,5 +1,7 @@
 {pkgs, ...}: {
   imports = [
+    ../../kanshi.nix
+
     ../../../../home
     ../../../../home/neovim
     ../../../../home/hyprland
