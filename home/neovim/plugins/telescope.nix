@@ -81,6 +81,14 @@
         action = "<cmd>Telescope keymaps<cr>";
         options.desc = "Keymaps";
       }
+
+      # Repeat last search
+      {
+        mode = "n";
+        key = "<leader>sr";
+        action = "<cmd>Telescope resume<cr>";
+        options.desc = "Repeat last search";
+      }
     ];
   };
 }
