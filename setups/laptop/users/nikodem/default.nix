@@ -6,6 +6,7 @@
 
     ../../../../home/impermanence.nix
     ../../../../home/ssh.nix
+    ../../../../home/docker.nix
     ../../../../home/beets.nix
     ../../../../home/yt-dlp.nix
     ../../../../home/obsidian.nix

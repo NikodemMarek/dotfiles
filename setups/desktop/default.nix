@@ -20,6 +20,8 @@
     ../../host/docker.nix
     ../../host/dnscrypt-proxy2.nix
     ../../host/zerotier.nix
+
+    ./nextcloud.nix
   ];
 
   networking.hostName = "desktop";
@@ -44,9 +46,7 @@
     };
   };
 
-  boot.extraModulePackages = [
-    config.boot.kernelPackages.rtl8821au
-  ];
+  boot.extraModulePackages = [config.boot.kernelPackages.rtl8821au];
   environment.systemPackages = with pkgs; [
     linuxKernel.packages.linux_6_1.rtl8821au
   ];

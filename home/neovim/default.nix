@@ -1,4 +1,8 @@
-{inputs, ...}: {
+{
+  inputs,
+  config,
+  ...
+}: {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
 
@@ -64,7 +68,19 @@
 
   stylix.targets.nixvim.enable = false;
 
-  home.shellAliases = {
-    n = "nvim";
+  home = {
+    shellAliases = {
+      n = "nvim";
+    };
+    persistence."/persist/home/${config.home.username}".directories = [
+      ".local/share/nvim"
+
+      ".npm"
+      ".cargo"
+      ".java"
+      ".gradle"
+      ".m2"
+      ".android"
+    ];
   };
 }

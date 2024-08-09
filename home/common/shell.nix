@@ -1,4 +1,4 @@
-{
+{config, ...}: {
   imports = [
     ./zellij.nix
     ./direnv.nix
@@ -19,5 +19,14 @@
         end
       '';
     };
+  };
+
+  home.persistence."/persist/home/${config.home.username}" = {
+    directories = [
+      ".local/share/zoxide"
+    ];
+    files = [
+      ".local/share/fish/fish_history"
+    ];
   };
 }

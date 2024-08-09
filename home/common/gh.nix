@@ -9,7 +9,13 @@
     ];
   };
 
-  home.shellAliases = {
-    ghsg = "gh copilot suggest --target shell '$_'";
+  home = {
+    shellAliases = {
+      ghsg = "gh copilot suggest --target shell '$_'";
+    };
+    persistence."/persist/home/nm1".directories = [
+      ".config/github-copilot"
+      ".local/share/gh"
+    ];
   };
 }

@@ -18,6 +18,7 @@ in {
 
     ../../../../home/impermanence.nix
     ../../../../home/ssh.nix
+    ../../../../home/docker.nix
     ../../../../home/bun.nix
   ];
 
@@ -98,6 +99,12 @@ in {
       jetbrains.pycharm-community
       jetbrains.datagrip
       anysync
+    ];
+    persistence."/persist/home/nm1".directories = [
+      ".config/Rocket.Chat"
+      ".config/JetBrains"
+
+      ".local/share/JetBrains"
     ];
   };
 

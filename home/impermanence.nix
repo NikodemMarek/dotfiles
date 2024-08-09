@@ -12,40 +12,13 @@
       "projects"
       "documents"
       "screenshots"
-      "vaults"
 
-      ".config/Rocket.Chat"
-      ".config/JetBrains"
-      ".config/github-copilot"
       ".config/Google"
-      ".config/obsidian"
 
       ".local/share/keyrings"
-      ".local/share/direnv"
-      ".local/share/nvim"
-      ".local/share/gh"
-      ".local/share/zoxide"
-      ".local/share/JetBrains"
       ".local/share/Google"
 
       ".cache"
-      ".mozilla"
-      ".npm"
-      ".cargo"
-      ".java"
-      ".hyprland"
-      ".gradle"
-      ".docker"
-      ".m2"
-      ".dockercache"
-      ".android"
-    ];
-    files = [
-      ".ssh/known_hosts"
-
-      ".config/sops/age/keys.txt"
-
-      ".local/share/fish/fish_history"
     ];
     allowOther = true;
   };

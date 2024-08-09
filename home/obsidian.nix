@@ -1,5 +1,13 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    obsidian
-  ];
+{
+  pkgs,
+  config,
+  ...
+}: {
+  home = {
+    packages = [pkgs.obsidian];
+    persistence."/persist/home/${config.home.username}".directories = [
+      "vaults"
+      ".config/obsidian"
+    ];
+  };
 }
