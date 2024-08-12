@@ -4,6 +4,19 @@
       telescope = {
         enable = true;
 
+        settings = {
+          vimgrep_arguments = [
+            "rg"
+            "--color=never"
+            "--no-heading"
+            "--with-filename"
+            "--line-number"
+            "--column"
+            "--smart-case"
+            "--fixed-strings"
+          ];
+        };
+
         extensions = {
           fzf-native.enable = true;
           media-files.enable = true;
