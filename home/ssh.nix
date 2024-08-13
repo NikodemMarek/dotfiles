@@ -12,8 +12,8 @@
         source = config.sops.secrets."users/${config.home.username}/ssh_ed25519_priv".path;
       };
     };
-    persistence."/persist/home/${config.home.username}".files = [
-      ".ssh/known_hosts"
+    persistence."/persist/home/${config.home.username}".directories = [
+      ".ssh"
     ];
   };
 }
