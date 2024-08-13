@@ -1,5 +1,6 @@
 {
   inputs,
+  pkgs,
   config,
   ...
 }: {
@@ -11,7 +12,9 @@
 
   programs.walker = {
     enable = true;
+    runAsService = true;
     config = {
+      terminal = "${pkgs.wezterm}/bin/wezterm start";
       show_initial_entries = true;
       list = {
         height = 500;
