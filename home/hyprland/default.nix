@@ -1,13 +1,9 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hyprpaper.nix
     ./hyprlock.nix
 
-    ../common/alacritty.nix
+    ../common/wezterm.nix
     ../yazi.nix
     ../walker
   ];
@@ -133,9 +129,8 @@
 
           # Execs
           "$mod, SPACE, exec, walker"
-          "$mod, RETURN, exec, alacritty"
-          "$mod SHIFT, RETURN, exec, alacritty --working-directory ~/projects/"
-          "$mod, E, exec, alacritty -e ${pkgs.yazi}/bin/yazi"
+          "$mod, RETURN, exec, ${pkgs.wezterm}/bin/wezterm-gui start --always-new-process"
+          "$mod, E, exec, ${pkgs.wezterm}/bin/wezterm start --always-new-process ${pkgs.yazi}/bin/yazi"
 
           ", PRINT, exec, grim -g \"$(slurp)\" - | wl-copy" # screenshot
           "SHIFT, PRINT, exec, grim -g \"$(slurp)\" ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png" # screenshot

@@ -99,6 +99,6 @@ in {
   wayland.windowManager.hyprland.settings.exec-once = [
     "[workspace 1 silent] ${pkgs.rocketchat-desktop}/bin/rocketchat-desktop"
     "[workspace 2 silent] ${pkgs.firefox}/bin/firefox"
-    "[workspace 3 silent] ${pkgs.alacritty}/bin/alacritty"
+    "[workspace 3 silent] ${pkgs.wezterm}/bin/wezterm"
   ];
 }

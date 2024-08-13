@@ -10,7 +10,7 @@
     ./direnv.nix
     ./zellij.nix
     ./firefox.nix
-    ./alacritty.nix
+    ./wezterm.nix
     ./qutebrowser.nix
     ./wired-notify.nix
     ./eza.nix
