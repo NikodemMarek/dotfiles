@@ -22,6 +22,10 @@
       jdk8
       steam
     ];
-    persistence."/persist/home/fun".directories = ["games"];
+    persistence."/persist/home/fun".directories = [
+      "games"
+
+      ".local/share/PrismLauncher"
+    ];
   };
 }

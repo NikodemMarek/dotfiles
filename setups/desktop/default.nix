@@ -20,8 +20,6 @@
     ../../host/docker.nix
     ../../host/dnscrypt-proxy2.nix
     ../../host/zerotier.nix
-
-    ./nextcloud.nix
   ];
 
   networking.hostName = "desktop";
