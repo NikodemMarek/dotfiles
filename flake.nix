@@ -22,10 +22,7 @@
 
     wezterm.url = "github:wez/wezterm?dir=nix";
 
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    neovim.url = "github:NikodemMarek/neovim";
 
     walker.url = "github:abenz1267/walker";
 

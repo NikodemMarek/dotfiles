@@ -3,9 +3,9 @@
     ../../kanshi.nix
 
     ../../../../home
-    ../../../../home/neovim
     ../../../../home/hyprland
 
+    ../../../../home/neovim.nix
     ../../../../home/impermanence.nix
     ../../../../home/ssh.nix
     ../../../../home/beets.nix
