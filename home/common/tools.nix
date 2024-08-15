@@ -10,4 +10,8 @@
     bat
     feh
   ];
+
+  home.shellAliases = {
+    cat = "bat -pp";
+  };
 }
