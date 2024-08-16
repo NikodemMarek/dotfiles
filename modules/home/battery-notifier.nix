@@ -47,23 +47,18 @@ in {
     systemd.user.services.battery-notifier = {
       Service = {
         Type = "oneshot";
-        ExecStart = "${pkgs.writeShellScriptBin "battery-notifier-execstart" ''
-          #!${pkgs.stdenv.shell}
-          # FIXME: This is the dirtiest solution ever, maybe there is PATH variable in home manager?
-          PATH=$PATH:/home/${config.home.username}/.nix-profile/bin:/nix/profile/bin:/home/${config.home.username}/.local/state/nix/profile/bin:/etc/profiles/per-user/${config.home.username}/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin
-
+        ExecStart = lib.getExe (pkgs.writeShellScriptBin "battery-notifier-execstart" ''
           BAT=$(cat ${cfg.capacityPath})
           STATUS=$(cat ${cfg.statusPath})
 
           echo $BAT $STATUS
 
           if [[ $BAT -le ${toString cfg.lowThreshold} && $STATUS == "Discharging" ]]; then
-            # TODO: use direct path to notify-send
-            notify-send "Battery low ($BAT%)"
+            ${lib.getExe pkgs.libnotify} "Battery low ($BAT%)"
           elif [[ $BAT -ge 100 && $STATUS == "Charging" ]]; then
-            notify-send "Battery full"
+            ${lib.getExe pkgs.libnotify} "Battery full"
           fi
-        ''}/bin/battery-notifier-execstart";
+        '');
       };
     };
   };
