@@ -24,6 +24,6 @@
   };
 
   environment.persistence."/persist".directories = [
-    "/var/lib/docker/btrfs"
+    "/var/lib/docker"
   ];
 }
