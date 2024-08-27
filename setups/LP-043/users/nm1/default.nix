@@ -64,7 +64,7 @@ in {
       kooha
       obs-studio
       xh
-      # pnpm
+      pnpm
       jdk11
       sshpass
       maven
