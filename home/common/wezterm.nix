@@ -47,7 +47,7 @@
                     action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
                 },
                 {
-                    key = 's',
+                    key = 'z',
                     mods = 'ALT',
                     action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
                 },
