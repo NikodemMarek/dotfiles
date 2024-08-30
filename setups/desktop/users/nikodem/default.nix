@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     ../../kanshi.nix
 
@@ -30,7 +34,7 @@
       xh
       android-studio
     ];
-    persistence."/persist/home/nikodem".directories = [
+    persistence."/persist/${config.home}".directories = [
       ".config/JetBrains"
 
       ".local/share/JetBrains"

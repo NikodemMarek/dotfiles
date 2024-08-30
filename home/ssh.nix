@@ -12,7 +12,7 @@
         source = config.sops.secrets."users/${config.home.username}/ssh_ed25519_priv".path;
       };
     };
-    persistence."/persist/home/${config.home.username}".directories = [
+    persistence."/persist/${config.home}".directories = [
       ".ssh"
     ];
   };

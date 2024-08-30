@@ -20,6 +20,7 @@
     ../../host/docker.nix
     ../../host/dnscrypt-proxy2.nix
     ../../host/zerotier.nix
+    ../../host/syncthing.nix
   ];
 
   networking.hostName = "desktop";
@@ -54,6 +55,27 @@
       enable = true;
       anysync = true;
       persistent = true;
+    };
+    # TODO: Migrate to home-manager when it gets support
+    syncthing = {
+      user = "nikodem";
+      group = "users";
+      dataDir = "${config.users.users.nikodem.home}/.local/share/syncthing";
+      settings = {
+        folders = {
+          "obsidian::main" = {
+            path = "${config.users.users.nikodem.home}/vaults/main";
+            devices = ["pixel-6a" "tablet"];
+            copyOwnershipFromParent = true;
+            versioning = {
+              type = "simple";
+              params = {
+                keep = "5";
+              };
+            };
+          };
+        };
+      };
     };
   };
 }

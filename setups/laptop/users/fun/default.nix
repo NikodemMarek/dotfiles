@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     ../../kanshi.nix
 
@@ -30,6 +34,6 @@
       jdk8
       steam
     ];
-    persistence."/persist/home/fun".directories = ["games"];
+    persistence."/persist/${config.home}".directories = ["games"];
   };
 }

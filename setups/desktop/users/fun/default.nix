@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     ../../kanshi.nix
 
@@ -22,7 +26,7 @@
       jdk8
       steam
     ];
-    persistence."/persist/home/fun".directories = [
+    persistence."/persist/${config.home}".directories = [
       "games"
 
       ".local/share/PrismLauncher"

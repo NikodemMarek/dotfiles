@@ -77,7 +77,7 @@ in {
       jetbrains.datagrip
       anysync
     ];
-    persistence."/persist/home/nm1".directories = [
+    persistence."/persist/${config.home}".directories = [
       ".config/Rocket.Chat"
       ".config/JetBrains"
 

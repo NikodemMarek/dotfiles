@@ -13,7 +13,7 @@
     shellAliases = {
       ghsg = "gh copilot suggest --target shell '$_'";
     };
-    persistence."/persist/home/${config.home.username}".directories = [
+    persistence."/persist/${config.home}".directories = [
       ".config/github-copilot"
       ".local/share/gh"
     ];
