@@ -7,7 +7,7 @@
     inputs.impermanence.nixosModules.home-manager.impermanence
   ];
 
-  home.persistence."/persist/${config.home}" = {
+  home.persistence."/persist/${config.home.homeDirectory}" = {
     directories = [
       "projects"
       "documents"

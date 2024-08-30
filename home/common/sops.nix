@@ -27,7 +27,7 @@
     in {
       OPENAI_API_KEY = readIfExists config.sops.secrets."config/openai_api_key".path;
     };
-    persistence."/persist/${config.home}".files = [
+    persistence."/persist/${config.home.homeDirectory}".files = [
       ".config/sops/age/keys.txt"
     ];
   };

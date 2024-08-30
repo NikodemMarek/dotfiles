@@ -34,6 +34,6 @@
       jdk8
       steam
     ];
-    persistence."/persist/${config.home}".directories = ["games"];
+    persistence."/persist/${config.home.homeDirectory}".directories = ["games"];
   };
 }

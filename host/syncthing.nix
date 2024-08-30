@@ -28,10 +28,6 @@
     };
   };
 
-  home.persistence."/persist/${config.users.users.home}".directories = [
-    ".local/share/syncthing"
-  ];
-
   systemd.services.syncthing.environment.STNODEFAULTFOLDER = "true";
 
   networking.firewall.allowedTCPPorts = [22067 22070];

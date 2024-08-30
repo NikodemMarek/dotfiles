@@ -13,7 +13,7 @@
     shellAliases = {
       direnvenable = "echo use nix > .envrc; direnv allow";
     };
-    persistence."/persist/${config.home}".directories = [
+    persistence."/persist/${config.home.homeDirectory}".directories = [
       ".local/share/direnv"
     ];
   };

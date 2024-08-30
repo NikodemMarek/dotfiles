@@ -3,7 +3,7 @@
     shellAliases = {
       d = "docker";
     };
-    persistence."/persist/${config.home}".directories = [
+    persistence."/persist/${config.home.homeDirectory}".directories = [
       ".docker"
       ".dockercache"
     ];

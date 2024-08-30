@@ -34,9 +34,10 @@
       xh
       android-studio
     ];
-    persistence."/persist/${config.home}".directories = [
+    persistence."/persist/${config.home.homeDirectory}".directories = [
       ".config/JetBrains"
 
+      ".local/share/syncthing"
       ".local/share/JetBrains"
     ];
   };

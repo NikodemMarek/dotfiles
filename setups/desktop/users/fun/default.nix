@@ -26,7 +26,7 @@
       jdk8
       steam
     ];
-    persistence."/persist/${config.home}".directories = [
+    persistence."/persist/${config.home.homeDirectory}".directories = [
       "games"
 
       ".local/share/PrismLauncher"
