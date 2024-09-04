@@ -14,7 +14,8 @@
 
   sops.secrets = {
     "users/${config.home.username}/ssh_ed25519_priv" = {};
-    "config/openai_api_key" = {};
+    "api_keys/youtube" = {};
+    "api_keys/openai" = {};
   };
 
   home = {
@@ -25,7 +26,7 @@
         then builtins.readFile path
         else "";
     in {
-      OPENAI_API_KEY = readIfExists config.sops.secrets."config/openai_api_key".path;
+      OPENAI_API_KEY = readIfExists config.sops.secrets."api_keys/openai".path;
     };
     persistence."/persist/${config.home.homeDirectory}".files = [
       ".config/sops/age/keys.txt"

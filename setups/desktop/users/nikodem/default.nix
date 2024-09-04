@@ -16,6 +16,8 @@
     ../../../../home/beets.nix
     ../../../../home/yt-dlp.nix
     ../../../../home/obsidian.nix
+    ../../../../home/fabric-ai.nix
+    ../../../../home/ollama.nix
   ];
 
   programs = {

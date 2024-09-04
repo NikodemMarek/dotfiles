@@ -21,6 +21,7 @@
     ../../host/dnscrypt-proxy2.nix
     ../../host/zerotier.nix
     ../../host/syncthing.nix
+    ../../host/ollama.nix
   ];
 
   networking.hostName = "desktop";

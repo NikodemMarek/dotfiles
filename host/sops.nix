@@ -21,7 +21,11 @@
   sops.secrets =
     {
       "host_ssh_ed25519_priv" = {};
-      "config/openai_api_key" = {
+      "api_keys/youtube" = {
+        mode = "0440";
+        group = "users";
+      };
+      "api_keys/openai" = {
         mode = "0440";
         group = "users";
       };

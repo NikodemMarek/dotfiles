@@ -14,6 +14,7 @@
     backupFileExtension = "backup";
     extraSpecialArgs = {
       inherit inputs outputs;
+      host-config = config;
     };
     users = builtins.listToAttrs (
       builtins.map
