@@ -1,11 +1,10 @@
 {
   inputs,
   pkgs,
-  config,
   ...
 }: {
   imports = [
-    inputs.walker.homeManagerModules.walker
+    inputs.walker.homeManagerModules.default
 
     ./powermodule.nix
   ];
@@ -14,6 +13,7 @@
     enable = true;
     runAsService = true;
     config = {
+      theme =  "catppuccin";
       terminal = "${pkgs.wezterm}/bin/wezterm start";
       show_initial_entries = true;
       list = {
@@ -57,97 +57,5 @@
         }
       ];
     };
-
-    style = ''
-      * {
-        color: #${config.stylix.base16Scheme.base00};
-      }
-
-      #window {
-      }
-
-      #box {
-        background: #${config.stylix.base16Scheme.base00};
-        padding: 10px;
-        border-radius: 2px;
-      }
-
-      #searchwrapper {
-      }
-
-      #search,
-      #typeahead {
-        border-radius: 0;
-        outline: none;
-        outline-width: 0px;
-        box-shadow: none;
-        border-bottom: none;
-        border: none;
-        background: #${config.stylix.base16Scheme.base02};
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-top: 0px;
-        padding-bottom: 0px;
-        border-radius: 2px;
-      }
-
-      #spinner {
-        opacity: 0;
-      }
-
-      #spinner.visible {
-        opacity: 1;
-      }
-
-      #typeahead {
-        background: none;
-        opacity: 0.5;
-      }
-
-      #search placeholder {
-        opacity: 0.5;
-      }
-
-      #list {
-      }
-
-      row:selected {
-        background: #${config.stylix.base16Scheme.base02};
-      }
-
-      .item {
-        padding: 5px;
-        border-radius: 2px;
-      }
-
-      .icon {
-        padding-right: 5px;
-      }
-
-      .textwrapper {
-      }
-
-      .label {
-      }
-
-      .sub {
-        opacity: 0.5;
-      }
-
-      .activationlabel {
-        opacity: 0.25;
-      }
-
-      .activation .activationlabel {
-        opacity: 1;
-        color: #${config.stylix.base16Scheme.base00};
-      }
-
-      .activation .textwrapper,
-      .activation .icon,
-      .activation .search {
-        opacity: 0.5;
-      }
-    '';
   };
 }
