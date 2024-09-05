@@ -12,6 +12,9 @@
       swap = 38;
     })
 
+    ./secrets.nix
+    ../../secrets
+
     ../../host/impermanence.nix
     ../../host/hyprland.nix
     ../../host/docker.nix
@@ -19,7 +22,6 @@
     ../../host/battery-saver.nix
     ../../host/bluetooth.nix
     ../../host/openfortivpn.nix
-    ./secrets.nix
   ];
 
   networking = {

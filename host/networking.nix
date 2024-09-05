@@ -1,4 +1,8 @@
 {config, ...}: {
+  imports = [
+    ../secrets/networks.nix
+  ];
+
   systemd.network = {
     enable = true;
     networks = {
@@ -17,8 +21,6 @@
       };
     };
   };
-
-  sops.secrets.networks = {};
 
   networking = {
     useNetworkd = true;

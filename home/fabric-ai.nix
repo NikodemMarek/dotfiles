@@ -18,7 +18,7 @@ in {
     ${optionalString olmCfg.enable "OLLAMA_API_URL=http://${olmCfg.host}:${toString olmCfg.port}"}
     ${optionalString (builtins.length olmCfg.loadModels > 0) "DEFAULT_MODEL=${elemAt olmCfg.loadModels 0}"}
 
-    ${optionalString (builtins.pathExists config.sops.secrets."api_keys/youtube".path) "YOUTUBE_API_KEY=${builtins.readFile config.sops.secrets."api_keys/openai".path}"}
+    ${optionalString (builtins.hasAttr "api_keys/youtube" config.sops.secrets && builtins.pathExists config.sops.secrets."api_keys/youtube".path) "YOUTUBE_API_KEY=${builtins.readFile config.sops.secrets."api_keys/youtube".path}"}
   '';
 
   home = {

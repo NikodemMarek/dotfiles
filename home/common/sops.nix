@@ -2,7 +2,19 @@
   inputs,
   config,
   ...
-}: {
+}: let
+  # FIXME: Temporary solution that only works if secrets are already present on the host.
+  readIfExists = path:
+    if builtins.pathExists path
+    then builtins.readFile path
+    else "";
+  secretExists = secret:
+    builtins.hasAttr secret config.sops.secrets;
+  readSecretIfExists = secret:
+    if secretExists secret
+    then readIfExists config.sops.secrets.${secret}.path
+    else "";
+in {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
   ];
@@ -14,19 +26,11 @@
 
   sops.secrets = {
     "users/${config.home.username}/ssh_ed25519_priv" = {};
-    "api_keys/youtube" = {};
-    "api_keys/openai" = {};
   };
 
   home = {
-    sessionVariables = let
-      # FIXME: Temporary solution that only works if secrets are already present on the host.
-      readIfExists = path:
-        if builtins.pathExists path
-        then builtins.readFile path
-        else "";
-    in {
-      OPENAI_API_KEY = readIfExists config.sops.secrets."api_keys/openai".path;
+    sessionVariables = {
+      OPENAI_API_KEY = readSecretIfExists "api_keys/openai";
     };
     persistence."/persist/${config.home.homeDirectory}".files = [
       ".config/sops/age/keys.txt"

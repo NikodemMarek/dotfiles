@@ -1,5 +1,10 @@
-{
+{lib, ...}: {
   sops.secrets = {
+    networks = lib.mkForce {
+      sopsFile = ./networks.env;
+      format = "dotenv";
+    };
+
     "users/nm1/openfortivpn/host" = {};
     "users/nm1/openfortivpn/port" = {};
     "users/nm1/openfortivpn/username" = {};
@@ -14,10 +19,12 @@
       sopsFile = ./openfortivpn_key.pem;
       format = "binary";
     };
+
     "users/nm1/m2_settings" = {
       sopsFile = ./m2_settings.xml;
       format = "binary";
     };
+
     "users/nm1/npm/url" = {};
     "users/nm1/npm/username" = {};
     "users/nm1/npm/password" = {};

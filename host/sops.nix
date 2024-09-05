@@ -21,14 +21,6 @@
   sops.secrets =
     {
       "host_ssh_ed25519_priv" = {};
-      "api_keys/youtube" = {
-        mode = "0440";
-        group = "users";
-      };
-      "api_keys/openai" = {
-        mode = "0440";
-        group = "users";
-      };
     }
     // builtins.listToAttrs (lib.lists.flatten
       (

@@ -15,6 +15,8 @@
       device = "/dev/sda";
     })
 
+    ../../secrets
+
     ../../host/impermanence.nix
     ../../host/hyprland.nix
     ../../host/docker.nix

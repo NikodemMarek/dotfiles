@@ -12,6 +12,8 @@
       swap = 15;
     })
 
+    ../../secrets
+
     ../../host/impermanence.nix
     ../../host/hyprland.nix
     ../../host/docker.nix

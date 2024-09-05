@@ -3,6 +3,7 @@
     ../../kanshi.nix
 
     ../../../../home
+    ../../../../secrets
     ../../../../home/hyprland
 
     ../../../../home/neovim.nix
