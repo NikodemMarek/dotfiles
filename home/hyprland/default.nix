@@ -1,6 +1,5 @@
 {pkgs, ...}: {
   imports = [
-    ./hyprpaper.nix
     ./hyprlock.nix
 
     ../common/wezterm.nix
