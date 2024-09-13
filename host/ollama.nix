@@ -11,7 +11,6 @@
   };
 
   environment.persistence."/persist".directories = [
-    config.services.ollama.home
     config.services.ollama.models
   ];
 }
