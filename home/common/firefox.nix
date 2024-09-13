@@ -12,6 +12,7 @@
         darkreader
         # languagetool
         simple-translate
+        vimium
       ];
       settings = {
         "browser.shell.checkDefaultBrowser" = false;
