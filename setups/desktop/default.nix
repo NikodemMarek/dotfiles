@@ -46,6 +46,12 @@
       extraGroups = ["wheel" "networkmanager" "music"];
       shell = pkgs.fish;
     };
+    ctf = {
+      isNormalUser = true;
+      hashedPasswordFile = config.sops.secrets."users/ctf/password".path;
+      extraGroups = ["wheel" "networkmanager"];
+      shell = pkgs.fish;
+    };
   };
 
   boot.extraModulePackages = [config.boot.kernelPackages.rtl8821au];
