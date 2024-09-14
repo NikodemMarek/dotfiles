@@ -16,20 +16,20 @@
     {
       name = "ssh-new-user-key";
       command = ''
-        ssh-keygen -f ./setups/$1/users/$2/id_ed25519 -t ed25519 -C $2@$1
+        ssh-keygen -f ./host/$1/user_$2_ssh_id_ed25519 -t ed25519 -C $2@$1
 
         printf "\nage key:\n"
-        ssh-to-age < ./setups/$1/users/$2/id_ed25519.pub
+        ssh-to-age < ./host/$1/user_$2_ssh_id_ed25519.pub
       '';
       description = "[host user] create a new user key";
     }
     {
       name = "ssh-new-host-key";
       command = ''
-        ssh-keygen -f ./setups/$1/ssh_host_ed25519_key -t ed25519 -C root@$1
+        ssh-keygen -f ./host/$1/ssh_host_ed25519_key -t ed25519 -C root@$1
 
         printf "\nadd this key to .sops.yaml\n"
-        ssh-to-age < ./setups/$1/ssh_host_ed25519_key.pub
+        ssh-to-age < ./host/$1/ssh_host_ed25519_key.pub
         printf "\nand run sops-update-keys\n"
       '';
       description = "[host] create a new host key";
@@ -66,7 +66,7 @@
 
         install -d -m755 "$temp/persist/etc/ssh"
 
-        cat ./setups/$1/ssh_host_ed25519_key > "$temp/persist/etc/ssh/ssh_host_ed25519_key"
+        cat ./host/$1/ssh_host_ed25519_key > "$temp/persist/etc/ssh/ssh_host_ed25519_key"
 
         chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
 

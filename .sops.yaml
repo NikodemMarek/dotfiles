@@ -12,21 +12,21 @@ keys:
     - &softnet_softnet age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
 
 creation_rules:
-  - path_regex: setups/desktop/.+$
+  - path_regex: host/desktop/.+$
     key_groups:
     - age:
       - *super
       - *desktop
       - *desktop_nikodem
 
-  - path_regex: setups/laptop/.+$
+  - path_regex: host/laptop/.+$
     key_groups:
     - age:
       - *super
       - *laptop
       - *laptop_nikodem
 
-  - path_regex: setups/LP-043/.+$
+  - path_regex: host/LP-043/.+$
     key_groups:
     - age:
       - *super

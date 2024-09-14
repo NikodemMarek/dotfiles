@@ -62,18 +62,13 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    sops.secrets."users/music/password" = {
-      sopsFile = ../../setups/${config.networking.hostName}/secrets.yaml;
-      neededForUsers = true;
-    };
-
     users = {
       groups.music = {};
       users.music = {
         isNormalUser = true;
         uid = 1100;
         createHome = false;
-        hashedPasswordFile = config.sops.secrets."users/music/password".path;
+        hashedPasswordFile = lib.mkIf (builtins.hasAttr "users/music/password" config.sops.secrets) config.sops.secrets."users/music/password".path;
         extraGroups = ["music"];
 
         # TODO: change this to custom shell

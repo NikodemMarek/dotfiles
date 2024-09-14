@@ -65,7 +65,10 @@
       mkhost = host:
         nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs outputs;};
-          modules = [./setups/${host}];
+          modules = [
+            ./host/features
+            ./host/${host}
+          ];
         };
     in {
       laptop = mkhost "laptop";
