@@ -1,4 +1,5 @@
 {
+  boot.kernelModules = ["kvm-intel" "kvm-amb"];
   virtualisation.virtualbox = {
     host = {
       enable = true;
@@ -10,5 +11,4 @@
       clipboard = true;
     };
   };
-  users.extraGroups.vboxusers.members = ["nikodem"];
 }

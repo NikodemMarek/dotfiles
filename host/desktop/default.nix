@@ -22,6 +22,7 @@
     ../features/zerotier.nix
     ../features/syncthing.nix
     ../features/ollama.nix
+    ../features/virtualbox.nix
   ];
 
   networking.hostName = "desktop";
@@ -96,4 +97,6 @@
       };
     };
   };
+
+  users.extraGroups.vboxusers.members = ["nikodem"];
 }

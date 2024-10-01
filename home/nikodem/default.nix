@@ -46,10 +46,12 @@
       zathura
       xh
     ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      ".config/JetBrains"
+    persistence."/persist/${config.home.homeDirectory}".directories =
+      [
+        ".config/JetBrains"
 
-      ".local/share/JetBrains"
-    ];
+        ".local/share/JetBrains"
+      ]
+      ++ lib.optional host-config.virtualisation.virtualbox.host.enable "vms";
   };
 }
