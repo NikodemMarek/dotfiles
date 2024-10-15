@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
     ./secrets.nix
 
-    (import ../features/disko/device-btrfs-persistence.nix {
+    (import ../features/disko/btrfs-persistence-swapfile.nix {
       device = "/dev/nvme0n1";
       swap = 15;
     })
