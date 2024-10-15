@@ -57,6 +57,11 @@
     {
       name = "install-remote";
       command = ''
+        if [ ! -f ./host/$1/ssh_host_ed25519_key ]; then
+          echo "missing host key ./host/$1/ssh_host_ed25519_key"
+          exit 1
+        fi
+
         temp=$(mktemp -d)
 
         cleanup() {
@@ -78,7 +83,7 @@
 in
   pkgs.mkShell {
     buildInputs =
-      [pkgs.nh pkgs.ssh-to-age pkgs.sops pkgs.nixos-anywhere]
+      [pkgs.nh pkgs.ssh-to-age pkgs.sops pkgs.nixos-anywhere pkgs.disko]
       ++ (map (alias: pkgs.writeShellScriptBin alias.name alias.command) aliases);
     shellHook = ''
       printf "\e[33m
