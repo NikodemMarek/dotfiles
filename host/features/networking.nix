@@ -23,12 +23,12 @@
     wireless = {
       enable = true;
       userControlled.enable = true;
-      environmentFile = config.sops.secrets.networks.path;
+      secretsFile = config.sops.secrets.networks.path;
       networks = {
-        "Meshki56".psk = "@PSK_Meshki56@";
-        "308a_niezaliczan_semestranu".psk = "@PSK_308a_niezaliczan_semestranu@";
+        "Meshki56".pskRaw = "ext:PSK_Meshki56";
+        "308a_niezaliczan_semestranu".pskRaw = "ext:PSK_308a_niezaliczan_semestranu";
         "hot_pot" = {
-          psk = "@PSK_hot_pot@";
+          pskRaw = "ext:PSK_hot_pot";
           priority = -10;
         };
       };
