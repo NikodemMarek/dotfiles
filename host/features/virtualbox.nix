@@ -7,7 +7,7 @@
     };
     guest = {
       enable = true;
-      draganddrop = true;
+      dragAndDrop = true;
       clipboard = true;
     };
   };

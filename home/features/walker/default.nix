@@ -1,6 +1,7 @@
 {
   inputs,
-  pkgs,
+  lib,
+  config,
   ...
 }: {
   imports = [
@@ -13,8 +14,8 @@
     enable = true;
     runAsService = true;
     config = {
-      theme =  "catppuccin";
-      terminal = "${pkgs.wezterm}/bin/wezterm start";
+      theme = "catppuccin";
+      terminal = "${lib.getExe config.programs.wezterm.package} start";
       show_initial_entries = true;
       list = {
         height = 500;

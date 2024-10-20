@@ -19,7 +19,24 @@
             enable_wayland = false,
             window_close_confirmation = "NeverPrompt",
 
+            unix_domains = {
+                {
+                    name = 'unix',
+                },
+            },
+            default_gui_startup_args = { 'connect', 'unix' },
+
             ssh_domains = {
+                {
+                    name = 'desktop.nikodem',
+                    remote_address = 'desktop.nikodem',
+                    username = 'nikodem',
+                },
+                {
+                    name = 'laptop.nikodem',
+                    remote_address = 'laptop.nikodem',
+                    username = 'nikodem',
+                },
                 {
                     name = 'LP-043.nm1',
                     remote_address = 'LP-043.nm1',
