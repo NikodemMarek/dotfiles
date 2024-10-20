@@ -20,7 +20,7 @@
 
     stylix.url = "github:danth/stylix";
 
-    wezterm.url = "github:wez/wezterm?dir=nix";
+    wezterm.url = "github:wez/wezterm/main?dir=nix";
 
     neovim.url = "github:NikodemMarek/neovim";
 
@@ -42,27 +42,37 @@
   outputs = {
     self,
     nixpkgs,
+    home-manager,
+    systems,
     ...
   } @ inputs: let
     inherit (self) outputs;
 
-    forAllSystems = nixpkgs.lib.genAttrs [
-      "x86_64-linux"
-    ];
+    lib = nixpkgs.lib // home-manager.lib;
+
+    forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
+    pkgsFor = lib.genAttrs (import systems) (
+      system:
+        import nixpkgs {
+          inherit system;
+          config = {
+            allowUnfree = true;
+            allowUnfreePredicate = _: true;
+          };
+        }
+    );
   in {
+    inherit lib;
+
     nixosModules = import ./modules/host;
     homeManagerModules = import ./modules/home;
 
-    packages = forAllSystems (
-      system: let
-        pkgs = nixpkgs.legacyPackages.${system};
-      in
-        import ./pkgs {inherit pkgs;}
-    );
     overlays = import ./overlays {inherit inputs;};
+    packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
+    devShells = forEachSystem (pkgs: import ./shell.nix {inherit pkgs;});
 
     nixosConfigurations = let
-      mkhost = host:
+      mkHost = host:
         nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs outputs;};
           modules = [
@@ -71,9 +81,9 @@
           ];
         };
     in {
-      laptop = mkhost "laptop";
-      desktop = mkhost "desktop";
-      LP-043 = mkhost "LP-043";
+      laptop = mkHost "laptop";
+      desktop = mkHost "desktop";
+      LP-043 = mkHost "LP-043";
     };
   };
 }

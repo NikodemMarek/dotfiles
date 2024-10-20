@@ -1,4 +1,4 @@
-{pkgs ? import <nixpkgs> {}}: let
+{pkgs ? import <nixpkgs> {}, ...}: let
   aliases = [
     {
       name = "host-switch";
@@ -75,8 +75,8 @@
       description = "[host user@ip] install on remote host";
     }
   ];
-in
-  pkgs.mkShell {
+in {
+  default = pkgs.mkShell {
     buildInputs =
       [pkgs.nh pkgs.ssh-to-age pkgs.sops pkgs.nixos-anywhere]
       ++ (map (alias: pkgs.writeShellScriptBin alias.name alias.command) aliases);
@@ -85,4 +85,5 @@ in
       ${builtins.concatStringsSep "\n" (map (alias: "\\e[1m${alias.name}\\e[0m\\e[33m \t\t -> ${alias.description}") aliases)}
       \e[0m"
     '';
-  }
+  };
+}

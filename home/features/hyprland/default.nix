@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}: {
   imports = [
     ./hyprlock.nix
 
@@ -87,7 +92,9 @@
 
       "$mod" = "SUPER";
 
-      bind =
+      bind = let
+        wezterm = lib.getExe config.programs.wezterm.package;
+      in
         [
           # Toggle window states
           "$mod, V, togglefloating,"
@@ -128,8 +135,8 @@
 
           # Execs
           "$mod, SPACE, exec, walker"
-          "$mod, RETURN, exec, ${pkgs.wezterm}/bin/wezterm-gui start --always-new-process"
-          "$mod, E, exec, ${pkgs.wezterm}/bin/wezterm start --always-new-process ${pkgs.yazi}/bin/yazi"
+          "$mod, RETURN, exec, ${wezterm} start --always-new-process"
+          "$mod, E, exec, ${wezterm} start --always-new-process ${pkgs.yazi}/bin/yazi"
 
           ", PRINT, exec, grim -g \"$(slurp)\" - | wl-copy" # screenshot
           "SHIFT, PRINT, exec, grim -g \"$(slurp)\" ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png" # screenshot
