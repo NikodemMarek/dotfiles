@@ -28,11 +28,7 @@
 
           home.username = user.name;
 
-          settings =
-            {
-              hostname = config.networking.hostName;
-            }
-            // config.settings;
+          settings = config.settings;
         };
       })
       (builtins.filter (user: (builtins.pathExists
