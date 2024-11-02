@@ -25,7 +25,7 @@ in {
     packages = with pkgs; [
       fabric-ai
     ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
+    persistence."/persist/generated/${config.home.homeDirectory}".directories = [
       ".config/fabric"
     ];
   };

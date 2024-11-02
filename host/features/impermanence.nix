@@ -55,33 +55,44 @@
   fileSystems."/persist".neededForBoot = true;
   programs.fuse.userAllowOther = true;
 
-  environment.persistence."/persist" = {
-    hideMounts = true;
-    directories = [
-      "/var/log"
-      "/var/lib/bluetooth"
-      "/var/lib/nixos"
-      "/var/lib/systemd"
-      "/var/lib/sops-nix"
-      "/etc/NetworkManager/system-connections"
-      {
-        directory = config.settings.configPath;
-        user = "root";
-        group = "users";
-        mode = "u=rwx,g=rwx,o=rx";
-      }
-    ];
-    files = [
-      "/etc/machine-id"
-    ];
+  environment.persistence = {
+    "/persist/data" = {
+      hideMounts = true;
+      directories = [
+        {
+          directory = config.settings.configPath;
+          user = "root";
+          group = "users";
+          mode = "u=rwx,g=rwx,o=rx";
+        }
+      ];
+    };
+    "/persist/generated" = {
+      hideMounts = true;
+      directories = [
+        "/var/log"
+        "/var/lib/bluetooth"
+        "/var/lib/nixos"
+        "/var/lib/systemd"
+        "/var/lib/sops-nix"
+        "/etc/NetworkManager/system-connections"
+      ];
+      files = [
+        "/etc/machine-id"
+      ];
+    };
   };
 
   system.activationScripts.persistent-dirs.text = let
     mkHomePersist = user:
       lib.optionalString user.createHome ''
-        mkdir -p /persist/${user.home}
-        chown ${user.name}:${user.group} /persist/${user.home}
-        chmod ${user.homeMode} /persist/${user.home}
+        mkdir -p /persist/data/${user.home}
+        chown ${user.name}:${user.group} /persist/data/${user.home}
+        chmod ${user.homeMode} /persist/data/${user.home}
+
+        mkdir -p /persist/generated/${user.home}
+        chown ${user.name}:${user.group} /persist/generated/${user.home}
+        chmod ${user.homeMode} /persist/generated/${user.home}
       '';
     users = lib.attrValues config.users.users;
   in

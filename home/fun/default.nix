@@ -36,12 +36,15 @@
       jdk8
       steam
     ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      "games"
+    persistence = {
+      "/persist/data/${config.home.homeDirectory}".directories = [
+        "games"
+      ];
+      "/persist/generated/${config.home.homeDirectory}".directories = [
+        ".local/share/PrismLauncher"
 
-      ".local/share/PrismLauncher"
-
-      ".local/share/Steam"
-    ];
+        ".local/share/Steam"
+      ];
+    };
   };
 }

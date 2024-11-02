@@ -29,7 +29,7 @@ in {
     sessionVariables = {
       OPENAI_API_KEY = readSecretIfExists "api_keys/openai";
     };
-    persistence."/persist/${config.home.homeDirectory}".files = [
+    persistence."/persist/generated/${config.home.homeDirectory}".files = [
       ".config/sops/age/keys.txt"
     ];
   };

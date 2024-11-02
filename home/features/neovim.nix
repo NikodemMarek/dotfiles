@@ -19,7 +19,7 @@ in {
     shellAliases = {
       n = "nvim";
     };
-    persistence."/persist/${config.home.homeDirectory}".directories = [
+    persistence."/persist/generated/${config.home.homeDirectory}".directories = [
       ".local/share/nvim"
 
       ".npm"

@@ -7,19 +7,25 @@
     inputs.impermanence.nixosModules.home-manager.impermanence
   ];
 
-  home.persistence."/persist/${config.home.homeDirectory}" = {
-    directories = [
-      "projects"
-      "documents"
-      "screenshots"
+  home.persistence = {
+    "/persist/data/${config.home.homeDirectory}" = {
+      directories = [
+        "projects"
+        "documents"
+        "screenshots"
+      ];
+      allowOther = true;
+    };
+    "/persist/generated/${config.home.homeDirectory}" = {
+      directories = [
+        ".config/Google"
 
-      ".config/Google"
+        ".local/share/keyrings"
+        ".local/share/Google"
 
-      ".local/share/keyrings"
-      ".local/share/Google"
-
-      ".cache"
-    ];
-    allowOther = true;
+        ".cache"
+      ];
+      allowOther = true;
+    };
   };
 }

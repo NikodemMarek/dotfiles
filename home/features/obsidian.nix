@@ -5,9 +5,13 @@
 }: {
   home = {
     packages = [pkgs.obsidian];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      "vaults"
-      ".config/obsidian"
-    ];
+    persistence = {
+      "/persist/data/${config.home.homeDirectory}".directories = [
+        "vaults"
+      ];
+      "/persist/generated/${config.home.homeDirectory}".directories = [
+        ".config/obsidian"
+      ];
+    };
   };
 }

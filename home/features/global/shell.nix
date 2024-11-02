@@ -21,7 +21,7 @@
     };
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}" = {
+  home.persistence."/persist/generated/${config.home.homeDirectory}" = {
     directories = [
       ".local/share/zoxide"
     ];

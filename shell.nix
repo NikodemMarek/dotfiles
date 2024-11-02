@@ -69,11 +69,11 @@
         }
         trap cleanup EXIT
 
-        install -d -m755 "$temp/persist/etc/ssh"
+        install -d -m755 "$temp/persist/data/etc/ssh"
 
-        cat ./host/$1/ssh_host_ed25519_key > "$temp/persist/etc/ssh/ssh_host_ed25519_key"
+        cat ./host/$1/ssh_host_ed25519_key > "$temp/persist/data/etc/ssh/ssh_host_ed25519_key"
 
-        chmod 600 "$temp/persist/etc/ssh/ssh_host_ed25519_key"
+        chmod 600 "$temp/persist/data/etc/ssh/ssh_host_ed25519_key"
 
         nixos-anywhere --extra-files "$temp" --flake .#$1 $2 --option pure-eval false
       '';

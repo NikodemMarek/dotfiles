@@ -1,7 +1,6 @@
 {
   pkgs,
   host-config,
-  config,
   ...
 }: {
   imports = [
@@ -32,8 +31,6 @@
       zathura
       xh
       openssl
-    ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
     ];
   };
 }
