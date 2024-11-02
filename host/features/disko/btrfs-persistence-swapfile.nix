@@ -53,7 +53,6 @@
                 };
 
                 mountpoint = "/";
-                swap.swapfile.size = "${builtins.toString swap}G";
               };
             };
           };
