@@ -40,6 +40,8 @@
       "games"
 
       ".local/share/PrismLauncher"
+
+      ".local/share/Steam"
     ];
   };
 }
