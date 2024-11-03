@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
+{pkgs, ...}: {
   programs.gh = {
     enable = true;
     settings = {
@@ -13,13 +9,12 @@
     ];
   };
 
-  home = {
-    shellAliases = {
-      ghsg = "gh copilot suggest --target shell '$_'";
-    };
-    persistence."/persist/generated/${config.home.homeDirectory}".directories = [
-      ".config/github-copilot"
-      ".local/share/gh"
-    ];
+  home.shellAliases = {
+    ghsg = "gh copilot suggest --target shell '$_'";
   };
+
+  persist.generated.directories = [
+    ".config/github-copilot"
+    ".local/share/gh"
+  ];
 }

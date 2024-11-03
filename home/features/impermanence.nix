@@ -1,5 +1,6 @@
 {
   inputs,
+  lib,
   config,
   ...
 }: {
@@ -7,25 +8,60 @@
     inputs.impermanence.nixosModules.home-manager.impermanence
   ];
 
-  home.persistence = {
-    "/persist/data/${config.home.homeDirectory}" = {
-      directories = [
-        "projects"
-        "documents"
-        "screenshots"
-      ];
-      allowOther = true;
+  options.persist = let
+    inherit (lib) mkOption;
+    inherit (lib.types) submodule listOf str;
+
+    peristSub = {
+      options = {
+        directories = mkOption {
+          type = listOf str;
+          default = [];
+        };
+        files = mkOption {
+          type = listOf str;
+          default = [];
+        };
+      };
     };
-    "/persist/generated/${config.home.homeDirectory}" = {
-      directories = [
-        ".config/Google"
+  in {
+    data = mkOption {
+      type = submodule peristSub;
+      default = {};
+    };
+    generated = mkOption {
+      type = submodule peristSub;
+      default = {};
+    };
+  };
 
-        ".local/share/keyrings"
-        ".local/share/Google"
+  config = {
+    home.persistence = {
+      "/persist/data/${config.home.homeDirectory}" = {
+        directories =
+          [
+            "projects"
+            "documents"
+            "screenshots"
+          ]
+          ++ config.persist.data.directories;
+        files = config.persist.data.files;
+        allowOther = true;
+      };
+      "/persist/generated/${config.home.homeDirectory}" = {
+        directories =
+          [
+            ".config/Google"
 
-        ".cache"
-      ];
-      allowOther = true;
+            ".local/share/keyrings"
+            ".local/share/Google"
+
+            ".cache"
+          ]
+          ++ config.persist.generated.directories;
+        files = config.persist.generated.files;
+        allowOther = true;
+      };
     };
   };
 }

@@ -10,7 +10,7 @@
     ];
   };
 
-  environment.persistence."/persist/generated".directories = [
+  persist.generated.directories = [
     config.services.ollama.models
   ];
 }

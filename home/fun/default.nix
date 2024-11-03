@@ -2,7 +2,6 @@
   pkgs,
   lib,
   host-config,
-  config,
   ...
 }: {
   imports = [
@@ -26,25 +25,24 @@
       };
     };
 
-  home = {
-    packages = with pkgs; [
-      rnote
-      beeper
-      zathura
-      lutris
-      prismlauncher
-      jdk8
-      steam
-    ];
-    persistence = {
-      "/persist/data/${config.home.homeDirectory}".directories = [
-        "games"
-      ];
-      "/persist/generated/${config.home.homeDirectory}".directories = [
-        ".local/share/PrismLauncher"
+  home.packages = with pkgs; [
+    rnote
+    beeper
+    zathura
+    lutris
+    prismlauncher
+    jdk8
+    steam
+  ];
 
-        ".local/share/Steam"
-      ];
-    };
+  persist = {
+    data.directories = [
+      "games"
+    ];
+    generated.directories = [
+      ".local/share/PrismLauncher"
+
+      ".local/share/Steam"
+    ];
   };
 }

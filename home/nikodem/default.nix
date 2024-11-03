@@ -2,7 +2,6 @@
   pkgs,
   lib,
   host-config,
-  config,
   ...
 }: {
   imports = [
@@ -38,20 +37,20 @@
     };
   };
 
-  home = {
-    packages = with pkgs; [
-      rnote
-      beeper
-      typst
-      zathura
-      xh
-    ];
-    persistence."/persist/generated/${config.home.homeDirectory}".directories =
-      [
-        ".config/JetBrains"
+  home.packages = with pkgs; [
+    rnote
+    beeper
+    typst
+    zathura
+    xh
+  ];
 
-        ".local/share/JetBrains"
-      ]
-      ++ lib.optional host-config.virtualisation.virtualbox.host.enable "vms";
+  persist = {
+    generated.directories = [
+      ".config/JetBrains"
+
+      ".local/share/JetBrains"
+    ];
+    data.directories = lib.optional host-config.virtualisation.virtualbox.host.enable "vms";
   };
 }

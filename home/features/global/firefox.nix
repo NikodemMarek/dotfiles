@@ -22,7 +22,7 @@
     };
   };
 
-  home.persistence."/persist/generated/${config.home.homeDirectory}".directories = [
+  persist.generated.directories = [
     ".mozilla"
   ];
 }
