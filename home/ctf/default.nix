@@ -9,7 +9,6 @@
     ../features/hyprland
 
     ../features/neovim.nix
-    ../features/impermanence.nix
     ../features/docker.nix
     ../features/obsidian.nix
     ../features/fabric-ai.nix

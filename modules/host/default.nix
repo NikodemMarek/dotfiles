@@ -1,3 +1,3 @@
 {
-  music = import ./music.nix;
+  persist = import ./persist.nix;
 }

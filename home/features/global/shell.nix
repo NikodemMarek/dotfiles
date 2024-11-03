@@ -1,4 +1,4 @@
-{config, ...}: {
+{
   imports = [
     ./zellij.nix
     ./direnv.nix
@@ -21,7 +21,7 @@
     };
   };
 
-  home.persistence."/persist/generated/${config.home.homeDirectory}" = {
+  persist.generated = {
     directories = [
       ".local/share/zoxide"
     ];

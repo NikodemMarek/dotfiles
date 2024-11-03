@@ -15,7 +15,6 @@
       device = "/dev/sda";
     })
 
-    ../features/impermanence.nix
     ../features/hyprland.nix
     ../features/docker.nix
     ../features/dnscrypt-proxy2.nix
@@ -26,6 +25,11 @@
   ];
 
   networking.hostName = "desktop";
+
+  persist = {
+    enable = true;
+    device = "nvme0n1p2";
+  };
 
   users.users = {
     nikodem = {

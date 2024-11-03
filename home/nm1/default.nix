@@ -11,7 +11,6 @@ in {
     ../features/hyprland
 
     ../features/neovim.nix
-    ../features/impermanence.nix
     ../features/ssh.nix
     ../features/docker.nix
     ../features/bun.nix

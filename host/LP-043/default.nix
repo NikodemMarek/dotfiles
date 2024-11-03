@@ -12,7 +12,6 @@
       swap = 38;
     })
 
-    ../features/impermanence.nix
     ../features/hyprland.nix
     ../features/docker.nix
 
@@ -38,6 +37,11 @@
       };
       "SoftNet".psk = "@PSK_SoftNet@";
     };
+  };
+
+  persist = {
+    enable = true;
+    device = "nvme0n1p2";
   };
 
   users.users = {

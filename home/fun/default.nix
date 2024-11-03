@@ -10,7 +10,6 @@
     ../features/hyprland
 
     ../features/neovim.nix
-    ../features/impermanence.nix
     ../features/beets.nix
     ../features/yt-dlp.nix
   ];
