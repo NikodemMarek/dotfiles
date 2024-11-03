@@ -1,4 +1,4 @@
-# run with: sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./btrfs-persistence-swapfile.nix --arg device '"eg. /dev/sda"' --arg swap 'number'
+# run with: sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./btrfs-persistence-swapfile.nix --arg device '"eg. sda"' --arg swap 'number'
 {
   device,
   swap ? 4,
@@ -7,7 +7,7 @@
   disko.devices = {
     disk = {
       main = {
-        inherit device;
+        device = "/dev/${device}";
         type = "disk";
         content = {
           type = "gpt";
