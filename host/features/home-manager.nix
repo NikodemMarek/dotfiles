@@ -27,8 +27,6 @@
           ];
 
           home.username = user.name;
-
-          settings = config.settings;
         };
       })
       (builtins.filter (user: (builtins.pathExists

@@ -60,7 +60,7 @@
       hideMounts = true;
       directories = [
         {
-          directory = config.settings.configPath;
+          directory = "/etc/nixos";
           user = "root";
           group = "users";
           mode = "u=rwx,g=rwx,o=rx";
