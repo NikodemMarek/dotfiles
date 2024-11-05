@@ -1,5 +1,6 @@
 {
   inputs,
+  host-config,
   config,
   ...
 }: let
@@ -21,15 +22,14 @@ in {
 
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    defaultSopsFile = ../../../host/${config.settings.hostname}/secrets.yaml;
+    defaultSopsFile = ../../../host/${host-config.networking.hostName}/secrets.yaml;
   };
 
-  home = {
-    sessionVariables = {
-      OPENAI_API_KEY = readSecretIfExists "api_keys/openai";
-    };
-    persistence."/persist/${config.home.homeDirectory}".files = [
-      ".config/sops/age/keys.txt"
-    ];
+  home.sessionVariables = {
+    OPENAI_API_KEY = readSecretIfExists "api_keys/openai";
   };
+
+  persist.generated.files = [
+    ".config/sops/age/keys.txt"
+  ];
 }

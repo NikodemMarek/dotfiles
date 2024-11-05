@@ -23,7 +23,7 @@
     };
   };
 
-  environment.persistence."/persist".directories = [
+  persist.generated.directories = [
     "/var/lib/docker"
   ];
 }

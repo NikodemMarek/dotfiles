@@ -1,4 +1,4 @@
-{config, ...}: {
+{
   programs.git = {
     enable = true;
     aliases = {
@@ -19,7 +19,7 @@
     };
     extraConfig = {
       init.defaultBranch = "main";
-      safe.directory = config.settings.configPath;
+      safe.directory = "/etc/nixos";
     };
   };
 

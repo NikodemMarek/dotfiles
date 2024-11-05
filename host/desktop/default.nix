@@ -7,15 +7,14 @@
     ./hardware-configuration.nix
     ./secrets.nix
 
-    (import ../features/disko/device-btrfs-persistence.nix {
-      device = "/dev/nvme0n1";
+    (import ../features/disko/btrfs-persistence-swapfile.nix {
+      device = "nvme0n1";
       swap = 38;
     })
     (import ../features/disko/btrfs-single-partition.nix {
-      device = "/dev/sda";
+      device = "sda";
     })
 
-    ../features/impermanence.nix
     ../features/hyprland.nix
     ../features/docker.nix
     ../features/dnscrypt-proxy2.nix
@@ -26,6 +25,11 @@
   ];
 
   networking.hostName = "desktop";
+
+  persist = {
+    enable = true;
+    device = "nvme0n1p2";
+  };
 
   users.users = {
     nikodem = {

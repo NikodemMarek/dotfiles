@@ -7,23 +7,25 @@
     ./hardware-configuration.nix
     ./secrets.nix
 
-    (import ../features/disko/device-btrfs-persistence.nix {
+    (import ../features/disko/btrfs-persistence-swapfile.nix {
       device = "/dev/nvme0n1";
       swap = 15;
     })
 
-    ../features/impermanence.nix
     ../features/hyprland.nix
     ../features/docker.nix
     ../features/dnscrypt-proxy2.nix
-    ../features/zerotier.nix
-    ../features/ollama.nix
 
     ../features/battery-saver.nix
     ../features/bluetooth.nix
   ];
 
   networking.hostName = "laptop";
+
+  persist = {
+    enable = true;
+    device = "nvme0n1p2";
+  };
 
   users.users = {
     nikodem = {
@@ -42,14 +44,6 @@
       hashedPasswordFile = config.sops.secrets."users/fun/password".path;
       extraGroups = ["wheel"];
       shell = pkgs.fish;
-    };
-  };
-
-  services = {
-    music = {
-      enable = true;
-      anysync = true;
-      persistent = true;
     };
   };
 }

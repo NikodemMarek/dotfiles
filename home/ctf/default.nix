@@ -1,7 +1,6 @@
 {
   pkgs,
   host-config,
-  config,
   ...
 }: {
   imports = [
@@ -10,7 +9,6 @@
     ../features/hyprland
 
     ../features/neovim.nix
-    ../features/impermanence.nix
     ../features/docker.nix
     ../features/obsidian.nix
     ../features/fabric-ai.nix
@@ -32,8 +30,6 @@
       zathura
       xh
       openssl
-    ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
     ];
   };
 }

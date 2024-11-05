@@ -40,7 +40,7 @@ in {
         OnCalendar = "*:0/${toString cfg.checkInterval}";
       };
       Install = {
-        WantedBy = ["graphical.target"];
+        WantedBy = ["default.target"];
       };
     };
 

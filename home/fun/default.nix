@@ -2,7 +2,6 @@
   pkgs,
   lib,
   host-config,
-  config,
   ...
 }: {
   imports = [
@@ -11,7 +10,6 @@
     ../features/hyprland
 
     ../features/neovim.nix
-    ../features/impermanence.nix
     ../features/beets.nix
     ../features/yt-dlp.nix
   ];
@@ -26,20 +24,24 @@
       };
     };
 
-  home = {
-    packages = with pkgs; [
-      rnote
-      beeper
-      zathura
-      lutris
-      prismlauncher
-      jdk8
-      steam
-    ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      "games"
+  home.packages = with pkgs; [
+    rnote
+    beeper
+    zathura
+    lutris
+    prismlauncher
+    jdk8
+    steam
+  ];
 
+  persist = {
+    data.directories = [
+      "games"
+    ];
+    generated.directories = [
       ".local/share/PrismLauncher"
+
+      ".local/share/Steam"
     ];
   };
 }

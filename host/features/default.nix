@@ -45,5 +45,7 @@
 
   security.protectKernelImage = false;
 
+  users.mutableUsers = false;
+
   system.stateVersion = "24.05";
 }

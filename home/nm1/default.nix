@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
+{pkgs, ...}: let
   # FIXME: Temporary solution that only works if secrets are already present on the host.
   readIfExists = path:
     if builtins.pathExists path
@@ -15,7 +11,6 @@ in {
     ../features/hyprland
 
     ../features/neovim.nix
-    ../features/impermanence.nix
     ../features/ssh.nix
     ../features/docker.nix
     ../features/bun.nix
@@ -74,24 +69,14 @@ in {
       jetbrains.datagrip
       anysync
     ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      ".config/Rocket.Chat"
-      ".config/JetBrains"
-
-      ".local/share/JetBrains"
-    ];
   };
 
-  programs.bun.settings = {
-    # install."@softnet-ng" = {
-    #   url = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-    #   username = readIfExists config.sops.secrets."users/nm1/npm/username".path;
-    #   password = readIfExists config.sops.secrets."users/nm1/npm/password".path;
-    #   https-proxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-    #   noproxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-    #   strict-ssl = true;
-    # };
-  };
+  persist.generated.directories = [
+    ".config/Rocket.Chat"
+    ".config/JetBrains"
+
+    ".local/share/JetBrains"
+  ];
 
   wayland.windowManager.hyprland.settings.exec-once = [
     "[workspace 1 silent] ${pkgs.rocketchat-desktop}/bin/rocketchat-desktop"
