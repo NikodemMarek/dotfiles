@@ -16,7 +16,7 @@
 
   services =
     {}
-    // lib.mkIf (host-config.networking.hostName == "laptop") {
+    // lib.optionalAttrs (host-config.networking.hostName == "laptop") {
       battery-notifier = {
         enable = true;
         capacityPath = "/sys/class/power_supply/BAT1/capacity";

@@ -1,0 +1,16 @@
+(deflisten music_status :initial "err" `playerctl -F status`)
+(deflisten music_song :initial "title unknown" `playerctl -F metadata xesam:title`)
+(deflisten music_artist :initial "artist unknown" `playerctl -F metadata xesam:artist`)
+(deflisten music_cover :initial "" `playerctl -F metadata mpris:artUrl`)
+
+(defwidget music []
+	(box :class "music dashboard_window" :orientation "h" :space-evenly true :vexpand false :hexpand false
+		(box :class "music_cover" :vexpand true :hexpand true :style "background-image: url('${music_cover}');")
+		(box :orientation "v" :valign "center" :spacing 30 :space-evenly false :vexpand true :hexpand false
+			(label :halign "center" :class "song" :wrap true :limit-width 20 :text music_song)
+			(label :halign "center" :class "artist" :wrap true :limit-width 15 :text music_artist)
+			(box :orientation "h" :spacing 20 :halign "center" :space-evenly true :vexpand false :hexpand false
+				(button :class "music_play_random" :onclick "beet play -y &" "")
+				(button :class "music_prev" :onclick "playerctl previous" "󰒮")
+				(button :class "music_status" :onclick "playerctl play-pause" { music_status == "Playing"? "": "" })
+				(button :class "music_next" :onclick "playerctl next" "󰒭")))))
