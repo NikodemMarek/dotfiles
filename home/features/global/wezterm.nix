@@ -46,6 +46,32 @@
 
             keys = {
                 {
+                    key = 'x',
+                    mods = 'ALT',
+                    action = wezterm.action.ActivateCopyMode,
+                },
+                {
+                    key = 'Space',
+                    mods = 'ALT',
+                    action = wezterm.action.QuickSelect,
+                },
+                {
+                    key = 'f',
+                    mods = 'ALT',
+                    action = wezterm.action.Search("CurrentSelectionOrEmptyString"),
+                },
+                {
+                    key = 'p',
+                    mods = 'ALT',
+                    action = wezterm.action.ActivateCommandPalette,
+                },
+
+                {
+                    key = 's',
+                    mods = 'ALT',
+                    action = wezterm.action.PaneSelect,
+                },
+                {
                     key = 'Tab',
                     mods = 'ALT',
                     action = wezterm.action.ActivateTabRelative(1),
