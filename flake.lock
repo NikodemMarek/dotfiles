@@ -603,11 +603,11 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1730981937,
-        "narHash": "sha256-R3V/9ujK2KTk+dYgSNYNJN0wDOVCNP6dWb4aCwmaHg4=",
+        "lastModified": 1735484025,
+        "narHash": "sha256-nJW2S+KhsUkZ31TGH7VpYshJl9Miv2TqSggIhPOQTLg=",
         "owner": "NikodemMarek",
         "repo": "neovim",
-        "rev": "faa16703084dcf822671ad84fb57119963aa05b1",
+        "rev": "6c45fc34ef708fcc0e1843c098a79024838a897f",
         "type": "github"
       },
       "original": {
