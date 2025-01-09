@@ -63,7 +63,6 @@ in {
       ".gradle/gradle.properties".source = config.sops.secrets."users/nm1/gradle_properties".path;
     };
     packages = with pkgs; [
-      rocketchat-desktop
       zathura
       kooha
       obs-studio
@@ -77,9 +76,6 @@ in {
       google-chrome
       android-studio
       jetbrains.idea-ultimate
-      jetbrains.pycharm-community
-      jetbrains.datagrip
-      anysync
       postman
     ];
     persistence."/persist/${config.home.homeDirectory}".directories = [
