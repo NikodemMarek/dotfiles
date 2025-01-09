@@ -27,23 +27,23 @@ in {
       capacityPath = "/sys/class/power_supply/BAT0/capacity";
       statusPath = "/sys/class/power_supply/BAT0/status";
     };
-    # openfortivpn = {
-    #   enable = true;
-    #   autorun = true;
-    #   port =
-    #     if builtins.pathExists config.sops.secrets."users/nm1/openfortivpn/port".path
-    #     then builtins.readFile config.sops.secrets."users/nm1/openfortivpn/port".path
-    #     else 8443;
-    #
-    #   host = readIfExists config.sops.secrets."users/nm1/openfortivpn/host".path;
-    #   username = readIfExists config.sops.secrets."users/nm1/openfortivpn/username".path;
-    #   password = readIfExists config.sops.secrets."users/nm1/openfortivpn/password".path;
-    #   realm = readIfExists config.sops.secrets."users/nm1/openfortivpn/realm".path;
-    #   trusted-cert = readIfExists config.sops.secrets."users/nm1/openfortivpn/trusted_cert".path;
-    #
-    #   user-cert = config.sops.secrets."users/nm1/openfortivpn/user_cert".path;
-    #   user-key = config.sops.secrets."users/nm1/openfortivpn/user_key".path;
-    # };
+    openfortivpn = {
+      enable = true;
+      autorun = true;
+      port =
+        if builtins.pathExists config.sops.secrets."users/nm1/openfortivpn/port".path
+        then builtins.readFile config.sops.secrets."users/nm1/openfortivpn/port".path
+        else 8443;
+
+      host = readIfExists config.sops.secrets."users/nm1/openfortivpn/host".path;
+      username = readIfExists config.sops.secrets."users/nm1/openfortivpn/username".path;
+      password = readIfExists config.sops.secrets."users/nm1/openfortivpn/password".path;
+      realm = readIfExists config.sops.secrets."users/nm1/openfortivpn/realm".path;
+      trusted-cert = readIfExists config.sops.secrets."users/nm1/openfortivpn/trusted_cert".path;
+
+      user-cert = config.sops.secrets."users/nm1/openfortivpn/user_cert".path;
+      user-key = config.sops.secrets."users/nm1/openfortivpn/user_key".path;
+    };
   };
 
   programs = {
@@ -54,13 +54,13 @@ in {
   };
 
   home = {
-    # file.".m2/settings.xml".source = config.sops.secrets."users/nm1/m2_settings".path;
+    file = {
+      ".m2/settings.xml".source = config.sops.secrets."users/nm1/m2_settings".path;
+      ".gradle/gradle.properties".source = config.sops.secrets."users/nm1/gradle_properties".path;
+    };
     packages = with pkgs; [
-      rocketchat-desktop
       zathura
       kooha
-      obs-studio
-      xh
       pnpm
       jdk11
       sshpass
@@ -70,27 +70,29 @@ in {
       google-chrome
       android-studio
       jetbrains.idea-ultimate
-      jetbrains.pycharm-community
-      jetbrains.datagrip
-      anysync
+      postman
     ];
     persistence."/persist/${config.home.homeDirectory}".directories = [
       ".config/Rocket.Chat"
       ".config/JetBrains"
 
       ".local/share/JetBrains"
+      ".gradle/caches/modules-2/files-2.1"
+
+      ".config/google-chrome"
+      ".cache/google-chrome"
     ];
   };
 
   programs.bun.settings = {
-    # install."@softnet-ng" = {
-    #   url = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-    #   username = readIfExists config.sops.secrets."users/nm1/npm/username".path;
-    #   password = readIfExists config.sops.secrets."users/nm1/npm/password".path;
-    #   https-proxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-    #   noproxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-    #   strict-ssl = true;
-    # };
+    install."@softnet-ng" = {
+      url = readIfExists config.sops.secrets."users/nm1/npm/url".path;
+      username = readIfExists config.sops.secrets."users/nm1/npm/username".path;
+      password = readIfExists config.sops.secrets."users/nm1/npm/password".path;
+      https-proxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
+      noproxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
+      strict-ssl = true;
+    };
   };
 
   wayland.windowManager.hyprland.settings.exec-once = [
