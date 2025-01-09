@@ -30,6 +30,10 @@
       sopsFile = ./m2_settings.xml;
       format = "binary";
     };
+    "users/nm1/gradle_properties" = {
+      sopsFile = ./gradle_properties;
+      format = "binary";
+    };
 
     "users/nm1/npm/url" = {};
     "users/nm1/npm/username" = {};
