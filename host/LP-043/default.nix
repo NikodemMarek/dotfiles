@@ -28,14 +28,14 @@
         auth = ''
           key_mgmt=WPA-EAP
           eap=TLS
-          identity="@IDENTITY_SoftNet_CT@"
+          identity="ext:IDENTITY_SoftNet_CT"
           client_cert="${config.sops.secrets."users/nm1/openfortivpn/user_cert".path}"
           private_key="${config.sops.secrets."users/nm1/openfortivpn/user_key".path}"
-          private_key_passwd="@PRIVATE_KEY_PASSWD_SoftNet_CT@"
+          private_key_passwd="ext:PRIVATE_KEY_PASSWD_SoftNet_CT"
         '';
         priority = 20;
       };
-      "SoftNet".psk = "@PSK_SoftNet@";
+      "SoftNet".psk = "ext:PSK_SoftNet";
     };
   };
 
