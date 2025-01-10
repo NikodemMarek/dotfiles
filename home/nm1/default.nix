@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   ...
@@ -73,7 +74,6 @@ in {
       postman
     ];
     persistence."/persist/${config.home.homeDirectory}".directories = [
-      ".config/Rocket.Chat"
       ".config/JetBrains"
 
       ".local/share/JetBrains"
@@ -96,8 +96,7 @@ in {
   };
 
   wayland.windowManager.hyprland.settings.exec-once = [
-    "[workspace 1 silent] ${pkgs.rocketchat-desktop}/bin/rocketchat-desktop"
-    "[workspace 2 silent] ${pkgs.firefox}/bin/firefox"
-    "[workspace 3 silent] ${pkgs.wezterm}/bin/wezterm"
+    "[workspace 1 silent] ${lib.getExe pkgs.google-chrome}"
+    "[workspace 2 silent] ${lib.getExe config.programs.wezterm.package}"
   ];
 }

@@ -24,7 +24,6 @@
               ''
                 hyprctl dispatch moveworkspacetomonitor "1 eDP-1"
                 hyprctl dispatch moveworkspacetomonitor "2 eDP-1"
-                hyprctl dispatch moveworkspacetomonitor "3 eDP-1"
               '')
           ];
           outputs = [
@@ -44,8 +43,7 @@
             (mkMove
               ''
                 hyprctl dispatch moveworkspacetomonitor "1 DP-4"
-                hyprctl dispatch moveworkspacetomonitor "2 DP-4"
-                hyprctl dispatch moveworkspacetomonitor "3 DP-3"
+                hyprctl dispatch moveworkspacetomonitor "2 DP-3"
               '')
           ];
           outputs = [
@@ -75,8 +73,7 @@
             (mkMove
               ''
                 hyprctl dispatch moveworkspacetomonitor "1 DP-6"
-                hyprctl dispatch moveworkspacetomonitor "2 DP-6"
-                hyprctl dispatch moveworkspacetomonitor "3 DP-5"
+                hyprctl dispatch moveworkspacetomonitor "2 DP-5"
               '')
           ];
           outputs = [
@@ -106,8 +103,7 @@
             (mkMove
               ''
                 hyprctl dispatch moveworkspacetomonitor "1 eDP-1"
-                hyprctl dispatch moveworkspacetomonitor "2 eDP-1"
-                hyprctl dispatch moveworkspacetomonitor "3 HDMI-A-1"
+                hyprctl dispatch moveworkspacetomonitor "2 HDMI-A-1"
               '')
           ];
           outputs = [
@@ -131,8 +127,7 @@
             (mkMove
               ''
                 hyprctl dispatch moveworkspacetomonitor "1 eDP-1"
-                hyprctl dispatch moveworkspacetomonitor "2 eDP-1"
-                hyprctl dispatch moveworkspacetomonitor "3 HDMI-A-1"
+                hyprctl dispatch moveworkspacetomonitor "2 HDMI-A-1"
               '')
           ];
           outputs = [
@@ -158,7 +153,6 @@
               ''
                 hyprctl dispatch moveworkspacetomonitor "1 eDP-1"
                 hyprctl dispatch moveworkspacetomonitor "2 eDP-1"
-                hyprctl dispatch moveworkspacetomonitor "3 eDP-1"
               '')
           ];
           outputs = [
