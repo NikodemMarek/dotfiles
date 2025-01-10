@@ -1,4 +1,9 @@
-{pkgs, ...}: let
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
   # FIXME: Temporary solution that only works if secrets are already present on the host.
   readIfExists = path:
     if builtins.pathExists path
@@ -67,7 +72,6 @@ in {
       jetbrains.idea-ultimate
       postman
     ];
-<<<<<<< HEAD
   };
 
   persist.generated.directories = [
@@ -76,34 +80,9 @@ in {
 
     ".local/share/JetBrains"
   ];
-=======
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      ".config/Rocket.Chat"
-      ".config/JetBrains"
-
-      ".local/share/JetBrains"
-      ".gradle/caches/modules-2/files-2.1"
-
-      ".config/google-chrome"
-      ".cache/google-chrome"
-    ];
-  };
-
-  programs.bun.settings = {
-    install."@softnet-ng" = {
-      url = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-      username = readIfExists config.sops.secrets."users/nm1/npm/username".path;
-      password = readIfExists config.sops.secrets."users/nm1/npm/password".path;
-      https-proxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-      noproxy = readIfExists config.sops.secrets."users/nm1/npm/url".path;
-      strict-ssl = true;
-    };
-  };
->>>>>>> 6927090 (fix(nm1): broken after rebase)
 
   wayland.windowManager.hyprland.settings.exec-once = [
-    "[workspace 1 silent] ${pkgs.rocketchat-desktop}/bin/rocketchat-desktop"
-    "[workspace 2 silent] ${pkgs.firefox}/bin/firefox"
-    "[workspace 3 silent] ${pkgs.wezterm}/bin/wezterm"
+    "[workspace 1 silent] ${lib.getExe pkgs.google-chrome}"
+    "[workspace 2 silent] ${lib.getExe config.programs.wezterm.package}"
   ];
 }
