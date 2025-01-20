@@ -113,9 +113,9 @@
               position = "0,0";
             }
             {
-              criteria = "LG HDMI-A-1";
+              criteria = "HDMI-A-1";
               mode = "2560x1440";
-              position = "-2560,-1180";
+              position = "-640,-1440";
             }
           ];
         };
