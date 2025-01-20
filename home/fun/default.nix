@@ -42,6 +42,7 @@
       ".local/share/PrismLauncher"
 
       ".local/share/Steam"
+      ".factorio"
     ];
   };
 }
