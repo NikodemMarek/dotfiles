@@ -7,7 +7,7 @@
     ./hardware-configuration.nix
     ./secrets.nix
 
-    (import ../features/disko/btrfs-persistence-swapfile.nix {
+    (import ../features/disko/device-btrfs-persistence.nix {
       device = "nvme0n1";
       swap = 38;
     })
@@ -28,7 +28,8 @@
 
   persist = {
     enable = true;
-    device = "nvme0n1p2";
+    deviceService = "dev-root_vg-root.device";
+    rootPath = "/dev/root_vg/root";
   };
 
   users.users = {

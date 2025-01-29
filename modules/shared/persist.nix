@@ -18,8 +18,12 @@
   in {
     enable = mkEnableOption "Enable impermanence";
 
-    device = mkOption {
-      description = "Name of the device to use for persisting data";
+    deviceService = mkOption {
+      description = "Systemd device service to wait for, before pruning";
+      type = str;
+    };
+    rootPath = mkOption {
+      description = "Root device path";
       type = str;
     };
 

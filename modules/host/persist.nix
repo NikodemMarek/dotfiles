@@ -28,13 +28,13 @@
             before = [
               "sysroot.mount"
             ];
-            requires = ["dev-${cfg.device}.device"];
-            after = ["dev-${cfg.device}.device"];
+            requires = [cfg.deviceService];
+            after = [cfg.deviceService];
             unitConfig.DefaultDependencies = "no";
             serviceConfig.Type = "oneshot";
             script = ''
               mkdir /btrfs_tmp
-              mount /dev/${cfg.device} /btrfs_tmp
+              mount ${cfg.rootPath} /btrfs_tmp
               if [[ -e /btrfs_tmp/root ]]; then
                   mkdir -p /btrfs_tmp/old_roots
                   timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")

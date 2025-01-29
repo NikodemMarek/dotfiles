@@ -25,7 +25,8 @@
 
   persist = {
     enable = true;
-    device = "nvme0n1p2";
+    deviceService = "dev-nvme0n1p2.device";
+    rootPath = "/dev/nvme0n1p2";
   };
 
   users.users = {
