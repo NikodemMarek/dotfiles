@@ -27,6 +27,19 @@
       description = "The border around the widgets.";
     };
 
+    monitor = {
+      width = mkOption {
+        type = int;
+        default = 1920;
+        description = "The width of the monitor.";
+      };
+      height = mkOption {
+        type = int;
+        default = 1080;
+        description = "The height of the monitor.";
+      };
+    };
+
     windows = mkOption {
       type = attrsOf (submodule window);
       default = {
@@ -70,8 +83,8 @@
           inherit (cfg) border;
 
           cell = {
-            width = 1920 / 16;
-            height = 1080 / 9;
+            width = cfg.monitor.width / 16;
+            height = cfg.monitor.height / 9;
           };
 
           genIncludes = windows: concatStringsSep "\n" (map (win: ''(include "./${win.name}.yuck")'') (attrsToList windows));

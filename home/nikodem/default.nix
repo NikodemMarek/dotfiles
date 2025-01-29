@@ -23,6 +23,16 @@
     {
       eww = {
         enable = true;
+        monitor =
+          if host-config.networking.hostName == "laptop"
+          then {
+            width = 1920;
+            height = 1080;
+          }
+          else {
+            width = 2560;
+            height = 1440;
+          };
         windows = {
           powermenu.grid = [12 0 4 2];
           system = {
