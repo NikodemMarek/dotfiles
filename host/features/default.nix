@@ -17,6 +17,7 @@
       ./greetd.nix
       ./tools.nix
       ./graphics.nix
+      ./security.nix
     ]
     ++ (builtins.attrValues outputs.nixosModules);
 

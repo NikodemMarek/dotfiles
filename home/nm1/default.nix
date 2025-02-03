@@ -72,6 +72,12 @@ in {
       android-studio
       jetbrains.idea-ultimate
       postman
+      python3
+      python313Packages.pip
+      nushell
+      dbeaver-bin
+      gcc
+      oracle-instantclient
     ];
     persistence."/persist/${config.home.homeDirectory}".directories = [
       ".config/JetBrains"
@@ -81,6 +87,11 @@ in {
 
       ".config/google-chrome"
       ".cache/google-chrome"
+
+      ".config/remmina"
+      ".cache/remmina"
+
+      ".local/share/DBeaverData"
     ];
   };
 
