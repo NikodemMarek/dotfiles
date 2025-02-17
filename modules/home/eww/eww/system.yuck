@@ -1,0 +1,27 @@
+(defwidget system_cpu []
+    (box :class "system_cpu_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false
+        (progress :value { EWW_CPU.avg } :orientation "v" :flipped true)
+        (label :class "system_iconcpu" :text "")))
+
+(defwidget system_mem []
+    (box :class "system_mem_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false
+        (progress :value { EWW_RAM.used_mem_perc } :orientation "v" :flipped true)
+        (label :class "system_iconmem" :text "")))
+
+(defwidget system_drive []
+    (box :class "system_drive_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false
+        (progress :value { EWW_DISK["/persist"].used_perc } :orientation "v" :flipped true)
+        (label :class "system_icondrive" :text "󰋊")))
+
+(defwidget system_battery [visible]
+    (box :class "system_bat_bar" :orientation "v" :spacing 20 :space-evenly false :vexpand false :hexpand false :visible visible
+        (progress :value { EWW_BATTERY["BAT1"].capacity } :orientation "v" :flipped true)
+        (label :class "system_iconbat" :text "󰁹")))
+
+(defwidget system [battery]
+    (box :class "system dashboard_window" :vexpand false :hexpand false
+        (box :orientation "h" :spacing 35 :halign "center" :valign "center" :space-evenly false :vexpand false :hexpand false
+            (system_cpu)
+            (system_mem)
+            (system_drive)
+            (system_battery :visible battery))))

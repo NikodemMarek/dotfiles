@@ -21,12 +21,11 @@ in {
     ${optionalString (builtins.hasAttr "api_keys/youtube" config.sops.secrets && builtins.pathExists config.sops.secrets."api_keys/youtube".path) "YOUTUBE_API_KEY=${builtins.readFile config.sops.secrets."api_keys/youtube".path}"}
   '';
 
-  home = {
-    packages = with pkgs; [
-      fabric-ai
-    ];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      ".config/fabric"
-    ];
-  };
+  home.packages = with pkgs; [
+    fabric-ai
+  ];
+
+  persist.generated.directories = [
+    ".config/fabric"
+  ];
 }

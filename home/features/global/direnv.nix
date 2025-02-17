@@ -1,4 +1,4 @@
-{config, ...}: {
+{
   programs = {
     direnv = {
       enable = true;
@@ -9,12 +9,7 @@
     bash.enable = true;
   };
 
-  home = {
-    shellAliases = {
-      direnvenable = "echo use nix > .envrc; direnv allow";
-    };
-    persistence."/persist/${config.home.homeDirectory}".directories = [
-      ".local/share/direnv"
-    ];
-  };
+  persist.generated.directories = [
+    ".local/share/direnv"
+  ];
 }

@@ -1,4 +1,4 @@
-# run with: sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./btrfs-single-partition.nix --arg device '"eg. /dev/sda"'
+# run with: sudo nix --experimental-features "nix-command flakes" run github:nix-community/disko -- --mode disko ./btrfs-single-partition.nix --arg device '"eg. sda"'
 {
   device,
   options ? [],
@@ -6,7 +6,7 @@
 }: {
   disko.devices = {
     disk.single = {
-      inherit device;
+      device = "/dev/${device}";
       type = "disk";
       content = {
         type = "gpt";

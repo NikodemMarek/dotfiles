@@ -26,6 +26,8 @@
 
     walker.url = "github:abenz1267/walker";
 
+    eww.url = "github:elkowar/eww";
+
     firefox-addons = {
       url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
       inputs.nixpkgs.follows = "nixpkgs";

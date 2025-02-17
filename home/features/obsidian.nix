@@ -1,12 +1,11 @@
-{
-  pkgs,
-  config,
-  ...
-}: {
-  home = {
-    packages = [pkgs.obsidian];
-    persistence."/persist/${config.home.homeDirectory}".directories = [
+{pkgs, ...}: {
+  home.packages = [pkgs.obsidian];
+
+  persist = {
+    data.directories = [
       "vaults"
+    ];
+    generated.directories = [
       ".config/obsidian"
     ];
   };

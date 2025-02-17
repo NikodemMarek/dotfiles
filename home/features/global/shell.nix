@@ -1,4 +1,4 @@
-{config, ...}: {
+{
   imports = [
     ./zellij.nix
     ./direnv.nix
@@ -17,11 +17,13 @@
 
         function fish_greeting
         end
+
+        fish_vi_key_bindings
       '';
     };
   };
 
-  home.persistence."/persist/${config.home.homeDirectory}" = {
+  persist.generated = {
     directories = [
       ".local/share/zoxide"
     ];

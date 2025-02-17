@@ -8,11 +8,10 @@
     ./secrets.nix
 
     (import ../features/disko/device-btrfs-persistence.nix {
-      device = "/dev/nvme0n1";
+      device = "nvme0n1";
       swap = 38;
     })
 
-    ../features/impermanence.nix
     ../features/hyprland.nix
     ../features/docker.nix
 
@@ -38,6 +37,12 @@
       };
       "SoftNet".psk = "ext:PSK_SoftNet";
     };
+  };
+
+  persist = {
+    enable = true;
+    deviceService = "dev-nvme0n1p2.device";
+    rootPath = "/dev/nvme0n1p2";
   };
 
   users.users = {

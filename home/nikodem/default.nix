@@ -2,7 +2,6 @@
   pkgs,
   lib,
   host-config,
-  config,
   ...
 }: {
   imports = [
@@ -11,7 +10,6 @@
     ../features/hyprland
 
     ../features/neovim.nix
-    ../features/impermanence.nix
     ../features/ssh.nix
     ../features/docker.nix
     ../features/beets.nix
@@ -22,8 +20,34 @@
   ];
 
   services =
-    {}
-    // lib.mkIf (host-config.networking.hostName == "laptop") {
+    {
+      eww = {
+        enable = true;
+        monitor =
+          if host-config.networking.hostName == "laptop"
+          then {
+            width = 1920;
+            height = 1080;
+          }
+          else {
+            width = 2560;
+            height = 1440;
+          };
+        windows = {
+          powermenu.grid = [12 0 4 2];
+          system = {
+            grid = [0 2 4 3];
+            args = {
+              battery = "true";
+            };
+          };
+          clock.grid = [4 2 8 5];
+          music.grid = [0 5 4 2];
+          volume.grid = [4 0 4 2];
+        };
+      };
+    }
+    // lib.optionalAttrs (host-config.networking.hostName == "laptop") {
       battery-notifier = {
         enable = true;
         capacityPath = "/sys/class/power_supply/BAT1/capacity";
@@ -38,20 +62,20 @@
     };
   };
 
-  home = {
-    packages = with pkgs; [
-      rnote
-      beeper
-      typst
-      zathura
-      xh
-    ];
-    persistence."/persist/${config.home.homeDirectory}".directories =
-      [
-        ".config/JetBrains"
+  home.packages = with pkgs; [
+    rnote
+    beeper
+    typst
+    zathura
+    xh
+  ];
 
-        ".local/share/JetBrains"
-      ]
-      ++ lib.optional host-config.virtualisation.virtualbox.host.enable "vms";
+  persist = {
+    generated.directories = [
+      ".config/JetBrains"
+
+      ".local/share/JetBrains"
+    ];
+    data.directories = lib.optional host-config.virtualisation.virtualbox.host.enable "vms";
   };
 }

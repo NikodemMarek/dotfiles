@@ -1,0 +1,23 @@
+(defwidget powermenu_poweroff []
+	(button :class "powermenu_button powermenu_poweroff" :onclick "systemctl poweroff" ""))
+(defwidget powermenu_reboot []
+	(button :class "powermenu_button powermenu_reboot" :onclick "systemctl reboot" ""))
+(defwidget powermenu_lock []
+	(button :class "powermenu_button powermenu_lock" :onclick "hyprlock" ""))
+(defwidget powermenu_logout []
+	(button :class "powermenu_button powermenu_logout" :onclick "hyprctl dispatch exit" ""))
+(defwidget powermenu_sleep []
+	(button :class "powermenu_button powermenu_sleep" :onclick "hyprlock ; systemctl suspend ; eww reload" ""))
+(defwidget powermenu_hibernate []
+	(button :class "powermenu_button powermenu_hibernate" :onclick "hyprlock ; systemctl hibernate ; eww reload" ""))
+
+(defwidget powermenu []
+	(box :class "powermenu dashboard_window" :orientation "v" :space-evenly false
+		(box :vexpand true :hexpand true
+			(powermenu_poweroff)
+			(powermenu_lock)
+			(powermenu_sleep))
+		(box :vexpand true :hexpand true
+			(powermenu_reboot)
+			(powermenu_logout)
+			(powermenu_hibernate))))

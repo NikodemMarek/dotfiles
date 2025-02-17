@@ -1,0 +1,4 @@
+(deflisten app_list_apps :initial "empty" `./list-apps`)
+
+(defwidget app_list []
+    (literal :class "dashboard_window app_list" :content app_list_apps))
