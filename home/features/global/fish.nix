@@ -1,6 +1,5 @@
 {
   imports = [
-    ./zellij.nix
     ./direnv.nix
   ];
 

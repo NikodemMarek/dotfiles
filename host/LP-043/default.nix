@@ -41,8 +41,8 @@
 
   persist = {
     enable = true;
-    deviceService = "dev-nvme0n1p2.device";
-    rootPath = "/dev/nvme0n1p2";
+    deviceService = "dev-root_vg-root.device";
+    rootPath = "/dev/root_vg/root";
   };
 
   users.users = {

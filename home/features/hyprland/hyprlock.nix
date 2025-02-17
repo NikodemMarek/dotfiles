@@ -1,14 +1,18 @@
-{config, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   programs.hyprlock = {
     enable = true;
     settings = {
-      background = [
+      background = lib.mkDefault [
         {
           monitor = "";
           path = "${config.stylix.image}";
         }
       ];
-      input-field = [
+      input-field = lib.mkDefault [
         {
           monitor = "";
           size = "300, 50";
@@ -28,7 +32,7 @@
           valign = "center";
         }
       ];
-      label = [
+      label = lib.mkDefault [
         {
           monitor = "";
           text = "$TIME";

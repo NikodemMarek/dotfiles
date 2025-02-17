@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./shell.nix
+    ./fish.nix
   ];
 
   programs.wezterm = {
