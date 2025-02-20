@@ -18,7 +18,6 @@ in {
     ../features/neovim.nix
     ../features/ssh.nix
     ../features/docker.nix
-    ../features/bun.nix
   ];
 
   services = {
@@ -79,21 +78,6 @@ in {
       oracle-instantclient
     ];
   };
-
-  persist.generated.directories = [
-    ".config/JetBrains"
-
-    ".local/share/JetBrains"
-    ".gradle/caches/modules-2/files-2.1"
-
-    ".config/google-chrome"
-    ".cache/google-chrome"
-
-    ".config/remmina"
-    ".cache/remmina"
-
-    ".local/share/DBeaverData"
-  ];
 
   wayland.windowManager.hyprland.settings.exec-once = [
     "[workspace 1 silent] ${lib.getExe pkgs.google-chrome}"

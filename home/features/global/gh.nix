@@ -12,9 +12,4 @@
   home.shellAliases = {
     ghsg = "gh copilot suggest --target shell '$_'";
   };
-
-  persist.generated.directories = [
-    ".config/github-copilot"
-    ".local/share/gh"
-  ];
 }

@@ -21,8 +21,4 @@
       };
     };
   };
-
-  persist.generated.directories = [
-    ".mozilla"
-  ];
 }

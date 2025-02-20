@@ -8,8 +8,4 @@
 
     bash.enable = true;
   };
-
-  persist.generated.directories = [
-    ".local/share/direnv"
-  ];
 }

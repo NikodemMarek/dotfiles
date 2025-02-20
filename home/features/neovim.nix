@@ -19,15 +19,4 @@ in {
       n = "nvim";
     };
   };
-
-  persist.generated.directories = [
-    ".local/share/nvim"
-
-    ".npm"
-    ".cargo"
-    ".java"
-    ".gradle"
-    ".m2"
-    ".android"
-  ];
 }

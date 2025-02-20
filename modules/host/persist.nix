@@ -5,10 +5,56 @@
   ...
 }: {
   imports = [
-    ../shared/persist.nix
-
     inputs.impermanence.nixosModules.impermanence
   ];
+
+  options.persist = let
+    inherit (lib) mkEnableOption mkOption;
+    inherit (lib.types) submodule listOf str;
+
+    peristentCategory = {
+      options = {
+        directories = mkOption {
+          type = listOf str;
+          default = [];
+        };
+        files = mkOption {
+          type = listOf str;
+          default = [];
+        };
+      };
+    };
+
+    users = mkOption {
+      type = lib.types.attrsOf (lib.types.attrsOf (
+        submodule peristentCategory
+      ));
+      default = {};
+    };
+  in {
+    enable = mkEnableOption "Enable impermanence";
+
+    deviceService = mkOption {
+      description = "Systemd device service to wait for, before pruning";
+      type = str;
+    };
+    rootPath = mkOption {
+      description = "Root device path";
+      type = str;
+    };
+
+    # TODO: Allow arbitrary number of categories
+    data = mkOption {
+      type = submodule peristentCategory;
+      default = {};
+    };
+    generated = mkOption {
+      type = submodule peristentCategory;
+      default = {};
+    };
+
+    inherit users;
+  };
 
   config = let
     cfg = config.persist;
@@ -63,7 +109,17 @@
       fileSystems."/persist".neededForBoot = true;
       programs.fuse.userAllowOther = true;
 
-      environment.persistence = {
+      environment.persistence = let
+        usernames = lib.attrNames cfg.users;
+        usersCategory = category:
+          builtins.listToAttrs (
+            map (user: {
+              name = user;
+              value = cfg.users.${user}.${category};
+            })
+            usernames
+          );
+      in {
         "/persist/data" = {
           hideMounts = true;
           directories =
@@ -77,6 +133,7 @@
             ]
             ++ cfg.data.directories;
           files = cfg.data.files;
+          users = usersCategory "data";
         };
         "/persist/generated" = {
           hideMounts = true;
@@ -87,7 +144,6 @@
               "/var/lib/nixos"
               "/var/lib/systemd"
               "/var/lib/sops-nix"
-              "/etc/NetworkManager/system-connections"
             ]
             ++ cfg.generated.directories;
           files =
@@ -95,6 +151,7 @@
               "/etc/machine-id"
             ]
             ++ cfg.generated.files;
+          users = usersCategory "generated";
         };
       };
 

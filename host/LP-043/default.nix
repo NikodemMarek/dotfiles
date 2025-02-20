@@ -18,6 +18,8 @@
     ../features/battery-saver.nix
     ../features/bluetooth.nix
     ../features/openfortivpn.nix
+
+    ../../home/nm1/persist.nix
   ];
 
   networking = {
