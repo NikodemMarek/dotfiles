@@ -21,6 +21,25 @@ in {
   ];
 
   services = {
+    eww = {
+      enable = true;
+      monitor = {
+        width = 1920;
+        height = 1080;
+      };
+      windows = {
+        powermenu.grid = [12 0 4 2];
+        system = {
+          grid = [0 2 4 3];
+          args = {
+            battery = "true";
+          };
+        };
+        clock.grid = [4 2 8 5];
+        music.grid = [0 5 4 2];
+        volume.grid = [4 0 4 2];
+      };
+    };
     battery-notifier = {
       enable = true;
       capacityPath = "/sys/class/power_supply/BAT0/capacity";
