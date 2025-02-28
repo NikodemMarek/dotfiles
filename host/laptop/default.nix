@@ -19,6 +19,9 @@
 
     ../features/battery-saver.nix
     ../features/bluetooth.nix
+
+    ../../home/nikodem/persist.nix
+    ../../home/fun/persist.nix
   ];
 
   networking.hostName = "laptop";

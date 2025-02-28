@@ -24,8 +24,4 @@ in {
   home.packages = with pkgs; [
     fabric-ai
   ];
-
-  persist.generated.directories = [
-    ".config/fabric"
-  ];
 }

@@ -69,13 +69,4 @@
     zathura
     xh
   ];
-
-  persist = {
-    generated.directories = [
-      ".config/JetBrains"
-
-      ".local/share/JetBrains"
-    ];
-    data.directories = lib.optional host-config.virtualisation.virtualbox.host.enable "vms";
-  };
 }

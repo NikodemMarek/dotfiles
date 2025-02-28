@@ -33,16 +33,4 @@
     jdk8
     steam
   ];
-
-  persist = {
-    data.directories = [
-      "games"
-    ];
-    generated.directories = [
-      ".local/share/PrismLauncher"
-
-      ".local/share/Steam"
-      ".factorio"
-    ];
-  };
 }
