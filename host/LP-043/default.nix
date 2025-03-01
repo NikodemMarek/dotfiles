@@ -12,6 +12,7 @@
       swap = 38;
     })
 
+    ../features/multi-user.nix
     ../features/hyprland.nix
     ../features/docker.nix
 

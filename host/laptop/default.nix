@@ -12,6 +12,7 @@
       swap = 15;
     })
 
+    ../features/multi-user.nix
     ../features/hyprland.nix
     ../features/docker.nix
     ../features/dnscrypt-proxy2.nix
