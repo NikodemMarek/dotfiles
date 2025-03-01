@@ -52,12 +52,6 @@
       "systemd-resolved.service"
       "sound.target"
       "graphical.target"
-      "cage-tty1.service"
-    ];
-    requires = [
-      "sound.target"
-      "graphical.target"
-      "cage-tty1.service"
     ];
     script = lib.getExe (pkgs.writeShellScriptBin "run" ''
       sleep 20
