@@ -36,7 +36,6 @@
   services.cage = {
     enable = true;
     program = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      ${pkgs.wireplumber}/bin/wpctl set-default 50
       ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
     '');
     user = "root";
@@ -48,7 +47,9 @@
       "systemd-resolved.service"
       "wireplumber.service"
       "pipewire.service"
+      "graphical.target"
     ];
+    postStart = "${pkgs.wireplumber}/bin/wpctl set-default 50";
     postStop = "/usr/bin/env poweroff";
   };
 
