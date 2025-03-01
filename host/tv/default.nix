@@ -47,7 +47,7 @@
       "systemd-resolved.service"
       "wireplumber.service"
       "pipewire.service"
-      "graphical.target"
+      "sound.target"
     ];
     postStart = "${pkgs.wireplumber}/bin/wpctl set-default 50";
     postStop = "/usr/bin/env poweroff";
