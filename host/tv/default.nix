@@ -46,6 +46,8 @@
     after = [
       "network-online.target"
       "systemd-resolved.service"
+      "wireplumber.service"
+      "pipewire.service"
     ];
     postStop = "/usr/bin/env poweroff";
   };
