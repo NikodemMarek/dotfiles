@@ -31,26 +31,28 @@
     preferences = {
       "browser.shell.checkDefaultBrowser" = false;
       "browser.shell.defaultBrowserCheckCount" = 1;
+      "trailhead.firstrun.didSeeAboutWelcome" = true;
     };
   };
 
-  environment.etc."wireplumber/main.lua.d/50-alsa-config.lua".text = ''
-    -- Set HDMI as the default audio device
-    rule = {
-      matches = {
-        {
-          { "device.name", "equals", "alsa_output.pci-0000_00_03.0.hdmi-stereo" },
-        },
-      },
-      apply_properties = {
-        ["api.alsa.headroom"] = 1024,
-        ["api.alsa.period-size"] = 1024,
-        ["api.alsa.period-num"] = 2,
-        ["device.profile"] = "hdmi-stereo", -- Use the HDMI profile
-      },
-    }
-    table.insert(alsa_monitor.rules, rule)
-  '';
+  services.pipewire.wireplumber.extraConfig."50-alsa-config" = {
+    "monitor.alsa.rules" = [
+      {
+        matches = [
+          {
+            "device.name" = "alsa_output.pci-0000_00_03.0.hdmi-stereo";
+          }
+        ];
+        actions = {
+          "update-props" = {
+            "device.profile" = "hdmi-stereo";
+            "priority.driver" = 2000;
+            "priority.session" = 2000;
+          };
+        };
+      }
+    ];
+  };
 
   services.cage = {
     enable = true;
