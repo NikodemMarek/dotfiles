@@ -34,9 +34,13 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    pulseaudio
+  ];
+
   services.cage = {
     enable = true;
-    program = lib.getExe pkgs.firefox;
+    program = "${lib.getExe pkgs.firefox} --kiosk";
     user = "tv";
     extraArguments = ["-m" "last" "-s"];
   };
