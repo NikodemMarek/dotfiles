@@ -34,13 +34,27 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    pulseaudio
-  ];
+  environment.etc."wireplumber/main.lua.d/50-alsa-config.lua".text = ''
+    -- Set HDMI as the default audio device
+    rule = {
+      matches = {
+        {
+          { "device.name", "equals", "alsa_output.pci-0000_00_03.0.hdmi-stereo" },
+        },
+      },
+      apply_properties = {
+        ["api.alsa.headroom"] = 1024,
+        ["api.alsa.period-size"] = 1024,
+        ["api.alsa.period-num"] = 2,
+        ["device.profile"] = "hdmi-stereo", -- Use the HDMI profile
+      },
+    }
+    table.insert(alsa_monitor.rules, rule)
+  '';
 
   services.cage = {
     enable = true;
-    program = "${lib.getExe pkgs.firefox} --kiosk";
+    program = "${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank";
     user = "tv";
     extraArguments = ["-m" "last" "-s"];
   };
