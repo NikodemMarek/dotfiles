@@ -24,7 +24,7 @@
 
   networking = {
     useNetworkd = true;
-    wireless = lib.mkIf (builtins.pathExists config.sops.secrets.networks.path) {
+    wireless = lib.mkIf ((builtins.hasAttr "networks" config.sops.secrets) && (builtins.pathExists config.sops.secrets.networks.path)) {
       enable = true;
       userControlled.enable = true;
       secretsFile = config.sops.secrets.networks.path;
