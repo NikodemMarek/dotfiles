@@ -22,7 +22,7 @@
     ];
   };
 
-  services.openssh.settings.PermitRootLogin = "prohibit-password";
+  services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
 
   programs.firefox = {
     enable = true;
