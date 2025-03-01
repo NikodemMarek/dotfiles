@@ -35,9 +35,7 @@
 
   services.cage = {
     enable = true;
-    program = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
-    '');
+    program = "${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank";
     user = "root";
     extraArguments = ["-m" "last"];
   };
@@ -52,20 +50,19 @@
     after = [
       "network-online.target"
       "systemd-resolved.service"
-      "wireplumber.service"
-      "pipewire.service"
       "sound.target"
       "graphical.target"
       "cage-tty1.service"
     ];
     requires = [
-      "wireplumber.service"
-      "pipewire.service"
       "sound.target"
       "graphical.target"
       "cage-tty1.service"
     ];
-    script = "${pkgs.wireplumber}/bin/wpctl set-default 50";
+    script = lib.getExe (pkgs.writeShellScriptBin "run" ''
+      sleep 20
+      ${pkgs.wireplumber}/bin/wpctl set-default 50
+    '');
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
