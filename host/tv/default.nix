@@ -14,15 +14,15 @@
 
   networking.hostName = "tv";
 
-  users.users = {
-    root = {
-      password = "tv";
-      openssh.authorizedKeys.keyFiles = [
-        ../laptop/user_nikodem_ssh_id_ed25519.pub
-        ../desktop/user_nikodem_ssh_id_ed25519.pub
-      ];
-    };
+  users.users.root = {
+    password = "tv";
+    openssh.authorizedKeys.keyFiles = [
+      ../laptop/user_nikodem_ssh_id_ed25519.pub
+      ../desktop/user_nikodem_ssh_id_ed25519.pub
+    ];
   };
+
+  services.openssh.settings.PermitRootLogin = "prohibit-password";
 
   programs.firefox = {
     enable = true;
@@ -36,7 +36,7 @@
   services.cage = {
     enable = true;
     program = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      ${pkgs.pipewire}/bin/pw-metadata -n settings 0 default.audio.sink "alsa_output.pci-0000_00_03.0.hdmi-stereo"
+      ${pkgs.pipewire}/bin/pw-metadata  -n settings 0 default.audio.sink "alsa_output.pci-0000_00_03.0.hdmi-stereo"
       ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
     '');
     user = "root";
