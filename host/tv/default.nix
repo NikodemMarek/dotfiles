@@ -45,12 +45,27 @@
     after = [
       "network-online.target"
       "systemd-resolved.service"
+    ];
+    postStop = "/usr/bin/env poweroff";
+  };
+  systemd.services."default-sink" = {
+    after = [
+      "network-online.target"
+      "systemd-resolved.service"
       "wireplumber.service"
       "pipewire.service"
       "sound.target"
+      "graphical.target"
+      "cage-tty1.service"
     ];
-    postStart = "${pkgs.wireplumber}/bin/wpctl set-default 50";
-    postStop = "/usr/bin/env poweroff";
+    requires = [
+      "wireplumber.service"
+      "pipewire.service"
+      "sound.target"
+      "graphical.target"
+      "cage-tty1.service"
+    ];
+    script = "${pkgs.wireplumber}/bin/wpctl set-default 50";
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
