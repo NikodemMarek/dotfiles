@@ -15,10 +15,8 @@
   networking.hostName = "tv";
 
   users.users = {
-    tv = {
-      isNormalUser = true;
+    root = {
       password = "tv";
-      extraGroups = ["wheel"];
       openssh.authorizedKeys.keyFiles = [
         ../laptop/user_nikodem_ssh_id_ed25519.pub
         ../desktop/user_nikodem_ssh_id_ed25519.pub
@@ -57,8 +55,8 @@
   services.cage = {
     enable = true;
     program = "${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank";
-    user = "tv";
-    extraArguments = ["-m" "last" "-s"];
+    user = "root";
+    extraArguments = ["-m" "last"];
   };
   systemd.services."cage-tty1" = {
     after = [
