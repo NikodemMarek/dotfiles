@@ -36,7 +36,7 @@
   services.cage = {
     enable = true;
     program = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      ${pkgs.pipewire}/bin/pw-metadata  -n settings 0 default.audio.sink "alsa_output.pci-0000_00_03.0.hdmi-stereo"
+      ${pkgs.wireplumber}/bin/wpctl set-default 50
       ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
     '');
     user = "root";
