@@ -33,28 +33,9 @@
     };
   };
 
-  services.pipewire.wireplumber.extraConfig."50-alsa-config" = {
-    "monitor.alsa.rules" = [
-      {
-        matches = [
-          {
-            "device.name" = "alsa_output.pci-0000_00_03.0.hdmi-stereo";
-          }
-        ];
-        actions = {
-          "update-props" = {
-            "device.profile" = "hdmi-stereo";
-            "priority.driver" = 2000;
-            "priority.session" = 2000;
-          };
-        };
-      }
-    ];
-  };
-
   services.cage = {
     enable = true;
-    program = "${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank";
+    program = "${lib.getExe pkgs.pulseaudio} set-default-sink alsa_output.pci-0000_00_03.0.hdmi-stereo ; ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank";
     user = "root";
     extraArguments = ["-m" "last"];
   };
