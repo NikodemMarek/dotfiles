@@ -50,8 +50,6 @@
     after = [
       "network-online.target"
       "systemd-resolved.service"
-      "sound.target"
-      "graphical.target"
     ];
     script = lib.getExe (pkgs.writeShellScriptBin "run" ''
       sleep 20
