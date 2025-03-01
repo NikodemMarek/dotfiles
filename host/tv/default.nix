@@ -36,7 +36,7 @@
   services.cage = {
     enable = true;
     program = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      ${lib.getExe pkgs.pulseaudio} set-default-sink alsa_output.pci-0000_00_03.0.hdmi-stereo
+      ${pkgs.pulseaudio}/bin/pactl set-default-sink alsa_output.pci-0000_00_03.0.hdmi-stereo
       ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
     '');
     user = "root";
