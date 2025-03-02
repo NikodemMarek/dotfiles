@@ -62,7 +62,7 @@
   services.cage = {
     enable = true;
     program = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      sleep 20 & ${pkgs.wireplumber}/bin/wpctl set-default 50 &
+      sleep 20 & ${pkgs.wireplumber}/bin/wpctl set-default 48 &
       ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
     '');
     user = "root";
@@ -74,6 +74,17 @@
       "systemd-resolved.service"
     ];
     postStop = "/usr/bin/env poweroff";
+  };
+  systemd.services."default-sink" = {
+    after = [
+      "pipewire.service"
+      "wireplumber.service"
+    ];
+    script = lib.getExe (pkgs.writeShellScriptBin "default-sink" ''
+      sleep 20
+      ${pkgs.wireplumber}/bin/wpctl set-default 48
+
+    '');
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
