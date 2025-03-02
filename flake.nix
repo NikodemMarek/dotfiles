@@ -86,6 +86,7 @@
       laptop = mkHost "laptop";
       desktop = mkHost "desktop";
       LP-043 = mkHost "LP-043";
+      tv = mkHost "tv";
     };
   };
 }

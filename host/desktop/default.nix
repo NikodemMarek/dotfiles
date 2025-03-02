@@ -15,6 +15,7 @@
       device = "sda";
     })
 
+    ../features/multi-user.nix
     ../features/hyprland.nix
     ../features/docker.nix
     ../features/dnscrypt-proxy2.nix
