@@ -6,7 +6,6 @@
       ./stylix.nix
       ./networking.nix
       ./openssh.nix
-      ./pipewire.nix
       ./tools.nix
       ./graphics.nix
       ./security.nix

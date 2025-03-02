@@ -9,7 +9,6 @@
     })
 
     ../features/battery-saver.nix
-    ../features/bluetooth.nix
   ];
 
   networking.hostName = "tv";
@@ -24,6 +23,30 @@
 
   services.openssh.settings.PermitRootLogin = lib.mkForce "prohibit-password";
 
+  services.pipewire = {
+    enable = true;
+    systemWide = true;
+    wireplumber = {
+      enable = true;
+      extraConfig."50-default-sink" = {
+        "monitor.alsa.rules" = [
+          {
+            matches = [
+              {
+                "node.name" = "alsa_output.pci-0000_00_03.0.hdmi-stereo";
+              }
+            ];
+            actions = {
+              "update-props" = {
+                "node.default" = true;
+              };
+            };
+          }
+        ];
+      };
+    };
+  };
+
   programs.firefox = {
     enable = true;
     preferences = {
@@ -35,7 +58,10 @@
 
   services.cage = {
     enable = true;
-    program = "${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank";
+    program = lib.getExe (pkgs.writeShellScriptBin "run" ''
+      sleep 20 & ${pkgs.wireplumber}/bin/wpctl set-default 50 &
+      ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
+    '');
     user = "root";
     extraArguments = ["-m" "last"];
   };
@@ -45,16 +71,6 @@
       "systemd-resolved.service"
     ];
     postStop = "/usr/bin/env poweroff";
-  };
-  systemd.services."default-sink" = {
-    after = [
-      "network-online.target"
-      "systemd-resolved.service"
-    ];
-    script = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      sleep 20
-      ${pkgs.wireplumber}/bin/wpctl set-default 50
-    '');
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
