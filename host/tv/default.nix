@@ -61,10 +61,7 @@
 
   services.cage = {
     enable = true;
-    program = lib.getExe (pkgs.writeShellScriptBin "run" ''
-      sleep 20 & ${pkgs.wireplumber}/bin/wpctl set-default 48 &
-      ${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank
-    '');
+    program = "${lib.getExe pkgs.firefox} --new-instance --no-remote about:blank";
     user = "root";
     extraArguments = ["-m" "last"];
   };
@@ -81,14 +78,23 @@
       "wireplumber.service"
     ];
     requires = ["pipewire.service" "wireplumber.service"];
+    wantedBy = ["multi-user.target"];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
+      TimeoutStartSec = "1m";
     };
     script = lib.getExe (pkgs.writeShellScriptBin "default-sink" ''
+      echo "Waiting for PipeWire and WirePlumber to initialize..."
       sleep 20
+      echo "Setting default sink to ID 48..."
       ${pkgs.wireplumber}/bin/wpctl set-default 48
-
+      if [ $? -eq 0 ]; then
+        echo "Default sink set successfully!"
+      else
+        echo "Failed to set default sink."
+        exit 1
+      fi
     '');
   };
 
