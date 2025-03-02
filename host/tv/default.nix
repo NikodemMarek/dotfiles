@@ -80,6 +80,11 @@
       "pipewire.service"
       "wireplumber.service"
     ];
+    requires = ["pipewire.service" "wireplumber.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
     script = lib.getExe (pkgs.writeShellScriptBin "default-sink" ''
       sleep 20
       ${pkgs.wireplumber}/bin/wpctl set-default 48
