@@ -5,6 +5,7 @@
 
   sops.secrets = {
     "users/nm1/ssh_id_ed25519" = {};
+    "users/nikodem/ssh_id_ed25519" = {};
 
     networks = lib.mkForce {
       sopsFile = ./networks.env;

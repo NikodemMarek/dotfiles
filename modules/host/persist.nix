@@ -1,13 +1,8 @@
 {
-  inputs,
   lib,
   config,
   ...
 }: {
-  imports = [
-    inputs.impermanence.nixosModules.impermanence
-  ];
-
   options.persist = let
     inherit (lib) mkEnableOption mkOption;
     inherit (lib.types) submodule listOf str;

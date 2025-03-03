@@ -15,12 +15,24 @@
     ../features/multi-user.nix
     ../features/hyprland.nix
     ../features/docker.nix
+    ../features/zerotier.nix
 
     ../features/battery-saver.nix
     ../features/bluetooth.nix
     ../features/openfortivpn.nix
 
     ../../home/nm1/persist.nix
+    ../../home/nikodem/persist.nix
+  ];
+
+  boot.kernel.sysctl = {"fs.file-max" = 524288;};
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "-";
+      item = "nofile";
+      value = "524288";
+    }
   ];
 
   networking = {
@@ -53,6 +65,17 @@
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/nm1/password".path;
       extraGroups = ["wheel" "networkmanager" "docker" "openfortivpn"];
+      shell = pkgs.fish;
+      openssh.authorizedKeys.keyFiles = [
+        ./user_nm1_ssh_id_ed25519.pub
+        ../desktop/user_nikodem_ssh_id_ed25519.pub
+        ../laptop/user_nikodem_ssh_id_ed25519.pub
+      ];
+    };
+    nikodem = {
+      isNormalUser = true;
+      hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
+      extraGroups = ["wheel" "docker"];
       shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [
         ./user_nm1_ssh_id_ed25519.pub

@@ -1,8 +1,4 @@
-{inputs, ...}: {
-  imports = [
-    inputs.nix-ld.nixosModules.nix-ld
-  ];
-
+{pkgs, ...}: {
   programs = {
     fish.enable = true;
     git.enable = true;
@@ -15,4 +11,8 @@
     direnv.enable = true;
   };
   environment.variables.EDITOR = "nvim";
+
+  environment.systemPackages = with pkgs; [
+    tldr
+  ];
 }

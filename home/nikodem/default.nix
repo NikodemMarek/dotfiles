@@ -4,20 +4,20 @@
   host-config,
   ...
 }: {
-  imports = [
-    ../../host/${host-config.networking.hostName}/kanshi.nix
+  imports =
+    [
+      ../features/hyprland
 
-    ../features/hyprland
-
-    ../features/neovim.nix
-    ../features/ssh.nix
-    ../features/docker.nix
-    ../features/beets.nix
-    ../features/yt-dlp.nix
-    ../features/obsidian.nix
-    ../features/fabric-ai.nix
-    ../features/ollama.nix
-  ];
+      ../features/neovim.nix
+      ../features/ssh.nix
+      ../features/docker.nix
+      ../features/beets.nix
+      ../features/yt-dlp.nix
+      ../features/obsidian.nix
+      ../features/fabric-ai.nix
+      ../features/ollama.nix
+    ]
+    ++ (lib.optional (builtins.pathExists ../../host/${host-config.networking.hostName}/kanshi.nix) ../../host/${host-config.networking.hostName}/kanshi.nix);
 
   services =
     {

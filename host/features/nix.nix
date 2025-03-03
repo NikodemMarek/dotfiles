@@ -3,10 +3,6 @@
   inputs,
   ...
 }: {
-  imports = [
-    inputs.sops-nix.nixosModules.sops
-  ];
-
   nix.settings = {
     experimental-features = ["nix-command" "flakes"];
   };
