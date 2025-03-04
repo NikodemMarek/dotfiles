@@ -23,6 +23,10 @@
     ../features/syncthing.nix
     ../features/ollama.nix
     ../features/virtualbox.nix
+
+    ../../home/nikodem/persist.nix
+    ../../home/fun/persist.nix
+    ../../home/ctf/persist.nix
   ];
 
   networking.hostName = "desktop";
@@ -58,11 +62,6 @@
       shell = pkgs.fish;
     };
   };
-
-  boot.extraModulePackages = [config.boot.kernelPackages.rtl8821au];
-  environment.systemPackages = with pkgs; [
-    linuxKernel.packages.linux_6_1.rtl8821au
-  ];
 
   # TODO: Migrate to home-manager when it gets support
   services.syncthing = {
