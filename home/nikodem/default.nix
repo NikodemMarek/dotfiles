@@ -3,10 +3,15 @@
   lib,
   host-config,
   ...
-}: {
+}: let
+  isLaptop = host-config.networking.hostName == "laptop";
+  isDesktop = host-config.networking.hostName == "desktop";
+  isLP043 = host-config.networking.hostName == "LP-043";
+in {
   imports =
     [
       ../features/hyprland
+      ../features/clipboard-sync
 
       ../features/neovim.nix
       ../features/ssh.nix
@@ -17,14 +22,14 @@
       ../features/fabric-ai.nix
       ../features/ollama.nix
     ]
-    ++ (lib.optional (builtins.pathExists ../../host/${host-config.networking.hostName}/kanshi.nix) ../../host/${host-config.networking.hostName}/kanshi.nix);
+    ++ (lib.optional (isLaptop || isDesktop) ../../host/${host-config.networking.hostName}/kanshi.nix);
 
   services =
     {
       eww = {
         enable = true;
         monitor =
-          if host-config.networking.hostName == "laptop"
+          if isLaptop || isLP043
           then {
             width = 1920;
             height = 1080;
@@ -47,7 +52,8 @@
         };
       };
     }
-    // lib.optionalAttrs (host-config.networking.hostName == "laptop") {
+    // lib.optionalAttrs (isLaptop
+      || isLP043) {
       battery-notifier = {
         enable = true;
         capacityPath = "/sys/class/power_supply/BAT1/capacity";

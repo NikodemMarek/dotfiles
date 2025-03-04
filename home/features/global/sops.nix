@@ -18,6 +18,8 @@
 in {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
+
+    ../../../host/${host-config.networking.hostName}/secrets.nix
   ];
 
   sops = {

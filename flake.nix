@@ -39,6 +39,8 @@
     };
 
     wired.url = "github:Toqozz/wired-notify";
+
+    clipboard-sync.url = "github:NikodemMarek/clipboard-sync";
   };
 
   outputs = {

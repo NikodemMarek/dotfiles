@@ -1,13 +1,14 @@
 {
+  inputs,
   outputs,
-  host-config,
   config,
   ...
 }: {
   imports =
     [
       ./global
-      ../../host/${host-config.networking.hostName}/secrets.nix
+
+      inputs.clipboard-sync.homeManagerModules.default
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);
 

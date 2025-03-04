@@ -2,6 +2,7 @@
   imports = [
     ../../secrets/networks.nix
     ../../secrets/api-keys.nix
+    ../../secrets/clipboard-sync.nix
   ];
 
   sops.secrets = {
