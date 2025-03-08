@@ -9,6 +9,7 @@
     })
 
     ../features/battery-saver.nix
+    ../features/zerotier.nix
   ];
 
   networking.hostName = "tv";

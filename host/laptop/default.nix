@@ -17,6 +17,7 @@
     ../features/docker.nix
     ../features/dnscrypt-proxy2.nix
     ../features/syncthing.nix
+    ../features/zerotier.nix
 
     ../features/battery-saver.nix
     ../features/bluetooth.nix
