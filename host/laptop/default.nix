@@ -44,6 +44,7 @@
         ./user_nikodem_ssh_id_ed25519.pub
         ../desktop/user_nikodem_ssh_id_ed25519.pub
         ../LP-043/user_nm1_ssh_id_ed25519.pub
+        ../LP-043/user_nikodem_ssh_id_ed25519.pub
       ];
     };
     fun = {

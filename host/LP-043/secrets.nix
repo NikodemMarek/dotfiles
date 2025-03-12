@@ -1,6 +1,7 @@
 {lib, ...}: {
   imports = [
     ../../secrets/api-keys.nix
+    ../../secrets/clipboard-sync.nix
   ];
 
   sops.secrets = {
