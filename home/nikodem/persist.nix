@@ -66,6 +66,10 @@
 
         ".config/obsidian"
 
+        # beeper
+
+        ".config/Beeper"
+
         # common
 
         ".config/Google"
