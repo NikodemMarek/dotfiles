@@ -18,6 +18,7 @@ in {
     ../features/neovim.nix
     ../features/ssh.nix
     ../features/docker.nix
+    ../features/zen-browser.nix
   ];
 
   services = {

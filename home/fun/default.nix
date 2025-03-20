@@ -12,6 +12,7 @@
     ../features/neovim.nix
     ../features/beets.nix
     ../features/yt-dlp.nix
+    ../features/zen-browser.nix
   ];
 
   services =

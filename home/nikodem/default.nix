@@ -21,6 +21,7 @@ in {
       ../features/obsidian.nix
       ../features/fabric-ai.nix
       ../features/ollama.nix
+      ../features/zen-browser.nix
     ]
     ++ (lib.optional (isLaptop || isDesktop) ../../host/${host-config.networking.hostName}/kanshi.nix);
 

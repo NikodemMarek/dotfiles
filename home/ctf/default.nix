@@ -13,6 +13,7 @@
     ../features/obsidian.nix
     ../features/fabric-ai.nix
     ../features/ollama.nix
+    ../features/zen-browser.nix
   ];
 
   programs = {

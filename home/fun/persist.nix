@@ -36,6 +36,10 @@
 
         ".mozilla"
 
+        # zen browser
+
+        ".zen"
+
         # direnv
 
         ".local/share/direnv"
