@@ -77,11 +77,17 @@ in {
       ".m2/settings.xml".source = config.sops.secrets."users/nm1/m2_settings".path;
       ".gradle/gradle.properties".source = config.sops.secrets."users/nm1/gradle_properties".path;
     };
+    sessionVariables = {
+      JAVA_8_HOME = "${pkgs.jdk8}";
+      JAVA_11_HOME = "${pkgs.jdk11}";
+      JAVA_21_HOME = "${pkgs.jdk21}";
+      JAVA_23_HOME = "${pkgs.jdk23}";
+    };
     packages = with pkgs; [
       zathura
       kooha
       pnpm
-      jdk11
+      jdk23
       sshpass
       maven
       remmina
