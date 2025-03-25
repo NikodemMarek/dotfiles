@@ -29,7 +29,10 @@
     ../../home/ctf/persist.nix
   ];
 
-  networking.hostName = "desktop";
+  networking = {
+    hostName = "desktop";
+    interfaces.enp5s0.wakeOnLan.enable = true;
+  };
 
   persist = {
     enable = true;
