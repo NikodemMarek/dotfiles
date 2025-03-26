@@ -44,7 +44,10 @@ in {
           system = {
             grid = [0 2 4 3];
             args = {
-              battery = "true";
+              battery =
+                if isLaptop || isLP043
+                then "true"
+                else "false";
             };
           };
           clock.grid = [4 2 8 5];
