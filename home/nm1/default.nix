@@ -19,6 +19,7 @@ in {
     ../features/ssh.nix
     ../features/docker.nix
     ../features/zen-browser.nix
+    ../features/coding.nix
   ];
 
   services = {
