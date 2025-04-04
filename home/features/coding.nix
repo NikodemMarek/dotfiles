@@ -1,27 +1,35 @@
 {pkgs, ...}: {
-  home.packages = with pkgs; [
-    # cpp
-    gcc
+  home = {
+    packages = with pkgs; [
+      # cpp
+      gcc
 
-    # python
-    python3
+      # python
+      python3
 
-    # rust
-    cargo
-    rustc
-    rustfmt
+      # rust
+      cargo
+      rustc
+      rustfmt
 
-    # node
-    nodejs
-    pnpm
+      # node
+      nodejs
+      pnpm
 
-    # java
-    maven
+      # java
+      maven
 
-    # go
-    go
+      # go
+      go
 
-    # other
-    wasm-pack
-  ];
+      # other
+      wasm-pack
+
+      # utilities
+      watchexec
+    ];
+    shellAliases = {
+      wth = "watchexec --exts rs,go,py,sh,c,cpp,h,js,ts,tsx,css,html,java,wasm --restart --debounce 1000ms --shell bash -- $1";
+    };
+  };
 }
