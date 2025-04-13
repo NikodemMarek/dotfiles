@@ -31,7 +31,7 @@
       networks = {
         "AGH-Guest" = {};
         "Meshki56".pskRaw = "ext:PSK_Meshki56";
-        "308a_niezaliczan_semestranu".pskRaw = "ext:PSK_308a_niezaliczan_semestranu";
+        "402a".pskRaw = "ext:PSK_402a";
         "hot_pot" = {
           pskRaw = "ext:PSK_hot_pot";
           priority = -10;
