@@ -19,8 +19,8 @@
             {
               criteria = "HDMI-A-1";
               mode = "1920x1080";
-              position = "2560,-240";
-              transform = "270";
+              position = "-1080,-240";
+              transform = "90";
             }
           ];
         };
