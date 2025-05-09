@@ -17,6 +17,7 @@
     grim
     slurp
     pulseaudio
+    wdisplays
   ];
 
   wayland.windowManager.hyprland = {
@@ -117,9 +118,9 @@
           "$mod, l, movefocus, r"
 
           # Go to {next, prev, empty, 1, 2} workspace with mod + {j, k, n, a, s}
-          "$mod, k, workspace, r-1"
-          "$mod, j, workspace, r+1"
-          "$mod, n, workspace, empty"
+          "$mod, k, workspace, m-1"
+          "$mod, j, workspace, m+1"
+          "$mod, n, workspace, emptynm"
           "$mod, a, workspace, 1"
           "$mod, s, workspace, 2"
 

@@ -11,8 +11,6 @@
     else null;
 in {
   imports = [
-    ./kanshi.nix
-
     ../features/hyprland
 
     ../features/neovim.nix
