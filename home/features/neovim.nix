@@ -3,7 +3,8 @@
   pkgs,
   ...
 }: let
-  neovim = inputs.neovim.packages.${pkgs.system}.default.extend {};
+  neovim =
+    inputs.neovim.packages.${pkgs.system}.default;
 in {
   programs = {
     ripgrep.enable = true;
@@ -17,6 +18,7 @@ in {
     ];
     shellAliases = {
       n = "nvim";
+      zin = "zi && nvim";
     };
   };
 }
