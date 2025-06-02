@@ -24,6 +24,17 @@
 
   networking = {
     useNetworkd = true;
+    extraHosts = ''
+      # local dorm network
+      192.168.10.10 dorm.desktop
+      192.168.10.20 dorm.laptop
+      192.168.10.60 dorm.LP-043
+
+      # zerotier network
+      192.168.192.10 zerotier.desktop
+      192.168.192.20 zerotier.laptop
+      192.168.192.60 zerotier.LP-043
+    '';
     wireless = lib.mkIf ((builtins.hasAttr "networks" config.sops.secrets) && (builtins.pathExists config.sops.secrets.networks.path)) {
       enable = true;
       userControlled.enable = true;

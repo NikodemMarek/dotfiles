@@ -15,6 +15,15 @@
       lua
       */
       ''
+        local ssh_domains = {}
+        for host, config in pairs(wezterm.enumerate_ssh_hosts()) do
+          table.insert(ssh_domains, {
+            name = host,
+            remote_address = host,
+            assume_shell = 'Posix',
+          })
+        end
+
         return {
             enable_wayland = false,
             window_close_confirmation = "NeverPrompt",
@@ -26,23 +35,7 @@
             },
             default_gui_startup_args = { 'connect', 'unix' },
 
-            ssh_domains = {
-                {
-                    name = 'desktop.nikodem',
-                    remote_address = 'desktop.nikodem',
-                    username = 'nikodem',
-                },
-                {
-                    name = 'laptop.nikodem',
-                    remote_address = 'laptop.nikodem',
-                    username = 'nikodem',
-                },
-                {
-                    name = 'LP-043.nm1',
-                    remote_address = 'LP-043.nm1',
-                    username = 'nm1',
-                },
-            },
+            ssh_domains = ssh_domains,
 
             keys = {
                 {
