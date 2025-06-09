@@ -2,7 +2,12 @@
   pkgs,
   config,
   ...
-}: {
+}: let
+  readIfExists = path:
+    if builtins.pathExists path
+    then builtins.readFile path
+    else null;
+in {
   imports = [
     ./hardware-configuration.nix
     ./secrets.nix
@@ -37,6 +42,7 @@
 
   networking = {
     hostName = "LP-043";
+    extraHosts = readIfExists config.sops.secrets."network/hosts".path;
     interfaces.ppp0.virtual = true;
     wireless.networks = {
       "SoftNet_CT" = {

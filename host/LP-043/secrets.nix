@@ -8,11 +8,17 @@
     "users/nm1/ssh_id_ed25519" = {};
     "users/nikodem/ssh_id_ed25519" = {};
 
+    "network/hosts" = {
+      sopsFile = ./network-hosts.txt;
+      format = "binary";
+    };
     networks = lib.mkForce {
       sopsFile = ./networks.env;
       format = "dotenv";
     };
 
+    "users/nm1/domain_login" = {};
+    "users/nm1/domain_password" = {};
     "users/nm1/openfortivpn/host" = {};
     "users/nm1/openfortivpn/port" = {};
     "users/nm1/openfortivpn/username" = {};
