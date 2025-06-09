@@ -81,6 +81,8 @@ in {
       JAVA_11_HOME = "${pkgs.jdk11}";
       JAVA_21_HOME = "${pkgs.jdk21}";
       JAVA_23_HOME = "${pkgs.jdk23}";
+      DOMAIN_NEXUS_LOGIN = readIfExists config.sops.secrets."users/nm1/domain_login".path;
+      DOMAIN_NEXUS_PASSWORD = readIfExists config.sops.secrets."users/nm1/domain_password".path;
     };
     packages = with pkgs; [
       zathura
