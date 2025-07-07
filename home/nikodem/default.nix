@@ -79,5 +79,6 @@ in {
     typst
     zathura
     xh
+    postman
   ];
 }

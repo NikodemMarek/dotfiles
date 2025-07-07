@@ -10,7 +10,7 @@
       "ci" = "commit -m";
       "nb" = "checkout -b";
       "sw" = "switch";
-      "ssw" = "!git add --all && git commit -m 'WIP' && git switch && :";
+      "ssw" = "!git add --all && git commit -m 'WIP' && git switch $1 && :";
       "st" = "stash -u";
       "stp" = "stash pop";
       "std" = "stash drop";
