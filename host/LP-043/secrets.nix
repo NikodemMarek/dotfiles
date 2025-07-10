@@ -19,6 +19,7 @@
 
     "users/nm1/domain_login" = {};
     "users/nm1/domain_password" = {};
+    "users/nm1/gitlab_token" = {};
     "users/nm1/openfortivpn/host" = {};
     "users/nm1/openfortivpn/port" = {};
     "users/nm1/openfortivpn/username" = {};
