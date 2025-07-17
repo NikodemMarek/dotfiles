@@ -9,6 +9,7 @@
     ./direnv.nix
     ./firefox.nix
     ./fish.nix
+    ./nu.nix
     ./wezterm.nix
     ./qutebrowser.nix
     ./wired-notify.nix

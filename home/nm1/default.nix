@@ -83,6 +83,7 @@ in {
       JAVA_23_HOME = "${pkgs.jdk23}";
       DOMAIN_NEXUS_LOGIN = readIfExists config.sops.secrets."users/nm1/domain_login".path;
       DOMAIN_NEXUS_PASSWORD = readIfExists config.sops.secrets."users/nm1/domain_password".path;
+      GITLAB_TOKEN = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
       DEPLOY_DOCKER = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
     };
     packages = with pkgs; [
@@ -100,10 +101,10 @@ in {
       postman
       python3
       python313Packages.pip
-      nushell
       dbeaver-bin
       gcc
       oracle-instantclient
+      glab
     ];
   };
 

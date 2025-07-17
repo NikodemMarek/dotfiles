@@ -18,7 +18,6 @@ in {
     ];
     shellAliases = {
       n = "nvim";
-      zin = "zi && nvim";
     };
   };
 }

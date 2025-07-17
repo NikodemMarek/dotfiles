@@ -4,8 +4,14 @@
   ];
 
   programs = {
-    starship.enable = true;
-    zoxide.enable = true;
+    starship = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
+    zoxide = {
+      enable = true;
+      enableNushellIntegration = true;
+    };
     fish = {
       enable = true;
       interactiveShellInit = ''

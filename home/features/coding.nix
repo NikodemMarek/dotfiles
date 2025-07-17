@@ -28,8 +28,5 @@
       # utilities
       watchexec
     ];
-    shellAliases = {
-      wth = "watchexec --exts rs,go,py,sh,c,cpp,h,js,ts,tsx,css,html,java,wasm --restart --debounce 1000ms --shell bash -- $1";
-    };
   };
 }
