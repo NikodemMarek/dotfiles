@@ -64,5 +64,8 @@ in {
     prismlauncher
     jdk8
     steam
+    wine
+    winetricks
+    heroic
   ];
 }
