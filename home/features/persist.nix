@@ -7,6 +7,8 @@ user: {
 
         "vaults"
         "vms"
+
+        "games"
       ];
     };
     generated = {
@@ -72,6 +74,15 @@ user: {
         ".local/share/Google"
 
         ".cache"
+
+        # fun
+
+        ".local/share/PrismLauncher"
+
+        ".local/share/Steam"
+        ".factorio"
+
+        ".config/heroic"
       ];
 
       files = [
