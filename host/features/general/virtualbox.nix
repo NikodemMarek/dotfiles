@@ -11,4 +11,6 @@
       clipboard = true;
     };
   };
+
+  users.extraGroups.vboxusers.members = ["nikodem"];
 }

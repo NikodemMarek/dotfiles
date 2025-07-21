@@ -15,6 +15,14 @@
       bat
       feh
       tldr
+      openssl
+      xh
+      rnote
+      beeper
+      typst
+      zathura
+      kooha
+      postman
     ]
     ++ (
       lib.optional (host-config.hardware.bluetooth.enable) pkgs.bluetui

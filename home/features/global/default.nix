@@ -1,18 +1,26 @@
 {
   imports = [
-    ./nh.nix
-    ./sops.nix
-    ./git.nix
-    ./gitui.nix
-    ./gh.nix
-    ./tools.nix
+    ./clipboard-sync
+    ./hyprland
+    ./walker
+
+    ./coding.nix
     ./direnv.nix
+    ./eza.nix
     ./firefox.nix
     ./fish.nix
+    ./gh.nix
+    ./git.nix
+    ./gitui.nix
+    ./neovim.nix
     ./nu.nix
+    ./obsidian.nix
+    ./sops.nix
+    ./ssh.nix
+    ./tools.nix
     ./wezterm.nix
-    ./qutebrowser.nix
     ./wired-notify.nix
-    ./eza.nix
+    ./yazi.nix
+    ./zen-browser.nix
   ];
 }

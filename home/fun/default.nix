@@ -8,13 +8,6 @@
 in {
   imports = [
     ../../host/${host-config.networking.hostName}/kanshi.nix
-
-    ../features/hyprland
-
-    ../features/neovim.nix
-    ../features/beets.nix
-    ../features/yt-dlp.nix
-    ../features/zen-browser.nix
   ];
 
   services =
@@ -31,21 +24,6 @@ in {
             width = 2560;
             height = 1440;
           };
-        windows = {
-          powermenu.grid = [12 0 4 2];
-          system = {
-            grid = [0 2 4 3];
-            args = {
-              battery =
-                if isLaptop
-                then "true"
-                else "false";
-            };
-          };
-          clock.grid = [4 2 8 5];
-          music.grid = [0 5 4 2];
-          volume.grid = [4 0 4 2];
-        };
       };
     }
     // lib.optionalAttrs isLaptop {
@@ -57,15 +35,12 @@ in {
     };
 
   home.packages = with pkgs; [
-    rnote
-    beeper
-    zathura
-    lutris
     prismlauncher
-    jdk8
+    heroic
     steam
+    lutris
+    jdk8
     wine
     winetricks
-    heroic
   ];
 }

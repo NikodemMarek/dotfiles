@@ -2,10 +2,10 @@
   stylix = {
     enable = true;
 
-    image = ../../assets/background.png;
+    image = ../../../assets/background.png;
     polarity = "dark";
 
-    base16Scheme = import ../../assets/catppuccin-mocha.nix;
+    base16Scheme = import ../../../assets/catppuccin-mocha.nix;
 
     fonts = {
       monospace = {

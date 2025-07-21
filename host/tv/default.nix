@@ -8,8 +8,17 @@
       device = "/dev/sda";
     })
 
-    ../features/battery-saver.nix
-    ../features/zerotier.nix
+    ../features/optional/battery-saver.nix
+    ../features/optional/zerotier.nix
+
+    ../features/general/time.nix
+    ../features/general/stylix.nix
+    ../features/general/networking.nix
+    ../features/general/openssh.nix
+    ../features/general/tools.nix
+    ../features/general/graphics.nix
+    ../features/general/security.nix
+    ../features/general/nix.nix
   ];
 
   networking.hostName = "tv";

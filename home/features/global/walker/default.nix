@@ -6,8 +6,6 @@
 }: {
   imports = [
     inputs.walker.homeManagerModules.default
-
-    ./powermodule.nix
   ];
 
   programs.walker = {

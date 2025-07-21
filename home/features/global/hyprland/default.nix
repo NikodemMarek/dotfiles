@@ -7,13 +7,14 @@
   imports = [
     ./hyprlock.nix
 
-    ../global/wezterm.nix
+    ../wezterm.nix
     ../yazi.nix
     ../walker
   ];
 
   home.packages = with pkgs; [
     wl-clipboard
+    wl-mirror
     grim
     slurp
     pulseaudio

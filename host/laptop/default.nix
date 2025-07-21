@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./host/features
     ./hardware-configuration.nix
     ./secrets.nix
 
@@ -11,13 +12,6 @@
       device = "/dev/nvme0n1";
       swap = 15;
     })
-
-    ../features/multi-user.nix
-    ../features/hyprland.nix
-    ../features/docker.nix
-    ../features/dnscrypt-proxy2.nix
-    ../features/syncthing.nix
-    ../features/zerotier.nix
 
     ../features/battery-saver.nix
     ../features/bluetooth.nix

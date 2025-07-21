@@ -1,0 +1,22 @@
+{
+  imports = [
+    ./docker.nix
+    ./graphics.nix
+    ./greetd.nix
+    ./home-manager.nix
+    ./hyprland.nix
+    ./networking.nix
+    ./nix.nix
+    ./openssh.nix
+    ./pipewire.nix
+    ./security.nix
+    ./sops.nix
+    ./stylix.nix
+    ./sudo.nix
+    ./syncthing.nix
+    ./time.nix
+    ./tools.nix
+    ./virtualbox.nix
+    ./zerotier.nix
+  ];
+}

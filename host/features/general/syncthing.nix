@@ -4,11 +4,11 @@
 {config, ...}: {
   sops.secrets = {
     "syncthing/cert" = {
-      sopsFile = ../${config.networking.hostName}/syncthing_cert.pem;
+      sopsFile = ../../${config.networking.hostName}/syncthing_cert.pem;
       format = "binary";
     };
     "syncthing/key" = {
-      sopsFile = ../${config.networking.hostName}/syncthing_key.pem;
+      sopsFile = ../../${config.networking.hostName}/syncthing_key.pem;
       format = "binary";
     };
   };

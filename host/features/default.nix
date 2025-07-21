@@ -12,14 +12,7 @@
       inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
 
-      ./time.nix
-      ./stylix.nix
-      ./networking.nix
-      ./openssh.nix
-      ./tools.nix
-      ./graphics.nix
-      ./security.nix
-      ./nix.nix
+      ./general
     ]
     ++ (builtins.attrValues outputs.nixosModules);
 }

@@ -7,7 +7,7 @@
   programs.firefox = {
     enable = true;
     profiles.main = {
-      extensions = with inputs.firefox-addons.packages.${pkgs.system}; [
+      extensions.packages = with inputs.firefox-addons.packages.${pkgs.system}; [
         ublock-origin
         darkreader
         # languagetool
@@ -21,4 +21,6 @@
       };
     };
   };
+
+  stylix.targets.firefox.profileNames = ["main"];
 }

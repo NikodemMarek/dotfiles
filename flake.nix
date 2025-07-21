@@ -82,7 +82,6 @@
         nixpkgs.lib.nixosSystem {
           specialArgs = {inherit inputs outputs;};
           modules = [
-            ./host/features
             ./host/${host}
           ];
         };

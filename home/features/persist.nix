@@ -1,19 +1,13 @@
-{
-  lib,
-  config,
-  ...
-}: {
-  persist.users.ctf = {
+user: {
+  persist.users.${user} = {
     data = {
-      directories =
-        [
-          "projects"
-          "documents"
-          "screenshots"
+      directories = [
+        "projects"
+        "documents"
 
-          "vaults"
-        ]
-        ++ lib.optional config.virtualisation.virtualbox.host.enable "vms";
+        "vaults"
+        "vms"
+      ];
     };
     generated = {
       directories = [
@@ -62,13 +56,13 @@
 
         ".ssh"
 
-        # fabric-ai
-
-        ".config/fabric"
-
         # obsidian
 
         ".config/obsidian"
+
+        # beeper
+
+        ".config/Beeper"
 
         # common
 

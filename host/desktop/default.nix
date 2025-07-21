@@ -4,6 +4,7 @@
   ...
 }: {
   imports = [
+    ./host/features
     ./hardware-configuration.nix
     ./secrets.nix
 
@@ -15,18 +16,8 @@
       device = "sda";
     })
 
-    ../features/multi-user.nix
-    ../features/hyprland.nix
-    ../features/docker.nix
-    ../features/dnscrypt-proxy2.nix
-    ../features/zerotier.nix
-    ../features/syncthing.nix
-    ../features/ollama.nix
-    ../features/virtualbox.nix
-
     ../../home/nikodem/persist.nix
     ../../home/fun/persist.nix
-    ../../home/ctf/persist.nix
   ];
 
   networking = {
@@ -44,7 +35,7 @@
     nikodem = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
-      extraGroups = ["wheel" "docker" "music"];
+      extraGroups = ["wheel" "docker"];
       shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [
         ./user_nikodem_ssh_id_ed25519.pub
@@ -56,12 +47,6 @@
     fun = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/fun/password".path;
-      extraGroups = ["wheel" "music"];
-      shell = pkgs.fish;
-    };
-    ctf = {
-      isNormalUser = true;
-      hashedPasswordFile = config.sops.secrets."users/ctf/password".path;
       extraGroups = ["wheel"];
       shell = pkgs.fish;
     };
@@ -99,6 +84,4 @@
       };
     };
   };
-
-  users.extraGroups.vboxusers.members = ["nikodem"];
 }

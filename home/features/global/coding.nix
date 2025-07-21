@@ -8,6 +8,7 @@
       python3
 
       # rust
+      # rustup
       cargo
       rustc
       rustfmt
@@ -18,6 +19,7 @@
 
       # java
       maven
+      jdk23
 
       # go
       go
@@ -29,4 +31,6 @@
       watchexec
     ];
   };
+
+  programs.bun.enable = true;
 }

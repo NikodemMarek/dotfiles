@@ -18,15 +18,15 @@
         inherit (user) name;
         value = {
           imports = [
-            ../../home/features
-            ../../home/${user.name}
+            ../../../home/features
+            ../../../home/${user.name}
           ];
 
           home.username = user.name;
         };
       })
       (builtins.filter (user: (builtins.pathExists
-          ../../home/${user.name})) (lib.attrValues config.users.users))
+          ../../../home/${user.name})) (lib.attrValues config.users.users))
     );
   };
 }

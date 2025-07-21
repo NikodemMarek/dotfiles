@@ -1,5 +1,4 @@
 {
-  lib,
   pkgs,
   config,
   ...
@@ -10,34 +9,12 @@
     then builtins.readFile path
     else null;
 in {
-  imports = [
-    ../features/hyprland
-
-    ../features/neovim.nix
-    ../features/ssh.nix
-    ../features/docker.nix
-    ../features/zen-browser.nix
-    ../features/coding.nix
-  ];
-
   services = {
     eww = {
       enable = true;
       monitor = {
         width = 1920;
         height = 1080;
-      };
-      windows = {
-        powermenu.grid = [12 0 4 2];
-        system = {
-          grid = [0 2 4 3];
-          args = {
-            battery = "true";
-          };
-        };
-        clock.grid = [4 2 8 5];
-        music.grid = [0 5 4 2];
-        volume.grid = [4 0 4 2];
       };
     };
     battery-notifier = {
@@ -87,29 +64,14 @@ in {
       DEPLOY_DOCKER = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
     };
     packages = with pkgs; [
-      zathura
-      kooha
-      pnpm
-      jdk23
       sshpass
-      maven
       remmina
-      nodejs_22
       google-chrome
       android-studio
       jetbrains.idea-ultimate
-      postman
-      python3
-      python313Packages.pip
       dbeaver-bin
-      gcc
       oracle-instantclient
       glab
     ];
   };
-
-  wayland.windowManager.hyprland.settings.exec-once = [
-    "[workspace 1 silent] ${lib.getExe pkgs.google-chrome}"
-    "[workspace 2 silent] ${lib.getExe config.programs.wezterm.package}"
-  ];
 }

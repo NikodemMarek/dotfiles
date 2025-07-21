@@ -17,17 +17,13 @@ in {
       swap = 38;
     })
 
-    ../features/multi-user.nix
-    ../features/hyprland.nix
-    ../features/docker.nix
-    ../features/zerotier.nix
-
-    ../features/battery-saver.nix
-    ../features/bluetooth.nix
-    ../features/openfortivpn.nix
+    ../features
+    ../features/optional/battery-saver.nix
+    ../features/optional/bluetooth.nix
+    ../features/optional/openfortivpn.nix
 
     ../../home/nm1/persist.nix
-    ../../home/nikodem/persist.nix
+    # ../../home/nikodem/persist.nix
   ];
 
   boot.kernel.sysctl = {"fs.file-max" = 524288;};
@@ -70,7 +66,7 @@ in {
     nm1 = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/nm1/password".path;
-      extraGroups = ["wheel" "networkmanager" "docker" "openfortivpn"];
+      extraGroups = ["wheel" "docker" "openfortivpn"];
       shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [
         ./user_nm1_ssh_id_ed25519.pub
@@ -78,48 +74,48 @@ in {
         ../laptop/user_nikodem_ssh_id_ed25519.pub
       ];
     };
-    nikodem = {
-      isNormalUser = true;
-      hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
-      extraGroups = ["wheel" "docker"];
-      shell = pkgs.fish;
-      openssh.authorizedKeys.keyFiles = [
-        ./user_nm1_ssh_id_ed25519.pub
-        ../desktop/user_nikodem_ssh_id_ed25519.pub
-        ../laptop/user_nikodem_ssh_id_ed25519.pub
-      ];
-    };
+    # nikodem = {
+    #   isNormalUser = true;
+    #   hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
+    #   extraGroups = ["wheel" "docker"];
+    #   shell = pkgs.fish;
+    #   openssh.authorizedKeys.keyFiles = [
+    #     ./user_nm1_ssh_id_ed25519.pub
+    #     ../desktop/user_nikodem_ssh_id_ed25519.pub
+    #     ../laptop/user_nikodem_ssh_id_ed25519.pub
+    #   ];
+    # };
   };
 
-  services.syncthing = {
-    enable = true;
-    openDefaultPorts = false;
-    # key = config.sops.secrets."syncthing/key".path;
-    # cert = config.sops.secrets."syncthing/cert".path;
-    overrideDevices = true;
-    overrideFolders = true;
-    user = "nikodem";
-    group = "users";
-    dataDir = "${config.users.users.nikodem.home}/.local/share/syncthing";
-    configDir = "${config.users.users.nikodem.home}/.config/syncthing";
-    settings = {
-      devices = {
-        "pixel-6a".id = "L7IXLIC-DU3D4MJ-OVOXKBW-D5M2AW5-3JWOFF4-X43JUPT-JN3XWZL-2FNL6QT";
-        "tablet".id = "SCFNK0Z-UDF56C2-26ZS36D-A2PNTWO-K06IC55-0QGWCTN-MLNQBND-PXD8JQX";
-      };
-      folders = {
-        "obsidian" = {
-          path = "${config.users.users.nikodem.home}/vaults/main";
-          devices = ["pixel-6a" "tablet"];
-          copyOwnershipFromParent = true;
-          versioning = {
-            type = "simple";
-            params = {
-              keep = "5";
-            };
-          };
-        };
-      };
-    };
-  };
+  # services.syncthing = {
+  #   enable = true;
+  #   openDefaultPorts = false;
+  #   key = config.sops.secrets."syncthing/key".path;
+  #   cert = config.sops.secrets."syncthing/cert".path;
+  #   overrideDevices = true;
+  #   overrideFolders = true;
+  #   user = "nikodem";
+  #   group = "users";
+  #   dataDir = "${config.users.users.nikodem.home}/.local/share/syncthing";
+  #   configDir = "${config.users.users.nikodem.home}/.config/syncthing";
+  #   settings = {
+  #     devices = {
+  #       "pixel-6a".id = "L7IXLIC-DU3D4MJ-OVOXKBW-D5M2AW5-3JWOFF4-X43JUPT-JN3XWZL-2FNL6QT";
+  #       "tablet".id = "SCFNK0Z-UDF56C2-26ZS36D-A2PNTWO-K06IC55-0QGWCTN-MLNQBND-PXD8JQX";
+  #     };
+  #     folders = {
+  #       "obsidian" = {
+  #         path = "${config.users.users.nikodem.home}/vaults/main";
+  #         devices = ["pixel-6a" "tablet"];
+  #         copyOwnershipFromParent = true;
+  #         versioning = {
+  #           type = "simple";
+  #           params = {
+  #             keep = "5";
+  #           };
+  #         };
+  #       };
+  #     };
+  #   };
+  # };
 }
