@@ -23,7 +23,6 @@ in {
     ../features/optional/openfortivpn.nix
 
     ../../home/nm1/persist.nix
-    # ../../home/nikodem/persist.nix
   ];
 
   boot.kernel.sysctl = {"fs.file-max" = 524288;};
@@ -74,17 +73,6 @@ in {
         ../laptop/user_nikodem_ssh_id_ed25519.pub
       ];
     };
-    # nikodem = {
-    #   isNormalUser = true;
-    #   hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
-    #   extraGroups = ["wheel" "docker"];
-    #   shell = pkgs.fish;
-    #   openssh.authorizedKeys.keyFiles = [
-    #     ./user_nm1_ssh_id_ed25519.pub
-    #     ../desktop/user_nikodem_ssh_id_ed25519.pub
-    #     ../laptop/user_nikodem_ssh_id_ed25519.pub
-    #   ];
-    # };
   };
 
   # services.syncthing = {
