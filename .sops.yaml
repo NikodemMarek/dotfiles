@@ -4,13 +4,11 @@ keys:
   - &hosts
     - &desktop age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
     - &laptop age1hl0hkstkuu292skpuxc0kh49sm9lajg4ugns8zez000hdgfs0ausmv326a
-    - &LP-043 age1ulsnsuz6e5l8qwy9mtwwauyvfk80uw6qnwzwefd8p659e0ap9phqnluwgc
 
   - &users
     - &desktop_nikodem age1hpumue8adqykuyyurjyhaask392uue8j43wp3yhnxkjmsvxuwp8qatvctz
     - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
     - &LP-043_nm1 age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
-    - &LP-043_nikodem age1jfk95e56waaf68rfm4l2xlq96n7nt58pzsnyafv9zlw9jau4mymsv74xx9
 
 creation_rules:
   - path_regex: host/desktop/.+$
@@ -27,13 +25,11 @@ creation_rules:
       - *laptop
       - *laptop_nikodem
 
-  - path_regex: host/LP-043/.+$
+  - path_regex: home/nm1/.+$
     key_groups:
     - age:
       - *super
-      - *LP-043
       - *LP-043_nm1
-      - *LP-043_nikodem
 
   - path_regex: secrets/.+$
     key_groups:
@@ -43,6 +39,4 @@ creation_rules:
       - *desktop_nikodem
       - *laptop
       - *laptop_nikodem
-      - *LP-043
       - *LP-043_nm1
-      - *LP-043_nikodem

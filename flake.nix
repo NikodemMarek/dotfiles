@@ -88,8 +88,23 @@
     in {
       laptop = mkHost "laptop";
       desktop = mkHost "desktop";
-      LP-043 = mkHost "LP-043";
       tv = mkHost "tv";
+    };
+
+    homeConfigurations = {
+      "nm1@LP-043" = lib.homeManagerConfiguration {
+        modules = [
+          inputs.stylix.homeModules.stylix
+          ./host/features/general/stylix.nix
+
+          ./home/nm1
+          ./home/features
+        ];
+        pkgs = pkgsFor.x86_64-linux;
+        extraSpecialArgs = {
+          inherit inputs outputs;
+        };
+      };
     };
   };
 }

@@ -8,9 +8,12 @@
 in {
   imports = [
     ../../host/${host-config.networking.hostName}/kanshi.nix
+    ../../host/${host-config.networking.hostName}/secrets.nix
 
     ../features/optional/fun.nix
   ];
+
+  sops.defaultSopsFile = ../../../host/${host-config.networking.hostName}/secrets.yaml;
 
   services =
     {
@@ -41,5 +44,9 @@ in {
       userEmail = "nikodemmarek11@gmail.com";
       userName = "NikodemMarek";
     };
+  };
+
+  home.file = {
+    ".ssh/id_ed25519.pub".source = ../../../host/${host-config.networking.hostName}/user_nikodem_ssh_id_ed25519.pub;
   };
 }

@@ -9,6 +9,12 @@
     then builtins.readFile path
     else null;
 in {
+  imports = [
+    ./secrets.nix
+  ];
+
+  sops.defaultSopsFile = ./secrets.yaml;
+
   services = {
     eww = {
       enable = true;
@@ -49,9 +55,12 @@ in {
   };
 
   home = {
+    username = "nm1";
     file = {
       ".m2/settings.xml".source = config.sops.secrets."users/nm1/m2_settings".path;
       ".gradle/gradle.properties".source = config.sops.secrets."users/nm1/gradle_properties".path;
+      ".ssh/id_ed25519.pub".source = ./user_nm1_ssh_id_ed25519.pub;
+      ".ssh/id_ed25519".source = config.sops.secrets."users/${config.home.username}/ssh_id_ed25519".path;
     };
     sessionVariables = {
       JAVA_8_HOME = "${pkgs.jdk8}";
