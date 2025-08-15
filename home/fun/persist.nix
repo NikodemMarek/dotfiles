@@ -53,6 +53,10 @@
 
         ".ssh"
 
+        # heroic
+
+        ".config/heroic"
+
         # common
 
         ".config/Google"
