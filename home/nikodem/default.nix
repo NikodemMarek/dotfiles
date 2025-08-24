@@ -68,7 +68,7 @@ in {
 
   programs = {
     git = {
-      userEmail = "nikodemmarek11@gmail.com";
+      userEmail = "62289991+NikodemMarek@users.noreply.github.com";
       userName = "NikodemMarek";
     };
   };
