@@ -18,7 +18,6 @@ user: {
         ".local/share/JetBrains"
 
         # neovim
-
         ".local/share/nvim"
 
         ".npm"
@@ -29,69 +28,58 @@ user: {
         ".android"
 
         # docker
-
         ".docker"
         ".dockercache"
 
         # fish
-
         ".local/share/zoxide"
 
         # mozilla
-
         ".mozilla"
 
         # zen browser
-
         ".zen"
 
         # direnv
-
         ".local/share/direnv"
 
         # gh
-
         ".config/github-copilot"
         ".local/share/gh"
 
         # ssh
-
         ".ssh"
 
         # obsidian
-
         ".config/obsidian"
 
         # beeper
-
         ".config/Beeper"
 
-        # common
+        # heroic
+        ".config/heroic"
 
+        # prism launcher
+        ".local/share/PrismLauncher"
+
+        # steam
+        ".local/share/Steam"
+        ".factorio"
+
+        # common
         ".config/Google"
 
         ".local/share/keyrings"
         ".local/share/Google"
 
         ".cache"
-
-        # fun
-
-        ".local/share/PrismLauncher"
-
-        ".local/share/Steam"
-        ".factorio"
-
-        ".config/heroic"
       ];
 
       files = [
         # fish
-
         ".local/share/fish/fish_history"
 
         # sops
-
         ".config/sops/age/keys.txt"
       ];
     };
