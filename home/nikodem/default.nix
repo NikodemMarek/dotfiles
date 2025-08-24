@@ -13,7 +13,7 @@ in {
     ../features/optional/fun.nix
   ];
 
-  sops.defaultSopsFile = ../../../host/${host-config.networking.hostName}/secrets.yaml;
+  sops.defaultSopsFile = ../../host/${host-config.networking.hostName}/secrets.yaml;
 
   services =
     {
@@ -47,6 +47,6 @@ in {
   };
 
   home.file = {
-    ".ssh/id_ed25519.pub".source = ../../../host/${host-config.networking.hostName}/user_nikodem_ssh_id_ed25519.pub;
+    ".ssh/id_ed25519.pub".source = ../../host/${host-config.networking.hostName}/user_nikodem_ssh_id_ed25519.pub;
   };
 }

@@ -18,15 +18,9 @@ in {
   imports = [
     inputs.sops-nix.homeManagerModules.sops
   ];
-  # ++ lib.optional (config.host-config.isStandalone) ../../${config.home.username}/secrets.nix
-  # ++ lib.optional (!config.host-config.isStandalone) ../../../host/${config.host-config.networking.hostName}/secrets.nix;
 
   sops = {
     age.keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
-    # defaultSopsFile =
-    #   if config.host-config.isStandalone
-    #   then ../../${config.home.username}/secrets.yaml
-    #   else ../../../host/${config.host-config.networking.hostName}/secrets.yaml;
   };
 
   home.sessionVariables = {

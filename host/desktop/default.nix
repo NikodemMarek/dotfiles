@@ -4,7 +4,7 @@
   ...
 }: {
   imports = [
-    ./host/features
+    ../features
     ./hardware-configuration.nix
     ./secrets.nix
 
@@ -21,7 +21,7 @@
 
   networking = {
     hostName = "desktop";
-    interfaces.enp5s0.wakeOnLan.enable = true;
+    # interfaces.enp5s0.wakeOnLan.enable = true;
   };
 
   persist = {
@@ -39,8 +39,7 @@
       openssh.authorizedKeys.keyFiles = [
         ./user_nikodem_ssh_id_ed25519.pub
         ../laptop/user_nikodem_ssh_id_ed25519.pub
-        ../LP-043/user_nm1_ssh_id_ed25519.pub
-        ../LP-043/user_nikodem_ssh_id_ed25519.pub
+        ../../home/nm1/user_nm1_ssh_id_ed25519.pub
       ];
     };
   };

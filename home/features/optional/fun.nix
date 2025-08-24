@@ -4,7 +4,6 @@
     heroic
     steam
     lutris
-    jdk8
     wine
     winetricks
   ];
