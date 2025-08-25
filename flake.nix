@@ -20,11 +20,13 @@
 
     stylix.url = "github:danth/stylix";
 
+    hyprland.url = "github:hyprwm/Hyprland";
+
     wezterm.url = "github:wez/wezterm/main?dir=nix";
 
     neovim.url = "github:NikodemMarek/neovim";
 
-    walker.url = "github:abenz1267/walker";
+    walker.url = "github:not-matthias/walker";
 
     eww.url = "github:elkowar/eww";
 
@@ -46,6 +48,11 @@
     wired.url = "github:Toqozz/wired-notify";
 
     clipboard-sync.url = "github:NikodemMarek/clipboard-sync";
+
+    nixGL = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -94,20 +101,23 @@
       tv = mkHost "tv";
     };
 
-    homeConfigurations = {
-      "nm1@LP-043" = lib.homeManagerConfiguration {
-        modules = [
-          inputs.stylix.homeModules.stylix
-          ./host/features/general/stylix.nix
+    homeConfigurations = let
+      mkHome = home:
+        lib.homeManagerConfiguration {
+          modules = [
+            inputs.stylix.homeModules.stylix
+            ./host/features/general/stylix.nix
 
-          ./home/nm1
-          ./home/features
-        ];
-        pkgs = pkgsFor.x86_64-linux;
-        extraSpecialArgs = {
-          inherit inputs outputs;
+            ./home/${home}
+            ./home/features
+          ];
+          pkgs = pkgsFor.x86_64-linux;
+          extraSpecialArgs = {
+            inherit inputs outputs;
+          };
         };
-      };
+    in {
+      "nm1@LP-043" = mkHome "nm1";
     };
   };
 }

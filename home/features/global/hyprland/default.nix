@@ -1,4 +1,5 @@
 {
+  inputs,
   lib,
   pkgs,
   config,
@@ -14,15 +15,17 @@
 
   home.packages = with pkgs; [
     wl-clipboard
-    wl-mirror
+    (config.lib.nixGL.wrap wl-mirror)
     grim
     slurp
     pulseaudio
-    wdisplays
+    (config.lib.nixGL.wrap wdisplays)
   ];
 
   wayland.windowManager.hyprland = {
     enable = true;
+    package = config.lib.nixGL.wrap inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    portalPackage = config.lib.nixGL.wrap inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
     settings = {
       monitor = [", preferred, auto, 1"];
@@ -40,6 +43,9 @@
         };
         sensitivity = 0;
       };
+
+      "debug:disable_logs" = false;
+      "debug:enable_stdout_logs" = true;
 
       general = {
         gaps_in = 5;

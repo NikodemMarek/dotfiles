@@ -13,6 +13,7 @@
     ./git.nix
     ./gitui.nix
     ./neovim.nix
+    ./nixgl.nix
     ./nu.nix
     ./obsidian.nix
     ./sops.nix
