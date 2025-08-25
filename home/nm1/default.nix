@@ -11,6 +11,7 @@
 in {
   imports = [
     ./secrets.nix
+    ./kanshi.nix
   ];
 
   sops.defaultSopsFile = ./secrets.yaml;

@@ -103,10 +103,9 @@ in {
 
           echo token: $TOKEN
 
-          echo $TOKEN | SUDO_ASKPASS=${openfortivpn-askpass}/bin/openfortivpn-askpass /run/wrappers/bin/sudo -A ${pkgs.openfortivpn}/bin/openfortivpn --config ${config.home.homeDirectory}/${config.xdg.configFile."openfortivpn/config".target}
+          echo $TOKEN | SUDO_ASKPASS=${openfortivpn-askpass}/bin/openfortivpn-askpass /usr/bin/sudo -A ${pkgs.openfortivpn}/bin/openfortivpn --config ${config.home.homeDirectory}/${config.xdg.configFile."openfortivpn/config".target}
         ''}/bin/openfortivpn-execstart";
         Restart = "on-failure";
-        RestartSec = 5;
       };
     };
   };

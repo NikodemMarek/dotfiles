@@ -13,6 +13,7 @@ user: {
     };
     generated = {
       directories = [
+        # jetbrains
         ".config/JetBrains"
 
         ".local/share/JetBrains"
@@ -56,16 +57,6 @@ user: {
         # beeper
         ".config/Beeper"
 
-        # heroic
-        ".config/heroic"
-
-        # prism launcher
-        ".local/share/PrismLauncher"
-
-        # steam
-        ".local/share/Steam"
-        ".factorio"
-
         # common
         ".config/Google"
 
@@ -73,6 +64,14 @@ user: {
         ".local/share/Google"
 
         ".cache"
+
+        # fun
+        ".local/share/PrismLauncher"
+
+        ".local/share/Steam"
+        ".factorio"
+
+        ".config/heroic"
       ];
 
       files = [
@@ -81,6 +80,9 @@ user: {
 
         # sops
         ".config/sops/age/keys.txt"
+
+        # default browser
+        ".config/mimeapps.list"
       ];
     };
   };
