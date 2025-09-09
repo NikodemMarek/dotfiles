@@ -13,8 +13,8 @@
       swap = 15;
     })
 
-    ../features/battery-saver.nix
-    ../features/bluetooth.nix
+    ../features/optional/battery-saver.nix
+    ../features/optional/bluetooth.nix
 
     ../../home/nikodem/persist.nix
   ];
