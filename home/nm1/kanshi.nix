@@ -42,6 +42,29 @@
           ];
         };
       }
+      {
+        profile = {
+          name = "dual-monitor-2";
+          outputs = [
+            {
+              criteria = "eDP-1";
+              mode = "1920x1080";
+              position = "0,1080";
+            }
+            {
+              criteria = "DP-6";
+              mode = "1920x1080";
+              position = "0,0";
+            }
+            {
+              criteria = "DP-5";
+              mode = "1920x1080";
+              position = "1920,0";
+              transform = "270";
+            }
+          ];
+        };
+      }
     ];
   };
 }

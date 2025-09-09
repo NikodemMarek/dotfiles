@@ -887,11 +887,11 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1752136396,
-        "narHash": "sha256-fb59Rny4/x/hgwLpq8qJo4bgAS3MJi3g1liYMQJMxRY=",
+        "lastModified": 1756211670,
+        "narHash": "sha256-0+GBs0CNZXWGGlBzqW+jbl/858PYZQXrYR4C08RKkyg=",
         "owner": "NikodemMarek",
         "repo": "neovim",
-        "rev": "ec994ecdf964e9341253aa06bda3522d11003fc2",
+        "rev": "5742833b7dae11c84add0f957b17b362c1d9085e",
         "type": "github"
       },
       "original": {
