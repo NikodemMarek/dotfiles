@@ -42,8 +42,10 @@
     inputs.sops-nix.nixosModules.sops
     inputs.impermanence.nixosModules.impermanence
 
-    ./jellyfin.nix
     "${toString modulesPath}/virtualisation/proxmox-lxc.nix"
+
+    ./jellyfin.nix
+    ./monitoring.nix
   ];
 
   networking = {

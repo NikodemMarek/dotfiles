@@ -4,26 +4,17 @@
       enable = true;
     };
 
-    traefik = {
-      dynamicConfigOptions = {
-        http = {
-          services = {
-            jellyfin.loadBalancer.servers = [
-              {
-                url = "http://localhost:8096";
-              }
-            ];
-          };
-
-          routers = {
-            jellyfin = {
-              entryPoints = ["web"];
-              rule = "Host(`jellyfin.nprox.dev`)";
-              service = "jellyfin";
-              # tls.certResolver = "letsencrypt";
-            };
-          };
-        };
+    traefik.dynamicConfigOptions.http = {
+      services.jellyfin.loadBalancer.servers = [
+        {
+          url = "http://localhost:8096";
+        }
+      ];
+      routers.jellyfin = {
+        entryPoints = ["web"];
+        rule = "Host(`jellyfin.nprox.local`)";
+        service = "jellyfin";
+        # tls.certResolver = "letsencrypt";
       };
     };
   };
