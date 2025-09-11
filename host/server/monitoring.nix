@@ -32,16 +32,31 @@
     };
 
     traefik.dynamicConfigOptions.http = {
-      services.grafana.loadBalancer.servers = [
-        {
-          url = "http://${toString config.services.grafana.settings.server.http_addr}:${toString config.services.grafana.settings.server.http_port}";
-        }
-      ];
-      routers.grafana = {
-        entryPoints = ["web"];
-        rule = "Host(`grafana.nprox.local`)";
-        service = "grafana";
-        # tls.certResolver = "letsencrypt";
+      services = {
+        grafana.loadBalancer.servers = [
+          {
+            url = "http://${toString config.services.grafana.settings.server.http_addr}:${toString config.services.grafana.settings.server.http_port}";
+          }
+        ];
+        prometheus.loadBalancer.servers = [
+          {
+            url = "http://${config.services.prometheus.listenAddress}:${toString config.services.prometheus.port}";
+          }
+        ];
+      };
+      routers = {
+        grafana = {
+          entryPoints = ["web"];
+          rule = "Host(`grafana.nprox.local`)";
+          service = "grafana";
+          # tls.certResolver = "letsencrypt";
+        };
+        prometheus = {
+          entryPoints = ["web"];
+          rule = "Host(`prometheus.nprox.local`)";
+          service = "prometheus";
+          # tls.certResolver = "letsencrypt";
+        };
       };
     };
   };
