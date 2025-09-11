@@ -1,13 +1,27 @@
 {config, ...}: {
   services = {
-    prometheus.enable = true;
+    prometheus = {
+      enable = true;
+      listenAddress = "127.0.0.1";
+      port = 8011;
+      scrapeConfigs = [
+        {
+          job_name = "traefik";
+          static_configs = [
+            {
+              targets = ["127.0.0.1:8013"];
+            }
+          ];
+        }
+      ];
+    };
 
     grafana = {
       enable = true;
       settings = {
         server = {
           http_addr = "127.0.0.1";
-          http_port = 3000;
+          http_port = 8012;
           enforce_domain = true;
           enable_gzip = true;
           domain = "grafana.nprox.local";

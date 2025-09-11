@@ -101,6 +101,10 @@
             asDefault = true;
             # http.tls.certResolver = "letsencrypt";
           };
+
+          metrics = {
+            address = ":8013";
+          };
         };
 
         # certificatesResolvers.letsencrypt.acme = {
