@@ -1,8 +1,9 @@
 let
   jellyfinIp = "20.0.0.100";
 in {
-  networking = {
-    interfaces."br0".ipv4.addresses = [
+  networking.interfaces."br0" = {
+    virtual = true;
+    ipv4.addresses = [
       {
         address = jellyfinIp;
         prefixLength = 24;
