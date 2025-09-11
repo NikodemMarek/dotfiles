@@ -5,7 +5,7 @@ in {
     virtual = true;
     ipv4.addresses = [
       {
-        address = jellyfinIp;
+        address = "20.0.0.1";
         prefixLength = 24;
       }
     ];
