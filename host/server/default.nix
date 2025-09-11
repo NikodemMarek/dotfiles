@@ -7,7 +7,12 @@
 }: {
   nixpkgs.hostPlatform = "x86_64-linux";
   system.stateVersion = "25.11";
+
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnfreePredicate = _: true;
+  };
 
   boot.loader = {
     grub = {
