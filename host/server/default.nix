@@ -1,0 +1,109 @@
+{
+  inputs,
+  config,
+  ...
+}: {
+  nixpkgs.hostPlatform = "x86_64-linux";
+  system.stateVersion = "25.11";
+  nix.settings.experimental-features = ["nix-command" "flakes"];
+  boot.loader.grub.devices = ["nodev"];
+
+  users.users.root = {
+    openssh.authorizedKeys.keyFiles = [
+      ../laptop/user_nikodem_ssh_id_ed25519.pub
+      ../../home/nm1/user_nm1_ssh_id_ed25519.pub
+    ];
+  };
+
+  services.openssh = {
+    enable = true;
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+      KbdInteractiveAuthentication = false;
+    };
+  };
+
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+    inputs.impermanence.nixosModules.impermanence
+
+    ./jellyfin.nix
+  ];
+
+  networking = {
+    hostName = "server";
+    useNetworkd = true;
+    interfaces.eth0 = {
+      ipv4.addresses = [
+        {
+          address = "10.0.0.100";
+          prefixLength = 24;
+        }
+      ];
+    };
+    defaultGateway = {
+      address = "10.0.0.1";
+      interface = "eth0";
+    };
+    firewall = {
+      enable = true;
+      allowedTCPPorts = [22 8080];
+    };
+  };
+
+  programs.neovim.enable = true;
+
+  services = {
+    zerotierone = {
+      enable = true;
+      joinNetworks = [
+        "6ab565387a704125"
+      ];
+    };
+
+    traefik = {
+      enable = true;
+
+      staticConfigOptions = {
+        entryPoints = {
+          web = {
+            address = ":80";
+            asDefault = true;
+            # http.redirections.entrypoint = {
+            #   to = "websecure";
+            #   scheme = "https";
+            # };
+          };
+
+          # websecure = {
+          #   address = ":443";
+          #   asDefault = true;
+          #   http.tls.certResolver = "letsencrypt";
+          # };
+        };
+
+        log = {
+          level = "INFO";
+          filePath = "${config.services.traefik.dataDir}/traefik.log";
+          format = "json";
+        };
+
+        # certificatesResolvers.letsencrypt.acme = {
+        #   email = "postmaster@YOUR.DOMAIN";
+        #   storage = "${config.services.traefik.dataDir}/acme.json";
+        #   httpChallenge.entryPoint = "web";
+        # };
+
+        api.dashboard = true;
+        # Access the Traefik dashboard on <Traefik IP>:8080 of your server
+        api.insecure = true;
+      };
+
+      # dynamicConfigOptions = {
+      #   http.routers = {};
+      #   http.services = {};
+      # };
+    };
+  };
+}

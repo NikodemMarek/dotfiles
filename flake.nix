@@ -98,6 +98,7 @@
     in {
       laptop = mkHost "laptop";
       desktop = mkHost "desktop";
+      server = mkHost "server";
       tv = mkHost "tv";
     };
 
