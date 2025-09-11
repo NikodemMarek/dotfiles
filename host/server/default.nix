@@ -122,7 +122,9 @@
           noColor = false;
           compress = true;
         };
-        metrics.prometheus = {};
+        metrics.prometheus = {
+          entryPoint = "metrics";
+        };
       };
 
       # dynamicConfigOptions = {
