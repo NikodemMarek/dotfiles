@@ -1,6 +1,5 @@
 {
   inputs,
-  config,
   lib,
   modulesPath,
   ...
@@ -22,6 +21,15 @@
     systemd-boot.enable = lib.mkForce false;
   };
 
+  imports = [
+    inputs.sops-nix.nixosModules.sops
+
+    "${toString modulesPath}/virtualisation/proxmox-lxc.nix"
+
+    ./jellyfin.nix
+    ./monitoring.nix
+  ];
+
   users.users.root = {
     openssh.authorizedKeys.keyFiles = [
       ../laptop/user_nikodem_ssh_id_ed25519.pub
@@ -38,16 +46,6 @@
     };
   };
 
-  imports = [
-    inputs.sops-nix.nixosModules.sops
-    inputs.impermanence.nixosModules.impermanence
-
-    "${toString modulesPath}/virtualisation/proxmox-lxc.nix"
-
-    ./jellyfin.nix
-    ./monitoring.nix
-  ];
-
   networking = {
     hostName = "server";
     useNetworkd = true;
@@ -63,10 +61,7 @@
       address = "10.0.0.1";
       interface = "eth0";
     };
-    firewall = {
-      enable = true;
-      allowedTCPPorts = [22 80 443 8080];
-    };
+    firewall.enable = true;
   };
 
   programs = {
@@ -80,57 +75,6 @@
       joinNetworks = [
         "6ab565387a704125"
       ];
-    };
-
-    traefik = {
-      enable = true;
-
-      staticConfigOptions = {
-        entryPoints = {
-          web = {
-            address = ":80";
-            asDefault = true;
-            # http.redirections.entrypoint = {
-            #   to = "websecure";
-            #   scheme = "https";
-            # };
-          };
-
-          websecure = {
-            address = ":443";
-            asDefault = true;
-            # http.tls.certResolver = "letsencrypt";
-          };
-
-          metrics = {
-            address = ":8013";
-          };
-        };
-
-        # certificatesResolvers.letsencrypt.acme = {
-        #   email = "postmaster@YOUR.DOMAIN";
-        #   storage = "${config.services.traefik.dataDir}/acme.json";
-        #   httpChallenge.entryPoint = "web";
-        # };
-
-        api.dashboard = true;
-        api.insecure = true;
-
-        log = {
-          level = "INFO";
-          filePath = "${config.services.traefik.dataDir}/traefik.log";
-          noColor = false;
-          compress = true;
-        };
-        metrics.prometheus = {
-          entryPoint = "metrics";
-        };
-      };
-
-      # dynamicConfigOptions = {
-      #   http.routers = {};
-      #   http.services = {};
-      # };
     };
   };
 }
