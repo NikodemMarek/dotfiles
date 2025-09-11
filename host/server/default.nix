@@ -69,7 +69,10 @@
     };
   };
 
-  programs.neovim.enable = true;
+  programs = {
+    neovim.enable = true;
+    git.enable = true;
+  };
 
   services = {
     zerotierone = {
