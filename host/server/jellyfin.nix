@@ -17,7 +17,7 @@
 
           routers = {
             jellyfin = {
-              entryPoints = ["websecure"];
+              entryPoints = ["web"];
               rule = "Host(`jellyfin.nprox.dev`)";
               service = "jellyfin";
               # tls.certResolver = "letsencrypt";
