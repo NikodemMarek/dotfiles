@@ -91,17 +91,11 @@
             # };
           };
 
-          # websecure = {
-          #   address = ":443";
-          #   asDefault = true;
-          #   http.tls.certResolver = "letsencrypt";
-          # };
-        };
-
-        log = {
-          level = "INFO";
-          filePath = "${config.services.traefik.dataDir}/traefik.log";
-          format = "json";
+          websecure = {
+            address = ":443";
+            asDefault = true;
+            # http.tls.certResolver = "letsencrypt";
+          };
         };
 
         # certificatesResolvers.letsencrypt.acme = {
@@ -111,8 +105,15 @@
         # };
 
         api.dashboard = true;
-        # Access the Traefik dashboard on <Traefik IP>:8080 of your server
         api.insecure = true;
+
+        log = {
+          level = "INFO";
+          filePath = "${config.services.traefik.dataDir}/traefik.log";
+          noColor = false;
+          compress = true;
+        };
+        metrics.prometheus = {};
       };
 
       # dynamicConfigOptions = {
