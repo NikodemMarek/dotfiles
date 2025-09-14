@@ -1,4 +1,8 @@
-{
+{pkgs, ...}: {
+  environment.systemPackages = [
+    pkgs.qemu
+  ];
+
   boot.kernelModules = ["kvm-intel" "kvm-amb"];
   virtualisation.virtualbox = {
     host = {

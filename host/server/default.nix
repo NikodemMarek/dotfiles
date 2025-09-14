@@ -1,30 +1,6 @@
 {
-  inputs,
-  lib,
-  modulesPath,
-  ...
-}: {
-  nixpkgs.hostPlatform = "x86_64-linux";
-  system.stateVersion = "25.11";
-
-  nix.settings.experimental-features = ["nix-command" "flakes"];
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreePredicate = _: true;
-  };
-
-  boot.loader = {
-    grub = {
-      enable = lib.mkForce false;
-      devices = ["nodev"];
-    };
-    systemd-boot.enable = lib.mkForce false;
-  };
-
   imports = [
-    inputs.sops-nix.nixosModules.sops
-
-    "${toString modulesPath}/virtualisation/proxmox-lxc.nix"
+    ./ct-base.nix
 
     ./proxy.nix
     ./jellyfin.nix
@@ -32,6 +8,7 @@
   ];
 
   users.users.root = {
+    password = "1234";
     openssh.authorizedKeys.keyFiles = [
       ../laptop/user_nikodem_ssh_id_ed25519.pub
       ../../home/nm1/user_nm1_ssh_id_ed25519.pub
@@ -50,6 +27,7 @@
   networking = {
     hostName = "server";
     useNetworkd = true;
+    nameservers = ["1.1.1.1"];
     interfaces.eth0 = {
       ipv4.addresses = [
         {
