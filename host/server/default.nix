@@ -26,6 +26,7 @@
 
     "${toString modulesPath}/virtualisation/proxmox-lxc.nix"
 
+    ./proxy.nix
     ./jellyfin.nix
     ./monitoring.nix
   ];
