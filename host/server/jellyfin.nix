@@ -9,7 +9,7 @@
       ];
       routers.jellyfin = {
         entryPoints = ["web"];
-        rule = "Host(`jellyfin.nprox.local`)";
+        rule = "Path(`/jellyfin`)";
         service = "jellyfin";
         # tls.certResolver = "letsencrypt";
       };
