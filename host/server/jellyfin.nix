@@ -45,10 +45,6 @@ in {
   };
 
   services = {
-    jellyfin = {
-      enable = true;
-    };
-
     traefik.dynamicConfigOptions.http = {
       services.jellyfin.loadBalancer.servers = [
         {
