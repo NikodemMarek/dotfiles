@@ -42,7 +42,10 @@
       networks = {
         "AGH-Guest" = {};
         "Meshki56".pskRaw = "ext:PSK_Meshki56";
-        "402a".pskRaw = "ext:PSK_402a";
+        "2hot2spot" = {
+          pskRaw = "ext:PSK_2hot2spot";
+          priority = -20;
+        };
         "hot_pot" = {
           pskRaw = "ext:PSK_hot_pot";
           priority = -10;
