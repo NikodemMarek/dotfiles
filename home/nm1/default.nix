@@ -53,6 +53,15 @@ in {
       userEmail = "nikodem.marek@softnet.com.pl";
       userName = "nm1";
     };
+    aichat.settings = {
+      model = "claude:claude-3-7-sonnet-20250219";
+      clients = [
+        {
+          type = "claude";
+          api_key = readIfExists config.sops.secrets."anthropic/api_key".path;
+        }
+      ];
+    };
   };
 
   home = {

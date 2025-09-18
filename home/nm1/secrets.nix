@@ -37,5 +37,7 @@
     "users/nm1/npm/url" = {};
     "users/nm1/npm/username" = {};
     "users/nm1/npm/password" = {};
+
+    "anthropic/api_key" = {};
   };
 }

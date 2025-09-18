@@ -4,6 +4,7 @@
     ./hyprland
     ./walker
 
+    ./aichat.nix
     ./coding.nix
     ./direnv.nix
     ./eza.nix
