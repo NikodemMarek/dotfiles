@@ -20,6 +20,7 @@
 
     ./proxy.nix
     ./jellyfin.nix
+    ./arrstack.nix
   ];
 
   services.openssh = {
