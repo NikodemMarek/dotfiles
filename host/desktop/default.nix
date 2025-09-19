@@ -1,14 +1,19 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
-    # ../features
+    ../features
+    ../features/general/networking.nix
+    ../features/general/nix.nix
+    ../features/general/security.nix
+    ../features/general/sops.nix
+    ../features/general/sudo.nix
+    ../features/general/time.nix
+    ../features/general/tools.nix
+    ../features/general/zerotier.nix
+
     ./hardware-configuration.nix
     ./secrets.nix
 
-    (import ../features/disko/device-btrfs-persistence.nix {
+    (import ../features/disko/btrfs-persistence-swapfile.nix {
       device = "nvme0n1";
       swap = 38;
     })
@@ -30,11 +35,11 @@
 
   persist = {
     enable = true;
-    deviceService = "dev-root_vg-root.device";
-    rootPath = "/dev/root_vg/root";
+    deviceService = "dev-nvme0n1p2.device";
+    rootPath = "/dev/nvme0n1p2";
   };
 
-  users.user = {
+  users.users = {
     root = {
       password = "1234";
       openssh.authorizedKeys.keyFiles = [
@@ -42,15 +47,5 @@
         ../../home/nm1/user_nm1_ssh_id_ed25519.pub
       ];
     };
-    # nikodem = {
-    #   isNormalUser = true;
-    #   # hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
-    #   password = "1234";
-    #   extraGroups = ["wheel" "docker"];
-    #   shell = pkgs.fish;
-    #   openssh.authorizedKeys.keyFiles = [
-    #     ../laptop/user_nikodem_ssh_id_ed25519.pub
-    #   ];
-    # };
   };
 }

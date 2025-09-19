@@ -11,8 +11,6 @@
       inputs.home-manager.nixosModules.home-manager
       inputs.disko.nixosModules.disko
       inputs.stylix.nixosModules.stylix
-
-      ./general
     ]
     ++ (builtins.attrValues outputs.nixosModules);
 }

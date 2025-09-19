@@ -5,6 +5,7 @@
 }: {
   imports = [
     ../features
+    ../features/general
     ./hardware-configuration.nix
     ./secrets.nix
 
