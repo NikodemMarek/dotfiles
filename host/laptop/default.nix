@@ -36,7 +36,6 @@
       shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [
         ./user_nikodem_ssh_id_ed25519.pub
-        ../desktop/user_nikodem_ssh_id_ed25519.pub
         ../../home/nm1/user_nm1_ssh_id_ed25519.pub
       ];
     };
