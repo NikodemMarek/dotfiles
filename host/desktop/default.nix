@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{
   imports = [
     ../features
     ../features/general/networking.nix
@@ -17,6 +17,9 @@
       device = "nvme0n1";
       swap = 38;
     })
+
+    ./proxy.nix
+    ./jellyfin.nix
   ];
 
   services.openssh = {
@@ -30,6 +33,7 @@
 
   networking = {
     hostName = "desktop";
+    firewall.allowedTCPPorts = [22];
     # interfaces.enp5s0.wakeOnLan.enable = true;
   };
 
