@@ -88,11 +88,7 @@
         inherit_fullscreen = true;
       };
 
-      gestures = {
-        workspace_swipe = true;
-        workspace_swipe_create_new = true;
-        workspace_swipe_forever = false;
-      };
+      gesture = "3, vertical, workspace";
 
       misc = {
         disable_hyprland_logo = true;
