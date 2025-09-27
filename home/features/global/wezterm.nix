@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  config,
   ...
 }: {
   imports = [
@@ -9,7 +10,7 @@
 
   programs.wezterm = {
     enable = true;
-    package = inputs.wezterm.packages.${pkgs.system}.default;
+    package = config.lib.nixGL.wrap inputs.wezterm.packages.${pkgs.system}.default;
     extraConfig =
       /*
       lua

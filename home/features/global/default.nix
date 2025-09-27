@@ -8,7 +8,6 @@
     ./coding.nix
     ./direnv.nix
     ./eza.nix
-    ./firefox.nix
     ./fish.nix
     ./gh.nix
     ./git.nix

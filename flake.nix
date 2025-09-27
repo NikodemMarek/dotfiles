@@ -20,20 +20,21 @@
 
     stylix.url = "github:danth/stylix";
 
-    hyprland.url = "github:hyprwm/Hyprland";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    wezterm.url = "github:wez/wezterm/main?dir=nix";
+    wezterm = {
+      url = "github:wez/wezterm/main?dir=nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     neovim.url = "github:NikodemMarek/neovim";
 
     walker.url = "github:not-matthias/walker";
 
     eww.url = "github:elkowar/eww";
-
-    firefox-addons = {
-      url = "gitlab:rycee/nur-expressions?dir=pkgs/firefox-addons";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
