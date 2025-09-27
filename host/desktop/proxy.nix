@@ -54,7 +54,7 @@
       ];
       routers.traefik = {
         entryPoints = ["web"];
-        rule = "Host(`traefik.local`)";
+        rule = "Host(`traefik.net`)";
         service = "traefik";
         # tls.certResolver = "letsencrypt";
       };

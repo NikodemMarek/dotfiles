@@ -5,16 +5,16 @@
 }: {
   options.persist = let
     inherit (lib) mkEnableOption mkOption;
-    inherit (lib.types) submodule listOf str;
+    inherit (lib.types) submodule listOf either str attrs;
 
     peristentCategory = {
       options = {
         directories = mkOption {
-          type = listOf str;
+          type = listOf (either str attrs);
           default = [];
         };
         files = mkOption {
-          type = listOf str;
+          type = listOf (either str attrs);
           default = [];
         };
       };

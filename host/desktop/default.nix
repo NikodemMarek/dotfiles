@@ -1,4 +1,6 @@
-{
+{config, ...}: let
+  mediaDir = "/persist/data/media";
+in {
   imports = [
     ../features
     ../features/general/networking.nix
@@ -19,6 +21,7 @@
     })
 
     ./proxy.nix
+    ./dns.nix
     ./jellyfin.nix
     ./arrstack.nix
   ];
@@ -44,13 +47,36 @@
     rootPath = "/dev/nvme0n1p2";
   };
 
-  users.users = {
-    root = {
-      password = "1234";
-      openssh.authorizedKeys.keyFiles = [
-        ../laptop/user_nikodem_ssh_id_ed25519.pub
-        ../../home/nm1/user_nm1_ssh_id_ed25519.pub
-      ];
+  users = {
+    users = {
+      root = {
+        password = "1234";
+        openssh.authorizedKeys.keyFiles = [
+          ../laptop/user_nikodem_ssh_id_ed25519.pub
+          ../../home/nm1/user_nm1_ssh_id_ed25519.pub
+        ];
+      };
+    };
+    groups = {
+      movies.gid = 2010;
+      shows.gid = 2020;
+      music.gid = 2030;
+      books.gid = 2040;
+    };
+  };
+
+  system.activationScripts = {
+    media-dirs = {
+      text = ''
+        mkdir -p ${mediaDir}/movies
+        mkdir -p ${mediaDir}/shows
+        mkdir -p ${mediaDir}/music
+        mkdir -p ${mediaDir}/books
+        chown -R 0:${toString config.users.groups.movies.gid} ${mediaDir}/movies
+        chown -R 0:${toString config.users.groups.shows.gid} ${mediaDir}/shows
+        chown -R 0:${toString config.users.groups.music.gid} ${mediaDir}/music
+        chown -R 0:${toString config.users.groups.books.gid} ${mediaDir}/books
+      '';
     };
   };
 }
