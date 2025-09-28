@@ -1,8 +1,12 @@
-{config, ...}: let
+{
+  config,
+  inputs,
+  ...
+}: let
   jellyseerrPort = 5055;
   jellyfinPort = 8096;
 
-  mediaDir = "/persist/data/media";
+  mediaDir = "/mnt/data";
 in {
   containers.jellyfin = {
     autoStart = true;
@@ -13,55 +17,41 @@ in {
         hostPort = jellyfinPort;
         protocol = "tcp";
       }
-      {
-        containerPort = 5055;
-        hostPort = jellyseerrPort;
-        protocol = "tcp";
-      }
     ];
     bindMounts = {
-      "/mnt/data/movies" = {
+      "/mnt/movies" = {
         hostPath = "${mediaDir}/movies";
-        isReadOnly = false;
+        isReadOnly = true;
       };
-      "/mnt/data/shows" = {
+      "/mnt/shows" = {
         hostPath = "${mediaDir}/shows";
-        isReadOnly = false;
+        isReadOnly = true;
       };
-      "/mnt/data/music" = {
+      "/mnt/music" = {
         hostPath = "${mediaDir}/music";
-        isReadOnly = false;
+        isReadOnly = true;
       };
-      "/mnt/data/books" = {
+      "/mnt/books" = {
         hostPath = "${mediaDir}/books";
+        isReadOnly = true;
+      };
+      "/var/lib/jellyfin/data" = {
+        hostPath = "/var/lib/jellyfin/data";
         isReadOnly = false;
       };
-      "/var/lib" = {
-        hostPath = "/var/lib/jellyfin";
+      "/var/lib/jellyfin/metadata" = {
+        hostPath = "/var/lib/jellyfin/metadata";
+        isReadOnly = false;
+      };
+      "/var/lib/jellyfin/playlists" = {
+        hostPath = "/var/lib/jellyfin/playlists";
         isReadOnly = false;
       };
     };
-    config = {
-      pkgs,
-      lib,
-      ...
-    }: {
-      services = {
-        jellyfin = {
-          enable = true;
-          openFirewall = true;
-          user = "root";
-        };
-        jellyseerr = {
-          enable = true;
-          openFirewall = true;
-          port = 5055;
-        };
-      };
-      environment.systemPackages = [
-        pkgs.jellyfin
-        pkgs.jellyfin-web
-        pkgs.jellyfin-ffmpeg
+    config = {lib, ...}: {
+      imports = [
+        inputs.declarative-jellyfin.nixosModules.default
+        ./jellyfin.nix
       ];
 
       users.groups = {
@@ -84,7 +74,19 @@ in {
 
   persist.generated.directories = [
     {
-      directory = "/var/lib/jellyfin";
+      directory = "/var/lib/jellyfin/data";
+      user = "root";
+      group = "root";
+      mode = "770";
+    }
+    {
+      directory = "/var/lib/jellyfin/metadata";
+      user = "root";
+      group = "root";
+      mode = "770";
+    }
+    {
+      directory = "/var/lib/jellyfin/playlists";
       user = "root";
       group = "root";
       mode = "770";

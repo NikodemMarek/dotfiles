@@ -1,5 +1,5 @@
 {config, ...}: let
-  mediaDir = "/persist/data/media";
+  mediaDir = "/mnt/data";
 in {
   imports = [
     ../features
@@ -19,11 +19,14 @@ in {
       device = "nvme0n1";
       swap = 38;
     })
+    (import ../features/disko/btrfs-single-partition.nix {
+      device = "sda";
+    })
 
     ./proxy.nix
     ./dns.nix
-    ./jellyfin.nix
-    ./arrstack.nix
+    ./jellyfin
+    ./arrstack
   ];
 
   services.openssh = {
@@ -36,6 +39,7 @@ in {
   };
 
   networking = {
+    hostId = "76cc60bb";
     hostName = "desktop";
     firewall.allowedTCPPorts = [22];
     # interfaces.enp5s0.wakeOnLan.enable = true;
@@ -76,6 +80,10 @@ in {
         chown -R 0:${toString config.users.groups.shows.gid} ${mediaDir}/shows
         chown -R 0:${toString config.users.groups.music.gid} ${mediaDir}/music
         chown -R 0:${toString config.users.groups.books.gid} ${mediaDir}/books
+        chmod 775 -R ${mediaDir}/movies
+        chmod 775 -R ${mediaDir}/shows
+        chmod 775 -R ${mediaDir}/music
+        chmod 775 -R ${mediaDir}/books
       '';
     };
   };
