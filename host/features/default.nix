@@ -13,4 +13,6 @@
       inputs.stylix.nixosModules.stylix
     ]
     ++ (builtins.attrValues outputs.nixosModules);
+
+  system.stateVersion = "24.05";
 }

@@ -1,5 +1,6 @@
 {
   imports = [
+    ./boot.nix
     ./docker.nix
     ./graphics.nix
     ./greetd.nix

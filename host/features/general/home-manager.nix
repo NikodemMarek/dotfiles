@@ -29,4 +29,6 @@
           ../../../home/${user.name})) (lib.attrValues config.users.users))
     );
   };
+
+  users.mutableUsers = false;
 }

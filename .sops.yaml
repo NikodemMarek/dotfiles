@@ -4,6 +4,7 @@ keys:
   - &hosts
     - &desktop age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
     - &laptop age1hl0hkstkuu292skpuxc0kh49sm9lajg4ugns8zez000hdgfs0ausmv326a
+    - &server age1jeswmcpv7k5hn2xdy89wgwqmph0yd5yv60ahyjpklch7t0zjp43szl8v8r
 
   - &users
     - &desktop_nikodem age1hpumue8adqykuyyurjyhaask392uue8j43wp3yhnxkjmsvxuwp8qatvctz
@@ -23,6 +24,13 @@ creation_rules:
     - age:
       - *super
       - *laptop
+      - *laptop_nikodem
+
+  - path_regex: host/server/.+$
+    key_groups:
+    - age:
+      - *super
+      - *server
       - *laptop_nikodem
 
   - path_regex: home/nm1/.+$

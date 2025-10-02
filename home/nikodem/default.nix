@@ -7,6 +7,8 @@
   isDesktop = host-config.networking.hostName == "desktop";
 in {
   imports = [
+    ../features
+
     ../../host/${host-config.networking.hostName}/kanshi.nix
     ../../host/${host-config.networking.hostName}/secrets.nix
 

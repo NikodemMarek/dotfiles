@@ -6,8 +6,6 @@
 }: {
   imports =
     [
-      ./global
-
       inputs.clipboard-sync.homeManagerModules.default
     ]
     ++ (builtins.attrValues outputs.homeManagerModules);

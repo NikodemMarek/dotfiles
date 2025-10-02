@@ -1,5 +1,5 @@
 {config, ...}: {
-  networking.firewall.allowedTCPPorts = [80 443];
+  networking.firewall.allowedTCPPorts = [80 443 8080];
 
   services.traefik = {
     enable = true;
@@ -43,6 +43,20 @@
       };
       metrics.prometheus = {
         entryPoint = "metrics";
+      };
+    };
+
+    dynamicConfigOptions.http = {
+      services.traefik.loadBalancer.servers = [
+        {
+          url = "http://[::1]:8080";
+        }
+      ];
+      routers.traefik = {
+        entryPoints = ["web"];
+        rule = "Host(`traefik.net`)";
+        service = "traefik";
+        # tls.certResolver = "letsencrypt";
       };
     };
   };

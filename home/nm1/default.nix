@@ -10,6 +10,8 @@
     else null;
 in {
   imports = [
+    ../features
+
     ./secrets.nix
     ./kanshi.nix
   ];
