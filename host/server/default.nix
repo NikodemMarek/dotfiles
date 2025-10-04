@@ -13,6 +13,7 @@
     ../features/general/sops.nix
 
     ./proxy.nix
+    ./cloudflared.nix
     # ./monitoring.nix
   ];
 

@@ -6,5 +6,10 @@
     "users/maintenance/password" = {
       neededForUsers = true;
     };
+
+    "cloudflared_cert" = {
+      sopsFile = ./cloudflared_cert.pem;
+      format = "binary";
+    };
   };
 }
