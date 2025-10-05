@@ -1068,11 +1068,11 @@
     },
     "nixpkgs_5": {
       "locked": {
-        "lastModified": 1759670382,
-        "narHash": "sha256-YS69wxWWc+1C3rUPyYtNq2qrn3Xuw6oktrF8XcI6o+g=",
+        "lastModified": 1759700312,
+        "narHash": "sha256-AZw8W7+0QeEHWwTiauXKAg7++cgLFT8nNC3/eaa2dbQ=",
         "owner": "NikodemMarek",
         "repo": "nixpkgs",
-        "rev": "21fbaeb3afdd19e88e5f81bee7ec7006656c3a40",
+        "rev": "f28474f8dfaceb18aa1e46b323deff1967e4a5aa",
         "type": "github"
       },
       "original": {
