@@ -8,6 +8,7 @@
 in {
   imports = [
     ../features
+    ../features/global
 
     ../../host/${host-config.networking.hostName}/kanshi.nix
     ../../host/${host-config.networking.hostName}/secrets.nix

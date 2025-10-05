@@ -11,5 +11,9 @@
       sopsFile = ./cloudflared_cert.pem;
       format = "binary";
     };
+    "cloudflared_creds" = {
+      sopsFile = ./cloudflared_creds.json.bin;
+      format = "binary";
+    };
   };
 }

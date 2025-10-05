@@ -2,7 +2,7 @@
   description = "system configuration";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NikodemMarek/nixpkgs?ref=nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -105,6 +105,7 @@
       laptop = mkHost "laptop";
       desktop = mkHost "desktop";
       server = mkHost "server";
+      generic = mkHost "generic";
       tv = mkHost "tv";
     };
 
