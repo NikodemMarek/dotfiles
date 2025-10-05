@@ -80,10 +80,10 @@ in {
         chown -R 0:${toString config.users.groups.shows.gid} ${mediaDir}/shows
         chown -R 0:${toString config.users.groups.music.gid} ${mediaDir}/music
         chown -R 0:${toString config.users.groups.books.gid} ${mediaDir}/books
-        chmod 775 -R ${mediaDir}/movies
-        chmod 775 -R ${mediaDir}/shows
-        chmod 775 -R ${mediaDir}/music
-        chmod 775 -R ${mediaDir}/books
+        chmod 770 -R ${mediaDir}/movies
+        chmod 770 -R ${mediaDir}/shows
+        chmod 770 -R ${mediaDir}/music
+        chmod 770 -R ${mediaDir}/books
       '';
     };
   };
