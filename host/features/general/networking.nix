@@ -9,13 +9,15 @@
       "10-wired-default" = {
         matchConfig.Name = "en*";
         networkConfig = {
-          DHCP = "ipv4";
+          DHCP = "yes";
+          IPv6AcceptRA = "yes";
         };
       };
       "20-wireless-default" = {
         matchConfig.Name = "wl*";
         networkConfig = {
-          DHCP = "ipv4";
+          DHCP = "yes";
+          IPv6AcceptRA = "yes";
           IgnoreCarrierLoss = "3s";
         };
       };
