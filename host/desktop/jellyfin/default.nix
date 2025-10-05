@@ -3,7 +3,6 @@
   inputs,
   ...
 }: let
-  jellyseerrPort = 5055;
   jellyfinPort = 8096;
 
   mediaDir = "/mnt/data";
@@ -93,33 +92,20 @@ in {
     }
   ];
 
-  services = {
-    traefik.dynamicConfigOptions.http = {
-      services = {
-        jellyfin.loadBalancer.servers = [
-          {
-            url = "http://127.0.0.1:${toString jellyfinPort}";
-          }
-        ];
-        jellyseerr.loadBalancer.servers = [
-          {
-            url = "http://127.0.0.1:${toString jellyseerrPort}";
-          }
-        ];
-      };
-      routers = {
-        jellyfin = {
-          entryPoints = ["web"];
-          rule = "Host(`jellyfin.net`)";
-          service = "jellyfin";
-          # tls.certResolver = "letsencrypt";
-        };
-        jellyseerr = {
-          entryPoints = ["web"];
-          rule = "Host(`jellyseerr.net`)";
-          service = "jellyseerr";
-          # tls.certResolver = "letsencrypt";
-        };
+  services.traefik.dynamicConfigOptions.http = {
+    services = {
+      jellyfin.loadBalancer.servers = [
+        {
+          url = "http://127.0.0.1:${toString jellyfinPort}";
+        }
+      ];
+    };
+    routers = {
+      jellyfin = {
+        entryPoints = ["web"];
+        rule = "Host(`jellyfin.net`)";
+        service = "jellyfin";
+        # tls.certResolver = "letsencrypt";
       };
     };
   };
