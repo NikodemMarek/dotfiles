@@ -17,7 +17,6 @@
     ./syncthing.nix
     ./time.nix
     ./tools.nix
-    ./virtualbox.nix
     ./zerotier.nix
   ];
 }
