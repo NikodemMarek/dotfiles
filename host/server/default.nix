@@ -14,6 +14,7 @@
 
     ./proxy.nix
     ./cloudflared.nix
+    ./immich.nix
     # ./monitoring.nix
   ];
 
@@ -26,15 +27,30 @@
     rootPath = "/dev/sda3";
   };
 
-  users.users = {
-    root.hashedPassword = "!";
-    maintenance = {
-      isNormalUser = true;
-      hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
-      extraGroups = ["wheel"];
-      openssh.authorizedKeys.keyFiles = [
-        ../laptop/user_nikodem_ssh_id_ed25519.pub
-      ];
+  users = {
+    users = {
+      root.hashedPassword = "!";
+      maintenance = {
+        isNormalUser = true;
+        hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
+        extraGroups = ["wheel"];
+        openssh.authorizedKeys.keyFiles = [
+          ../laptop/user_nikodem_ssh_id_ed25519.pub
+        ];
+      };
+    };
+    groups = {
+      photos.gid = 2050;
+    };
+  };
+
+  system.activationScripts = {
+    media-dirs = {
+      text = ''
+        mkdir -p /mnt/data/photos
+        chown -R 0:${toString config.users.groups.photos.gid} /mnt/data/photos
+        chmod 770 -R /mnt/data/photos
+      '';
     };
   };
 
