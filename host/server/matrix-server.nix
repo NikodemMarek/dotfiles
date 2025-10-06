@@ -29,7 +29,7 @@ in {
         settings = {
           global = {
             port = [6167];
-            server_name = "nkmrk.com";
+            server_name = "matrix.nkmrk.com";
             allow_federation = true;
             allow_encryption = true;
             allow_registration = true;
