@@ -21,6 +21,8 @@
   time.timeZone = "Etc/UTC";
   boot.loader.grub.enable = true;
 
+  nix.settings.trusted-users = ["maintenance" "@wheel"];
+
   persist = {
     enable = true;
     deviceService = "dev-sda3.device";
