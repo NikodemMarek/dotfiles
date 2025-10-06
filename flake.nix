@@ -59,6 +59,11 @@
       url = "github:Sveske-Juice/declarative-jellyfin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    tuwunel = {
+      url = "github:matrix-construct/tuwunel";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {

@@ -15,6 +15,7 @@
     ./proxy.nix
     ./cloudflared.nix
     ./immich.nix
+    ./matrix-server.nix
     # ./monitoring.nix
   ];
 

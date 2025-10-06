@@ -15,5 +15,7 @@
       sopsFile = ./cloudflared_creds.json.bin;
       format = "binary";
     };
+
+    "matrix/registration_token" = {};
   };
 }
