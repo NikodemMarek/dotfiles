@@ -1,7 +1,7 @@
 {
   inputs,
-  pkgs,
   config,
+  pkgs,
   ...
 }: let
   tuwunelPort = 6167;
@@ -9,6 +9,15 @@ in {
   sops.secrets."matrix/registration_token" = {
     restartUnits = ["container@matrix.service"];
   };
+
+  persist.generated.directories = [
+    {
+      directory = "/var/lib/matrix/tuwunel";
+      user = "root";
+      group = "root";
+      mode = "770";
+    }
+  ];
 
   containers.matrix = {
     autoStart = true;
@@ -20,24 +29,23 @@ in {
         protocol = "tcp";
       }
     ];
+    # bindMounts = {
+    #   "/var/lib/tuwunel" = {
+    #     hostPath = "/var/lib/matrix/tuwunel";
+    #     isReadOnly = false;
+    #   };
+    # };
     extraFlags = ["--load-credential=registration_token_file:${config.sops.secrets."matrix/registration_token".path}"];
-    config = {lib, ...}: {
-      services.matrix-tuwunel = {
-        enable = true;
-        package = inputs.tuwunel.packages.${pkgs.stdenv.hostPlatform.system}.default;
-        user = "root";
-        settings = {
-          global = {
-            port = [6167];
-            server_name = "matrix.nkmrk.com";
-            allow_federation = true;
-            allow_encryption = true;
-            allow_registration = true;
-            # FIXME: File does not work, because of tuwunel bug?
-            # registration_token_file = "/run/credentials/@system/registration_token_file";
-          };
-        };
-      };
+    config = {
+      pkgs,
+      lib,
+      ...
+    }: {
+      imports = [
+        ./matrix-server.nix
+      ];
+
+      services.matrix-tuwunel.package = inputs.tuwunel.packages.${pkgs.system}.default;
 
       system.stateVersion = "25.11";
 

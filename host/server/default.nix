@@ -11,11 +11,12 @@
     ../features/general/nix.nix
     ../features/general/openssh.nix
     ../features/general/sops.nix
+    ../features/general/zerotier.nix
 
     ./proxy.nix
     ./cloudflared.nix
     ./immich.nix
-    ./matrix-server.nix
+    ./matrix-server
     # ./monitoring.nix
   ];
 
@@ -76,13 +77,6 @@
 
   networking = {
     hostName = "server";
-    extraHosts = ''
-      2a04:4e42:8d::729 tarballs.nixos.org
-      2a04:4e42::729 cache.nixos.org
-      2a00:1450:401b:80e::2011 proxy.golang.org
-      2a00:1450:401b:810::2011 google.golang.org
-      2a00:1450:401b:801::201b storage.googleapis.com
-    '';
     enableIPv6 = true;
     useNetworkd = true;
     nftables.enable = true;
