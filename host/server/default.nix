@@ -15,9 +15,7 @@
 
     ./proxy.nix
     ./cloudflared.nix
-    ./immich.nix
     ./matrix-server
-    # ./monitoring.nix
   ];
 
   time.timeZone = "Etc/UTC";
