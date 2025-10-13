@@ -17,5 +17,9 @@
     };
 
     "matrix/registration_token" = {};
+
+    "wireguard/private_key" = {
+      owner = "systemd-network";
+    };
   };
 }

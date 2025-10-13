@@ -15,6 +15,7 @@
 
     ./proxy.nix
     ./cloudflared.nix
+    ./vpn.nix
     ./matrix-server
   ];
 
@@ -62,7 +63,10 @@
     networks = {
       "10-wan" = {
         matchConfig.Name = "en*";
-        networkConfig.DHCP = "no";
+        networkConfig = {
+          DHCP = "ipv4";
+          IPMasquerade = "both";
+        };
         address = [
           "2a01:4f8:c17:b07::1/64"
         ];
