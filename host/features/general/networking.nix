@@ -1,4 +1,5 @@
 {
+  pkgs,
   lib,
   config,
   ...
@@ -24,14 +25,21 @@
     };
   };
 
+  environment.etc = {
+    "wpa_supplicant/agh_ca.pem".source = ./agh_ca.pem;
+  };
+
   networking = {
     useNetworkd = true;
     wireless = lib.mkIf ((builtins.hasAttr "networks" config.sops.secrets) && (builtins.pathExists config.sops.secrets.networks.path)) {
       enable = true;
       userControlled.enable = true;
       secretsFile = config.sops.secrets.networks.path;
+      extraConfigFiles = [config.sops.secrets."wpa_supplicant/eduroam".path];
       networks = {
-        "AGH-Guest" = {};
+        "AGH-Guest" = {
+          priority = -5;
+        };
         "Meshki56".pskRaw = "ext:PSK_Meshki56";
         "studenciaki".pskRaw = "ext:PSK_studenciaki";
         "2hot2spot" = {
