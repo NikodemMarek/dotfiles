@@ -18,7 +18,12 @@
     ../features/optional/bluetooth.nix
 
     ../../home/nikodem/persist.nix
+    ./vpn.nix
   ];
+
+  sops.secrets."wireguard/private_key" = {
+    owner = "systemd-network";
+  };
 
   networking.hostName = "laptop";
 

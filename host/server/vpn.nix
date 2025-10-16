@@ -3,6 +3,7 @@
   networking.useNetworkd = true;
 
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+  boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = 1;
   systemd.network = {
     enable = true;
     netdevs = {
@@ -10,7 +11,7 @@
         netdevConfig = {
           Kind = "wireguard";
           Name = "wg1";
-          MTUBytes = "1300";
+          MTUBytes = "1420";
         };
         wireguardConfig = {
           PrivateKeyFile = config.sops.secrets."wireguard/private_key".path;
@@ -19,7 +20,7 @@
         wireguardPeers = [
           {
             PublicKey = "p5wyBizKMNg89ctyKTYTF21M2VeBbPiG2JwNpMtNo2g=";
-            AllowedIPs = "10.48.72.2/32";
+            AllowedIPs = ["10.48.72.2/32" "fd48:a8a8:ef08::2/64"];
           }
           {
             PublicKey = "Tg9drcQ0ibqvqRxbulVRyjj8KrnnntkLevaSltFV3X0=";
@@ -104,7 +105,7 @@
     networks = {
       "50-wg1" = {
         matchConfig.Name = "wg1";
-        address = ["10.48.72.1/24"];
+        address = ["10.48.72.1/24" "fd48:a8a8:ef08::1/64"];
         networkConfig = {
           IPMasquerade = "both";
           IPv4Forwarding = true;
