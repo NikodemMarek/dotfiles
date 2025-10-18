@@ -4,5 +4,9 @@
     ../../secrets/api-keys.nix
   ];
 
-  sops.secrets = {};
+  sops.secrets = {
+    "wireguard/server_tunnel_private_key" = {
+      owner = "systemd-network";
+    };
+  };
 }

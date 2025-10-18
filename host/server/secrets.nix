@@ -21,5 +21,8 @@
     "wireguard/private_key" = {
       owner = "systemd-network";
     };
+    "wireguard/desktop_tunnel_private_key" = {
+      owner = "systemd-network";
+    };
   };
 }

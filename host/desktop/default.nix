@@ -3,6 +3,7 @@
 in {
   imports = [
     ../features
+    ../features/general/boot.nix
     ../features/general/networking.nix
     ../features/general/nix.nix
     ../features/general/security.nix
@@ -23,10 +24,11 @@ in {
       device = "sda";
     })
 
+    ./server-tunnel.nix
     ./proxy.nix
-    ./dns.nix
     ./jellyfin
     ./arrstack
+    ./immich
   ];
 
   services.openssh = {
@@ -66,6 +68,7 @@ in {
       shows.gid = 2020;
       music.gid = 2030;
       books.gid = 2040;
+      photos.gid = 2050;
     };
   };
 
@@ -76,14 +79,17 @@ in {
         mkdir -p ${mediaDir}/shows
         mkdir -p ${mediaDir}/music
         mkdir -p ${mediaDir}/books
+        mkdir -p ${mediaDir}/photos
         chown -R 0:${toString config.users.groups.movies.gid} ${mediaDir}/movies
         chown -R 0:${toString config.users.groups.shows.gid} ${mediaDir}/shows
         chown -R 0:${toString config.users.groups.music.gid} ${mediaDir}/music
         chown -R 0:${toString config.users.groups.books.gid} ${mediaDir}/books
+        chown -R 0:${toString config.users.groups.photos.gid} ${mediaDir}/photos
         chmod 770 -R ${mediaDir}/movies
         chmod 770 -R ${mediaDir}/shows
         chmod 770 -R ${mediaDir}/music
         chmod 770 -R ${mediaDir}/books
+        chmod 770 -R ${mediaDir}/photos
       '';
     };
   };

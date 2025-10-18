@@ -5,6 +5,7 @@
   readarrPort = 8787;
   prowlarrPort = 9696;
   torrentPort = 6969;
+  jellyseerrPort = 5055;
 
   mediaDir = "/mnt/data";
 in {
@@ -39,7 +40,7 @@ in {
       }
       {
         containerPort = 5055;
-        hostPort = 5055;
+        hostPort = jellyseerrPort;
         protocol = "tcp";
       }
       {
@@ -92,72 +93,17 @@ in {
   services = {
     traefik.dynamicConfigOptions.http = {
       services = {
-        radarr.loadBalancer.servers = [
+        jellyseerr.loadBalancer.servers = [
           {
-            url = "http://127.0.0.1:${toString radarrPort}";
-          }
-        ];
-        sonarr.loadBalancer.servers = [
-          {
-            url = "http://127.0.0.1:${toString sonarrPort}";
-          }
-        ];
-        lidarr.loadBalancer.servers = [
-          {
-            url = "http://127.0.0.1:${toString lidarrPort}";
-          }
-        ];
-        readarr.loadBalancer.servers = [
-          {
-            url = "http://127.0.0.1:${toString readarrPort}";
-          }
-        ];
-        prowlarr.loadBalancer.servers = [
-          {
-            url = "http://127.0.0.1:${toString prowlarrPort}";
-          }
-        ];
-        torrent.loadBalancer.servers = [
-          {
-            url = "http://127.0.0.1:${toString torrentPort}";
+            url = "http://localhost:${toString jellyseerrPort}";
           }
         ];
       };
       routers = {
-        radarr = {
+        jellyseerr = {
           entryPoints = ["web"];
-          rule = "Host(`radarr.net`)";
-          service = "radarr";
-          # tls.certResolver = "letsencrypt";
-        };
-        sonarr = {
-          entryPoints = ["web"];
-          rule = "Host(`sonarr.net`)";
-          service = "sonarr";
-          # tls.certResolver = "letsencrypt";
-        };
-        lidarr = {
-          entryPoints = ["web"];
-          rule = "Host(`lidarr.net`)";
-          service = "lidarr";
-          # tls.certResolver = "letsencrypt";
-        };
-        readarr = {
-          entryPoints = ["web"];
-          rule = "Host(`readarr.net`)";
-          service = "readarr";
-          # tls.certResolver = "letsencrypt";
-        };
-        prowlarr = {
-          entryPoints = ["web"];
-          rule = "Host(`prowlarr.net`)";
-          service = "prowlarr";
-          # tls.certResolver = "letsencrypt"
-        };
-        torrent = {
-          entryPoints = ["web"];
-          rule = "Host(`torrent.net`)";
-          service = "torrent";
+          rule = "HostRegexp(`^jellyseerr\..+$`)";
+          service = "jellyseerr";
           # tls.certResolver = "letsencrypt"
         };
       };

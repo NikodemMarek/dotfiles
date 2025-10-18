@@ -15,6 +15,7 @@
 
     ./proxy.nix
     ./cloudflared.nix
+    ./desktop-tunnel.nix
     ./vpn.nix
     ./matrix-server
   ];

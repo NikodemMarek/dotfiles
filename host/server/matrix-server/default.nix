@@ -23,7 +23,7 @@ in {
     privateNetwork = false;
     forwardPorts = [
       {
-        containerPort = 2283;
+        containerPort = 6167;
         hostPort = tuwunelPort;
         protocol = "tcp";
       }

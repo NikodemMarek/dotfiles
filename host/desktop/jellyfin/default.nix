@@ -96,14 +96,14 @@ in {
     services = {
       jellyfin.loadBalancer.servers = [
         {
-          url = "http://127.0.0.1:${toString jellyfinPort}";
+          url = "http://localhost:${toString jellyfinPort}";
         }
       ];
     };
     routers = {
       jellyfin = {
         entryPoints = ["web"];
-        rule = "Host(`jellyfin.net`)";
+        rule = "HostRegexp(`^jellyfin\..+$`)";
         service = "jellyfin";
         # tls.certResolver = "letsencrypt";
       };

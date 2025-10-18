@@ -7,18 +7,10 @@ keys:
     - &server age1jeswmcpv7k5hn2xdy89wgwqmph0yd5yv60ahyjpklch7t0zjp43szl8v8r
 
   - &users
-    - &desktop_nikodem age1hpumue8adqykuyyurjyhaask392uue8j43wp3yhnxkjmsvxuwp8qatvctz
     - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
     - &LP-043_nm1 age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
 
 creation_rules:
-  - path_regex: host/desktop/.+$
-    key_groups:
-    - age:
-      - *super
-      - *desktop
-      - *desktop_nikodem
-
   - path_regex: host/laptop/.+$
     key_groups:
     - age:
@@ -33,6 +25,13 @@ creation_rules:
       - *server
       - *laptop_nikodem
 
+  - path_regex: host/desktop/.+$
+    key_groups:
+    - age:
+      - *super
+      - *desktop
+      - *laptop_nikodem
+
   - path_regex: home/nm1/.+$
     key_groups:
     - age:
@@ -43,8 +42,8 @@ creation_rules:
     key_groups:
     - age:
       - *super
-      - *desktop
-      - *desktop_nikodem
       - *laptop
       - *laptop_nikodem
+      - *desktop
+      - *server
       - *LP-043_nm1
