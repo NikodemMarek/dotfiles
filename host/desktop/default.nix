@@ -6,6 +6,7 @@ in {
     ../features/general/boot.nix
     ../features/general/networking.nix
     ../features/general/nix.nix
+    ../features/general/openssh.nix
     ../features/general/security.nix
     ../features/general/sops.nix
     ../features/general/sudo.nix
@@ -31,15 +32,6 @@ in {
     ./immich
   ];
 
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "yes";
-      PasswordAuthentication = true;
-      KbdInteractiveAuthentication = true;
-    };
-  };
-
   networking = {
     hostId = "76cc60bb";
     hostName = "desktop";
@@ -53,13 +45,17 @@ in {
     rootPath = "/dev/nvme0n1p2";
   };
 
+  nix.settings.trusted-users = ["maintenance" "@wheel"];
+
   users = {
     users = {
-      root = {
-        password = "1234";
+      root.hashedPassword = "!";
+      maintenance = {
+        isNormalUser = true;
+        hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
+        extraGroups = ["wheel"];
         openssh.authorizedKeys.keyFiles = [
           ../laptop/user_nikodem_ssh_id_ed25519.pub
-          ../../home/nm1/user_nm1_ssh_id_ed25519.pub
         ];
       };
     };
