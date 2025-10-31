@@ -36,7 +36,7 @@ in {
     hostId = "76cc60bb";
     hostName = "desktop";
     firewall.allowedTCPPorts = [22];
-    # interfaces.enp5s0.wakeOnLan.enable = true;
+    interfaces.enp5s0.wakeOnLan.enable = true;
   };
 
   persist = {

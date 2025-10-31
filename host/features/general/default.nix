@@ -6,6 +6,7 @@
     ./greetd.nix
     ./home-manager.nix
     ./hyprland.nix
+    ./wireless-networking.nix
     ./networking.nix
     ./nix.nix
     ./openssh.nix
