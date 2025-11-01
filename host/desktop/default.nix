@@ -30,6 +30,7 @@ in {
     ./jellyfin
     ./arrstack
     ./immich
+    ./music
   ];
 
   networking = {
@@ -53,7 +54,7 @@ in {
       maintenance = {
         isNormalUser = true;
         hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
-        extraGroups = ["wheel"];
+        extraGroups = ["wheel" "movies" "shows" "music" "books" "photos"];
         openssh.authorizedKeys.keyFiles = [
           ../laptop/user_nikodem_ssh_id_ed25519.pub
         ];

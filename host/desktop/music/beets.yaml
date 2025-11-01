@@ -1,0 +1,15 @@
+directory: /mnt/data/music
+library: /var/lib/music/beets/library.db
+
+import:
+    move: yes
+
+plugins:
+    - musicbrainz
+    - fetchart
+    - embedart
+    - lastgenre
+    - lyrics
+
+embedart:
+    remove_art_file: yes

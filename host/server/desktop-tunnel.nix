@@ -58,6 +58,12 @@
         service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };
+      navidrome = {
+        entryPoints = ["web"];
+        rule = "HostRegexp(`^navidrome\..+$`)";
+        service = "web-forward";
+        # tls.certResolver = "letsencrypt";
+      };
     };
   };
 }
