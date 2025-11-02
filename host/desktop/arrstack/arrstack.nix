@@ -102,8 +102,10 @@
         After = ["prowlarr.service"];
         Requires = ["prowlarr.service"];
       };
+      wantedBy = ["prowlarr.service"];
       serviceConfig = {
         Type = "simple";
+        ExecStartPre = "/usr/bin/env sleep 5";
         ExecStart = "${sqlite} /var/lib/prowlarr/prowlarr.db \".read ${./prowlarr.sql}\"";
       };
     };
@@ -112,8 +114,10 @@
         After = ["radarr.service"];
         Requires = ["radarr.service"];
       };
+      wantedBy = ["radarr.service"];
       serviceConfig = {
         Type = "simple";
+        ExecStartPre = "/usr/bin/env sleep 5";
         ExecStart = "${sqlite} /var/lib/radarr/.config/Radarr/radarr.db \".read ${./radarr.sql}\"";
       };
     };
@@ -122,8 +126,10 @@
         After = ["sonarr.service"];
         Requires = ["sonarr.service"];
       };
+      wantedBy = ["sonarr.service"];
       serviceConfig = {
         Type = "simple";
+        ExecStartPre = "/usr/bin/env sleep 5";
         ExecStart = "${sqlite} /var/lib/sonarr/.config/NzbDrone/sonarr.db \".read ${./sonarr.sql}\"";
       };
     };
@@ -132,8 +138,10 @@
         After = ["lidarr.service"];
         Requires = ["lidarr.service"];
       };
+      wantedBy = ["lidarr.service"];
       serviceConfig = {
         Type = "simple";
+        ExecStartPre = "/usr/bin/env sleep 5";
         ExecStart = "${sqlite} /var/lib/lidarr/.config/Lidarr/lidarr.db \".read ${./lidarr.sql}\"";
       };
     };
@@ -142,8 +150,10 @@
         After = ["readarr.service"];
         Requires = ["readarr.service"];
       };
+      wantedBy = ["readarr.service"];
       serviceConfig = {
         Type = "simple";
+        ExecStartPre = "/usr/bin/env sleep 5";
         ExecStart = "${sqlite} /var/lib/readarr/readarr.db \".read ${./readarr.sql}\"";
       };
     };

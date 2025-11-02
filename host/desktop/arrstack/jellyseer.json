@@ -37,7 +37,7 @@
     },
     "jellyfin": {
         "name": "jellyfin",
-        "ip": "127.0.0.1",
+        "ip": "localhost",
         "port": 8096,
         "useSsl": false,
         "urlBase": "",
