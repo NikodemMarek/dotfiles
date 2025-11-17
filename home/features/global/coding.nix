@@ -19,7 +19,7 @@
 
       # java
       maven
-      jdk23
+      jdk25
 
       # go
       go
