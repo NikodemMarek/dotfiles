@@ -69,6 +69,15 @@ in {
     };
   };
 
+  systemd.services.scheduled-poweroff = {
+    enable = true;
+    wantedBy = ["multi-user.target"];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "/usr/bin/env systemctl poweroff --when=+2h";
+    };
+  };
+
   system.activationScripts = {
     media-dirs = {
       text = ''
