@@ -46,6 +46,7 @@
     };
   };
 
+  services.printing.enable = true;
   services.syncthing = {
     enable = true;
     openDefaultPorts = false;
