@@ -90,6 +90,10 @@ in {
     };
   };
 
+  imports = [
+    ./gutenberg.nix
+  ];
+
   services = {
     traefik.dynamicConfigOptions.http = {
       services = {
