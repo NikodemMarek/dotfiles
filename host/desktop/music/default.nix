@@ -44,8 +44,7 @@ in {
   };
 
   imports = [
-    ./beets.nix
-    ./yt-dlp.nix
+    ./management.nix
   ];
 
   persist.generated.directories = [

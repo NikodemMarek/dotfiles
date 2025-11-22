@@ -10,6 +10,10 @@ plugins:
     - embedart
     - lastgenre
     - lyrics
+    - missing
+    - duplicates
+    - badfiles
+    - edit
 
 embedart:
     remove_art_file: yes
