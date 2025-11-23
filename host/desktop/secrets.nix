@@ -15,12 +15,5 @@
     "wireguard/server_tunnel_private_key" = {
       owner = "systemd-network";
     };
-
-    "youtube/cookies.txt" = {
-      sopsFile = ./cookies.txt;
-      format = "binary";
-      owner = "music";
-      mode = "600";
-    };
   };
 }
