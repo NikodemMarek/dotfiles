@@ -46,7 +46,10 @@
     };
   };
 
-  services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [pkgs.gutenprint];
+  };
   services.syncthing = {
     enable = true;
     openDefaultPorts = false;
