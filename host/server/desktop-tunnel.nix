@@ -58,9 +58,9 @@
         service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };
-      navidrome = {
+      subsonic = {
         entryPoints = ["web"];
-        rule = "HostRegexp(`^navidrome\..+$`)";
+        rule = "HostRegexp(`^subsonic\..+$`)";
         service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };

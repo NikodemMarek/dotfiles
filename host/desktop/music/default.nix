@@ -1,5 +1,5 @@
 {config, ...}: let
-  navidromePort = 4533;
+  subsonicPort = 4533;
 
   musicDir = "/mnt/data/music";
 in {
@@ -9,7 +9,7 @@ in {
     forwardPorts = [
       {
         containerPort = 4533;
-        hostPort = navidromePort;
+        hostPort = subsonicPort;
         protocol = "tcp";
       }
     ];
@@ -58,17 +58,17 @@ in {
 
   services.traefik.dynamicConfigOptions.http = {
     services = {
-      navidrome.loadBalancer.servers = [
+      subsonic.loadBalancer.servers = [
         {
-          url = "http://localhost:${toString navidromePort}";
+          url = "http://localhost:${toString subsonicPort}";
         }
       ];
     };
     routers = {
-      navidrome = {
+      subsonic = {
         entryPoints = ["web"];
-        rule = "HostRegexp(`^navidrome\..+$`)";
-        service = "navidrome";
+        rule = "HostRegexp(`^subsonic\..+$`)";
+        service = "subsonic";
         # tls.certResolver = "letsencrypt";
       };
     };
