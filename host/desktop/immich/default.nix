@@ -18,6 +18,10 @@ in {
         hostPath = photosDir;
         isReadOnly = false;
       };
+      "/var/lib/postgresql" = {
+        hostPath = "/var/lib/immich/postgresql";
+        isReadOnly = false;
+      };
     };
     config = {lib, ...}: {
       imports = [
@@ -38,6 +42,15 @@ in {
       services.resolved.enable = true;
     };
   };
+
+  persist.generated.directories = [
+    {
+      directory = "/var/lib/immich/postgresql";
+      user = "root";
+      group = "root";
+      mode = "770";
+    }
+  ];
 
   services.traefik.dynamicConfigOptions.http = {
     services = {
