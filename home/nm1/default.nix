@@ -99,6 +99,8 @@ in {
       pkgs.oracle-instantclient
       pkgs.glab
       pkgs.rainfrog
+      pkgs.claude-code
+      pkgs.gemini-cli
     ];
   };
 }
