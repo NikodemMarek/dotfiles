@@ -85,7 +85,6 @@
         new_status = "master";
         mfact = 0.75;
         orientation = "right";
-        inherit_fullscreen = true;
       };
 
       gesture = "3, vertical, workspace";

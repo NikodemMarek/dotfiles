@@ -11,6 +11,7 @@
 in {
   imports = [
     ../features
+    ../features/global
 
     ./secrets.nix
     ./kanshi.nix
@@ -78,23 +79,26 @@ in {
       JAVA_8_HOME = "${pkgs.jdk8}";
       JAVA_11_HOME = "${pkgs.jdk11}";
       JAVA_21_HOME = "${pkgs.jdk21}";
-      JAVA_23_HOME = "${pkgs.jdk23}";
-      JAVA_24_HOME = "${pkgs.jdk24}";
+      JAVA_25_HOME = "${pkgs.jdk25}";
       DOMAIN_NEXUS_LOGIN = readIfExists config.sops.secrets."users/nm1/domain_login".path;
       DOMAIN_NEXUS_PASSWORD = readIfExists config.sops.secrets."users/nm1/domain_password".path;
       GITLAB_TOKEN = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
       DEPLOY_DOCKER = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
     };
-    packages = with pkgs; [
-      sshpass
-      remmina
-      google-chrome
-      android-studio
-      jetbrains.idea-ultimate
-      dbeaver-bin
-      oracle-instantclient
-      glab
-      rainfrog
+    packages = [
+      (pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
+        gke-gcloud-auth-plugin
+      ]))
+      pkgs.kubectl
+      pkgs.sshpass
+      pkgs.remmina
+      pkgs.google-chrome
+      pkgs.android-studio
+      pkgs.jetbrains.idea-ultimate
+      pkgs.dbeaver-bin
+      pkgs.oracle-instantclient
+      pkgs.glab
+      pkgs.rainfrog
     ];
   };
 }

@@ -26,17 +26,17 @@
             {
               criteria = "eDP-1";
               mode = "1920x1080";
-              position = "0,1080";
+              position = "0,1440";
             }
             {
               criteria = "DP-4";
-              mode = "1920x1080";
+              mode = "2560x1440";
               position = "0,0";
             }
             {
               criteria = "DP-3";
-              mode = "1920x1080";
-              position = "1920,0";
+              mode = "2560x1440";
+              position = "2560,0";
               transform = "270";
             }
           ];
@@ -53,13 +53,13 @@
             }
             {
               criteria = "DP-6";
-              mode = "1920x1080";
+              mode = "2560x1440";
               position = "0,0";
             }
             {
               criteria = "DP-5";
-              mode = "1920x1080";
-              position = "1920,0";
+              mode = "2560x1440";
+              position = "2560,0";
               transform = "270";
             }
           ];
