@@ -1,11 +1,8 @@
 {
-  lib,
   host-config,
+  pkgs,
   ...
-}: let
-  isLaptop = host-config.networking.hostName == "laptop";
-  isDesktop = host-config.networking.hostName == "desktop";
-in {
+}: {
   imports = [
     ../features
     ../features/global
@@ -16,31 +13,29 @@ in {
     ../features/optional/fun.nix
   ];
 
+  home.packages = [
+    pkgs.gemini-cli
+    pkgs.nmap
+    pkgs.tcpdump
+    pkgs.lsof
+  ];
+
   sops.defaultSopsFile = ../../host/${host-config.networking.hostName}/secrets.yaml;
 
-  services =
-    {
-      eww = {
-        enable = true;
-        monitor =
-          if isLaptop
-          then {
-            width = 1920;
-            height = 1080;
-          }
-          else {
-            width = 2560;
-            height = 1440;
-          };
-      };
-    }
-    // lib.optionalAttrs isLaptop {
-      battery-notifier = {
-        enable = true;
-        capacityPath = "/sys/class/power_supply/BAT1/capacity";
-        statusPath = "/sys/class/power_supply/BAT1/status";
+  services = {
+    eww = {
+      enable = true;
+      monitor = {
+        width = 1920;
+        height = 1080;
       };
     };
+    battery-notifier = {
+      enable = true;
+      capacityPath = "/sys/class/power_supply/BAT1/capacity";
+      statusPath = "/sys/class/power_supply/BAT1/status";
+    };
+  };
 
   programs = {
     git = {

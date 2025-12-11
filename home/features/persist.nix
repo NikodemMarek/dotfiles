@@ -57,6 +57,9 @@ user: {
         # beeper
         ".config/Beeper"
 
+        # gemini
+        ".gemini"
+
         # common
         ".config/Google"
 
