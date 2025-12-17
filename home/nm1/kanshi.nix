@@ -26,7 +26,7 @@
             {
               criteria = "eDP-1";
               mode = "1920x1080";
-              position = "0,1440";
+              position = "640,1920";
             }
             {
               criteria = "DP-4";
@@ -49,7 +49,7 @@
             {
               criteria = "eDP-1";
               mode = "1920x1080";
-              position = "0,1080";
+              position = "640,1440";
             }
             {
               criteria = "DP-6";
