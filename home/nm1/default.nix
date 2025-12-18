@@ -52,9 +52,9 @@ in {
   };
 
   programs = {
-    git = {
-      userEmail = "nikodem.marek@softnet.com.pl";
-      userName = "nm1";
+    git.settings.user = {
+      email = "nikodem.marek@softnet.com.pl";
+      name = "nm1";
     };
     aichat.settings = {
       model = "claude:claude-3-7-sonnet-20250219";

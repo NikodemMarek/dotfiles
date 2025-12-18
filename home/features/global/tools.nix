@@ -13,7 +13,6 @@
     openssl
     xh
     rnote
-    beeper
     typst
     zathura
     kooha

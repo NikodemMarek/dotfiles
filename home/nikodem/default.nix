@@ -38,9 +38,9 @@
   };
 
   programs = {
-    git = {
-      userEmail = "62289991+NikodemMarek@users.noreply.github.com";
-      userName = "NikodemMarek";
+    git.settings.user = {
+      email = "62289991+NikodemMarek@users.noreply.github.com";
+      name = "NikodemMarek";
     };
   };
 
