@@ -13,10 +13,8 @@
         "stp" = "stash pop";
         "ph" = "push -u origin";
       };
-      extraConfig = {
-        init.defaultBranch = "main";
-        safe.directory = "/etc/nixos";
-      };
+      safe.directory = "/etc/nixos";
+      init.defaultBranch = "main";
     };
   };
 
