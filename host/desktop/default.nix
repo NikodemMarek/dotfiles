@@ -25,6 +25,7 @@ in {
       device = "sda";
     })
 
+    ./kubernetes
     ./server-tunnel.nix
     ./proxy.nix
     ./jellyfin
