@@ -48,7 +48,7 @@
     nikodem = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
-      extraGroups = ["wheel" "docker" "libvirt"];
+      extraGroups = ["wheel" "docker" "libvirtd"];
       shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [
         ./user_nikodem_ssh_id_ed25519.pub
