@@ -26,7 +26,17 @@
     owner = "systemd-network";
   };
 
-  networking.hostName = "laptop";
+  networking = {
+    hostName = "laptop";
+    bridges."br0".interfaces = ["wlp0s20f3"];
+    nat.externalInterface = "wlp0s20f3";
+  };
+  systemd.network.networks = {
+    "80-forward" = {
+      matchConfig.Name = "wlp0s20f3";
+      networkConfig.IPMasquerade = "both";
+    };
+  };
 
   persist = {
     enable = true;
