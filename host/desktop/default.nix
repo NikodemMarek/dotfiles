@@ -25,6 +25,7 @@ in {
       device = "sda";
     })
 
+    ../features/optional/libvirt.nix
     ./kubernetes
     ./server-tunnel.nix
     ./proxy.nix
@@ -39,6 +40,15 @@ in {
     hostName = "desktop";
     firewall.allowedTCPPorts = [22];
     interfaces.enp5s0.wakeOnLan.enable = true;
+
+    bridges."br0".interfaces = ["enp5s0"];
+    nat.externalInterface = "enp5s0";
+  };
+  systemd.network.networks = {
+    "80-forward" = {
+      matchConfig.Name = "enp5s0";
+      networkConfig.IPMasquerade = "both";
+    };
   };
 
   persist = {

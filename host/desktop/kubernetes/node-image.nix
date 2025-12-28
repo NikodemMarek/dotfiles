@@ -40,7 +40,7 @@
       };
       defaultGateway = {
         address = "192.168.74.1";
-        interface = "ens1s0";
+        interface = "eth0";
       };
     };
 
@@ -59,13 +59,12 @@
       roles = ["node"] ++ lib.optional isMaster "master";
       masterAddress = "api.kube";
       apiserverAddress = "https://api.kube:6443";
-      # easyCerts = true;
+      easyCerts = true;
       apiserver = lib.mkIf isMaster {
         securePort = 6443;
         advertiseAddress = masterNodeIP;
       };
-      addons.dns.enable = true;
-      kubelet.extraOpts = "--fail-swap-on=false";
+      # addons.dns.enable = true;
     };
 
     environment.systemPackages = [

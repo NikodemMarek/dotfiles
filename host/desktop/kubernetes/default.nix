@@ -58,7 +58,6 @@ in {
 
   boot.kernelModules = ["vhost_vsock"];
 
-  virtualisation.libvirtd.enable = true;
   virtualisation.libvirt = {
     enable = true;
     connections."qemu:///system" = {
@@ -72,7 +71,8 @@ in {
               unit = "GiB";
             };
             storage_vol = "/var/lib/kubernetes/kube-${toString number}.qcow2";
-            bridge_name = "virbr1";
+            bridge_name = "br0";
+            virtio_video = false;
           };
       in [
         {
@@ -82,47 +82,10 @@ in {
           definition = inputs.nixvirt.lib.domain.writeXML (node 1);
         }
       ];
-      networks = [
-        {
-          definition = inputs.nixvirt.lib.network.writeXML (inputs.nixvirt.lib.network.templates.bridge
-            {
-              name = "kube-bridge";
-              bridge_name = "virbr1";
-              uuid = "d2102492-5797-429b-aa31-96b1b0d6f8e8";
-              subnet_byte = 74;
-              dhcp_hosts = [
-                {
-                  name = "kube-0";
-                  mac = "52:54:00:74:10:01";
-                  ip = "192.168.74.2";
-                }
-                {
-                  name = "kube-1";
-                  mac = "52:54:00:74:10:02";
-                  ip = "192.168.74.3";
-                }
-              ];
-            });
-          active = true;
-        }
-      ];
     };
   };
 
-  networking = {
-    bridges."br2".interfaces = ["enp5s0"];
-    interfaces.br2 = {
-      ipv4.addresses = [
-        {
-          address = "192.168.74.1";
-          prefixLength = 24;
-        }
-      ];
-    };
-    interfaces.br2.useDHCP = true;
-  };
-
-  virtualisation.libvirtd.allowedBridges = ["br2"];
+  # virtualisation.libvirtd.allowedBridges = ["br0"];
 
   persist.generated.directories = [
     {
