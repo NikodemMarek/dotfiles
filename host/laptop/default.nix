@@ -16,6 +16,7 @@
 
     ../features/optional/battery-saver.nix
     ../features/optional/bluetooth.nix
+    ../features/optional/libvirt.nix
 
     ../../home/nikodem/persist.nix
     ./vpn.nix
@@ -37,7 +38,7 @@
     nikodem = {
       isNormalUser = true;
       hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
-      extraGroups = ["wheel" "docker"];
+      extraGroups = ["wheel" "docker" "libvirt"];
       shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [
         ./user_nikodem_ssh_id_ed25519.pub
