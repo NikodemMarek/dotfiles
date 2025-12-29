@@ -5,6 +5,7 @@
     enable = true;
     exports = ''
       /persist/apps/navidrome  192.168.74.0/24(rw,sync,fsid=1,insecure,no_root_squash,no_subtree_check)
+      /mnt/data/music          192.168.74.0/24(ro,sync,fsid=2,insecure,no_root_squash,no_subtree_check)
     '';
   };
 }

@@ -57,7 +57,23 @@
     };
   };
 
-  # virtualisation.libvirtd.allowedBridges = ["br0"];
+  services.traefik.dynamicConfigOptions.http = {
+    services = {
+      web-forward.loadBalancer.servers = [
+        {
+          url = "http://192.168.74.2:80";
+        }
+      ];
+    };
+    routers = {
+      grafana = {
+        entryPoints = ["web"];
+        rule = "HostRegexp(`^grafana\..+$`)";
+        service = "web-forward";
+        # tls.certResolver = "letsencrypt";
+      };
+    };
+  };
 
   persist.generated.directories = [
     {
