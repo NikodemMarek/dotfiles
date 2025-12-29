@@ -26,6 +26,7 @@ in {
     })
 
     ../features/optional/libvirt.nix
+    ./nfs.nix
     ./kubernetes
     ./server-tunnel.nix
     ./proxy.nix
