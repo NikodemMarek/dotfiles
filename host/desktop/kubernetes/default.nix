@@ -34,23 +34,11 @@ in {
     serviceConfig = {
       Type = "oneshot";
       ExecStart = let
-        virsh = "${pkgs.libvirt}/bin/virsh";
+        virsh = "${pkgs.libvirt}/bin/virsh -c qemu:///system";
       in
         lib.getExe (pkgs.writeShellScriptBin "kubernetes-setup" ''
-          if [ ! -f /var/lib/kubernetes/kube-0.qcow2 ]; then
-            echo "Creating new drive for kube-0"
-            cp ${node-image 0}/nixos.qcow2 /var/lib/kubernetes/kube-0.qcow2
-          fi
-          if [ ! -f /var/lib/kubernetes/kube-1.qcow2 ]; then
-            echo "Creating new drive for kube-1"
-            cp ${node-image 1}/nixos.qcow2 /var/lib/kubernetes/kube-1.qcow2
-          fi
-
-          if ! ${virsh} -c qemu:///system dominfo kube-0 | grep -q 'State:.*running'; then
-            ${virsh} -c qemu:///system start kube-0
-          fi
-          if ! ${virsh} -c qemu:///system dominfo kube-1 | grep -q 'State:.*running'; then
-            ${virsh} -c qemu:///system start kube-1
+          if ! ${virsh} dominfo kube-0 | grep -q 'State:.*running'; then
+            ${virsh} start kube-0
           fi
         '');
     };
