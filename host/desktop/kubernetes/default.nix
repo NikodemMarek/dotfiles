@@ -3,23 +3,7 @@
   pkgs,
   lib,
   ...
-}: let
-  node-image = number:
-    inputs.nixos-generators.nixosGenerate {
-      system = pkgs.system;
-      modules = [
-        {
-          nixpkgs.pkgs = pkgs;
-          nix.registry.nixpkgs.flake = inputs.nixpkgs;
-          virtualisation.diskSize = 10 * 1024;
-
-          node-image.number = number;
-        }
-        ./node-image.nix
-      ];
-      format = "qcow";
-    };
-in {
+}: {
   imports = [
     inputs.nixvirt.nixosModules.default
   ];
