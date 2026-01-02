@@ -66,9 +66,15 @@
       ];
     };
     routers = {
-      grafana = {
+      subsonic = {
         entryPoints = ["web"];
-        rule = "HostRegexp(`^grafana\..+$`)";
+        rule = "HostRegexp(`^subsonic\..+$`)";
+        service = "web-forward";
+        # tls.certResolver = "letsencrypt";
+      };
+      jellyfin = {
+        entryPoints = ["web"];
+        rule = "HostRegexp(`^jellyfin\..+$`)";
         service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };

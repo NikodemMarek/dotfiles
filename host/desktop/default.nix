@@ -30,7 +30,6 @@ in {
     ./kubernetes
     ./server-tunnel.nix
     ./proxy.nix
-    ./jellyfin
     ./arrstack
     ./immich
     ./music
@@ -103,11 +102,11 @@ in {
         chown -R 0:${toString config.users.groups.music.gid} ${mediaDir}/music
         chown -R 0:${toString config.users.groups.books.gid} ${mediaDir}/books
         chown -R 0:${toString config.users.groups.photos.gid} ${mediaDir}/photos
-        chmod 770 -R ${mediaDir}/movies
-        chmod 770 -R ${mediaDir}/shows
-        chmod 770 -R ${mediaDir}/music
-        chmod 770 -R ${mediaDir}/books
-        chmod 770 -R ${mediaDir}/photos
+        chmod 750 -R ${mediaDir}/movies
+        chmod 750 -R ${mediaDir}/shows
+        chmod 750 -R ${mediaDir}/music
+        chmod 750 -R ${mediaDir}/books
+        chmod 750 -R ${mediaDir}/photos
       '';
     };
   };
