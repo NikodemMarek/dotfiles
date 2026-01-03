@@ -125,7 +125,6 @@
       desktop = mkHost "desktop";
       server = mkHost "server";
       generic = mkHost "generic";
-      tv = mkHost "tv";
     };
 
     homeConfigurations = let
