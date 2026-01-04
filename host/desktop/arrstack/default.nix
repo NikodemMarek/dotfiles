@@ -87,8 +87,4 @@ in {
       services.resolved.enable = true;
     };
   };
-
-  imports = [
-    ./gutenberg.nix
-  ];
 }
