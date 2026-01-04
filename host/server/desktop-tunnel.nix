@@ -58,6 +58,12 @@
         service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };
+      seerr = {
+        entryPoints = ["web"];
+        rule = "HostRegexp(`^seerr\..+$`)";
+        service = "web-forward";
+        # tls.certResolver = "letsencrypt";
+      };
       subsonic = {
         entryPoints = ["web"];
         rule = "HostRegexp(`^subsonic\..+$`)";

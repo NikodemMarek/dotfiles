@@ -29,6 +29,7 @@
   };
 
   boot.kernelModules = ["vhost_vsock"];
+  networking.firewall.interfaces."br0".allowedTCPPorts = [7878 8989];
 
   virtualisation.libvirt = {
     enable = true;
@@ -75,6 +76,12 @@
       jellyfin = {
         entryPoints = ["web"];
         rule = "HostRegexp(`^jellyfin\..+$`)";
+        service = "web-forward";
+        # tls.certResolver = "letsencrypt";
+      };
+      seerr = {
+        entryPoints = ["web"];
+        rule = "HostRegexp(`^seerr\..+$`)";
         service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };
