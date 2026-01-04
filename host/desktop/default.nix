@@ -98,6 +98,9 @@ in {
         chmod 750 -R ${mediaDir}/music
         chmod 750 -R ${mediaDir}/books
         chmod 750 -R ${mediaDir}/photos
+
+        mkdir -p /tmp/arrstack/downloads
+        chmod 777 -R /tmp/arrstack/downloads
       '';
     };
   };

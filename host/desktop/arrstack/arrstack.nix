@@ -88,7 +88,7 @@
           "WebUI\\Password_PBKDF2" = "@ByteArray(dcvfjm3frgrQVJcDcw2Pbg==:uylfPqs8/vOffnL832egaxT1AbJuVOzKMLwo1IAYLnwfokVNv7ALHSjKBithLLPC5WahX9TWEcF5jB0O+ca8Xw==)";
           "WebUI\\LocalHostAuth" = false;
         };
-        BitTorrent."Session\\DefaultSavePath" = "/tmp";
+        BitTorrent."Session\\DefaultSavePath" = "/tmp/downloads";
       };
       user = "root";
     };

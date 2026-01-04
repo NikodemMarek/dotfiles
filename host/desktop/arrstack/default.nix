@@ -66,6 +66,10 @@ in {
         hostPath = "${mediaDir}/books";
         isReadOnly = false;
       };
+      "/tmp/downloads" = {
+        hostPath = "/tmp/arrstack/downloads";
+        isReadOnly = false;
+      };
     };
     config = {lib, ...}: {
       imports = [
