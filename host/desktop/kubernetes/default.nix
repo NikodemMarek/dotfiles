@@ -25,6 +25,7 @@
             ${virsh} start kube-0
           fi
         '');
+      RestartSec = "10s";
     };
   };
 
