@@ -5,7 +5,6 @@
   readarrPort = 8787;
   prowlarrPort = 9696;
   torrentPort = 6969;
-  jellyseerrPort = 5055;
 
   mediaDir = "/mnt/data";
 in {
@@ -36,11 +35,6 @@ in {
       {
         containerPort = 9696;
         hostPort = prowlarrPort;
-        protocol = "tcp";
-      }
-      {
-        containerPort = 5055;
-        hostPort = jellyseerrPort;
         protocol = "tcp";
       }
       {
@@ -97,24 +91,4 @@ in {
   imports = [
     ./gutenberg.nix
   ];
-
-  services = {
-    traefik.dynamicConfigOptions.http = {
-      services = {
-        jellyseerr.loadBalancer.servers = [
-          {
-            url = "http://localhost:${toString jellyseerrPort}";
-          }
-        ];
-      };
-      routers = {
-        jellyseerr = {
-          entryPoints = ["web"];
-          rule = "HostRegexp(`^jellyseerr\..+$`)";
-          service = "jellyseerr";
-          # tls.certResolver = "letsencrypt"
-        };
-      };
-    };
-  };
 }

@@ -72,11 +72,6 @@
         '')
       ];
     };
-    jellyseerr = {
-      enable = true;
-      openFirewall = true;
-      port = 5055;
-    };
     qbittorrent = {
       enable = true;
       openFirewall = true;
@@ -158,10 +153,4 @@
       };
     };
   };
-
-  systemd.tmpfiles.rules = [
-    "d /var/lib/jellyseerr 0755 nobody nogroup -"
-    "d /var/lib/jellyseerr/config 0755 nobody nogroup -"
-    "L+ /var/lib/jellyseerr/config/settings.json - - - - ${./jellyseer.json}"
-  ];
 }
