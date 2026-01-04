@@ -72,6 +72,10 @@
         '')
       ];
     };
+    flaresolverr = {
+      enable = true;
+      port = 8191;
+    };
     qbittorrent = {
       enable = true;
       openFirewall = true;
