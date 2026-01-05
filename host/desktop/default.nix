@@ -1,4 +1,8 @@
-{config, ...}: let
+{
+  config,
+  pkgs,
+  ...
+}: let
   mediaDir = "/mnt/data";
 in {
   imports = [
@@ -25,6 +29,7 @@ in {
       device = "sda";
     })
 
+    ../features/optional/tailscale.nix
     ../features/optional/libvirt.nix
     ./nfs.nix
     ./kubernetes
@@ -33,6 +38,10 @@ in {
     ./arrstack
     ./immich
     ./music
+  ];
+
+  environment.systemPackages = [
+    pkgs.ffmpeg
   ];
 
   networking = {

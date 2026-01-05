@@ -17,6 +17,8 @@
     ./cloudflared.nix
     ./desktop-tunnel.nix
     ./vpn.nix
+
+    ../features/optional/tailscale.nix
     ./matrix-server
   ];
 

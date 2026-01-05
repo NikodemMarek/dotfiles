@@ -19,6 +19,7 @@
     ../features/optional/libvirt.nix
 
     ../../home/nikodem/persist.nix
+    ../features/optional/tailscale.nix
     ./vpn.nix
   ];
 
