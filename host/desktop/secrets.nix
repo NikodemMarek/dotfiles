@@ -11,9 +11,5 @@
     "users/music/password" = {
       neededForUsers = true;
     };
-
-    "wireguard/server_tunnel_private_key" = {
-      owner = "systemd-network";
-    };
   };
 }
