@@ -20,7 +20,6 @@
 
     ../../home/nikodem/persist.nix
     ../features/optional/tailscale.nix
-    ./vpn.nix
   ];
 
   sops.secrets."wireguard/private_key" = {
@@ -32,12 +31,16 @@
     bridges."br0".interfaces = ["wlp0s20f3"];
     nat.externalInterface = "wlp0s20f3";
   };
-  systemd.network.networks = {
-    "80-forward" = {
-      matchConfig.Name = "wlp0s20f3";
-      networkConfig.IPMasquerade = "both";
+  systemd.network = {
+    networks = {
+      "80-forward" = {
+        matchConfig.Name = "wlp0s20f3";
+        networkConfig.IPMasquerade = "both";
+      };
     };
+    wait-online.enable = false;
   };
+  boot.initrd.systemd.network.wait-online.enable = false;
 
   persist = {
     enable = true;
