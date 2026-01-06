@@ -11,6 +11,7 @@
     ../features/general/nix.nix
     ../features/general/openssh.nix
     ../features/general/sops.nix
+    ../features/general/networking.nix
 
     ../features/optional/tailscale.nix
 

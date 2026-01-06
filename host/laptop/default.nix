@@ -34,6 +34,13 @@
   };
   systemd.network = {
     networks = {
+      "10-wired-default" = {
+        matchConfig.Name = "en*";
+        networkConfig = {
+          DHCP = "yes";
+          IPv6AcceptRA = "yes";
+        };
+      };
       "80-forward" = {
         matchConfig.Name = "wlp0s20f3";
         networkConfig.IPMasquerade = "both";

@@ -1,18 +1,6 @@
 {
   services.resolved.enable = true;
-
-  systemd.network = {
-    enable = true;
-    networks = {
-      "10-wired-default" = {
-        matchConfig.Name = "en*";
-        networkConfig = {
-          DHCP = "yes";
-          IPv6AcceptRA = "yes";
-        };
-      };
-    };
-  };
+  systemd.network.enable = true;
 
   networking = {
     useNetworkd = true;

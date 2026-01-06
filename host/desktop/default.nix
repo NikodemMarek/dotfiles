@@ -6,18 +6,6 @@
   mediaDir = "/mnt/data";
 in {
   imports = [
-    ../features
-    ../features/general/boot.nix
-    ../features/general/networking.nix
-    ../features/general/nix.nix
-    ../features/general/openssh.nix
-    ../features/general/security.nix
-    ../features/general/sops.nix
-    ../features/general/sudo.nix
-    ../features/general/time.nix
-    ../features/general/tools.nix
-    ../features/general/zerotier.nix
-
     ./hardware-configuration.nix
     ./secrets.nix
 
@@ -29,8 +17,18 @@ in {
       device = "sda";
     })
 
+    ../features
+    ../features/general/boot.nix
+    ../features/general/nix.nix
+    ../features/general/openssh.nix
+    ../features/general/sops.nix
+    ../features/general/sudo.nix
+    ../features/general/time.nix
+    ../features/general/networking.nix
+
     ../features/optional/tailscale.nix
     ../features/optional/libvirt.nix
+
     ./nfs.nix
     ./kubernetes
     ./proxy.nix
@@ -39,6 +37,10 @@ in {
     ./music
   ];
 
+  programs = {
+    neovim.enable = true;
+    git.enable = true;
+  };
   environment.systemPackages = [
     pkgs.ffmpeg
   ];
@@ -53,6 +55,13 @@ in {
     nat.externalInterface = "enp5s0";
   };
   systemd.network.networks = {
+    "10-wired-default" = {
+      matchConfig.Name = "en*";
+      networkConfig = {
+        DHCP = "yes";
+        IPv6AcceptRA = "yes";
+      };
+    };
     "80-forward" = {
       matchConfig.Name = "enp5s0";
       networkConfig.IPMasquerade = "both";
