@@ -15,9 +15,7 @@
     ./sops.nix
     ./stylix.nix
     ./sudo.nix
-    ./syncthing.nix
     ./time.nix
     ./tools.nix
-    ./zerotier.nix
   ];
 }
