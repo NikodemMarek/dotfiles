@@ -1,12 +1,20 @@
 {
+  imports = [
+    ./boot.nix
+    ./networking.nix
+    ./nix.nix
+    ./openssh.nix
+    ./sops.nix
+    ./stylix.nix
+  ];
+
   programs = {
-    fish.enable = true;
     git.enable = true;
-    ssh.startAgent = true;
     neovim = {
       enable = true;
       defaultEditor = true;
     };
   };
   environment.variables.EDITOR = "nvim";
+  security.sudo.enable = true;
 }

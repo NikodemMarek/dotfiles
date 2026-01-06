@@ -13,45 +13,21 @@
     })
 
     ../features
-    ../features/general
-
+    ../features/optional/home-manager.nix
     ../features/optional/battery-saver.nix
     ../features/optional/bluetooth.nix
+    ../features/optional/pipewire.nix
     ../features/optional/libvirt.nix
-    ../features/optional/tailscale.nix
-    ../features/optional/zerotier.nix
     ../features/optional/syncthing.nix
+    ../features/optional/docker.nix
 
     ../../home/nikodem/persist.nix
+    ./init.nix
+    ./networking
   ];
 
-  sops.secrets."wireguard/private_key" = {
-    owner = "systemd-network";
-  };
-
-  networking = {
-    hostName = "laptop";
-    bridges."br0".interfaces = ["wlp0s20f3"];
-    nat.externalInterface = "wlp0s20f3";
-    firewall.interfaces."tailscale0".allowedTCPPorts = [22];
-  };
-  systemd.network = {
-    networks = {
-      "10-wired-default" = {
-        matchConfig.Name = "en*";
-        networkConfig = {
-          DHCP = "yes";
-          IPv6AcceptRA = "yes";
-        };
-      };
-      "80-forward" = {
-        matchConfig.Name = "wlp0s20f3";
-        networkConfig.IPMasquerade = "both";
-      };
-    };
-    wait-online.enable = false;
-  };
-  boot.initrd.systemd.network.wait-online.enable = false;
+  networking.hostName = "laptop";
+  time.timeZone = "Europe/Warsaw";
 
   persist = {
     enable = true;

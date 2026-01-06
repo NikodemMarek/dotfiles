@@ -5,6 +5,8 @@
 }: {
   imports =
     [
+      ./global
+
       inputs.sops-nix.nixosModules.sops
       inputs.impermanence.nixosModules.impermanence
       inputs.nix-ld.nixosModules.nix-ld

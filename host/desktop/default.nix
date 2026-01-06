@@ -18,14 +18,6 @@ in {
     })
 
     ../features
-    ../features/general/boot.nix
-    ../features/general/nix.nix
-    ../features/general/openssh.nix
-    ../features/general/sops.nix
-    ../features/general/sudo.nix
-    ../features/general/time.nix
-    ../features/general/networking.nix
-
     ../features/optional/tailscale.nix
     ../features/optional/libvirt.nix
 
@@ -67,6 +59,7 @@ in {
       networkConfig.IPMasquerade = "both";
     };
   };
+  time.timeZone = "Europe/Warsaw";
 
   persist = {
     enable = true;

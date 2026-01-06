@@ -1,4 +1,11 @@
 {pkgs, ...}: {
+  programs = {
+    hyprland.enable = true;
+    fish.enable = true;
+  };
+
+  security.rtkit.enable = true;
+
   services.greetd = {
     enable = true;
     settings = {
