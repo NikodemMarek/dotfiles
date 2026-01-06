@@ -30,6 +30,7 @@
     hostName = "laptop";
     bridges."br0".interfaces = ["wlp0s20f3"];
     nat.externalInterface = "wlp0s20f3";
+    firewall.interfaces."tailscale0".allowedTCPPorts = [22];
   };
   systemd.network = {
     networks = {

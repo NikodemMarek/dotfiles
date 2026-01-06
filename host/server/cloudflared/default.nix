@@ -5,6 +5,17 @@
   #   allowedUDPPorts = [7844];
   # };
 
+  sops.secrets = {
+    "cloudflared_cert" = {
+      sopsFile = ./cloudflared_cert.pem;
+      format = "binary";
+    };
+    "cloudflared_creds" = {
+      sopsFile = ./cloudflared_creds.json.bin;
+      format = "binary";
+    };
+  };
+
   services.cloudflared = {
     enable = true;
     tunnels = {

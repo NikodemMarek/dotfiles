@@ -33,7 +33,6 @@ in {
     ../features/optional/libvirt.nix
     ./nfs.nix
     ./kubernetes
-    ./server-tunnel.nix
     ./proxy.nix
     ./arrstack
     ./immich
@@ -47,7 +46,7 @@ in {
   networking = {
     hostId = "76cc60bb";
     hostName = "desktop";
-    firewall.allowedTCPPorts = [22];
+    firewall.interfaces."tailscale0".allowedTCPPorts = [22 80 443];
     interfaces.enp5s0.wakeOnLan.enable = true;
 
     bridges."br0".interfaces = ["enp5s0"];

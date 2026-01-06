@@ -1,4 +1,6 @@
 {
+  services.resolved.enable = true;
+
   systemd.network = {
     enable = true;
     networks = {
@@ -16,5 +18,6 @@
     useNetworkd = true;
     nftables.enable = true;
     firewall.enable = true;
+    enableIPv6 = true;
   };
 }
