@@ -36,6 +36,10 @@
   };
   boot.initrd.systemd.network.wait-online.enable = false;
 
+  sops.secrets."wpa_supplicant/config" = {
+    sopsFile = ./wpa_config.conf;
+    format = "binary";
+  };
   environment.etc = {
     "wpa_supplicant/agh_ca.pem".source = ./agh_ca.pem;
   };
@@ -43,22 +47,6 @@
   networking.wireless = {
     enable = true;
     userControlled.enable = true;
-    secretsFile = config.sops.secrets.networks.path;
-    extraConfigFiles = [config.sops.secrets."wpa_supplicant/eduroam".path];
-    networks = {
-      "AGH-Guest" = {
-        priority = -5;
-      };
-      "Meshki56".pskRaw = "ext:PSK_Meshki56";
-      "studenciaki".pskRaw = "ext:PSK_studenciaki";
-      "2hot2spot" = {
-        pskRaw = "ext:PSK_2hot2spot";
-        priority = -20;
-      };
-      "hot_pot" = {
-        pskRaw = "ext:PSK_hot_pot";
-        priority = -10;
-      };
-    };
+    extraConfigFiles = [config.sops.secrets."wpa_supplicant/config".path];
   };
 }
