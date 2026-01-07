@@ -8,11 +8,6 @@
     })
 
     ../features
-    ../features/general/nix.nix
-    ../features/general/openssh.nix
-    ../features/general/sops.nix
-    ../features/general/networking.nix
-
     ../features/optional/tailscale.nix
 
     ./proxy.nix
@@ -47,8 +42,8 @@
   };
 
   networking = {
-    firewall.interfaces."tailscale0".allowedTCPPorts = [22];
     hostName = "server";
+    firewall.interfaces."tailscale0".allowedTCPPorts = [22];
   };
   systemd.network.networks = {
     "10-wan" = {
@@ -64,10 +59,5 @@
         {Gateway = "fe80::1";}
       ];
     };
-  };
-
-  programs = {
-    neovim.enable = true;
-    git.enable = true;
   };
 }

@@ -18,6 +18,7 @@ in {
     })
 
     ../features
+    ../features/optional/systemd-boot.nix
     ../features/optional/tailscale.nix
     ../features/optional/libvirt.nix
 
@@ -29,10 +30,6 @@ in {
     ./music
   ];
 
-  programs = {
-    neovim.enable = true;
-    git.enable = true;
-  };
   environment.systemPackages = [
     pkgs.ffmpeg
   ];

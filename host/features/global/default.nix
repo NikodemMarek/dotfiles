@@ -1,6 +1,5 @@
 {
   imports = [
-    ./boot.nix
     ./networking.nix
     ./nix.nix
     ./openssh.nix
