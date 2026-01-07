@@ -13,6 +13,7 @@
     })
 
     ../features
+    ../features/optional/stylix.nix
     ../features/optional/systemd-boot.nix
     ../features/optional/home-manager.nix
     ../features/optional/battery-saver.nix

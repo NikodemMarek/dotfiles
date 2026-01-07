@@ -120,7 +120,7 @@
         lib.homeManagerConfiguration {
           modules = [
             inputs.stylix.homeModules.stylix
-            ./host/features/general/stylix.nix
+            ./host/features/optional/stylix.nix
 
             ./home/${home}
             ./home/features

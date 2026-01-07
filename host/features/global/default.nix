@@ -4,7 +4,6 @@
     ./nix.nix
     ./openssh.nix
     ./sops.nix
-    ./stylix.nix
   ];
 
   programs = {
