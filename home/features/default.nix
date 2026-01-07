@@ -1,13 +1,10 @@
 {
-  inputs,
   outputs,
   config,
   ...
 }: {
   imports =
-    [
-      inputs.clipboard-sync.homeManagerModules.default
-    ]
+    []
     ++ (builtins.attrValues outputs.homeManagerModules);
 
   programs.home-manager.enable = true;

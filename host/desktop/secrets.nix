@@ -1,8 +1,4 @@
 {
-  imports = [
-    ../../secrets/api-keys.nix
-  ];
-
   sops.secrets = {
     "users/maintenance/password" = {
       neededForUsers = true;

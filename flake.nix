@@ -52,15 +52,8 @@
 
     wired.url = "github:Toqozz/wired-notify";
 
-    clipboard-sync.url = "github:NikodemMarek/clipboard-sync";
-
     nixGL = {
       url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    declarative-jellyfin = {
-      url = "github:Sveske-Juice/declarative-jellyfin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -71,11 +64,6 @@
 
     nixvirt = {
       url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixos-generators = {
-      url = "github:nix-community/nixos-generators";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

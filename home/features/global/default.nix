@@ -1,6 +1,5 @@
 {
   imports = [
-    ./clipboard-sync
     ./hyprland
     ./walker
 
