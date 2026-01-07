@@ -28,6 +28,11 @@
     ./networking
   ];
 
+  environment.systemPackages = [
+    pkgs.wrapped.zellij
+    pkgs.alacritty
+  ];
+
   networking.hostName = "yenn";
   time.timeZone = "Europe/Warsaw";
 

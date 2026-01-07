@@ -1,4 +1,8 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
     ./secrets.nix
@@ -22,6 +26,10 @@
   boot.loader.grub.enable = true;
 
   nix.settings.trusted-users = ["maintenance" "@wheel"];
+
+  environment.systemPackages = [
+    pkgs.wrapped.zellij
+  ];
 
   persist = {
     enable = true;
