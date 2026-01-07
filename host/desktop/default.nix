@@ -74,7 +74,7 @@ in {
         hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
         extraGroups = ["wheel" "movies" "shows" "music" "books" "photos"];
         openssh.authorizedKeys.keyFiles = [
-          ../laptop/user_nikodem_ssh_id_ed25519.pub
+          ../yenn/user_nikodem_ssh_id_ed25519.pub
         ];
       };
     };

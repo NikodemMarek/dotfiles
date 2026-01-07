@@ -28,7 +28,7 @@
     ./networking
   ];
 
-  networking.hostName = "laptop";
+  networking.hostName = "yenn";
   time.timeZone = "Europe/Warsaw";
 
   persist = {

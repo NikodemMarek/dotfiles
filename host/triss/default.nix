@@ -36,7 +36,7 @@
       hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
       extraGroups = ["wheel"];
       openssh.authorizedKeys.keyFiles = [
-        ../laptop/user_nikodem_ssh_id_ed25519.pub
+        ../yenn/user_nikodem_ssh_id_ed25519.pub
       ];
     };
   };

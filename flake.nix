@@ -108,7 +108,7 @@
           ];
         };
     in {
-      laptop = mkHost "laptop";
+      yenn = mkHost "yenn";
       desktop = mkHost "desktop";
       triss = mkHost "triss";
       generic = mkHost "generic";
