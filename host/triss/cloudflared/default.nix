@@ -19,7 +19,7 @@
   services.cloudflared = {
     enable = true;
     tunnels = {
-      "server" = {
+      "triss" = {
         credentialsFile = "${config.sops.secrets."cloudflared_creds".path}";
         certificateFile = "${config.sops.secrets."cloudflared_cert".path}";
         ingress = {

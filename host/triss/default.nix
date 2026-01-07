@@ -42,7 +42,7 @@
   };
 
   networking = {
-    hostName = "server";
+    hostName = "triss";
     firewall.interfaces."tailscale0".allowedTCPPorts = [22];
     nat.externalInterface = "enp1s0";
   };
