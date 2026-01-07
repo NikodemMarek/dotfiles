@@ -1,16 +1,19 @@
 {config, ...}: {
-  networking.firewall.allowedUDPPorts = [4500];
-  networking.useNetworkd = true;
+  sops.secrets."wireguard/private_key" = {
+    owner = "systemd-network";
+  };
 
+  networking.firewall.allowedUDPPorts = [4500];
   boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
   boot.kernel.sysctl."net.ipv6.conf.all.forwarding" = 1;
+
   systemd.network = {
     enable = true;
     netdevs = {
-      "50-wg1" = {
+      "50-wg1-vpn" = {
         netdevConfig = {
           Kind = "wireguard";
-          Name = "wg1";
+          Name = "wg1-vpn";
           MTUBytes = "1420";
         };
         wireguardConfig = {
@@ -103,8 +106,8 @@
     };
 
     networks = {
-      "50-wg1" = {
-        matchConfig.Name = "wg1";
+      "50-wg1-vpn" = {
+        matchConfig.Name = "wg1-vpn";
         address = ["10.48.72.1/24" "fd48:a8a8:ef08::1/64"];
         networkConfig = {
           IPMasquerade = "both";

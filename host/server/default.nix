@@ -12,8 +12,8 @@
 
     ./proxy.nix
     ./desktop-forward.nix
-    ./cloudflared
     ./vpn.nix
+    ./cloudflared
 
     # ./matrix-server
   ];
@@ -44,6 +44,7 @@
   networking = {
     hostName = "server";
     firewall.interfaces."tailscale0".allowedTCPPorts = [22];
+    nat.externalInterface = "enp1s0";
   };
   systemd.network.networks = {
     "10-wan" = {
