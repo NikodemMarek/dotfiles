@@ -1,4 +1,5 @@
 {
+  outputs,
   pkgs,
   config,
   ...
@@ -86,13 +87,16 @@ in {
       DEPLOY_DOCKER = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
     };
     packages = [
-      (pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
-        gke-gcloud-auth-plugin
-      ]))
+      outputs.packages.${pkgs.system}.wrapped.zellij
+      pkgs.alacritty
+
+      # (pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
+      #   gke-gcloud-auth-plugin
+      # ]))
       pkgs.kubectl
       pkgs.sshpass
       pkgs.remmina
-      pkgs.google-chrome
+      (config.lib.nixGL.wrap pkgs.google-chrome)
       pkgs.android-studio
       pkgs.jetbrains.idea-ultimate
       pkgs.dbeaver-bin
