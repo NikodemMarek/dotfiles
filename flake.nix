@@ -111,7 +111,6 @@
       yenn = mkHost "yenn";
       desktop = mkHost "desktop";
       triss = mkHost "triss";
-      generic = mkHost "generic";
     };
 
     homeConfigurations = let
