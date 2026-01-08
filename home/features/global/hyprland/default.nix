@@ -6,8 +6,6 @@
   ...
 }: {
   imports = [
-    ./hyprlock.nix
-
     ../wezterm.nix
     ../yazi.nix
     ../walker
@@ -20,8 +18,14 @@
     slurp
     pulseaudio
     (config.lib.nixGL.wrap wdisplays)
+
     pkgs.wrapped.hypridle
   ];
+
+  programs.hyprlock = {
+    enable = true;
+    package = pkgs.wrapped.hyprlock;
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
