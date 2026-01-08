@@ -20,6 +20,7 @@
     slurp
     pulseaudio
     (config.lib.nixGL.wrap wdisplays)
+    pkgs.wrapped.hypridle
   ];
 
   wayland.windowManager.hyprland = {
@@ -28,6 +29,8 @@
     portalPackage = config.lib.nixGL.wrap inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
     xwayland.enable = true;
     settings = {
+      exec-once = "hypridle";
+
       monitor = [", preferred, auto, 1"];
 
       input = {
