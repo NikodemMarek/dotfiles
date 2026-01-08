@@ -144,7 +144,7 @@
           ", PRINT, exec, grim -g \"$(slurp)\" - | wl-copy" # screenshot
           "SHIFT, PRINT, exec, grim -g \"$(slurp)\" ~/screenshots/$(date +'%Y-%m-%d_%H:%M:%S').png" # screenshot
 
-          "$mod SHIFT, ESCAPE, exec, hyprlock" # lock session
+          "$mod SHIFT, ESCAPE, exec, loginctl lock-session" # lock session
           "$mod ALT, ESCAPE, exit" # exit hyprland
         ]
         ++ (
