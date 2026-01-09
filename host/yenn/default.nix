@@ -18,12 +18,9 @@
     ../features/optional/bluetooth.nix
     ../features/optional/pipewire.nix
     ../features/optional/libvirt.nix
-    ../features/optional/syncthing.nix
-    ../features/optional/docker.nix
 
-    ./init.nix
-    ./persist.nix
     ./networking
+    ./nikodem.nix
   ];
 
   networking.hostName = "yenn";
@@ -33,6 +30,12 @@
     enable = true;
     deviceService = "dev-nvme0n1p2.device";
     rootPath = "/dev/nvme0n1p2";
+  };
+
+  sops.secrets = {
+    "users/nikodem/password" = {
+      neededForUsers = true;
+    };
   };
 
   users.users = {
@@ -48,27 +51,14 @@
     };
   };
 
-  sops.secrets = {
-    "users/nikodem/password" = {
-      neededForUsers = true;
-    };
-    "users/nikodem/ssh_id_ed25519" = {
-      mode = "0400";
-      owner = "nikodem";
-      group = "users";
-      path = "/home/nikodem/.ssh/id_ed25519";
-    };
-  };
-
-  systemd.tmpfiles.rules = [
-    "d /home/nikodem/.ssh 0700 nikodem users -"
-    "L+ /home/nikodem/.ssh/id_ed25519.pub 0400 nikodem users - ${./user_nikodem_ssh_id_ed25519.pub}"
-  ];
-
-  services.printing = {
+  security.rtkit.enable = true;
+  services.greetd = {
     enable = true;
-    drivers = [pkgs.gutenprint];
+    useTextGreeter = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.tuigreet}/bin/tuigreet --cmd Hyprland -r -t";
+      };
+    };
   };
-
-  services.syncthing.user = "nikodem";
 }
