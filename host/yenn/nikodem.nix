@@ -84,7 +84,7 @@
     starship.enable = true;
     hyprland = {
       enable = true;
-      # withUWSM = true;
+      withUWSM = true;
       package = pkgs.wrapped.hyprland;
       portalPackage = pkgs.wrapped.hyprland;
       xwayland.enable = true;
