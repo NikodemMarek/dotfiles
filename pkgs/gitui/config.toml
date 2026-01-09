@@ -1,0 +1,9 @@
+[init]
+defaultBranch = "main"
+
+[safe]
+directory = "/etc/nixos"
+
+[user]
+email = "62289991+NikodemMarek@users.noreply.github.com"
+name = "NikodemMarek"

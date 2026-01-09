@@ -4,7 +4,7 @@
       pkgs.obsidian
       pkgs.ripgrep
       pkgs.eza
-      pkgs.gitui
+      pkgs.wrapped.gitui
       pkgs.jq
       pkgs.zip
       pkgs.unzip
