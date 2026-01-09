@@ -79,16 +79,15 @@
     lib = nixpkgs.lib // home-manager.lib;
 
     forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
-    pkgsFor = lib.genAttrs (import systems) (
-      system:
-        import nixpkgs {
-          inherit system;
-          config = {
-            allowUnfree = true;
-            allowUnfreePredicate = _: true;
-          };
-        }
-    );
+    pkgsFor = lib.genAttrs (import systems) (system:
+      import nixpkgs {
+        inherit system;
+        config = {
+          allowUnfree = true;
+          allowUnfreePredicate = _: true;
+        };
+        overlays = lib.attrValues (import ./overlays {inherit inputs;});
+      });
   in {
     inherit lib;
 
@@ -101,7 +100,8 @@
 
     nixosConfigurations = let
       mkHost = host:
-        nixpkgs.lib.nixosSystem {
+        lib.nixosSystem {
+          pkgs = pkgsFor."x86_64-linux";
           specialArgs = {inherit inputs outputs;};
           modules = [
             ./host/${host}
