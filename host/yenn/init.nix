@@ -20,9 +20,19 @@
       pkgs.kooha
       pkgs.bluetui
       pkgs.yazi
-
+      pkgs.gemini-cli
+      pkgs.nmap
+      pkgs.tcpdump
+      pkgs.lsof
       pkgs.neovim
       pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter
+
+      pkgs.prismlauncher
+      pkgs.heroic
+      pkgs.steam
+      pkgs.lutris
+      pkgs.wine
+      pkgs.winetricks
     ];
     shellAliases = {
       l = "eza -la --icons --group-directories-first --git";
@@ -30,6 +40,7 @@
       n = "nvim";
       g = "git";
       gi = "gitui";
+      zj = "zellij";
     };
   };
 
