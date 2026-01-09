@@ -1,0 +1,20 @@
+[alias]
+b = "branch --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(contents:subject) %(color:green)(%(committerdate:relative)) %(color:red)[%(authorname)]' --sort=-committerdate"
+ci = "commit -m"
+l = "log --graph --pretty=format:'%C(yellow)%Creset %C(auto)%h%d%Creset | %C(cyan) %cr%Creset | %C(green) %cn%Creset |  %s'"
+nb = "checkout -b"
+ph = "push -u origin"
+s = "status --short"
+st = "stash -u"
+stp = "stash pop"
+sw = "switch"
+
+[init]
+defaultBranch = "main"
+
+[safe]
+directory = "/etc/nixos"
+
+[user]
+email = "62289991+NikodemMarek@users.noreply.github.com"
+name = "NikodemMarek"

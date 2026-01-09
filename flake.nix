@@ -35,8 +35,6 @@
 
     neovim.url = "github:NikodemMarek/neovim";
 
-    walker.url = "github:not-matthias/walker";
-
     eww.url = "github:elkowar/eww";
 
     zen-browser = {

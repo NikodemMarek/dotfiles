@@ -15,7 +15,6 @@
     inherit (inputs.hyprland.packages.${prev.system}) hyprland;
     inherit (inputs.wezterm.packages.${prev.system}) wezterm;
     neovim = inputs.neovim.packages.${prev.system}.default;
-    inherit (inputs.walker.packages.${prev.system}) walker;
     inherit (inputs.eww.packages.${prev.system}) eww;
     inherit (inputs.zen-browser.packages.${prev.system}) zen-browser;
     inherit (inputs.nix-ld.packages.${prev.system}) nix-ld;

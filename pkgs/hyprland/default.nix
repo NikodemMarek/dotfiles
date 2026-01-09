@@ -13,7 +13,6 @@ pkgs.symlinkJoin {
       pkgs.yazi
       pkgs.zen-browser
       pkgs.alacritty
-      pkgs.walker
       pkgs.wl-clipboard
       pkgs.grim
       pkgs.slurp

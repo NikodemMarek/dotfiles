@@ -1,6 +1,69 @@
 {pkgs, ...}: {
+  environment = {
+    systemPackages = [
+      pkgs.obsidian
+      pkgs.ripgrep
+      pkgs.eza
+      pkgs.gitui
+      pkgs.jq
+      pkgs.zip
+      pkgs.unzip
+      pkgs.bottom
+      pkgs.xxd
+      pkgs.fd
+      pkgs.bat
+      pkgs.feh
+      pkgs.tldr
+      pkgs.openssl
+      pkgs.rnote
+      pkgs.zathura
+      pkgs.kooha
+      pkgs.bluetui
+      pkgs.yazi
+
+      pkgs.neovim
+      pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter
+    ];
+    shellAliases = {
+      l = "eza -la --icons --group-directories-first --git";
+      lt = "eza -laT --icons --group-directories-first --git";
+      n = "nvim";
+      g = "git";
+      gi = "gitui";
+    };
+  };
+
   programs = {
-    fish.enable = true;
+    git = {
+      enable = true;
+      package = pkgs.wrapped.git;
+    };
+    fish = {
+      enable = true;
+      interactiveShellInit = ''
+        # Fully clear console.
+        function fish_user_key_bindings
+          bind \cl 'clear; commandline -f repaint'
+        end
+
+        function fish_greeting
+        end
+
+        fish_vi_key_bindings
+      '';
+    };
+    direnv = {
+      enable = true;
+      enableBashIntegration = true;
+      enableFishIntegration = true;
+      nix-direnv.enable = true;
+    };
+    zoxide = {
+      enable = true;
+      enableFishIntegration = true;
+      enableBashIntegration = true;
+    };
+    starship.enable = true;
     hyprland = {
       enable = true;
       # withUWSM = true;
