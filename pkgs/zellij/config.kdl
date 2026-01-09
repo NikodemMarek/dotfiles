@@ -5,6 +5,7 @@ keybinds clear-defaults=true {
         bind "Alt l" { MoveFocus "Right"; }
         bind "Alt j" { MoveFocus "Down"; }
         bind "Alt k" { MoveFocus "Up"; }
+        bind "Alt p" { SwitchFocus; }
 
         bind "Alt Ctrl h" { MovePane "Left"; }
         bind "Alt Ctrl j" { MovePane "Down"; }
