@@ -57,7 +57,7 @@
     useTextGreeter = true;
     settings = {
       default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet --cmd Hyprland -r -t";
+        command = "${pkgs.tuigreet}/bin/tuigreet -r -t";
       };
     };
   };
