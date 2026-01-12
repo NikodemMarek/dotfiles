@@ -9,6 +9,8 @@
     systemPackages = [
       pkgs.wrapped.gitui
 
+      pkgs.alacritty
+      pkgs.zen-browser
       pkgs.obsidian
       pkgs.ripgrep
       pkgs.eza
