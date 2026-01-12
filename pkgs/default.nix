@@ -5,6 +5,7 @@
     hyprlock = pkgs.callPackage ./hyprlock {};
     hypridle = pkgs.callPackage ./hypridle {};
     hyprlauncher = pkgs.callPackage ./hyprlauncher {};
+    dunst = pkgs.callPackage ./dunst {};
     git = pkgs.callPackage ./git {};
     gitui = pkgs.callPackage ./gitui {};
   };

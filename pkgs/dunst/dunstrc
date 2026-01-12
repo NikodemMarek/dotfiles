@@ -1,0 +1,41 @@
+[global]
+follow = mouse
+width = (100, 300)
+height = (0, 300)
+origin = top-right
+offset = (5, 15)
+notification_limit = 5
+scale = 2
+indicate_hidden = yes
+progress_bar = true
+padding = 10
+frame_width = 1
+gap_size = 6
+markup = full
+alignment = left
+stack_duplicates = true
+corner_radius = 10
+corners = all
+mouse_right_click = do_action, close_current
+mouse_left_click = close_current
+
+frame_color = "#89b4fa"
+separator_color = frame
+highlight = "#89b4fa"
+
+[urgency_low]
+timeout = 20
+
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+
+[urgency_normal]
+timeout = 20
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+
+[urgency_critical]
+timeout = 0
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+frame_color = "#fab387"

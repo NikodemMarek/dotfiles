@@ -10,6 +10,7 @@ pkgs.symlinkJoin {
       pkgs.wrapped.hyprlock
       pkgs.wrapped.zellij
       pkgs.wrapped.hyprlauncher
+      pkgs.wrapped.dunst
 
       pkgs.yazi
       pkgs.zen-browser
