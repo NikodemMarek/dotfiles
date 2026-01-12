@@ -3,7 +3,7 @@
     services = {
       web-forward.loadBalancer.servers = [
         {
-          url = "http://desktop:80";
+          url = "http://geralt:80";
         }
       ];
     };

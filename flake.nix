@@ -105,7 +105,7 @@
         };
     in {
       yenn = mkHost "yenn";
-      desktop = mkHost "desktop";
+      geralt = mkHost "geralt";
       triss = mkHost "triss";
     };
 

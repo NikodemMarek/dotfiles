@@ -15,7 +15,7 @@
     ../features/optional/tailscale.nix
 
     ./proxy.nix
-    ./desktop-forward.nix
+    ./geralt-forward.nix
     ./vpn.nix
     ./cloudflared
 

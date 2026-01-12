@@ -36,7 +36,7 @@ in {
 
   networking = {
     hostId = "76cc60bb";
-    hostName = "desktop";
+    hostName = "geralt";
     firewall.interfaces."tailscale0".allowedTCPPorts = [22 80 443];
     interfaces.enp5s0.wakeOnLan.enable = true;
 
