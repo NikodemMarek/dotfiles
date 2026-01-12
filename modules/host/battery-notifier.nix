@@ -34,18 +34,16 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    systemd.user.timers.battery-notifier = {
-      Timer = {
+    systemd.timers.battery-notifier = {
+      timerConfig = {
         OnBootSec = "0m";
         OnCalendar = "*:0/${toString cfg.checkInterval}";
       };
-      Install = {
-        WantedBy = ["default.target"];
-      };
+      wantedBy = ["multi-user.target"];
     };
 
-    systemd.user.services.battery-notifier = {
-      Service = {
+    systemd.services.battery-notifier = {
+      serviceConfig = {
         Type = "oneshot";
         ExecStart = lib.getExe (pkgs.writeShellScriptBin "battery-notifier-execstart" ''
           BAT=$(cat ${cfg.capacityPath})

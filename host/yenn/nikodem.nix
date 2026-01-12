@@ -119,6 +119,11 @@
       enable = true;
       drivers = [pkgs.gutenprint];
     };
+    battery-notifier = {
+      enable = true;
+      capacityPath = "/sys/class/power_supply/BAT1/capacity";
+      statusPath = "/sys/class/power_supply/BAT1/status";
+    };
     syncthing.user = "nikodem";
   };
 }
