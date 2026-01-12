@@ -23,7 +23,7 @@ keybinds clear-defaults=true {
 
         bind "Alt t" { ToggleFocusFullscreen; }
         bind "Alt w" { ToggleFloatingPanes; }
-        bind "Alt k" { TogglePaneEmbedOrFloating; }
+        bind "Alt b" { TogglePaneEmbedOrFloating; }
         bind "Alt i" { TogglePanePinned; }
 
         bind "Alt =" { Resize "Increase"; }
