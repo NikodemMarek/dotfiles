@@ -47,8 +47,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    wired.url = "github:Toqozz/wired-notify";
-
     nixGL = {
       url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
