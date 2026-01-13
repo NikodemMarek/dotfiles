@@ -18,8 +18,6 @@
     ./geralt-forward.nix
     ./vpn.nix
     ./cloudflared
-
-    # ./matrix-server
   ];
 
   time.timeZone = "Etc/UTC";

@@ -28,11 +28,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    wezterm = {
-      url = "github:wez/wezterm/main?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     neovim.url = "github:NikodemMarek/neovim";
 
     eww.url = "github:elkowar/eww";
@@ -42,18 +37,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-ld = {
-      url = "github:Mic92/nix-ld";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nixGL = {
       url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    tuwunel = {
-      url = "github:matrix-construct/tuwunel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
