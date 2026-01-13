@@ -9,7 +9,7 @@ pkgs.symlinkJoin {
       pkgs.wrapped.hypridle
       pkgs.wrapped.hyprlock
       pkgs.wrapped.zellij
-      pkgs.wrapped.hyprlauncher
+      pkgs.wrapped.rofi
       pkgs.wrapped.dunst
 
       pkgs.yazi

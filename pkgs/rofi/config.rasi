@@ -1,0 +1,13 @@
+configuration {
+    show-icons: true;
+    run-command: "uwsm app -- {cmd}";
+
+    display-ssh:    "󰣀 ssh:";
+    display-run:    "󱓞 run:";
+    display-drun:   "󰣖 drun:";
+    display-window: "󱂬 window:";
+    display-combi:  "󰕘 combi:";
+    display-filebrowser: "󰉋 filebrowser:";
+}
+
+@theme "./colors.rasi"
