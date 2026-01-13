@@ -31,7 +31,7 @@
   };
 
   boot.kernelModules = ["vhost_vsock"];
-  networking.firewall.interfaces."br0".allowedTCPPorts = [7878 8989];
+  networking.firewall.interfaces."br0-virtint".allowedTCPPorts = [7878 8989];
 
   virtualisation.libvirt = {
     enable = true;
@@ -46,7 +46,7 @@
               unit = "GiB";
             };
             storage_vol = "/var/lib/kubernetes/kube-${toString number}.qcow2";
-            bridge_name = "br0";
+            bridge_name = "br0-virtint";
             virtio_video = false;
           };
       in [

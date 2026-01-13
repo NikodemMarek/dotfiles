@@ -1,5 +1,5 @@
 {
-  networking.firewall.interfaces."br0".allowedTCPPorts = [2049];
+  networking.firewall.interfaces."br0-virtint".allowedTCPPorts = [2049];
 
   services.nfs.server = {
     enable = true;

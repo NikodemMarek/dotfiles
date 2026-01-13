@@ -38,22 +38,34 @@ in {
     hostId = "76cc60bb";
     hostName = "geralt";
     firewall.interfaces."tailscale0".allowedTCPPorts = [22 80 443];
-    interfaces.enp5s0.wakeOnLan.enable = true;
+    interfaces.eth0.wakeOnLan.enable = true;
 
-    bridges."br0".interfaces = ["enp5s0"];
-    nat.externalInterface = "enp5s0";
+    bridges."br0-virtint".interfaces = ["eth0"];
+    nat.externalInterface = "eth0";
   };
-  systemd.network.networks = {
-    "10-wired-default" = {
-      matchConfig.Name = "en*";
-      networkConfig = {
-        DHCP = "yes";
-        IPv6AcceptRA = "yes";
+
+  systemd.network = {
+    links = {
+      "10-wired-rename" = {
+        matchConfig = {
+          Type = "ether";
+          Kind = "!*";
+        };
+        linkConfig = {Name = "eth0";};
       };
     };
-    "80-forward" = {
-      matchConfig.Name = "enp5s0";
-      networkConfig.IPMasquerade = "both";
+    networks = {
+      "10-wired-default" = {
+        matchConfig.Name = "en*";
+        networkConfig = {
+          DHCP = "yes";
+          IPv6AcceptRA = "yes";
+        };
+      };
+      "80-forward" = {
+        matchConfig.Name = "eth0";
+        networkConfig.IPMasquerade = "both";
+      };
     };
   };
   time.timeZone = "Europe/Warsaw";
