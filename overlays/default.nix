@@ -17,9 +17,7 @@
     neovim = inputs.neovim.packages.${prev.system}.default;
     inherit (inputs.eww.packages.${prev.system}) eww;
     inherit (inputs.zen-browser.packages.${prev.system}) zen-browser;
-    inherit (inputs.nix-ld.packages.${prev.system}) nix-ld;
     inherit (inputs.nixGL.packages.${prev.system}) nixGL;
-    inherit (inputs.tuwunel.packages.${prev.system}) tuwunel;
     inherit (inputs.nixvirt.packages.${prev.system}) nixvirt;
   };
 }
