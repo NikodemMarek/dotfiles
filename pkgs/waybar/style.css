@@ -1,0 +1,121 @@
+@import "./colors.css";
+
+* {
+  color: @text;
+}
+* button {
+    background: none;
+    box-shadow: none;
+    text-shadow: none;
+    padding: 0px;
+    outline: 0;
+    border: 0;
+    border-radius: 0;
+}
+* slider {
+    min-height: 0px;
+    min-width: 0px;
+    opacity: 0;
+    background-image: none;
+    border: none;
+    box-shadow: none;
+    background: none;
+}
+* trough {
+    min-height: 80px;
+    min-width: 5px;
+    border-radius: 5px;
+    border: none;
+    background: @crust;
+}
+* highlight {
+    min-width: 5px;
+    border-radius: 5px;
+    border: none;
+}
+
+window#waybar {
+  background: none;
+}
+
+#clock {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+}
+
+#battery {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+    color: @peach;
+}
+
+#network {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+    color: @green;
+}
+
+#bluetooth {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+    color: @blue;
+}
+
+#workspaces {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+}
+
+#brightness {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+}
+#brightness #backlight {
+    color: @yellow;
+}
+#brightness #backlight-slider highlight {
+    background: @yellow;
+}
+
+#audio {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+}
+#audio #pulseaudio {
+    color: @sky;
+}
+#audio #pulseaudio-slider highlight {
+    background: @sky;
+}
+
+#powermenu {
+    background-color: @mantle;
+    padding: 5px 0;
+    border-radius: 50px;
+}
+#powermenu #custom-power {
+    color: @red;
+}
+#powermenu #custom-quit {
+    color: @peach;
+}
+#powermenu #custom-lock {
+    color: @yellow;
+}
+#powermenu #custom-reboot {
+    color: @mauve;
+}
+#powermenu #custom-sleep {
+    color: @lavender;
+}
+#powermenu #custom-hibernate {
+    color: @sapphire;
+}
+

@@ -8,5 +8,6 @@
     dunst = pkgs.callPackage ./dunst {};
     git = pkgs.callPackage ./git {};
     gitui = pkgs.callPackage ./gitui {};
+    waybar = pkgs.callPackage ./waybar {};
   };
 }

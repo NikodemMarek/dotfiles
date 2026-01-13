@@ -11,6 +11,7 @@ pkgs.symlinkJoin {
       pkgs.wrapped.zellij
       pkgs.wrapped.rofi
       pkgs.wrapped.dunst
+      pkgs.wrapped.waybar
 
       pkgs.yazi
       pkgs.zen-browser
