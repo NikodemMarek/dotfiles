@@ -28,10 +28,10 @@ pkgs.symlinkJoin {
     tailscale-toggle = pkgs.writeShellScriptBin "tailscale-toggle" ''
       STATUS=$(tailscale-status | jq .percentage)
       if [ $STATUS -ge 50 ]; then
-        tailscale up --operator=$USER --accept-routes --exit-node=
+        tailscale up --operator=$USER --accept-routes --exit-node-allow-lan-access=false --exit-node=
       else
         EXIT_NODE_IP=$(host triss | awk '{print $4}')
-        tailscale up --operator=$USER --accept-routes --exit-node=$EXIT_NODE_IP --exit-node-allow-lan-access=true
+        tailscale up --operator=$USER --accept-routes --exit-node-allow-lan-access=true --exit-node=$EXIT_NODE_IP
       fi
     '';
     extraPkgs = [
