@@ -9,7 +9,8 @@
         "clock",
         "battery",
         "network",
-        "bluetooth"
+        "bluetooth",
+        "custom/tailscale"
     ],
     "clock": {
         "format": "{:%H\n%M}",
@@ -89,6 +90,18 @@
         "tooltip-format-enumerate-connected": "{device_address}",
         "tooltip-format-enumerate-connected-battery": "{device_address} | Battery: {device_battery_percentage}%",
         "on-click": "rfkill toggle bluetooth"
+    },
+    "custom/tailscale": {
+        "format": "{icon}",
+        "format-icons": [
+            "",
+            ""
+        ],
+        "exec": "tailscale-status",
+        "return-type": "json",
+        "interval": 5,
+        "tooltip": true,
+        "on-click": "tailscale-toggle"
     },
     "modules-center": [
         "hyprland/workspaces"
