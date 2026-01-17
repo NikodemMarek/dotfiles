@@ -343,6 +343,21 @@
         "type": "gitlab"
       }
     },
+    "hardware": {
+      "locked": {
+        "lastModified": 1768584846,
+        "narHash": "sha256-IRPmIOV2tPwxbhP/I9M5AmwhTC0lMPtoPStC+8T6xl0=",
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "rev": "cce68f4a54fa4e3d633358364477f5cc1d782440",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -967,6 +982,7 @@
       "inputs": {
         "disko": "disko",
         "eww": "eww",
+        "hardware": "hardware",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "impermanence": "impermanence",

@@ -1,20 +1,21 @@
 {
+  inputs,
   pkgs,
   config,
   ...
 }: {
   imports = [
-    ./hardware-configuration.nix
+    inputs.hardware.nixosModules.common-pc-ssd
+    inputs.hardware.nixosModules.framework-amd-ai-300-series
 
-    (import ../features/disko/btrfs-persistence-swapfile.nix {
+    (import ../features/disko/luks-btrfs-persistence-swapfile.nix {
       device = "/dev/nvme0n1";
-      swap = 15;
+      swap = 24;
     })
 
     ../features
     ../features/optional/stylix.nix
     ../features/optional/systemd-boot.nix
-    ../features/optional/battery-saver.nix
     ../features/optional/bluetooth.nix
     ../features/optional/pipewire.nix
     ../features/optional/libvirt.nix
@@ -36,6 +37,20 @@
     "users/nikodem/password" = {
       neededForUsers = true;
     };
+  };
+
+  nixpkgs.hostPlatform.system = "x86_64-linux";
+  hardware.cpu.amd.updateMicrocode = true;
+  powerManagement.cpuFreqGovernor = "ondemand";
+  boot.initrd = {
+    availableKernelModules = [
+      "nvme"
+      "xhci_pci"
+      "thunderbolt"
+      "usb_storage"
+      "sd_mod"
+    ];
+    kernelModules = ["kvm-amd"];
   };
 
   users.users = {
