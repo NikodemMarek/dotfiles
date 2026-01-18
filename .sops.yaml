@@ -2,13 +2,11 @@ keys:
   - &super age12ud73504ccl26mrrqncsj204cyv0k2y7tepc64qerqts8xywja0qrn8uwq
 
   - &hosts
-    - &desktop age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
-    - &laptop age1hl0hkstkuu292skpuxc0kh49sm9lajg4ugns8zez000hdgfs0ausmv326a
+    - &geralt age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
     - &yenn age1vpq06e5j3w72uyvr6mrchejlga2lam3d5cqpyvf83t8hujs4qphshw2ppc
-    - &server age1jeswmcpv7k5hn2xdy89wgwqmph0yd5yv60ahyjpklch7t0zjp43szl8v8r
+    - &triss age1jeswmcpv7k5hn2xdy89wgwqmph0yd5yv60ahyjpklch7t0zjp43szl8v8r
 
   - &users
-    - &laptop_nikodem age13nrwdpkx23up6dre09mv5lh9lv3xynqf96sn3qlgykjmu6dzk44shvlh9n
     - &yenn_nikodem age1scg6e6lvajg70gqr5ua7uqxhk43826zs5mpkknqemzuxuqkdv9vqcvvce7
     - &LP-043_nm1 age1eg6f0ajlmpnfxd9hfvc8j0jup2hsjfhv78wvpr898r97cmny756s2eadg3
 
@@ -17,24 +15,22 @@ creation_rules:
     key_groups:
     - age:
       - *super
-      - *laptop
       - *yenn
-      - *laptop_nikodem
       - *yenn_nikodem
 
   - path_regex: host/triss/.+$
     key_groups:
     - age:
       - *super
-      - *server
-      - *laptop_nikodem
+      - *triss
+      - *yenn_nikodem
 
-  - path_regex: host/desktop/.+$
+  - path_regex: host/geralt/.+$
     key_groups:
     - age:
       - *super
-      - *desktop
-      - *laptop_nikodem
+      - *geralt
+      - *yenn_nikodem
 
   - path_regex: home/nm1/.+$
     key_groups:
