@@ -3,11 +3,7 @@
     data = {
       directories = [
         "projects"
-        "documents"
-
-        "vaults"
-        "vms"
-
+        "vault"
         "games"
       ];
     };

@@ -1,17 +1,12 @@
 {
-  inputs,
   pkgs,
   config,
   ...
 }: {
   imports = [
-    inputs.hardware.nixosModules.common-pc-ssd
-    inputs.hardware.nixosModules.framework-amd-ai-300-series
-
-    (import ../features/disko/luks-btrfs-persistence-swapfile.nix {
-      device = "/dev/nvme0n1";
-      swap = 24;
-    })
+    ./hardware-configuration.nix
+    ./networking.nix
+    ./nikodem.nix
 
     ../features
     ../features/optional/stylix.nix
@@ -19,9 +14,6 @@
     ../features/optional/bluetooth.nix
     ../features/optional/pipewire.nix
     ../features/optional/libvirt.nix
-
-    ./networking
-    ./nikodem.nix
   ];
 
   networking.hostName = "yenn";
@@ -39,20 +31,6 @@
     };
   };
 
-  nixpkgs.hostPlatform.system = "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = true;
-  powerManagement.cpuFreqGovernor = "ondemand";
-  boot.initrd = {
-    availableKernelModules = [
-      "nvme"
-      "xhci_pci"
-      "thunderbolt"
-      "usb_storage"
-      "sd_mod"
-    ];
-    kernelModules = ["kvm-amd"];
-  };
-
   users.users = {
     nikodem = {
       isNormalUser = true;
@@ -66,7 +44,6 @@
     };
   };
 
-  security.rtkit.enable = true;
   services.greetd = {
     enable = true;
     useTextGreeter = true;
