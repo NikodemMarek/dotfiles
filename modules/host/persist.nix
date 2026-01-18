@@ -63,19 +63,16 @@
           enable = true;
           services.rollback = {
             description = "Rollback BTRFS root subvolume to a pristine state";
-            wantedBy = [
-              "initrd.target"
-            ];
-            before = [
-              "sysroot.mount"
-            ];
-            requires = [cfg.deviceService];
-            after = [cfg.deviceService];
+            wantedBy = ["initrd.target"];
+            before = ["sysroot.mount"];
+            requires = [cfg.deviceService "cryptsetup.target"];
+            after = [cfg.deviceService "cryptsetup.target"];
             unitConfig.DefaultDependencies = "no";
             serviceConfig.Type = "oneshot";
             script = ''
               mkdir /btrfs_tmp
               mount ${cfg.rootPath} /btrfs_tmp
+
               if [[ -e /btrfs_tmp/root ]]; then
                   mkdir -p /btrfs_tmp/old_roots
                   timestamp=$(date --date="@$(stat -c %Y /btrfs_tmp/root)" "+%Y-%m-%-d_%H:%M:%S")

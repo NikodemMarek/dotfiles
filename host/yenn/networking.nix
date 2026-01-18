@@ -1,7 +1,7 @@
 {
   imports = [
-    ../../features/optional/tailscale.nix
-    ../../features/optional/zerotier.nix
+    ../features/optional/tailscale.nix
+    ../features/optional/zerotier.nix
   ];
 
   networking = {
