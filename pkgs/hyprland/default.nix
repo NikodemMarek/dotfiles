@@ -20,6 +20,7 @@ pkgs.symlinkJoin {
       pkgs.grim
       pkgs.slurp
       pkgs.pulseaudio
+      pkgs.brightnessctl
       pkgs.wdisplays
       pkgs.wl-mirror
     ];

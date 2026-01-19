@@ -12,7 +12,7 @@
   };
 
   inputs-packages = final: prev: {
-    inherit (inputs.hyprland.packages.${prev.system}) hyprland;
+    inherit (inputs.hyprland.packages.${prev.system}) hyprland xdg-desktop-portal-hyprland;
     inherit (inputs.wezterm.packages.${prev.system}) wezterm;
     neovim = inputs.neovim.packages.${prev.system}.default;
     inherit (inputs.eww.packages.${prev.system}) eww;

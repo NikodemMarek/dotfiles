@@ -16,6 +16,7 @@
   nixpkgs.hostPlatform.system = "x86_64-linux";
   hardware = {
     cpu.amd.updateMicrocode = true;
+    graphics.enable = true;
     enableAllFirmware = true;
     bluetooth = {
       enable = true;

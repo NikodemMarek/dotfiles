@@ -22,7 +22,9 @@
       pkgs.fd
       pkgs.bat
       pkgs.feh
+      pkgs.mpv
       pkgs.tldr
+      pkgs.ffmpeg
       pkgs.openssl
       pkgs.rnote
       pkgs.zathura
@@ -88,7 +90,7 @@
       enable = true;
       withUWSM = true;
       package = pkgs.wrapped.hyprland;
-      portalPackage = pkgs.wrapped.hyprland;
+      portalPackage = pkgs.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
     };
     hyprlock = {
