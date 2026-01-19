@@ -35,6 +35,7 @@
       pkgs.nmap
       pkgs.tcpdump
       pkgs.lsof
+      pkgs.devenv
       pkgs.neovim
       pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter
 

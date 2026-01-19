@@ -25,6 +25,7 @@
     rootPath = "/dev/mapper/crypted";
   };
 
+  nix.settings.trusted-users = ["root" "nikodem"];
   sops.secrets = {
     "users/nikodem/password" = {
       neededForUsers = true;
