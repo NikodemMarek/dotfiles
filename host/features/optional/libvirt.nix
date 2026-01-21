@@ -6,11 +6,12 @@
     pkgs.virt-manager
   ];
 
-  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
-  boot.kernelModules = ["kvm-intel" "kvm-amd"];
-  boot.kernelParams = [
-    "intel_iommu=on" # or "amd_iommu=on"
-  ];
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.ipv6.conf.all.forwarding" = 1;
+  };
+  boot.kernelModules = ["kvm-amd"];
+  boot.kernelParams = ["amd_iommu=on"];
   virtualisation.libvirtd = {
     enable = true;
     qemu = {
