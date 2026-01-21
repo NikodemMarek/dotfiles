@@ -64,7 +64,7 @@ in {
       immich = {
         entryPoints = ["web"];
         rule = "HostRegexp(`^immich\..+$`)";
-        service = "immich";
+        service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };
     };
