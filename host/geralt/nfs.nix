@@ -13,6 +13,7 @@
       /mnt/data/movies         192.168.74.0/24(rw,sync,fsid=11,insecure,no_root_squash,no_subtree_check)
       /mnt/data/shows          192.168.74.0/24(rw,sync,fsid=12,insecure,no_root_squash,no_subtree_check)
       /mnt/data/books          192.168.74.0/24(rw,sync,fsid=13,insecure,no_root_squash,no_subtree_check)
+      /mnt/data/photos         192.168.74.0/24(rw,sync,fsid=14,insecure,no_root_squash,no_subtree_check)
     '';
   };
 }

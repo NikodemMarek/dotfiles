@@ -41,7 +41,8 @@ in {
     interfaces.eth0.wakeOnLan.enable = true;
 
     bridges."br0-virtint".interfaces = ["eth0"];
-    nat.externalInterface = "eth0";
+    nat.externalInterface = "br0-virtint";
+    firewall.checkReversePath = "loose";
   };
 
   systemd.network = {
@@ -61,10 +62,6 @@ in {
           DHCP = "yes";
           IPv6AcceptRA = "yes";
         };
-      };
-      "80-forward" = {
-        matchConfig.Name = "eth0";
-        networkConfig.IPMasquerade = "both";
       };
     };
   };
