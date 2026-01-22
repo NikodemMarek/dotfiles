@@ -26,7 +26,6 @@ in {
     ./kubernetes
     ./proxy.nix
     ./arrstack
-    ./immich
     ./music
   ];
 

@@ -87,6 +87,12 @@
         service = "web-forward";
         # tls.certResolver = "letsencrypt";
       };
+      immich = {
+        entryPoints = ["web"];
+        rule = "HostRegexp(`^immich\..+$`)";
+        service = "web-forward";
+        # tls.certResolver = "letsencrypt";
+      };
     };
   };
 
