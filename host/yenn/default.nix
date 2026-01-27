@@ -45,13 +45,24 @@
     };
   };
 
-  services.greetd = {
-    enable = true;
-    useTextGreeter = true;
-    settings = {
-      default_session = {
-        command = "${pkgs.tuigreet}/bin/tuigreet -r -t";
+  services = {
+    greetd = {
+      enable = true;
+      useTextGreeter = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.tuigreet}/bin/tuigreet -r -t";
+        };
       };
+    };
+    printing = {
+      enable = true;
+      drivers = [pkgs.gutenprint];
+    };
+    battery-notifier = {
+      enable = true;
+      capacityPath = "/sys/class/power_supply/BAT1/capacity";
+      statusPath = "/sys/class/power_supply/BAT1/status";
     };
   };
 }

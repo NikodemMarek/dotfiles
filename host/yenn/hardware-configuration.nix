@@ -22,6 +22,20 @@
       enable = true;
       powerOnBoot = true;
     };
+    printers = {
+      ensureDefaultPrinter = "Canon_MP280";
+      ensurePrinters = [
+        {
+          name = "Canon_MP280";
+          location = "Home";
+          deviceUri = "usb://Canon/MP280%20series?serial=698AFF&interface=1";
+          model = "gutenprint.5.3://bjc-MULTIPASS-MP280/expert";
+          ppdOptions = {
+            PageSize = "A4";
+          };
+        }
+      ];
+    };
   };
   powerManagement.cpuFreqGovernor = "ondemand";
   boot = {
