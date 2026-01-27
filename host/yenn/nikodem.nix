@@ -8,6 +8,7 @@
   environment = {
     systemPackages = [
       pkgs.wrapped.gitui
+      pkgs.wrapped.kanshi
 
       pkgs.alacritty
       pkgs.zen-browser
