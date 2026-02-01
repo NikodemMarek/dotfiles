@@ -9,6 +9,7 @@
     systemPackages = [
       pkgs.wrapped.gitui
       pkgs.wrapped.kanshi
+      pkgs.wrapped.gemini-cli
 
       pkgs.alacritty
       pkgs.zen-browser
@@ -32,7 +33,6 @@
       pkgs.kooha
       pkgs.bluetui
       pkgs.yazi
-      pkgs.gemini-cli
       pkgs.nmap
       pkgs.tcpdump
       pkgs.lsof

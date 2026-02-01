@@ -43,14 +43,12 @@
         # obsidian
         ".config/obsidian"
 
-        # gemini
-        ".gemini"
-
         # common
         ".config/Google"
 
         ".local/share/keyrings"
         ".local/share/Google"
+        ".local/share/.gemini"
 
         ".cache"
 

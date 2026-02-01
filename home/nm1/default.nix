@@ -87,6 +87,7 @@ in {
       DEPLOY_DOCKER = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
     };
     packages = [
+      pkgs.wrapped.gemini-cli
       outputs.packages.${pkgs.system}.wrapped.zellij
       pkgs.alacritty
 
@@ -104,7 +105,6 @@ in {
       pkgs.glab
       pkgs.rainfrog
       pkgs.claude-code
-      pkgs.gemini-cli
     ];
   };
 }
