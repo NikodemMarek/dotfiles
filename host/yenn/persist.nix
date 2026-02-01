@@ -9,69 +9,43 @@
     };
     generated = {
       directories = [
-        # jetbrains
+        ".cache"
+
+        ".config/obsidian"
+        ".config/Google"
         ".config/JetBrains"
+        ".config/heroic"
 
+        ".local/share/zoxide"
+        ".local/share/direnv"
+        ".local/share/keyrings"
+        ".local/share/Google"
+        ".local/share/.gemini"
         ".local/share/JetBrains"
-
-        # neovim
         ".local/share/nvim"
+        ".local/share/PrismLauncher"
+        ".local/share/Steam"
 
+        # TODO: For relocation
         ".npm"
         ".cargo"
         ".java"
         ".gradle"
         ".m2"
         ".android"
-
-        # docker
         ".docker"
         ".dockercache"
-
-        # fish
-        ".local/share/zoxide"
-
-        # mozilla
         ".mozilla"
-
-        # zen browser
         ".zen"
-
-        # direnv
-        ".local/share/direnv"
-
-        # obsidian
-        ".config/obsidian"
-
-        # common
-        ".config/Google"
-
-        ".local/share/keyrings"
-        ".local/share/Google"
-        ".local/share/.gemini"
-
-        ".cache"
-
-        # fun
-        ".local/share/PrismLauncher"
-
-        ".local/share/Steam"
         ".factorio"
-
-        ".config/heroic"
       ];
 
       files = [
-        # fish
-        ".local/share/fish/fish_history"
-
-        # sops
         ".config/sops/age/keys.txt"
-
-        # default browser
         ".config/mimeapps.list"
 
-        # ssh
+        ".local/share/fish/fish_history"
+
         ".ssh/known_hosts"
       ];
     };
