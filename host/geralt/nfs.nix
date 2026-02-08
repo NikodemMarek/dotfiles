@@ -8,6 +8,7 @@
       /persist/apps/jellyfin   192.168.74.0/24(rw,sync,fsid=2,insecure,no_root_squash,no_subtree_check)
       /persist/apps/seerr      192.168.74.0/24(rw,sync,fsid=3,insecure,no_root_squash,no_subtree_check)
       /persist/apps/immich     192.168.74.0/24(rw,sync,fsid=4,insecure,no_root_squash,no_subtree_check)
+      /persist/apps/steam      192.168.74.0/24(rw,sync,fsid=5,insecure,no_root_squash,no_subtree_check)
 
       /mnt/data/music          192.168.74.0/24(rw,sync,fsid=10,insecure,no_root_squash,no_subtree_check)
       /mnt/data/movies         192.168.74.0/24(rw,sync,fsid=11,insecure,no_root_squash,no_subtree_check)
