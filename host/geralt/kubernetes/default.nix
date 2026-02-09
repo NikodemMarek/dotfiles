@@ -36,25 +36,9 @@
   virtualisation.libvirt = {
     enable = true;
     connections."qemu:///system" = {
-      domains = let
-        node = number:
-          inputs.nixvirt.lib.domain.templates.linux {
-            name = "kube-${toString number}";
-            uuid = "2904419d-b283-4cfd-9f2c-7c3713ff809${toString number}";
-            memory = {
-              count = 24;
-              unit = "GiB";
-            };
-            storage_vol = "/var/lib/kubernetes/kube-${toString number}.qcow2";
-            bridge_name = "br0-virtint";
-            virtio_video = false;
-          };
-      in [
+      domains = [
         {
-          definition = inputs.nixvirt.lib.domain.writeXML (node 0);
-        }
-        {
-          definition = inputs.nixvirt.lib.domain.writeXML (node 1);
+          definition = ./kube-0.xml;
         }
       ];
     };

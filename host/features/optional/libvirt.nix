@@ -28,6 +28,7 @@
   ];
 
   networking = {
+    firewall.trustedInterfaces = ["virbr0"];
     interfaces."br0-virtint" = {
       ipv4.addresses = [
         {
