@@ -24,6 +24,7 @@
         ".local/share/.gemini"
         ".local/share/JetBrains"
         ".local/share/nvim"
+        ".local/share/fish"
         ".local/share/PrismLauncher"
         ".local/share/Steam"
 
@@ -43,8 +44,6 @@
       files = [
         ".config/sops/age/keys.txt"
         ".config/mimeapps.list"
-
-        ".local/share/fish/fish_history"
 
         ".ssh/known_hosts"
       ];
