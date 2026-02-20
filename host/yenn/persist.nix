@@ -15,6 +15,7 @@
         ".config/Google"
         ".config/JetBrains"
         ".config/heroic"
+        ".config/zen"
 
         ".local/share/zoxide"
         ".local/share/direnv"
@@ -36,7 +37,6 @@
         ".docker"
         ".dockercache"
         ".mozilla"
-        ".zen"
         ".factorio"
       ];
 
