@@ -1,0 +1,19 @@
+# to create new export, create a brtfs volume: `btrfs subvolume create <directory>`
+{
+  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [2049];
+
+  services.nfs.server = {
+    enable = true;
+    exports = ''
+      /mnt/data/music          100.0.0.0/8(rw,sync,fsid=1,insecure,no_root_squash,no_subtree_check)
+      /mnt/data/movies         100.0.0.0/8(rw,sync,fsid=2,insecure,no_root_squash,no_subtree_check)
+      /mnt/data/shows          100.0.0.0/8(rw,sync,fsid=3,insecure,no_root_squash,no_subtree_check)
+      /mnt/data/books          100.0.0.0/8(rw,sync,fsid=4,insecure,no_root_squash,no_subtree_check)
+      /mnt/data/photos         100.0.0.0/8(rw,sync,fsid=5,insecure,no_root_squash,no_subtree_check)
+
+      /persist/apps/navidrome  100.0.0.0/8(rw,sync,fsid=10,insecure,no_root_squash,no_subtree_check)
+      /persist/apps/jellyfin   100.0.0.0/8(rw,sync,fsid=11,insecure,no_root_squash,no_subtree_check)
+      /persist/apps/immich     100.0.0.0/8(rw,sync,fsid=13,insecure,no_root_squash,no_subtree_check)
+    '';
+  };
+}

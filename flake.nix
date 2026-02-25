@@ -94,6 +94,7 @@
       yenn = mkHost "yenn";
       geralt = mkHost "geralt";
       triss = mkHost "triss";
+      roach = mkHost "roach";
     };
 
     homeConfigurations = let

@@ -5,7 +5,7 @@
 }: {
   options.persist = let
     inherit (lib) mkEnableOption mkOption;
-    inherit (lib.types) submodule listOf either str attrs;
+    inherit (lib.types) submodule listOf either str attrs bool;
 
     peristentCategory = {
       options = {
@@ -37,6 +37,11 @@
       description = "Root device path";
       type = str;
     };
+    isCrypted = mkOption {
+      description = "Is the device encrypted";
+      type = bool;
+      default = false;
+    };
 
     # TODO: Allow arbitrary number of categories
     data = mkOption {
@@ -65,8 +70,8 @@
             description = "Rollback BTRFS root subvolume to a pristine state";
             wantedBy = ["initrd.target"];
             before = ["sysroot.mount"];
-            requires = [cfg.deviceService "cryptsetup.target"];
-            after = [cfg.deviceService "cryptsetup.target"];
+            requires = [cfg.deviceService] ++ lib.optional cfg.isCrypted "cryptsetup.target";
+            after = [cfg.deviceService] ++ lib.optional cfg.isCrypted "cryptsetup.target";
             unitConfig.DefaultDependencies = "no";
             serviceConfig.Type = "oneshot";
             script = ''

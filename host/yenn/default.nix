@@ -23,6 +23,7 @@
     enable = true;
     deviceService = "dev-nvme0n1p2.device";
     rootPath = "/dev/mapper/crypted";
+    isCrypted = true;
   };
 
   nix.settings.trusted-users = ["root" "nikodem"];
