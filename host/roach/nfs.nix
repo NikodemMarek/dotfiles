@@ -14,6 +14,8 @@
       /persist/apps/navidrome  100.0.0.0/8(rw,sync,fsid=10,insecure,no_root_squash,no_subtree_check)
       /persist/apps/jellyfin   100.0.0.0/8(rw,sync,fsid=11,insecure,no_root_squash,no_subtree_check)
       /persist/apps/immich     100.0.0.0/8(rw,sync,fsid=13,insecure,no_root_squash,no_subtree_check)
+
+      /persist/apps/longhorn   100.0.0.0/8(rw,sync,fsid=20,insecure,no_root_squash,no_subtree_check)
     '';
   };
 }
