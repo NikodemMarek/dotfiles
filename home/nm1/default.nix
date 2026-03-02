@@ -1,5 +1,4 @@
 {
-  outputs,
   pkgs,
   config,
   ...
@@ -15,7 +14,7 @@ in {
     ../features/global
 
     ./secrets.nix
-    ./kanshi.nix
+    ./programs.nix
   ];
 
   sops.defaultSopsFile = ./secrets.yaml;
@@ -52,22 +51,6 @@ in {
     };
   };
 
-  programs = {
-    git.settings.user = {
-      email = "nikodem.marek@softnet.com.pl";
-      name = "nm1";
-    };
-    aichat.settings = {
-      model = "claude:claude-3-7-sonnet-20250219";
-      clients = [
-        {
-          type = "claude";
-          api_key = readIfExists config.sops.secrets."anthropic/api_key".path;
-        }
-      ];
-    };
-  };
-
   home = {
     username = "nm1";
     file = {
@@ -77,34 +60,10 @@ in {
       ".ssh/id_ed25519".source = config.sops.secrets."users/${config.home.username}/ssh_id_ed25519".path;
     };
     sessionVariables = {
-      JAVA_8_HOME = "${pkgs.jdk8}";
-      JAVA_11_HOME = "${pkgs.jdk11}";
-      JAVA_21_HOME = "${pkgs.jdk21}";
-      JAVA_25_HOME = "${pkgs.jdk25}";
       DOMAIN_NEXUS_LOGIN = readIfExists config.sops.secrets."users/nm1/domain_login".path;
       DOMAIN_NEXUS_PASSWORD = readIfExists config.sops.secrets."users/nm1/domain_password".path;
       GITLAB_TOKEN = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
       DEPLOY_DOCKER = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
     };
-    packages = [
-      outputs.packages.${pkgs.system}.wrapped.zellij
-      pkgs.alacritty
-
-      # (pkgs.google-cloud-sdk.withExtraComponents (with pkgs.google-cloud-sdk.components; [
-      #   gke-gcloud-auth-plugin
-      # ]))
-      pkgs.kubectl
-      pkgs.sshpass
-      pkgs.remmina
-      (config.lib.nixGL.wrap pkgs.google-chrome)
-      pkgs.android-studio
-      pkgs.jetbrains.idea-ultimate
-      pkgs.dbeaver-bin
-      pkgs.oracle-instantclient
-      pkgs.glab
-      pkgs.rainfrog
-      pkgs.claude-code
-      pkgs.gemini-cli
-    ];
   };
 }
