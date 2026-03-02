@@ -1,8 +1,4 @@
-{
-  pkgs,
-  config,
-  ...
-}: let
+{config, ...}: let
   # FIXME: Temporary solution that only works if secrets are already present on the host.
   readIfExists = path:
     if builtins.pathExists path
