@@ -6,11 +6,6 @@
 
     hardware.url = "github:nixos/nixos-hardware";
 
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     sops-nix.url = "github:Mic92/sops-nix";
 
     disko = {
@@ -53,13 +48,12 @@
   outputs = {
     self,
     nixpkgs,
-    home-manager,
     systems,
     ...
   } @ inputs: let
     inherit (self) outputs;
 
-    lib = nixpkgs.lib // home-manager.lib;
+    lib = nixpkgs.lib;
 
     forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
     pkgsFor = lib.genAttrs (import systems) (system:
@@ -75,7 +69,6 @@
     inherit lib;
 
     nixosModules = import ./modules/host;
-    homeManagerModules = import ./modules/home;
 
     overlays = import ./overlays {inherit inputs;};
     packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
@@ -101,25 +94,6 @@
           ./host/triss
         ];
       };
-    };
-
-    homeConfigurations = let
-      mkHome = home:
-        lib.homeManagerConfiguration {
-          modules = [
-            inputs.stylix.homeModules.stylix
-            ./host/features/optional/stylix.nix
-
-            ./home/${home}
-            ./home/features
-          ];
-          pkgs = pkgsFor.x86_64-linux;
-          extraSpecialArgs = {
-            inherit inputs outputs;
-          };
-        };
-    in {
-      "nm1@LP-043" = mkHome "nm1";
     };
   };
 }
