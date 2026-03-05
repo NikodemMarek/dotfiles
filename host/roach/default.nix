@@ -6,6 +6,7 @@
     ../features/optional/systemd-boot.nix
     ../features/optional/tailscale.nix
 
+    ./arrstack
     ./printing.nix
     ./nfs.nix
   ];
