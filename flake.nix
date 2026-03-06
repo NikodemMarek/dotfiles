@@ -32,8 +32,6 @@
 
     walker.url = "github:not-matthias/walker";
 
-    eww.url = "github:elkowar/eww";
-
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";

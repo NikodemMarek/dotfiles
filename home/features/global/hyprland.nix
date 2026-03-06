@@ -12,11 +12,6 @@
     (config.lib.nixGL.wrap wdisplays)
   ];
 
-  programs.hyprlock = {
-    enable = true;
-    package = pkgs.wrapped.hyprlock;
-  };
-
   wayland.windowManager.hyprland = {
     enable = true;
     package = config.lib.nixGL.wrap pkgs.wrapped.hyprland;

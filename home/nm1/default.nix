@@ -16,13 +16,6 @@ in {
   sops.defaultSopsFile = ./secrets.yaml;
 
   services = {
-    eww = {
-      enable = true;
-      monitor = {
-        width = 1920;
-        height = 1080;
-      };
-    };
     battery-notifier = {
       enable = true;
       capacityPath = "/sys/class/power_supply/BAT0/capacity";
