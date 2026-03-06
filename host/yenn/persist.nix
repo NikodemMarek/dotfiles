@@ -13,6 +13,7 @@
 
         ".config/obsidian"
         ".config/Google"
+        ".config/google-chrome"
         ".config/JetBrains"
         ".config/heroic"
         ".config/zen"
