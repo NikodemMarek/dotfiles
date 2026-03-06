@@ -12,6 +12,7 @@
       pkgs.wrapped.gemini-cli
 
       pkgs.alacritty
+      pkgs.google-chrome
       pkgs.zen-browser
       pkgs.obsidian
       pkgs.ripgrep
