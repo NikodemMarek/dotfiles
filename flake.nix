@@ -27,7 +27,7 @@
 
     neovim.url = "github:NikodemMarek/neovim";
 
-    eww.url = "github:elkowar/eww";
+    walker.url = "github:not-matthias/walker";
 
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
