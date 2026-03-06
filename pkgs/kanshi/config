@@ -4,8 +4,8 @@ profile standalone {
 
 profile home {
 	output eDP-1 mode 2256x1504 position 304,1440
-    output DP-9 mode 2560x1440 position 0,0
-    output DP-11 mode 1920x1080 position 2560,0 transform 270
+    output "LG Electronics LG ULTRAGEAR 103MASX4XJ30" mode 2560x1440 position 0,0
+    output "Acer Technologies QG241Y TGHEE0018511" mode 1920x1080 position 2560,0 transform 270
 }
 
 profile edp {
