@@ -7,6 +7,7 @@
     ../features/optional/tailscale.nix
 
     ./arrstack
+    ./music
     ./printing.nix
     ./nfs.nix
   ];

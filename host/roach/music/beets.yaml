@@ -1,5 +1,5 @@
 directory: /mnt/data/music
-library: /var/lib/music/beets/library.db
+library: /mnt/data/music/library.db
 
 import:
     move: yes

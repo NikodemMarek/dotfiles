@@ -1,19 +1,8 @@
 {
   pkgs,
-  config,
   lib,
   ...
 }: {
-  users.users.music = {
-    isNormalUser = true;
-    hashedPasswordFile = config.sops.secrets."users/music/password".path;
-    group = "music";
-    uid = 2030;
-    openssh.authorizedKeys.keyFiles = [
-      ../../yenn/user_nikodem_ssh_id_ed25519.pub
-    ];
-  };
-
   environment.systemPackages = let
     beets = "${lib.getExe pkgs.beets} -c ${./beets.yaml}";
 
@@ -43,19 +32,12 @@
     download-yt-restricted
 
     get-yt-album
+
+    pkgs.ffmpeg
   ];
 
   systemd.tmpfiles.rules = [
-    "d /home/music/.config 0740 music music -"
-    "d /home/music/.config/beets 0740 music music -"
-  ];
-
-  persist.data.directories = [
-    {
-      directory = "/var/lib/music/beets";
-      user = "music";
-      group = "music";
-      mode = "740";
-    }
+    "d /home/maintenance/.config 0740 maintenance users -"
+    "d /home/maintenance/.config/beets 0740 maintenance users -"
   ];
 }
