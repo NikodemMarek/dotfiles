@@ -8,6 +8,7 @@
     })
 
     ../features
+    ../features/optional/docker.nix
     ../features/optional/systemd-boot.nix
     ../features/optional/tailscale.nix
     ../features/optional/libvirt.nix
@@ -39,11 +40,12 @@
       };
     };
     networks = {
-      "10-wired-default" = {
-        matchConfig.Name = "en*";
+      "10-default-dhcp" = {
+        matchConfig.Type = "ether wlan wwan";
         networkConfig = {
           DHCP = "yes";
           IPv6AcceptRA = "yes";
+          IgnoreCarrierLoss = "3s";
         };
       };
     };
