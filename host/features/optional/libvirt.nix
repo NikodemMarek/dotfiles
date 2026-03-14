@@ -28,19 +28,17 @@
   ];
 
   networking = {
-    firewall.trustedInterfaces = ["virbr0"];
-    interfaces."br0-virtint" = {
-      ipv4.addresses = [
-        {
-          address = "192.168.74.1";
-          prefixLength = 24;
-        }
-      ];
-      useDHCP = true;
-    };
     nat = {
       enable = true;
-      internalInterfaces = ["br0-virtint"];
+      internalInterfaces = ["virbr0"];
     };
   };
+
+  persist.generated.directories = [
+    {
+      directory = "/var/lib/libvirt/";
+      user = "root";
+      group = "root";
+    }
+  ];
 }

@@ -5,7 +5,6 @@
   ];
 
   networking = {
-    bridges."br0-virtint".interfaces = ["wlan0"];
     nat.externalInterface = "wlan0";
     firewall.interfaces."tailscale0".allowedTCPPorts = [22];
   };
