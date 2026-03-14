@@ -24,11 +24,8 @@
     hostId = "76cc60bb";
     hostName = "geralt";
     firewall.interfaces."tailscale0".allowedTCPPorts = [22 80 443];
-    interfaces.eth0.wakeOnLan.enable = true;
-
-    bridges."br0-virtint".interfaces = ["eth0"];
-    nat.externalInterface = "br0-virtint";
     firewall.checkReversePath = "loose";
+    interfaces.eth0.wakeOnLan.enable = true;
   };
 
   systemd.network = {
