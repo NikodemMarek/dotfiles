@@ -1,11 +1,6 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ./secrets.nix
 
     (import ../features/disko/btrfs-persistence-swapfile.nix {
       device = "nvme0n1";
@@ -16,6 +11,7 @@
     ../features/optional/systemd-boot.nix
     ../features/optional/tailscale.nix
     ../features/optional/libvirt.nix
+    ../features/optional/maintenance.nix
 
     ./proxy.nix
   ];
@@ -61,21 +57,5 @@
     enable = true;
     deviceService = "dev-nvme0n1p2.device";
     rootPath = "/dev/nvme0n1p2";
-  };
-
-  nix.settings.trusted-users = ["maintenance" "@wheel"];
-
-  users = {
-    users = {
-      root.hashedPassword = "!";
-      maintenance = {
-        isNormalUser = true;
-        hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
-        extraGroups = ["wheel" "movies" "shows" "music" "books" "photos"];
-        openssh.authorizedKeys.keyFiles = [
-          ../yenn/user_nikodem_ssh_id_ed25519.pub
-        ];
-      };
-    };
   };
 }

@@ -1,10 +1,11 @@
-{config, ...}: {
+{
   imports = [
     ./hardware-configuration.nix
 
     ../features
     ../features/optional/systemd-boot.nix
     ../features/optional/tailscale.nix
+    ../features/optional/maintenance.nix
 
     ./arrstack
     ./music
@@ -25,23 +26,6 @@
     deviceService = "dev-nvme0n1p2.device";
     rootPath = "/dev/nvme0n1p2";
     isCrypted = false;
-  };
-
-  nix.settings.trusted-users = ["maintenance" "@wheel"];
-
-  sops.secrets."users/maintenance/password" = {
-    neededForUsers = true;
-  };
-  users.users = {
-    root.hashedPassword = "!";
-    maintenance = {
-      isNormalUser = true;
-      hashedPasswordFile = config.sops.secrets."users/maintenance/password".path;
-      extraGroups = ["wheel"];
-      openssh.authorizedKeys.keyFiles = [
-        ../yenn/user_nikodem_ssh_id_ed25519.pub
-      ];
-    };
   };
 
   systemd.network = {
