@@ -4,7 +4,15 @@
   ...
 }: {
   environment.systemPackages = let
-    beets = "${lib.getExe pkgs.beets} -c ${./beets.yaml}";
+    beets = pkgs.symlinkJoin {
+      name = "beets";
+      paths = [pkgs.beets];
+      buildInputs = [pkgs.makeWrapper];
+      postBuild = ''
+        wrapProgram $out/bin/beet \
+            --add-flags "--config ${./beets.yaml}"
+      '';
+    };
 
     download-yt = pkgs.writeShellScriptBin "download-yt" ''
       ${lib.getExe pkgs.yt-dlp} -f bestaudio --extract-audio --audio-format flac --audio-quality 0 --add-metadata --embed-thumbnail -o "$1/%(title)s.%(ext)s" $2
@@ -20,11 +28,11 @@
     get-yt-album = pkgs.writeShellScriptBin "get-yt-album" ''
       TEMP=$(mktemp -d)
       ${lib.getExe download-yt} $TEMP $1
-      ${beets} import --write $TEMP
+      ${lib.getExe beets} import --write $TEMP
       echo $TEMP
     '';
   in [
-    (pkgs.writeShellScriptBin "beet" "${beets} $*")
+    beets
 
     pkgs.yt-dlp
 

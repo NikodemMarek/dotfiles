@@ -3,6 +3,9 @@ library: /mnt/data/music/library.db
 
 import:
     move: yes
+    incremental: yes
+    quiet: yes
+    log: /tmp/beetslog.txt
 
 plugins:
     - musicbrainz
