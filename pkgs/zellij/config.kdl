@@ -22,7 +22,7 @@ keybinds clear-defaults=true {
         bind "Alt s" { NewPane "stacked"; }
 
         bind "Alt t" { ToggleFocusFullscreen; }
-        bind "Alt w" { ToggleFloatingPanes; }
+        bind "Alt m" { ToggleFloatingPanes; }
         bind "Alt b" { TogglePaneEmbedOrFloating; }
         bind "Alt i" { TogglePanePinned; }
 
@@ -30,7 +30,7 @@ keybinds clear-defaults=true {
         bind "Alt -" { Resize "Decrease"; }
         // bind "Alt =" { Resize "Even"; } // This is not supported yet
 
-        bind "Alt d" { CloseFocus; }
+        bind "Alt w" { CloseFocus; }
         bind "Alt q" { Quit; }
 
         bind "Alt g" { SwitchToMode "Locked"; }
