@@ -1,4 +1,5 @@
 {
+  lib,
   pkgs,
   config,
   ...
@@ -48,6 +49,10 @@
       g = "git";
       gi = "gitui";
       zi = "zellij";
+      za = lib.getExe (pkgs.writeShellScriptBin "zellij-attach" ''
+        SELECTED=$(zellij list-sessions --no-formatting | fzf | awk '{print $1}')
+        zellij attach $SELECTED
+      '');
       l = "eza -la --icons --group-directories-first --git";
       lt = "eza -laT --icons --group-directories-first --git";
       cat = "bat -pp";
@@ -57,31 +62,15 @@
       pkgs.wrapped.waybar
       pkgs.wrapped.rofi
       pkgs.wrapped.dunst
-      pkgs.wrapped.git
       pkgs.wrapped.gitui
       pkgs.wrapped.kanshi
       pkgs.alacritty
       pkgs.neovim
       pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter
-      pkgs.obsidian
 
-      pkgs.kubectl
-      pkgs.sshpass
-      pkgs.remmina
       (config.lib.nixGL.wrap pkgs.google-chrome)
       pkgs.android-studio
-      pkgs.jetbrains.idea-ultimate
-      pkgs.dbeaver-bin
-      pkgs.oracle-instantclient
-      pkgs.glab
-      pkgs.rainfrog
-      pkgs.claude-code
-      pkgs.gemini-cli
-      pkgs.maven
-      pkgs.nodejs
       pkgs.pnpm
-      pkgs.python3
-      pkgs.gcc
       pkgs.eza
       pkgs.bat
       pkgs.jq
@@ -90,13 +79,11 @@
       pkgs.bottom
       pkgs.xxd
       pkgs.fd
+      pkgs.fzf
       pkgs.ripgrep
       pkgs.bat
       pkgs.feh
       pkgs.tldr
-      pkgs.openssl
-      pkgs.rnote
-      pkgs.zathura
       pkgs.kooha
       pkgs.bluetui
     ];

@@ -21,37 +21,13 @@ in {
       capacityPath = "/sys/class/power_supply/BAT0/capacity";
       statusPath = "/sys/class/power_supply/BAT0/status";
     };
-    openfortivpn = {
-      enable = true;
-      autorun = true;
-      port =
-        if builtins.pathExists config.sops.secrets."users/nm1/openfortivpn/port".path
-        then builtins.readFile config.sops.secrets."users/nm1/openfortivpn/port".path
-        else 8443;
-
-      host = readIfExists config.sops.secrets."users/nm1/openfortivpn/host".path;
-      username = readIfExists config.sops.secrets."users/nm1/openfortivpn/username".path;
-      password = readIfExists config.sops.secrets."users/nm1/openfortivpn/password".path;
-      realm = readIfExists config.sops.secrets."users/nm1/openfortivpn/realm".path;
-      trusted-cert = readIfExists config.sops.secrets."users/nm1/openfortivpn/trusted_cert".path;
-
-      user-cert = config.sops.secrets."users/nm1/openfortivpn/user_cert".path;
-      user-key = config.sops.secrets."users/nm1/openfortivpn/user_key".path;
-    };
   };
 
   home = {
     username = "nm1";
-    file = {
-      ".m2/settings.xml".source = config.sops.secrets."users/nm1/m2_settings".path;
-      ".gradle/gradle.properties".source = config.sops.secrets."users/nm1/gradle_properties".path;
-      ".ssh/id_ed25519.pub".source = ./user_nm1_ssh_id_ed25519.pub;
-      ".ssh/id_ed25519".source = config.sops.secrets."users/${config.home.username}/ssh_id_ed25519".path;
-    };
     sessionVariables = {
       DOMAIN_NEXUS_LOGIN = readIfExists config.sops.secrets."users/nm1/domain_login".path;
       DOMAIN_NEXUS_PASSWORD = readIfExists config.sops.secrets."users/nm1/domain_password".path;
-      GITLAB_TOKEN = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
       DEPLOY_DOCKER = readIfExists config.sops.secrets."users/nm1/gitlab_token".path;
     };
   };
