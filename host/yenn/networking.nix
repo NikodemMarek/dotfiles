@@ -4,11 +4,6 @@
     ../features/optional/zerotier.nix
   ];
 
-  networking = {
-    nat.externalInterface = "wlan0";
-    firewall.interfaces."tailscale0".allowedTCPPorts = [22];
-  };
-
   systemd.network = {
     links = {
       "10-random-mac" = {

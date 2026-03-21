@@ -16,7 +16,7 @@
   networking = {
     # hostId = "a3a35e1d";
     hostName = "roach";
-    firewall.interfaces."tailscale0".allowedTCPPorts = [22];
+
   };
 
   time.timeZone = "Europe/Warsaw";

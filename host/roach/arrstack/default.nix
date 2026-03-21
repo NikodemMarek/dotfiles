@@ -8,7 +8,7 @@ let
 
   mediaDir = "/mnt/data";
 in {
-  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [7878 8989 8686 8787 9696 6969];
+
 
   system.activationScripts = {
     arrstack-download-dirs = {

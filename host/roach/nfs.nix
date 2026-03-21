@@ -1,6 +1,6 @@
 # to create new export, create a brtfs volume: `btrfs subvolume create <directory>`
 {
-  networking.firewall.interfaces."tailscale0".allowedTCPPorts = [2049];
+
 
   services.nfs.server = {
     enable = true;

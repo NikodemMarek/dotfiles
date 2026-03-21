@@ -24,8 +24,7 @@
   networking = {
     hostId = "76cc60bb";
     hostName = "geralt";
-    firewall.interfaces."tailscale0".allowedTCPPorts = [22 80 443];
-    firewall.checkReversePath = "loose";
+
     interfaces.eth0.wakeOnLan.enable = true;
   };
 
