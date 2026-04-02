@@ -37,6 +37,14 @@ keybinds clear-defaults=true {
         bind "Alt x" { SwitchToMode "Scroll"; }
         bind "Alt f" { SwitchToMode "EnterSearch"; }
         bind "Alt o" { SwitchToMode "Session"; }
+
+        bind "Alt Space" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
     }
     scroll {
         bind "Alt x" "Esc" { SwitchToMode "Normal"; }
