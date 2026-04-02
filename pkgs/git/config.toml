@@ -15,9 +15,6 @@ defaultBranch = "main"
 [safe]
 directory = "/etc/nixos"
 
-[core]
-hooksPath = "~/.config/git/hooks"
-
 [user]
 email = "62289991+NikodemMarek@users.noreply.github.com"
 name = "NikodemMarek"

@@ -30,8 +30,8 @@ pkgs.symlinkJoin {
       if [ $STATUS -ge 50 ]; then
         tailscale up --operator=$USER --accept-routes --exit-node-allow-lan-access=false --exit-node=
       else
-        EXIT_NODE_IP=$(host triss | awk '{print $4}')
-        tailscale up --operator=$USER --accept-routes --exit-node-allow-lan-access=true --exit-node=$EXIT_NODE_IP
+        EXIT_NODE=$(tailscale exit-node suggest | head -n 1 | awk '{print $4}')
+        tailscale up --operator=$USER --accept-routes --exit-node-allow-lan-access=true --exit-node=$EXIT_NODE
       fi
     '';
     extraPkgs = [
