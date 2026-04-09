@@ -10,8 +10,10 @@
       pkgs.wrapped.gitui
       pkgs.wrapped.kanshi
       pkgs.wrapped.gemini-cli
+      pkgs.wrapped.claude-code
 
       pkgs.alacritty
+      pkgs.remmina
       pkgs.google-chrome
       pkgs.zen-browser
       pkgs.obsidian
@@ -40,6 +42,7 @@
       pkgs.devenv
       pkgs.neovim
       pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter
+      pkgs.opencode
 
       pkgs.prismlauncher
       pkgs.heroic
