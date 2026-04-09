@@ -12,5 +12,6 @@
     kanshi = pkgs.callPackage ./kanshi {};
     gemini-cli = pkgs.callPackage ./gemini-cli {};
     claude-code = pkgs.callPackage ./claude-code {};
+    signal-desktop = pkgs.callPackage ./signal-desktop {};
   };
 }

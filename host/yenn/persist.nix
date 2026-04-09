@@ -27,6 +27,7 @@
         ".local/share/JetBrains"
         ".local/share/nvim"
         ".local/share/fish"
+        ".local/share/Signal"
         ".local/share/PrismLauncher"
         ".local/share/Steam"
 

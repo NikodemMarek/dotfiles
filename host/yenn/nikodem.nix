@@ -11,6 +11,7 @@
       pkgs.wrapped.kanshi
       pkgs.wrapped.gemini-cli
       pkgs.wrapped.claude-code
+      pkgs.wrapped.signal-desktop
 
       pkgs.alacritty
       pkgs.remmina
