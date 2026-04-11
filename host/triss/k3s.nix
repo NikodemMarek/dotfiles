@@ -9,7 +9,7 @@
     tokenFile = config.sops.secrets."k3s/token".path;
     clusterInit = true;
     extraFlags = toString [
-      "--flannel-backend=none"
+      "--flannel-iface=eth0"
     ];
   };
 
