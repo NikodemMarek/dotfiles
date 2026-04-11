@@ -1,0 +1,21 @@
+{modulesPath, ...}: {
+  imports = [
+    (modulesPath + "/profiles/qemu-guest.nix")
+
+    (import ../features/disko/btrfs-persistence-swapfile.nix {
+      device = "sda1";
+      swap = 12;
+    })
+  ];
+
+  time.timeZone = "Etc/UTC";
+  boot = {
+    loader.efi.canTouchEfiVariables = true;
+    initrd = {
+      availableKernelModules = ["xhci_pci" "virtio_pci" "virtio_scsi" "usbhid"];
+      kernelModules = ["kvm"];
+    };
+  };
+  security.rtkit.enable = true;
+  nixpkgs.hostPlatform.system = "aarch64-linux";
+}

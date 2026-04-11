@@ -94,6 +94,13 @@
       yenn = mkHost "yenn";
       geralt = mkHost "geralt";
       roach = mkHost "roach";
+      triss = lib.nixosSystem {
+        pkgs = pkgsFor."aarch64-linux";
+        specialArgs = {inherit inputs outputs;};
+        modules = [
+          ./host/triss
+        ];
+      };
     };
 
     homeConfigurations = let

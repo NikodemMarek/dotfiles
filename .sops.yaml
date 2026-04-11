@@ -5,6 +5,7 @@ keys:
     - &geralt age14lex0cntf4svu3j5j6fe95sh3dlqgcqzmnv3wxdh4rrgdwxpc47qgs3xej
     - &yenn age1vpq06e5j3w72uyvr6mrchejlga2lam3d5cqpyvf83t8hujs4qphshw2ppc
     - &roach age1qupprjh7hnvx4qs5tudul36catmqahfmt7t0pznrmknt886zqs3q9cvx7y
+    - &triss age10qfndr7560y5s6de3adt2wujprsgu6p3pcnmw7egq672xp3kpvtsdsp7h8
 
   - &users
     - &yenn_nikodem age1scg6e6lvajg70gqr5ua7uqxhk43826zs5mpkknqemzuxuqkdv9vqcvvce7
@@ -37,3 +38,10 @@ creation_rules:
     - age:
       - *super
       - *LP-043_nm1
+
+  - path_regex: host/triss/.+$
+    key_groups:
+    - age:
+      - *super
+      - *triss
+      - *yenn_nikodem

@@ -10,10 +10,7 @@
 
     hostKeys = [
       {
-        path =
-          if config.persist.enable
-          then "/persist/data/etc/ssh/ssh_host_ed25519_key"
-          else "/etc/ssh/ssh_host_ed25519_key";
+        path = config.sops.secrets."host_ssh_ed25519_priv".path;
         type = "ed25519";
       }
     ];
