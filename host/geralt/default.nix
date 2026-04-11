@@ -37,6 +37,13 @@
         };
         linkConfig = {Name = "eth0";};
       };
+      "10-wireless-rename" = {
+        matchConfig = {
+          Type = "wlan";
+          Kind = "!*";
+        };
+        linkConfig = {Name = "wlan0";};
+      };
     };
     networks = {
       "10-default-dhcp" = {
@@ -56,4 +63,19 @@
     deviceService = "dev-nvme0n1p2.device";
     rootPath = "/dev/nvme0n1p2";
   };
+
+  networking.wireless.iwd = {
+    enable = true;
+    settings = {
+      Network.EnableIPv6 = true;
+      Settings.AutoConnect = true;
+    };
+  };
+  persist.generated.directories = [
+    {
+      directory = "/var/lib/iwd";
+      user = "root";
+      group = "root";
+    }
+  ];
 }
