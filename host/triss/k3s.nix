@@ -1,7 +1,17 @@
-{config, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   sops.secrets = {
     "k3s/token" = {};
   };
+
+  environment.systemPackages = [
+    pkgs.sops
+    pkgs.age
+    pkgs.nfs-utils
+  ];
 
   services.openiscsi = {
     enable = true;
