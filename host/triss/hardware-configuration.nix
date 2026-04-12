@@ -13,7 +13,7 @@
     loader.efi.canTouchEfiVariables = true;
     initrd = {
       availableKernelModules = ["xhci_pci" "virtio_pci" "virtio_scsi" "usbhid"];
-      kernelModules = ["kvm"];
+      kernelModules = ["kvm" "br_netfilter" "overlay" "veth" "vxlan"];
     };
   };
   security.rtkit.enable = true;

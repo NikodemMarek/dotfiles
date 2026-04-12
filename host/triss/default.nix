@@ -10,7 +10,7 @@
     ./k3s.nix
   ];
 
-  boot.loader.systemd-boot.configurationLimit = lib.mkForce 3;
+  boot.loader.systemd-boot.configurationLimit = lib.mkForce 1;
   networking = {
     hostName = "triss";
   };
@@ -27,11 +27,10 @@
     };
     networks = {
       "10-default-dhcp" = {
-        matchConfig.Type = "ether wlan wwan";
+        matchConfig.Name = "eth0";
         networkConfig = {
           DHCP = "yes";
           IPv6AcceptRA = "yes";
-          IgnoreCarrierLoss = "3s";
         };
       };
     };
@@ -46,9 +45,9 @@
 
   networking.firewall.allowedTCPPorts = [
     22
-    6443
   ];
   networking.firewall.allowedUDPPorts = [
     22
+    53
   ];
 }

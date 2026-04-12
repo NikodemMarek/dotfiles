@@ -9,7 +9,12 @@
     tokenFile = config.sops.secrets."k3s/token".path;
     clusterInit = true;
     extraFlags = toString [
+      "--kube-proxy-arg=proxy-mode=nftables"
+      "--disable-network-policy"
+      "--flannel-backend=vxlan"
       "--flannel-iface=eth0"
+
+      "--disable=traefik"
     ];
   };
 
@@ -27,4 +32,18 @@
       mode = "755";
     }
   ];
+
+  networking.firewall = {
+    allowedTCPPorts = [6443];
+    allowedUDPPorts = [8472 53];
+
+    checkReversePath = "loose";
+
+    trustedInterfaces = ["cni0" "flannel.1"];
+  };
+
+  systemd.network.networks."10-k3s-interfaces" = {
+    matchConfig.Name = "veth*";
+    linkConfig.Unmanaged = true;
+  };
 }
