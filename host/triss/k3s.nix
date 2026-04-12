@@ -3,6 +3,15 @@
     "k3s/token" = {};
   };
 
+  services.openiscsi = {
+    enable = true;
+    name = "${config.networking.hostName}-initiatorhost";
+  };
+  systemd.services.iscsid.serviceConfig = {
+    PrivateMounts = "yes";
+    BindPaths = "/run/current-system/sw/bin:/bin";
+  };
+
   services.k3s = {
     enable = true;
     role = "server";
