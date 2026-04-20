@@ -27,20 +27,8 @@
 
     neovim.url = "github:NikodemMarek/neovim";
 
-    walker.url = "github:not-matthias/walker";
-
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixGL = {
-      url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    nixvirt = {
-      url = "https://flakehub.com/f/AshleyYakeley/NixVirt/*.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -35,11 +35,6 @@
       description = "[host] create a new host key";
     }
     {
-      name = "sops";
-      command = "sops";
-      description = "[file] update secrets";
-    }
-    {
       name = "sops-mkpasswd";
       command = "echo \"$1\" | mkpasswd -s";
       description = "[password] generate password";
@@ -48,11 +43,6 @@
       name = "sops-updatekeys";
       command = "sops updatekeys";
       description = "[file] update secrets keys";
-    }
-    {
-      name = "build";
-      command = "nix build .#$1";
-      description = "[package] build package";
     }
     {
       name = "install-remote";
