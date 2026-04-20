@@ -28,7 +28,14 @@
     get-yt-album = pkgs.writeShellScriptBin "get-yt-album" ''
       TEMP=$(mktemp -d)
       ${lib.getExe download-yt} $TEMP $1
-      ${lib.getExe beets} import --write $TEMP
+      ${beets}/bin/beet import --write $TEMP
+      echo $TEMP
+    '';
+
+    get-yt-single = pkgs.writeShellScriptBin "get-yt-single" ''
+      TEMP=$(mktemp -d)
+      ${lib.getExe download-yt} $TEMP $1
+      ${beets}/bin/beet import --singleton --write $TEMP
       echo $TEMP
     '';
   in [
@@ -40,6 +47,7 @@
     download-yt-restricted
 
     get-yt-album
+    get-yt-single
 
     pkgs.ffmpeg
   ];
