@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -9,14 +9,14 @@
 
     ./arrstack
     ./music
-    ./printing.nix
+    ./gutenberg
+    # ./printing.nix
     ./nfs.nix
   ];
 
   networking = {
     # hostId = "a3a35e1d";
     hostName = "roach";
-
   };
 
   time.timeZone = "Europe/Warsaw";
