@@ -195,12 +195,12 @@
     "custom/quit": {
         "format": "󰗼",
         "tooltip": false,
-        "on-click": "loginctl kill-sessions"
+        "on-click": "loginctl terminate-user $USER"
     },
     "custom/lock": {
         "format": "󰍁",
         "tooltip": false,
-        "on-click": "loginctl lock-sessions"
+        "on-click": "loginctl lock-session"
     },
     "custom/reboot": {
         "format": "󰜉",
