@@ -13,6 +13,7 @@ pkgs.symlinkJoin {
       pkgs.wrapped.rofi
       pkgs.wrapped.dunst
       pkgs.wrapped.waybar
+      pkgs.wrapped.kanshi
 
       pkgs.yazi
       pkgs.zen-browser
