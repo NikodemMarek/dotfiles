@@ -4,6 +4,7 @@
     hyprland = pkgs.callPackage ./hyprland {};
     hyprlock = pkgs.callPackage ./hyprlock {};
     hypridle = pkgs.callPackage ./hypridle {};
+    hyprpaper = pkgs.callPackage ./hyprpaper {};
     rofi = pkgs.callPackage ./rofi {};
     dunst = pkgs.callPackage ./dunst {};
     git = pkgs.callPackage ./git {};

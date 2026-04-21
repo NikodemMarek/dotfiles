@@ -8,6 +8,7 @@ pkgs.symlinkJoin {
     extraPkgs = [
       pkgs.wrapped.hypridle
       pkgs.wrapped.hyprlock
+      pkgs.wrapped.hyprpaper
       pkgs.wrapped.zellij
       pkgs.wrapped.rofi
       pkgs.wrapped.dunst
