@@ -21,6 +21,9 @@
     PrivateMounts = "yes";
     BindPaths = "/run/current-system/sw/bin:/bin";
   };
+  systemd.tmpfiles.rules = [
+    "d /run/flannel 0755 root root -"
+  ];
 
   services.k3s = {
     enable = true;
@@ -34,6 +37,7 @@
       "--flannel-iface=eth0"
 
       "--disable=traefik"
+      "--disable-cloud-controller"
     ];
   };
 
@@ -46,6 +50,12 @@
     }
     {
       directory = "/var/lib/kubelet";
+      user = "root";
+      group = "root";
+      mode = "755";
+    }
+    {
+      directory = "/var/lib/longhorn";
       user = "root";
       group = "root";
       mode = "755";
