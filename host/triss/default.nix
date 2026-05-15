@@ -6,8 +6,7 @@
     ../features/optional/systemd-boot.nix
     ../features/optional/tailscale.nix
     ../features/optional/maintenance.nix
-
-    ./k3s.nix
+    ../features/optional/k3s.nix
   ];
 
   boot.loader.systemd-boot.configurationLimit = lib.mkForce 1;
@@ -50,4 +49,21 @@
     22
     53
   ];
+
+  services.k3s = {
+    clusterInit = true;
+    role = "server";
+    extraFlags = toString [
+      "--kube-proxy-arg=proxy-mode=nftables"
+      "--disable-network-policy"
+      "--flannel-backend=vxlan"
+      "--flannel-iface=tailscale0"
+
+      "--node-ip=100.97.10.25"
+      "--advertise-address=100.97.10.25"
+
+      "--disable=traefik"
+      "--disable-cloud-controller"
+    ];
+  };
 }

@@ -6,6 +6,7 @@
     ../features/optional/systemd-boot.nix
     ../features/optional/tailscale.nix
     ../features/optional/maintenance.nix
+    ../features/optional/k3s.nix
 
     ./arrstack
     ./music
@@ -72,4 +73,14 @@
       group = "root";
     }
   ];
+
+  services.k3s = {
+    role = "agent";
+    serverAddr = "https://100.97.10.25:6443";
+    extraFlags = toString [
+      "--kube-proxy-arg=proxy-mode=nftables"
+      "--flannel-iface=tailscale0"
+      "--node-ip=100.109.230.83"
+    ];
+  };
 }

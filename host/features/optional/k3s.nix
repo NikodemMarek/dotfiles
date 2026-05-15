@@ -27,18 +27,12 @@
 
   services.k3s = {
     enable = true;
-    role = "server";
     tokenFile = config.sops.secrets."k3s/token".path;
-    clusterInit = true;
-    extraFlags = toString [
-      "--kube-proxy-arg=proxy-mode=nftables"
-      "--disable-network-policy"
-      "--flannel-backend=vxlan"
-      "--flannel-iface=eth0"
+  };
 
-      "--disable=traefik"
-      "--disable-cloud-controller"
-    ];
+  systemd.services.k3s = {
+    after = ["tailscaled.service"];
+    wants = ["tailscaled.service"];
   };
 
   persist.generated.directories = [
