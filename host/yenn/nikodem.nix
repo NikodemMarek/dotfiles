@@ -35,7 +35,9 @@
       pkgs.rnote
       pkgs.zathura
       pkgs.kooha
+      pkgs.impala
       pkgs.bluetui
+      pkgs.wiremix
       pkgs.yazi
       pkgs.nmap
       pkgs.tcpdump
