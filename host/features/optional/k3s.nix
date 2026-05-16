@@ -65,6 +65,15 @@
     trustedInterfaces = ["cni0" "flannel.1"];
   };
 
+  networking.nftables.ruleset = ''
+    table ip k3s-pod-snat {
+      chain postrouting {
+        type nat hook postrouting priority 100; policy accept;
+        oifname "tailscale0" ip saddr 10.42.0.0/16 masquerade comment "SNAT pod traffic egressing tailscale0 — Tailscale drops non-tailnet sources"
+      }
+    }
+  '';
+
   systemd.network.networks."10-k3s-interfaces" = {
     matchConfig.Name = "veth*";
     linkConfig.Unmanaged = true;
