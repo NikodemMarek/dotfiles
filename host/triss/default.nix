@@ -1,4 +1,8 @@
-{lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -51,15 +55,11 @@
   ];
 
   services.k3s = {
-    clusterInit = true;
     role = "server";
     extraFlags = toString [
       "--kube-proxy-arg=proxy-mode=nftables"
-      "--disable-network-policy"
-      "--flannel-backend=vxlan"
-      "--flannel-iface=tailscale0"
+      "--vpn-auth-file=${config.sops.templates."k3s-vpn-auth".path}"
 
-      "--node-ip=100.97.10.25"
       "--advertise-address=100.97.10.25"
 
       "--disable=traefik"

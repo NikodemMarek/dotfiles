@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
 
@@ -79,8 +79,7 @@
     serverAddr = "https://100.97.10.25:6443";
     extraFlags = toString [
       "--kube-proxy-arg=proxy-mode=nftables"
-      "--flannel-iface=tailscale0"
-      "--node-ip=100.109.230.83"
+      "--vpn-auth-file=${config.sops.templates."k3s-vpn-auth".path}"
     ];
   };
 }

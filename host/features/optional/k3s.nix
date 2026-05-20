@@ -5,7 +5,10 @@
 }: {
   sops.secrets = {
     "k3s/token" = {};
+    "k3s/tailscale-auth-key" = {};
   };
+
+  sops.templates."k3s-vpn-auth".content = "name=tailscale,joinKey=${config.sops.placeholder."k3s/tailscale-auth-key"}";
 
   environment.systemPackages = [
     pkgs.sops
@@ -33,6 +36,7 @@
   systemd.services.k3s = {
     after = ["tailscaled.service"];
     wants = ["tailscaled.service"];
+    path = [pkgs.tailscale];
   };
 
   persist.generated.directories = [
@@ -58,23 +62,14 @@
 
   networking.firewall = {
     allowedTCPPorts = [6443];
-    allowedUDPPorts = [8472 53];
+    allowedUDPPorts = [53];
 
     checkReversePath = "loose";
 
-    trustedInterfaces = ["cni0" "flannel.1"];
+    trustedInterfaces = ["cni0"];
   };
 
-  networking.nftables.ruleset = ''
-    table ip k3s-pod-snat {
-      chain postrouting {
-        type nat hook postrouting priority 100; policy accept;
-        oifname "tailscale0" ip saddr 10.42.0.0/16 masquerade comment "SNAT pod traffic egressing tailscale0 — Tailscale drops non-tailnet sources"
-      }
-    }
-  '';
-
-  systemd.network.networks."10-k3s-interfaces" = {
+  systemd.network.networks."05-k3s-interfaces" = {
     matchConfig.Name = "veth*";
     linkConfig.Unmanaged = true;
   };
