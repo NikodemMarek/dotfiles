@@ -8,7 +8,6 @@
     ../features/optional/maintenance.nix
     ../features/optional/k3s.nix
 
-    ./arrstack
     ./music
     # ./printing.nix
     ./nfs.nix
