@@ -10,7 +10,6 @@
 
     ./arrstack
     ./music
-    ./gutenberg
     # ./printing.nix
     ./nfs.nix
   ];
