@@ -6,21 +6,16 @@
       enable = false;
       setSocketVariable = true;
     };
+    daemon.settings = {
+      dns = ["1.1.1.1" "8.8.8.8"];
+    };
   };
 
-  systemd.network.networks = {
-    "0-docker0" = {
-      matchConfig.Name = "docker0";
-      linkConfig = {
-        Unmanaged = true;
-      };
-    };
-    "0-docker-br" = {
-      matchConfig.Name = "br-*";
-      linkConfig = {
-        Unmanaged = true;
-      };
-    };
+  networking.firewall.trustedInterfaces = ["docker0" "br-+"];
+
+  systemd.network.networks."05-docker-veth" = {
+    matchConfig.Name = "veth* docker* br-*";
+    linkConfig.Unmanaged = true;
   };
 
   persist.generated.directories = [
