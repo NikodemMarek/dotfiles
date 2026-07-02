@@ -29,6 +29,13 @@
 
   systemd.network = {
     links = {
+      "10-wired-rename" = {
+        matchConfig = {
+          Type = "ether";
+          Kind = "!*";
+        };
+        linkConfig = {Name = "eth0";};
+      };
       "10-wireless-rename" = {
         matchConfig = {
           Type = "wlan";
