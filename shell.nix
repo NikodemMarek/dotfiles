@@ -69,6 +69,19 @@
       '';
       description = "[host user@ip] install on remote host";
     }
+    {
+      name = "mkiso";
+      command = "nixos-generate --format iso --configuration ./host/alp/default.nix -o result";
+      description = "generate iso file";
+    }
+    {
+      name = "writeiso";
+      command = ''
+        ISO=$(ls result/iso/*.iso)
+        sudo dd if=$ISO of=$1 status=progress && sync
+      '';
+      description = "[/dev/XXX] write iso file to device";
+    }
   ];
 in {
   default = pkgs.mkShell {
