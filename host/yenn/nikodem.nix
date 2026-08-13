@@ -9,7 +9,7 @@
     systemPackages = [
       pkgs.wrapped.gitui
       pkgs.wrapped.kanshi
-      pkgs.wrapped.gemini-cli
+      pkgs.antigravity-cli
       pkgs.wrapped.claude-code
       pkgs.wrapped.signal-desktop
 

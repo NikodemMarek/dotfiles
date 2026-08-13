@@ -22,7 +22,6 @@
         ".local/share/direnv"
         ".local/share/keyrings"
         ".local/share/Google"
-        ".local/share/.gemini"
         ".local/share/claude"
         ".local/share/JetBrains"
         ".local/share/nvim"
