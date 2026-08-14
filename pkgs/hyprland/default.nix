@@ -29,8 +29,8 @@ pkgs.symlinkJoin {
   in ''
     wrapProgram $out/bin/Hyprland \
         --suffix PATH : ${pkgs.lib.strings.makeBinPath extraPkgs} \
-        --add-flags "--config $out/bin/config.conf"
+        --add-flags "--config $out/bin/config.lua"
 
-    cp ${./config.conf} $out/bin/config.conf
+    cp ${./config.lua} $out/bin/config.lua
   '';
 }
