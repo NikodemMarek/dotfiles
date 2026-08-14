@@ -9,6 +9,7 @@
     dunst = pkgs.callPackage ./dunst {};
     git = pkgs.callPackage ./git {};
     gitui = pkgs.callPackage ./gitui {};
+    jujutsu = pkgs.callPackage ./jujutsu {};
     waybar = pkgs.callPackage ./waybar {};
     kanshi = pkgs.callPackage ./kanshi {};
     claude-code = pkgs.callPackage ./claude-code {};

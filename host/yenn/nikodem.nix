@@ -12,6 +12,7 @@
       pkgs.antigravity-cli
       pkgs.wrapped.claude-code
       pkgs.wrapped.signal-desktop
+      pkgs.wrapped.jujutsu
 
       pkgs.alacritty
       pkgs.remmina
