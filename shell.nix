@@ -60,12 +60,19 @@
         trap cleanup EXIT
 
         install -d -m755 "$temp/persist/data/etc/ssh"
-
         cat ./host/$1/ssh_host_ed25519_key > "$temp/persist/data/etc/ssh/ssh_host_ed25519_key"
-
         chmod 600 "$temp/persist/data/etc/ssh/ssh_host_ed25519_key"
 
-        nixos-anywhere --extra-files "$temp" --flake .#$1 $2 --option pure-eval false
+        # only for zfs encrypted filesystems
+        # install -d -m755 "$temp/persist/data/etc/zfs"
+        # cat ./host/$1/disk.key > "$temp/persist/data/etc/zfs/disk.key"
+        # chmod 600 "$temp/persist/data/etc/zfs/disk.key"
+
+        nixos-anywhere \
+          --disk-encryption-keys /tmp/disk.key ./host/$1/disk.key \
+          --extra-files "$temp" \
+          --flake .#$1 $2 \
+          --option pure-eval false
       '';
       description = "[host user@ip] install on remote host";
     }

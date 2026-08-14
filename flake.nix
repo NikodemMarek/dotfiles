@@ -75,6 +75,7 @@
       yenn = mkHost "yenn";
       geralt = mkHost "geralt";
       roach = mkHost "roach";
+      regis = mkHost "regis";
       triss = lib.nixosSystem {
         pkgs = pkgsFor."aarch64-linux";
         specialArgs = {inherit inputs outputs;};

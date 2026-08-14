@@ -4,7 +4,9 @@
   ...
 }: {
   sops.secrets = {
+    # Generate with `k3s token create`
     "k3s/token" = {};
+    # Generate in tailscale console Settings > Keys
     "k3s/tailscale-auth-key" = {};
   };
 
