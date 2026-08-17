@@ -9,6 +9,7 @@
       /mnt/books          100.0.0.0/8(rw,sync,fsid=5,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=4,insecure,no_root_squash,no_subtree_check)
       /mnt/photos         100.0.0.0/8(rw,sync,fsid=6,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=5,insecure,no_root_squash,no_subtree_check)
       /mnt/files          100.0.0.0/8(rw,sync,fsid=7,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=6,insecure,no_root_squash,no_subtree_check)
+      /mnt/models         100.0.0.0/8(rw,sync,fsid=8,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=6,insecure,no_root_squash,no_subtree_check)
     '';
   };
 

@@ -101,10 +101,33 @@
           "nix" = {
             type = "zfs_fs";
             mountpoint = "/nix";
+            options = {
+              atime = "off";
+            };
           };
           "persist" = {
             type = "zfs_fs";
             mountpoint = "/persist";
+          };
+          "openebs" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/openebs";
+            mountOptions = ["nofail"];
+            options = {
+              recordsize = "128K";
+              overlay = "on";
+              atime = "off";
+            };
+          };
+          "models" = {
+            type = "zfs_fs";
+            mountpoint = "/mnt/models";
+            mountOptions = ["nofail"];
+            options = {
+              recordsize = "1M";
+              overlay = "on";
+              atime = "off";
+            };
           };
         };
       };
@@ -149,6 +172,7 @@
             options = {
               recordsize = "128K";
               overlay = "on";
+              atime = "off";
             };
           };
           "movies" = {
@@ -158,6 +182,7 @@
             options = {
               recordsize = "1M";
               overlay = "on";
+              atime = "off";
             };
           };
           "shows" = {
@@ -167,6 +192,7 @@
             options = {
               recordsize = "1M";
               overlay = "on";
+              atime = "off";
             };
           };
           "books" = {
@@ -176,6 +202,7 @@
             options = {
               recordsize = "128K";
               overlay = "on";
+              atime = "off";
             };
           };
           "photos" = {
@@ -185,6 +212,7 @@
             options = {
               recordsize = "128K";
               overlay = "on";
+              atime = "off";
             };
           };
           "files" = {
@@ -194,6 +222,7 @@
             options = {
               recordsize = "128K";
               overlay = "on";
+              atime = "off";
             };
           };
           "backups" = {
@@ -203,6 +232,7 @@
             options = {
               recordsize = "128K";
               overlay = "on";
+              atime = "off";
             };
           };
         };

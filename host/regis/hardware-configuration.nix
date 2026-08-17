@@ -35,6 +35,7 @@ in {
         "ahci"
         "usb_storage"
         "sd_mod"
+        "dm_crypt"
       ];
       kernelModules = ["kvm-intel" "zfs" "r8126"];
     };
