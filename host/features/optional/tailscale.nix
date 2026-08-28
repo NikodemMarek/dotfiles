@@ -28,7 +28,7 @@
         }
 
         chain input-allow {
-          iifname "tailscale0" tcp dport { 22, 80, 443, 2049, 7878, 8989, 8686, 8787, 9696, 6969 } accept comment "Tailscale allowed TCP ports"
+          iifname "tailscale0" tcp dport { 22, 80, 443, 2049, 7878, 8989, 8686, 8787, 9696, 6969, 22000 } accept comment "Tailscale allowed TCP ports"
           udp dport ${toString config.services.tailscale.port} accept comment "Tailscale UDP port"
         }
 
