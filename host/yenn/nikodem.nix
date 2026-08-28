@@ -48,6 +48,7 @@
       pkgs.vscode-extensions.vadimcn.vscode-lldb.adapter
       pkgs.opencode
       pkgs.libreoffice
+      pkgs.lmstudio
 
       pkgs.prismlauncher
       pkgs.heroic

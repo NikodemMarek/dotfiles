@@ -17,6 +17,9 @@
         ".config/JetBrains"
         ".config/heroic"
         ".config/zen"
+        ".config/LM-Studio"
+        ".config/LM Studio"
+        ".lmstudio"
 
         ".local/share/zoxide"
         ".local/share/direnv"
