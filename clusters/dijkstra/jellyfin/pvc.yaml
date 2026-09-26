@@ -42,6 +42,7 @@ spec:
   resources:
     requests:
       storage: 10Gi
+  volumeName: jellyfin-cache-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -58,6 +59,34 @@ spec:
     requests:
       storage: 5Gi
   volumeName: seerr-data-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-movies-pvc
+  namespace: jellyfin
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 200Gi
+  volumeName: jellyfin-movies-pv
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-shows-pvc
+  namespace: jellyfin
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 200Gi
+  volumeName: jellyfin-shows-pv
 
 ---
 apiVersion: v1
