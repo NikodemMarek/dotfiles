@@ -22,6 +22,15 @@ spec:
         name: audiomuse-ai-repo
       version: v1.1.6
   interval: 10m0s
+  values:
+    redis:
+      replicaCount: 0
+    postgres:
+      replicaCount: 0
+    worker:
+      replicaCount: 0
+    flask:
+      replicaCount: 0
   valuesFrom:
     - kind: ConfigMap
       name: audiomuse-ai-config

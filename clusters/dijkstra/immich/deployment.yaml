@@ -15,6 +15,12 @@ spec:
       labels:
         app: immich
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
+      volumes:
+        - name: photos
+          persistentVolumeClaim:
+            claimName: immich-photos-pvc
       containers:
         - name: immich
           image: ghcr.io/immich-app/immich-server:v2.4.1
@@ -49,10 +55,6 @@ spec:
             limits:
               memory: "768Mi"
               cpu: "1000m"
-      volumes:
-        - name: photos
-          persistentVolumeClaim:
-            claimName: immich-photos-pvc
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -71,6 +73,8 @@ spec:
       labels:
         app: immich-redis
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
       containers:
         - name: immich-redis
           image: docker.io/valkey/valkey:9@sha256:fb8d272e529ea567b9bf1302245796f21a2672b8368ca3fcb938ac334e613c8f
@@ -101,8 +105,10 @@ spec:
       labels:
         app: immich-postgres
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
       volumes:
-        - name: immich-data-storage
+        - name: data
           persistentVolumeClaim:
             claimName: immich-data-pvc
       containers:
@@ -111,7 +117,7 @@ spec:
           ports:
             - containerPort: 5432
           volumeMounts:
-            - name: immich-data-storage
+            - name: data
               mountPath: /var/lib/postgresql/data
           env:
             - name: POSTGRES_PASSWORD
@@ -147,8 +153,10 @@ spec:
       labels:
         app: immich-machine-learning
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
       volumes:
-        - name: immich-ml-storage
+        - name: ml
           persistentVolumeClaim:
             claimName: immich-ml-pvc
       containers:
@@ -160,7 +168,7 @@ spec:
             - name: IMMICH_PORT
               value: "3003"
           volumeMounts:
-            - name: immich-ml-storage
+            - name: ml
               mountPath: /cache
           resources:
             requests:

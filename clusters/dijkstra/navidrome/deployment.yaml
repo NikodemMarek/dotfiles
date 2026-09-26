@@ -17,6 +17,15 @@ spec:
       labels:
         app: navidrome
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: navidrome-data-pvc
+        - name: music
+          persistentVolumeClaim:
+            claimName: navidrome-music-pvc
       initContainers:
         - name: get-plugins
           image: busybox:latest
@@ -73,10 +82,3 @@ spec:
             limits:
               memory: "384Mi"
               cpu: "1000m"
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: navidrome-data-pvc
-        - name: music
-          persistentVolumeClaim:
-            claimName: navidrome-music-pvc

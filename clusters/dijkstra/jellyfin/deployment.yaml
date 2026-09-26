@@ -15,16 +15,18 @@ spec:
       labels:
         app: jellyfin
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: jellyfin-config
+            claimName: jellyfin-config-pvc
         - name: data
           persistentVolumeClaim:
-            claimName: jellyfin-data
+            claimName: jellyfin-data-pvc
         - name: cache
           persistentVolumeClaim:
-            claimName: jellyfin-cache
+            claimName: jellyfin-cache-pvc
         - name: movies
           persistentVolumeClaim:
             claimName: jellyfin-movies-pvc
@@ -82,6 +84,12 @@ spec:
       labels:
         app: seerr
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: seerr-data-pvc
       containers:
         - name: seerr
           image: seerr/seerr:latest
@@ -97,7 +105,3 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
-      volumes:
-        - name: data
-          persistentVolumeClaim:
-            claimName: seerr-data-pvc
