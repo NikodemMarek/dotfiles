@@ -6,7 +6,7 @@ metadata:
   labels:
     app: immich
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: immich
@@ -64,7 +64,7 @@ metadata:
   labels:
     app: immich-redis
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: immich-redis
@@ -96,7 +96,7 @@ metadata:
   labels:
     app: immich-postgres
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: immich-postgres
@@ -144,7 +144,7 @@ metadata:
   labels:
     app: immich-machine-learning
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: immich-machine-learning
