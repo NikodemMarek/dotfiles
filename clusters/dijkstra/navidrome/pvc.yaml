@@ -26,3 +26,19 @@ spec:
     requests:
       storage: 200Gi
   volumeName: navidrome-music-pv
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: navidrome-data-openebs-mig
+  namespace: navidrome
+  labels:
+    recurring-job-group.longhorn.io/default: "enabled"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: openebs-hostpath
+  resources:
+    requests:
+      storage: 5Gi
