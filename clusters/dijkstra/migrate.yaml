@@ -1,0 +1,197 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jellyfin-config-migrate-job
+  namespace: jellyfin
+spec:
+  template:
+    spec:
+      containers:
+      - name: data-copier
+        image: debian:bookworm-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y rsync
+            rsync -avP --delete /src/ /dst/
+            echo "Copy complete!"
+        volumeMounts:
+        - mountPath: /src
+          name: source-vol
+          readOnly: true
+        - mountPath: /dst
+          name: dest-vol
+      restartPolicy: Never
+      volumes:
+      - name: source-vol
+        persistentVolumeClaim:
+          claimName: jellyfin-config
+      - name: dest-vol
+        persistentVolumeClaim:
+          claimName: jellyfin-config-openebs
+  backoffLimit: 1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jellyfin-data-migrate-job
+  namespace: jellyfin
+spec:
+  template:
+    spec:
+      containers:
+      - name: data-copier
+        image: debian:bookworm-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y rsync
+            rsync -avP --delete /src/ /dst/
+            echo "Copy complete!"
+        volumeMounts:
+        - mountPath: /src
+          name: source-vol
+          readOnly: true
+        - mountPath: /dst
+          name: dest-vol
+      restartPolicy: Never
+      volumes:
+      - name: source-vol
+        persistentVolumeClaim:
+          claimName: jellyfin-data
+      - name: dest-vol
+        persistentVolumeClaim:
+          claimName: jellyfin-data-openebs
+  backoffLimit: 1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: immich-data-migrate-job
+  namespace: immich
+spec:
+  template:
+    spec:
+      containers:
+      - name: data-copier
+        image: debian:bookworm-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y rsync
+            rsync -avP --delete /src/ /dst/
+            echo "Copy complete!"
+        volumeMounts:
+        - mountPath: /src
+          name: source-vol
+          readOnly: true
+        - mountPath: /dst
+          name: dest-vol
+      restartPolicy: Never
+      volumes:
+      - name: source-vol
+        persistentVolumeClaim:
+        claimName: immich-data-pvc
+      - name: dest-vol
+        persistentVolumeClaim:
+          claimName: immich-data-openebs-mig
+  backoffLimit: 1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: arrstack-config-migrate-job
+  namespace: arrstack
+spec:
+  template:
+    spec:
+      containers:
+      - name: data-copier
+        image: debian:bookworm-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y rsync
+            rsync -avP --delete /src/ /dst/
+            echo "Copy complete!"
+        volumeMounts:
+        - mountPath: /src
+          name: source-vol
+          readOnly: true
+        - mountPath: /dst
+          name: dest-vol
+      restartPolicy: Never
+      volumes:
+      - name: source-vol
+        persistentVolumeClaim:
+        claimName: arrstack-config-pvc
+      - name: dest-vol
+        persistentVolumeClaim:
+          claimName: arrstack-config-openebs-mig
+  backoffLimit: 1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: navidrome-data-migrate-job
+  namespace: navidrome
+spec:
+  template:
+    spec:
+      containers:
+      - name: data-copier
+        image: debian:bookworm-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y rsync
+            rsync -avP --delete /src/ /dst/
+            echo "Copy complete!"
+        volumeMounts:
+        - mountPath: /src
+          name: source-vol
+          readOnly: true
+        - mountPath: /dst
+          name: dest-vol
+      restartPolicy: Never
+      volumes:
+      - name: source-vol
+        persistentVolumeClaim:
+        claimName: navidrome-data-pvc
+      - name: dest-vol
+        persistentVolumeClaim:
+          claimName: navidrome-data-openebs-mig
+  backoffLimit: 1
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: audiomuse-ai-migrate-job
+  namespace: navidrome
+spec:
+  template:
+    spec:
+      containers:
+      - name: data-copier
+        image: debian:bookworm-slim
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            apt-get update && apt-get install -y rsync
+            rsync -avP --delete /src/ /dst/
+            echo "Copy complete!"
+        volumeMounts:
+        - mountPath: /src
+          name: source-vol
+          readOnly: true
+        - mountPath: /dst
+          name: dest-vol
+      restartPolicy: Never
+      volumes:
+      - name: source-vol
+        persistentVolumeClaim:
+        claimName: audiomuse-ai-release-postgres-pvc
+      - name: dest-vol
+        persistentVolumeClaim:
+          claimName: audiomuse-ai-release-postgres-openebs-mig
+  backoffLimit: 1
