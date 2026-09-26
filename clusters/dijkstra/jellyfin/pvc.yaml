@@ -12,6 +12,7 @@ spec:
   resources:
     requests:
       storage: 3Gi
+  volumeName: jellyfin-config-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -27,6 +28,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
+  volumeName: jellyfin-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -55,6 +57,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
+  volumeName: seerr-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

@@ -12,6 +12,7 @@ spec:
   resources:
     requests:
       storage: 5Gi
+  volumeName: navidrome-data-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
