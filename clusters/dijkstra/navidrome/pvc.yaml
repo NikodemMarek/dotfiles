@@ -1,6 +1,21 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: navidrome-music-pvc
+  namespace: navidrome
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: nfs
+  resources:
+    requests:
+      storage: 200Gi
+  volumeName: navidrome-music-pv
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: navidrome-data-pvc
   namespace: navidrome
   labels:
@@ -13,20 +28,6 @@ spec:
     requests:
       storage: 5Gi
   volumeName: navidrome-data-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: navidrome-music-pvc
-  namespace: navidrome
-spec:
-  accessModes:
-    - ReadOnlyMany
-  storageClassName: nfs
-  resources:
-    requests:
-      storage: 200Gi
-  volumeName: navidrome-music-pv
 
 ---
 apiVersion: v1
