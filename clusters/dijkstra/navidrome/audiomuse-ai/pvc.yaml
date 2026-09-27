@@ -4,8 +4,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: audiomuse-ai-release-postgres-openebs-mig
   namespace: navidrome
-  labels:
-    recurring-job-group.longhorn.io/default: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce
