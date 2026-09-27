@@ -1,28 +1,28 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lidarr
+  name: beets
   namespace: arrstack
   labels:
-    app: lidarr
+    app: beets
 spec:
   replicas: 1
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app: lidarr
+      app: beets
   template:
     metadata:
       labels:
-        app: lidarr
+        app: beets
     spec:
       nodeSelector:
         kubernetes.io/hostname: regis
       volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: arrstack-config-pvc
+        - name: beets-config
+          configMap:
+            name: beets-config
         - name: downloads
           persistentVolumeClaim:
             claimName: arrstack-downloads-pvc
@@ -30,20 +30,26 @@ spec:
           persistentVolumeClaim:
             claimName: arrstack-music-pvc
       containers:
-        - name: lidarr
-          image: linuxserver/lidarr:nightly
+        - name: beets
+          image: lscr.io/linuxserver/beets:latest
+          command: ["python3", "/config/server.py"]
           env:
             - name: PUID
               value: "1000"
             - name: PGID
               value: "1000"
+            - name: PORT
+              value: "8000"
           ports:
-            - name: webui
-              containerPort: 8686
+            - name: http
+              containerPort: 8000
           volumeMounts:
-            - name: config
-              mountPath: /config
-              subPath: lidarr
+            - name: beets-config
+              mountPath: /config/config.yaml
+              subPath: config.yaml
+            - name: beets-config
+              mountPath: /config/server.py
+              subPath: server.py
             - name: downloads
               mountPath: /downloads
             - name: music
@@ -51,7 +57,7 @@ spec:
           resources:
             requests:
               cpu: "50m"
-              memory: "256Mi"
+              memory: "128Mi"
             limits:
               cpu: "1000m"
               memory: "1Gi"
