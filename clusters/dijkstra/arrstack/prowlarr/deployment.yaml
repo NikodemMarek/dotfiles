@@ -6,7 +6,7 @@ metadata:
   labels:
     app: prowlarr
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -18,7 +18,7 @@ spec:
         app: prowlarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: triss
+        kubernetes.io/hostname: regis
       containers:
         - name: prowlarr
           image: linuxserver/prowlarr:latest

@@ -6,7 +6,7 @@ metadata:
   labels:
     app: lidarr
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -18,7 +18,7 @@ spec:
         app: lidarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: triss
+        kubernetes.io/hostname: regis
       containers:
         - name: lidarr
           image: linuxserver/lidarr:nightly

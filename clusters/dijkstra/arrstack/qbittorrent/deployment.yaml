@@ -40,7 +40,7 @@ metadata:
   labels:
     app: qbittorrent
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -52,7 +52,7 @@ spec:
         app: qbittorrent
     spec:
       nodeSelector:
-        kubernetes.io/hostname: triss
+        kubernetes.io/hostname: regis
       serviceAccountName: qbittorrent-tailscale
       # Tailscale as a native sidecar (starts before main, keeps running).
       # First deploy with TS_EXTRA_ARGS empty so the device can register before Mullvad is enabled.

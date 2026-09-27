@@ -6,7 +6,7 @@ metadata:
   labels:
     app: sonarr
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -18,7 +18,7 @@ spec:
         app: sonarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: triss
+        kubernetes.io/hostname: regis
       containers:
         - name: sonarr
           image: linuxserver/sonarr:latest

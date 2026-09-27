@@ -6,7 +6,7 @@ metadata:
   labels:
     app: radarr
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -18,7 +18,7 @@ spec:
         app: radarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: triss
+        kubernetes.io/hostname: regis
       containers:
         - name: radarr
           image: linuxserver/radarr:latest

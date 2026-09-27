@@ -6,7 +6,7 @@ metadata:
   labels:
     app: flaresolverr
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: flaresolverr
@@ -16,7 +16,7 @@ spec:
         app: flaresolverr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: triss
+        kubernetes.io/hostname: regis
       containers:
         - name: flaresolverr
           image: ghcr.io/flaresolverr/flaresolverr:latest

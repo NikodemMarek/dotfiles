@@ -6,7 +6,7 @@ metadata:
   labels:
     app: bazarr
 spec:
-  replicas: 1
+  replicas: 0
   strategy:
     type: Recreate
   selector:
@@ -18,7 +18,7 @@ spec:
         app: bazarr
     spec:
       nodeSelector:
-        kubernetes.io/hostname: triss
+        kubernetes.io/hostname: regis
       containers:
         - name: bazarr
           image: linuxserver/bazarr:latest
