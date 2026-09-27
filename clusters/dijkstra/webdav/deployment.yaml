@@ -4,7 +4,7 @@ metadata:
   name: books
   namespace: webdav
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: books
