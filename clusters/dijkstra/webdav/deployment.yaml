@@ -4,7 +4,7 @@ metadata:
   name: books
   namespace: webdav
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: books
@@ -13,10 +13,12 @@ spec:
       labels:
         app: books
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
       volumes:
         - name: books
           persistentVolumeClaim:
-            claimName: books-pvc
+            claimName: webdav-books-pvc
       containers:
         - name: rclone
           image: rclone/rclone:latest
