@@ -31,9 +31,9 @@ spec:
             - name: OLLAMA_MODELS
               value: "/models"
             - name: OLLAMA_LOAD_TIMEOUT
-              value: "600"
+              value: "1200"
             - name: OLLAMA_KEEP_ALIVE
-              value: "7200"
+              value: "4h"
             - name: OLLAMA_CONTEXT_LENGTH
               value: "64000"
           volumeMounts:
