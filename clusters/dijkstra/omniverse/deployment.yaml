@@ -4,7 +4,7 @@ metadata:
   name: git-sync
   namespace: omniverse
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: git-sync
@@ -63,7 +63,7 @@ spec:
 
               while true; do
                 find . \( -path ./.git -prune \) -o \( -type f -size -${SIZE_LIMIT} -print0 \) | xargs -0 -r git add -f
-                
+
                 git add -u
 
                 if ! git diff --cached --quiet; then
@@ -83,7 +83,7 @@ metadata:
   name: webdav
   namespace: omniverse
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: webdav
