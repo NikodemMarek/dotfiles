@@ -13,10 +13,15 @@ spec:
       labels:
         app: hermes
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: triss
       volumes:
         - name: data
           persistentVolumeClaim:
             claimName: hermes-data-pvc
+        - name: omniverse
+          persistentVolumeClaim:
+            claimName: hermes-omniverse-pvc
       containers:
         - name: hermes
           image: nousresearch/hermes-agent:latest
@@ -25,6 +30,8 @@ spec:
             - containerPort: 8642
             - containerPort: 9119
           env:
+            - name: HERMES_WRITE_SAFE_ROOT
+              value: "/opt/data:/omniverse"
             - name: HERMES_DASHBOARD
               value: "true"
             - name: API_SERVER_ENABLED
@@ -40,7 +47,9 @@ spec:
                   key: api_server_key
           volumeMounts:
             - name: data
-              mountPath: /root/.hermes
+              mountPath: /opt/data
+            - name: omniverse
+              mountPath: /omniverse
           resources:
             requests:
               memory: "1Gi"
