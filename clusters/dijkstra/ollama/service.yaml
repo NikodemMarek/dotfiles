@@ -12,5 +12,5 @@ spec:
     app: ollama
   ports:
     - protocol: TCP
-      port: 11434
+      port: 80
       targetPort: 11434
