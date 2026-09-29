@@ -13,3 +13,7 @@ spec:
   nfs:
     server: 100.110.221.34
     path: /mnt/books
+  mountOptions:
+    - actimeo=300
+    - noatime
+    - nodiratime
