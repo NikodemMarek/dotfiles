@@ -34,6 +34,8 @@ spec:
               value: "600"
             - name: OLLAMA_KEEP_ALIVE
               value: "600"
+            - name: OLLAMA_CONTEXT_LENGTH
+              value: "64000"
           volumeMounts:
             - name: models
               mountPath: /models
