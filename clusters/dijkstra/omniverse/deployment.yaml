@@ -4,7 +4,7 @@ metadata:
   name: git-sync
   namespace: omniverse
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: git-sync
@@ -83,7 +83,7 @@ metadata:
   name: webdav
   namespace: omniverse
 spec:
-  replicas: 0
+  replicas: 1
   selector:
     matchLabels:
       app: webdav
