@@ -12,7 +12,12 @@ data:
       move: yes
       write: yes
       resume: no
+      incremental: no
       quiet: yes
+      quiet_fallback: asis
+
+    match:
+      strong_rec_thresh: 0.10
 
     plugins:
       - musicbrainz
