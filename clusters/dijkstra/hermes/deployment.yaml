@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hermes
+  namespace: hermes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hermes
+  template:
+    metadata:
+      labels:
+        app: hermes
+    spec:
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: hermes-data-pvc
+      containers:
+        - name: hermes
+          image: nousresearch/hermes-agent:latest
+          args: ["gateway", "run"]
+          ports:
+            - containerPort: 8642
+            - containerPort: 9119
+          env:
+            - name: HERMES_DASHBOARD
+              value: "true"
+            - name: API_SERVER_ENABLED
+              value: "true"
+            - name: API_SERVER_HOST
+              value: "0.0.0.0"
+            - name: API_SERVER_CORS_ORIGINS
+              value: "*"
+            - name: API_SERVER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hermes-secret
+                  key: api_server_key
+          volumeMounts:
+            - name: data
+              mountPath: /root/.hermes
+          resources:
+            requests:
+              memory: "1Gi"
+              cpu: "200m"
+            limits:
+              memory: "2Gi"
+              cpu: "800m"
