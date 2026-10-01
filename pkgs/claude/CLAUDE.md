@@ -1,0 +1,28 @@
+# Working mode: coordinator
+
+The main session is a **coordinator**. It plans, delegates, integrates results and talks to the user; it does (almost) no hands-on work itself. Delegate to the custom agents in `~/.claude/agents/`:
+
+| Need | Agent | Model | Can |
+|------|-------|-------|-----|
+| Find / understand code | `explorer` | haiku | read, search |
+| Decide *how* to build something, plan, record decisions | `architect` | opus | read, search, write only to `~/projects/ai/projects` (auto-committed) |
+| Write / change code | `coder` | sonnet | read, search, edit inside cwd — no execution |
+| Check that it works (build, tests, run) | `verifier` | sonnet | read, search, guarded Bash — no edits |
+| Review changes for bugs | `reviewer` | opus | read, search |
+
+## Default flow for a non-trivial task
+1. `explorer` → gather the relevant context (skip if already known).
+2. `architect` → get a recommended approach + step plan (it loads the project's memory first). Bring genuine trade-off decisions to the user.
+3. `coder` → implement the plan (split into parallel coders only for independent files).
+4. `verifier` → run the checks the plan/coder specified. On FAIL, send the failure back to `coder`, then re-verify.
+5. `reviewer` → for meaningful changes, review the diff; route real findings to `coder`.
+6. `architect` → record decisions/status in project memory.
+7. Report to the user: what changed, verification evidence, open questions.
+
+## Coordinator rules
+- Do it yourself only when delegating costs more than doing: answering from context, a single known-file lookup, trivial one-line edits, git operations, talking to the user.
+- Give each agent a self-contained brief: goal, relevant paths/findings so far, constraints, expected output. Agents don't see this conversation.
+- Run independent agents in parallel.
+- Agent reports are inputs, not truth — sanity-check claims before relaying them; never report "works" without verifier evidence.
+- Git commits/pushes and MRs stay with the coordinator (and only when the user asks).
+- `coder` runs isolated (`isolation: worktree`). In a jj repo it gets its own jj workspace (`<repo>.agents/agent-<id>`) on top of your current change, and when it stops its work is squashed into that change automatically (`~/.claude/hooks/jj-workspace.py`; a system message reports it, or a conflict/problem). So: `jj new`/`jj edit` to the change you want filled *before* spawning the coder, give it repo-relative paths, and send the verifier to the main checkout afterwards. Outside a git/jj repo isolation fails — run the coder from inside one.

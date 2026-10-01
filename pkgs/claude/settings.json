@@ -1,0 +1,81 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn test:*)",
+      "Bash(mvn compile:*)",
+      "mcp__git__git_add",
+      "mcp__git__git_commit",
+      "mcp__git__git_status",
+      "mcp__git__git_create_branch",
+      "mcp__git__git_checkout",
+      "mcp__glab__glab_mr_view",
+      "mcp__glab__glab_mr_create",
+      "mcp__glab__glab_ci_status",
+      "mcp__glab__glab_ci_trace",
+      "mcp__glab__glab_ci_list",
+      "mcp__glab__glab_stack_list",
+      "mcp__glab__glab_stack_create",
+      "mcp__glab__glab_stack_save",
+      "mcp__glab__glab_stack_sync",
+      "mcp__glab__glab_stack_amend",
+      "mcp__glab__glab_stack_next",
+      "mcp__glab__glab_stack_first"
+    ],
+    "deny": [],
+    "ask": []
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "sh $HOME/.claude/statusline-command.sh"
+  },
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true,
+    "caveman@caveman": false
+  },
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    }
+  },
+  "effortLevel": "xhigh",
+  "theme": "dark",
+  "skipAutoPermissionPrompt": true,
+  "hooks": {
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.claude/hooks/jj-workspace.py create",
+            "timeout": 120
+          }
+        ]
+      }
+    ],
+    "WorktreeRemove": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.claude/hooks/jj-workspace.py remove",
+            "timeout": 180
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 $HOME/.claude/hooks/jj-workspace.py stop",
+            "timeout": 180
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+# PreToolUse guard for Edit/Write/NotebookEdit in subagents.
+# Usage: guard-writes.sh code    -> allow writes only inside the session cwd, never into config/secrets/.git/architect memory
+#        guard-writes.sh memory  -> allow writes only inside the architect memory repo
+set -euo pipefail
+MODE="${1:?mode required}"
+MEM="$HOME/projects/ai/projects"
+input="$(cat)"
+path="$(jq -r '.tool_input.file_path // .tool_input.notebook_path // empty' <<<"$input")"
+cwd="$(jq -r '.cwd // empty' <<<"$input")"
+[ -z "$cwd" ] && cwd="$PWD"
+
+deny() {
+  jq -n --arg r "$1" '{hookSpecificOutput:{hookEventName:"PreToolUse",permissionDecision:"deny",permissionDecisionReason:$r}}'
+  exit 0
+}
+
+[ -z "$path" ] && deny "No file path in tool input."
+case "$path" in /*) ;; *) path="$cwd/$path" ;; esac
+abs="$(realpath -m -- "$path")"
+under() { case "$abs/" in "$(realpath -m -- "$1")"/*) return 0 ;; esac; return 1; }
+
+case "$abs" in */.git/*|*/.git) deny "Writing inside .git is not allowed for this agent." ;; esac
+case "$abs" in */.jj/*|*/.jj) deny "Writing inside .jj is not allowed for this agent." ;; esac
+
+if [ "$MODE" = memory ]; then
+  under "$MEM" || deny "Architect may only write inside $MEM (got $abs)."
+  exit 0
+fi
+
+# MODE=code
+under "$cwd" || deny "Writes outside the working directory ($cwd) are not allowed (got $abs)."
+for p in "$HOME/.claude" "$HOME/.ssh" "$HOME/.gnupg" "$HOME/.config" "$HOME/.local" "$HOME/.aws" "$HOME/.kube" "$HOME/.m2/settings.xml" "$MEM"; do
+  under "$p" && deny "Path $abs is protected (config/secrets/architect memory)."
+done
+# ~/.claude config is symlinked from this repo; editable only by agents working inside it
+AI="$HOME/projects/ai/ai"
+case "$(realpath -m -- "$cwd")/" in "$(realpath -m -- "$AI")"/*) ;; *) under "$AI" && deny "Path $abs is protected (AI config repo)." ;; esac
+# Top-level dotfiles in $HOME (.bashrc, .profile, ...)
+[ "$(dirname -- "$abs")" = "$HOME" ] && case "$(basename -- "$abs")" in .*) deny "Home dotfiles are protected." ;; esac
+case "$(basename -- "$abs")" in .env|.env.*|*.pem|*.key|id_rsa*|id_ed25519*) deny "Secret-like files are protected." ;; esac
+exit 0

@@ -1,0 +1,64 @@
+#!/bin/sh
+input=$(cat)
+
+# Directory
+dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
+[ -z "$dir" ] && dir=$(pwd)
+short_dir=$(echo "$dir" | sed "s|^$HOME|~|")
+
+# Git info
+git_branch=""
+git_dirty=""
+if command -v git >/dev/null 2>&1 && git -C "$dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  git_branch=$(git -C "$dir" branch --show-current 2>/dev/null)
+  if [ -n "$(git -C "$dir" status --porcelain 2>/dev/null)" ]; then
+    git_dirty='[$]'
+  fi
+fi
+
+# Package version (pom.xml or package.json)
+pkg_ver=""
+if [ -f "$dir/pom.xml" ]; then
+  pkg_ver=$(grep -m1 '<version>' "$dir/pom.xml" | sed 's/.*<version>\(.*\)<\/version>.*/\1/' | tr -d ' ')
+elif [ -f "$dir/package.json" ]; then
+  pkg_ver=$(jq -r '.version // empty' "$dir/package.json" 2>/dev/null)
+fi
+
+# Java version
+java_ver=""
+if command -v java >/dev/null 2>&1; then
+  java_ver=$(java -version 2>&1 | head -1 | sed 's/.*"\(.*\)".*/\1/')
+fi
+
+# Session uptime
+start=$(echo "$input" | jq -r '.session.start_time // empty')
+if [ -n "$start" ]; then
+  now=$(date +%s)
+  elapsed=$((now - start / 1000))
+  if [ "$elapsed" -ge 3600 ]; then
+    uptime="$(( elapsed / 3600 ))h$(( (elapsed % 3600) / 60 ))m"
+  elif [ "$elapsed" -ge 60 ]; then
+    uptime="$(( elapsed / 60 ))m"
+  else
+    uptime="${elapsed}s"
+  fi
+else
+  uptime=""
+fi
+
+# Model + context
+model=$(echo "$input" | jq -r '.model.display_name // empty')
+used=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
+ctx=""
+[ -n "$used" ] && ctx=$(printf "ctx:%.0f%%" "$used")
+
+# Build output: starship-like
+out="$short_dir"
+[ -n "$git_branch" ] && out="$out on  $git_branch $git_dirty"
+[ -n "$pkg_ver" ] && out="$out | v$pkg_ver"
+[ -n "$java_ver" ] && out="$out via v$java_ver"
+[ -n "$model" ] && out="$out | $model"
+[ -n "$ctx" ] && out="$out | $ctx"
+[ -n "$uptime" ] && out="$out | ${uptime}"
+
+printf '%s' "$out"
