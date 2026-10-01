@@ -5,16 +5,16 @@
 
   unstable-packages = final: _prev: {
     unstable = import inputs.nixpkgs {
-      system = final.system;
+      system = final.stdenv.hostPlatform.system;
       config.allowUnfree = true;
       config.allowUnfreePredicate = _: true;
     };
   };
 
   inputs-packages = final: prev: {
-    inherit (inputs.hyprland.packages.${prev.system}) hyprland xdg-desktop-portal-hyprland;
-    neovim = inputs.neovim.packages.${prev.system}.default;
-    inherit (inputs.zen-browser.packages.${prev.system}) zen-browser;
+    inherit (inputs.hyprland.packages.${prev.stdenv.hostPlatform.system}) hyprland xdg-desktop-portal-hyprland;
+    neovim = inputs.neovim.packages.${prev.stdenv.hostPlatform.system}.default;
+    inherit (inputs.zen-browser.packages.${prev.stdenv.hostPlatform.system}) zen-browser;
   };
 
   deploy-rs = final: prev: {

@@ -4,6 +4,10 @@ pkgs.symlinkJoin {
   paths = [pkgs.hyprland];
   buildInputs = [pkgs.makeWrapper];
   inherit (pkgs.hyprland) passthru version;
+  meta = {
+    inherit (pkgs.hyprland.meta) description homepage license platforms;
+    mainProgram = "Hyprland";
+  };
   postBuild = let
     extraPkgs = [
       pkgs.wrapped.hypridle
