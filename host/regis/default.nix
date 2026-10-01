@@ -67,7 +67,12 @@
     extraFlags = toString [
       "--kube-proxy-arg=proxy-mode=nftables"
       "--vpn-auth-file=${config.sops.templates."k3s-vpn-auth".path}"
-      "--node-external-ip=100.109.230.83"
+      "--node-external-ip=100.100.215.91"
+      "--node-ip=100.100.215.91"
+      "--kubelet-arg=node-ip=100.100.215.91"
+      "--bind-address=100.100.215.91"
+      "--flannel-iface=tailscale0"
+      "--disable-apiserver-lb"
     ];
   };
 }

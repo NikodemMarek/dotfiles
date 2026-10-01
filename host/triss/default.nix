@@ -60,6 +60,8 @@
       "--kube-proxy-arg=proxy-mode=nftables"
       "--vpn-auth-file=${config.sops.templates."k3s-vpn-auth".path}"
       "--node-external-ip=100.97.10.25"
+      "--node-ip=100.97.10.25"
+      "--kubelet-arg=node-ip=100.97.10.25"
 
       "--advertise-address=100.97.10.25"
 
