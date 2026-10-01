@@ -93,7 +93,7 @@
 in {
   default = pkgs.mkShell {
     buildInputs =
-      [pkgs.nh pkgs.ssh-to-age pkgs.sops pkgs.nixos-anywhere pkgs.disko pkgs.nixos-generators]
+      [pkgs.nh pkgs.deploy-rs.deploy-rs pkgs.ssh-to-age pkgs.sops pkgs.nixos-anywhere pkgs.disko pkgs.nixos-generators]
       ++ (map (alias: pkgs.writeShellScriptBin alias.name alias.command) aliases);
     shellHook = ''
       printf "\e[33m

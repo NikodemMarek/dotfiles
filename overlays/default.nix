@@ -16,5 +16,11 @@
     neovim = inputs.neovim.packages.${prev.system}.default;
     inherit (inputs.zen-browser.packages.${prev.system}) zen-browser;
   };
-}
 
+  deploy-rs = final: prev: {
+    deploy-rs = {
+      inherit (prev) deploy-rs;
+      inherit ((inputs.deploy-rs.overlays.default final prev).deploy-rs) lib;
+    };
+  };
+}

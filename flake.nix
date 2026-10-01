@@ -15,6 +15,11 @@
 
     impermanence.url = "github:nix-community/impermanence";
 
+    deploy-rs = {
+      url = "github:serokell/deploy-rs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     stylix = {
       url = "github:danth/stylix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -59,30 +64,51 @@
     nixosModules = import ./modules/host;
 
     overlays = import ./overlays {inherit inputs;};
-    packages = forEachSystem (pkgs: import ./pkgs {inherit pkgs;});
+    packages = forEachSystem (pkgs: pkgs.wrapped);
     devShells = forEachSystem (pkgs: import ./shell.nix {inherit pkgs;});
 
     nixosConfigurations = let
-      mkHost = host:
+      mkHost = host: system:
         lib.nixosSystem {
-          pkgs = pkgsFor."x86_64-linux";
+          pkgs = pkgsFor.${system};
           specialArgs = {inherit inputs outputs;};
-          modules = [
-            ./host/${host}
-          ];
+          modules = [./host/${host}];
         };
     in {
-      yenn = mkHost "yenn";
-      geralt = mkHost "geralt";
-      roach = mkHost "roach";
-      regis = mkHost "regis";
-      triss = lib.nixosSystem {
-        pkgs = pkgsFor."aarch64-linux";
-        specialArgs = {inherit inputs outputs;};
-        modules = [
-          ./host/triss
-        ];
-      };
+      yenn = mkHost "yenn" "x86_64-linux";
+      geralt = mkHost "geralt" "x86_64-linux";
+      roach = mkHost "roach" "x86_64-linux";
+      regis = mkHost "regis" "x86_64-linux";
+      triss = mkHost "triss" "aarch64-linux";
     };
+
+    deploy.nodes = let
+      mkNode = host: extra: let
+        cfg = self.nixosConfigurations.${host};
+      in
+        {
+          hostname = host;
+          profiles.system = {
+            user = "root";
+            sshUser = "maintenance";
+            interactiveSudo = true;
+            path = cfg.pkgs.deploy-rs.lib.activate.nixos cfg;
+          };
+        }
+        // extra;
+    in {
+      geralt = mkNode "geralt" {};
+      roach = mkNode "roach" {};
+      regis = mkNode "regis" {};
+      triss = mkNode "triss" {remoteBuild = true;};
+    };
+
+    checks = forEachSystem (pkgs:
+      pkgs.deploy-rs.lib.deployChecks {
+        nodes =
+          lib.filterAttrs
+          (host: _: self.nixosConfigurations.${host}.pkgs.stdenv.hostPlatform.system == pkgs.stdenv.hostPlatform.system)
+          self.deploy.nodes;
+      });
   };
 }
