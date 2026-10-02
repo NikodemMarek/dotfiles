@@ -1,10 +1,10 @@
-#!/usr/bin/env bash
 # PreToolUse guard for Edit/Write/NotebookEdit in subagents.
-# Usage: guard-writes.sh code    -> allow writes only inside the session cwd, never into config/secrets/.git/architect memory
-#        guard-writes.sh memory  -> allow writes only inside the architect memory repo
-set -euo pipefail
+# Usage: claude-guard-writes code    -> allow writes only inside the session cwd, never into config/secrets/.git/architect memory
+#        claude-guard-writes memory  -> allow writes only inside the architect memory repo
+# (writeShellApplication prepends the shebang and `set -o errexit -o nounset -o pipefail`)
 MODE="${1:?mode required}"
-MEM="$HOME/projects/ai/projects"
+CFG="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
+MEM="${CLAUDE_MEMORY_DIR:-$CFG/memory}"
 input="$(cat)"
 path="$(jq -r '.tool_input.file_path // .tool_input.notebook_path // empty' <<<"$input")"
 cwd="$(jq -r '.cwd // empty' <<<"$input")"
@@ -30,11 +30,11 @@ fi
 
 # MODE=code
 under "$cwd" || deny "Writes outside the working directory ($cwd) are not allowed (got $abs)."
-for p in "$HOME/.claude" "$HOME/.ssh" "$HOME/.gnupg" "$HOME/.config" "$HOME/.local" "$HOME/.aws" "$HOME/.kube" "$HOME/.m2/settings.xml" "$MEM"; do
+for p in "$HOME/.claude" "$CFG" "$HOME/.ssh" "$HOME/.gnupg" "$HOME/.config" "$HOME/.local" "$HOME/.aws" "$HOME/.kube" "$HOME/.m2/settings.xml" "$MEM"; do
   under "$p" && deny "Path $abs is protected (config/secrets/architect memory)."
 done
-# ~/.claude config is symlinked from this repo; editable only by agents working inside it
-AI="$HOME/projects/ai/ai"
+# The AI config repo is editable only by agents working inside it
+AI="$HOME/projects/ai"
 case "$(realpath -m -- "$cwd")/" in "$(realpath -m -- "$AI")"/*) ;; *) under "$AI" && deny "Path $abs is protected (AI config repo)." ;; esac
 # Top-level dotfiles in $HOME (.bashrc, .profile, ...)
 [ "$(dirname -- "$abs")" = "$HOME" ] && case "$(basename -- "$abs")" in .*) deny "Home dotfiles are protected." ;; esac

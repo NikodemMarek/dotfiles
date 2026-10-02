@@ -1,7 +1,6 @@
-#!/usr/bin/env bash
 # PreToolUse guard for the verifier's Bash: it may build/test/run, but not modify source,
 # history, the system, or anything remote.
-set -euo pipefail
+# (writeShellApplication prepends the shebang and `set -o errexit -o nounset -o pipefail`)
 input="$(cat)"
 cmd="$(jq -r '.tool_input.command // empty' <<<"$input")"
 deny() {

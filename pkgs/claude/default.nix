@@ -1,0 +1,269 @@
+{
+  lib,
+  claude-code,
+  symlinkJoin,
+  makeWrapper,
+  runCommand,
+  writeText,
+  writeShellScript,
+  coreutils,
+  findutils,
+  claude-hooks,
+  claude-statusline,
+  jj-upload,
+  # CLAUDE.md (path). null -> ../../claude/CLAUDE.md
+  instructions ? null,
+  # name (without .md) -> path. null -> every .md in ../../claude/agents
+  agents ? null,
+  # name -> directory path. null -> every directory in ../../skills (shared with other tools)
+  skills ? null,
+  # User settings as a Nix attrset, linked read-only to
+  # $CLAUDE_CONFIG_DIR/settings.json. null -> ../../claude/settings.nix
+  settings ? null,
+  # extra packages put on PATH of the wrapped claude
+  extraPackages ? [ ],
+  # where claude keeps its state/config; shell-expanded at runtime
+  dataDir ? "$HOME/.local/share/claude",
+}:
+
+let
+  mdEntries =
+    dir: lib.filterAttrs (n: t: t == "regular" && lib.hasSuffix ".md" n) (builtins.readDir dir);
+
+  defaultAgents = lib.mapAttrs' (
+    n: _: lib.nameValuePair (lib.removeSuffix ".md" n) (../../claude/agents + "/${n}")
+  ) (mdEntries ../../claude/agents);
+
+  defaultSkills = lib.mapAttrs (n: _: ../../skills + "/${n}") (
+    lib.filterAttrs (_: t: t == "directory") (builtins.readDir ../../skills)
+  );
+
+  # attrsets recurse, lists concatenate (deduped), anything else: b wins
+  deepMerge =
+    a: b:
+    if builtins.isAttrs a && builtins.isAttrs b && !(lib.isDerivation a) && !(lib.isDerivation b) then
+      lib.zipAttrsWith
+        (
+          _: vs:
+          if builtins.length vs == 1 then
+            builtins.head vs
+          else
+            deepMerge (builtins.elemAt vs 0) (builtins.elemAt vs 1)
+        )
+        [
+          a
+          b
+        ]
+    else if builtins.isList a && builtins.isList b then
+      lib.unique (a ++ b)
+    else
+      b;
+
+  dropNulls = lib.filterAttrs (_: v: v != null);
+
+  knownKeys = [
+    "instructions"
+    "agents"
+    "skills"
+    "settings"
+    "extraPackages"
+    "dataDir"
+  ];
+
+  # Inner builder: takes fully-resolved config. Wrapped in makeOverridable so
+  # results of `extend` still support `.override`, and recursion through
+  # `build` makes `extend` chain.
+  build = lib.makeOverridable (
+    {
+      instructions,
+      agents,
+      skills,
+      settings,
+      extraPackages,
+      dataDir,
+    }:
+    let
+      # "$HOME/.local/share/claude" -> "~/.local/share/claude" (for prose in the markdown files)
+      prettyDataDir =
+        if lib.hasPrefix "$HOME" dataDir then "~" + lib.removePrefix "$HOME" dataDir else dataDir;
+      prettyMemoryDir = "${prettyDataDir}/memory";
+
+      settingsFile = writeText "claude-settings.json" (builtins.toJSON settings);
+
+      config = runCommand "claude-config" { } ''
+        mkdir -p "$out/agents" "$out/skills"
+        cp ${instructions} "$out/CLAUDE.md"
+        ${lib.concatStringsSep "\n" (lib.mapAttrsToList (n: p: ''cp "${p}" "$out/agents/${n}.md"'') agents)}
+        ${lib.concatStringsSep "\n" (
+          lib.mapAttrsToList (n: p: ''cp -rL "${p}" "$out/skills/${n}"'') skills
+        )}
+        cp ${settingsFile} "$out/settings.json"
+        chmod -R u+w "$out"
+
+        find "$out" -type f \( -name '*.md' -o -name 'settings.json' \) -exec sed -i \
+          -e ${lib.escapeShellArg "s|@dataDir@|${prettyDataDir}|g"} \
+          -e ${lib.escapeShellArg "s|@memoryDir@|${prettyMemoryDir}|g"} \
+          {} +
+      '';
+
+      # Everything the launch preamble keeps linked into $CLAUDE_CONFIG_DIR.
+      entries = [
+        "CLAUDE.md"
+        "settings.json"
+      ]
+      ++ map (n: "agents/${n}.md") (lib.attrNames agents)
+      ++ map (n: "skills/${n}") (lib.attrNames skills);
+
+      managed = "${builtins.storeDir}/*-claude-config/*";
+
+      # Sourced from the makeWrapper script, which runs with `bash -e`: all work
+      # happens in a function called through `|| true` (this disables -e inside
+      # it), and nothing but the two exports is left behind.
+      preamble = writeShellScript "claude-preamble" ''
+        __claude_link() {
+          local dst="$CLAUDE_CONFIG_DIR/$1" src="$2" cur
+          if [ -L "$dst" ]; then
+            cur="$(${coreutils}/bin/readlink "$dst")"
+            if [ "$cur" = "$src" ]; then
+              return 0
+            fi
+            case "$cur" in
+              ${managed})
+                # atomic replace: never leaves $dst missing for a concurrent launch
+                ${coreutils}/bin/ln -s "$src" "$dst.tmp.$$" \
+                  && ${coreutils}/bin/mv -T "$dst.tmp.$$" "$dst" \
+                  || ${coreutils}/bin/rm -f "$dst.tmp.$$"
+                ;;
+              *)
+                echo "claude: not replacing $dst (not managed by nix)" >&2
+                ;;
+            esac
+          elif [ -e "$dst" ]; then
+            echo "claude: not replacing $dst (not managed by nix)" >&2
+          elif ! ${coreutils}/bin/ln -s "$src" "$dst" 2>/dev/null; then
+            # a concurrent launch may have created it in the meantime
+            [ "$(${coreutils}/bin/readlink "$dst" 2>/dev/null)" = "$src" ] \
+              || echo "claude: could not link $dst" >&2
+          fi
+        }
+
+        __claude_prune() {
+          local dir l t
+          for dir in "$CLAUDE_CONFIG_DIR" "$CLAUDE_CONFIG_DIR/agents" "$CLAUDE_CONFIG_DIR/skills"; do
+            for l in "$dir"/*; do
+              [ -L "$l" ] || continue
+              t="$(${coreutils}/bin/readlink "$l")"
+              case "$t" in
+                "${config}"/*) ;;
+                ${managed}) ${coreutils}/bin/rm -f "$l" ;;
+              esac
+            done
+          done
+        }
+
+        # settings.json is claude's to write by default; move a real file (or a
+        # foreign link) aside once so the managed link can take its place.
+        __claude_adopt_settings() {
+          local dst="$CLAUDE_CONFIG_DIR/settings.json" bak
+          if [ -L "$dst" ]; then
+            case "$(${coreutils}/bin/readlink "$dst")" in
+              ${managed}) return 0 ;;
+            esac
+          elif [ ! -e "$dst" ]; then
+            return 0
+          fi
+          local n=0 stamp
+          stamp="backups/settings.json.$(${coreutils}/bin/date +%Y%m%d-%H%M%S)"
+          bak="$stamp"
+          # never clobber an earlier backup from the same second
+          while [ -e "$CLAUDE_CONFIG_DIR/$bak" ] || [ -L "$CLAUDE_CONFIG_DIR/$bak" ]; do
+            n=$((n + 1))
+            bak="$stamp.$n"
+          done
+          ${coreutils}/bin/mkdir -p "$CLAUDE_CONFIG_DIR/backups" \
+            && ${coreutils}/bin/mv -T "$dst" "$CLAUDE_CONFIG_DIR/$bak" \
+            && echo "claude: moved unmanaged settings.json to $bak" >&2
+        }
+
+        __claude_setup() {
+          export CLAUDE_CONFIG_DIR="''${CLAUDE_CONFIG_DIR:-${dataDir}}"
+          # unconditional: the agents' prose has this path baked in at build time
+          export CLAUDE_MEMORY_DIR="$CLAUDE_CONFIG_DIR/memory"
+          ${coreutils}/bin/mkdir -p "$CLAUDE_CONFIG_DIR/agents" "$CLAUDE_CONFIG_DIR/skills" "$CLAUDE_MEMORY_DIR"
+          if [ ! -e "$CLAUDE_MEMORY_DIR/.git" ] && command -v git >/dev/null 2>&1; then
+            git -C "$CLAUDE_MEMORY_DIR" init -q >/dev/null 2>&1
+          fi
+          local nested
+          nested="$(${findutils}/bin/find "$CLAUDE_MEMORY_DIR" -mindepth 2 -maxdepth 3 -name .git -print -quit 2>/dev/null)"
+          if [ -n "$nested" ]; then
+            echo "claude: $CLAUDE_MEMORY_DIR contains a nested git repository ($nested); memory commits miss files below it" >&2
+          fi
+          __claude_adopt_settings
+          ${lib.concatMapStringsSep "\n" (
+            e: ''__claude_link ${lib.escapeShellArg e} "${config}/${e}"''
+          ) entries}
+          __claude_prune
+        }
+
+        __claude_setup || true
+        unset -f __claude_link __claude_prune __claude_adopt_settings __claude_setup
+      '';
+    in
+    symlinkJoin {
+      name = "claude-${claude-code.version}";
+      paths = [ claude-code ];
+      nativeBuildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/claude \
+          --run "source ${preamble}" \
+          --set-default DISABLE_AUTOUPDATER 1 \
+          --prefix PATH : ${
+            lib.makeBinPath (
+              [
+                claude-hooks
+                claude-statusline
+                jj-upload
+              ]
+              ++ extraPackages
+            )
+          }
+      '';
+
+      passthru = {
+        inherit config;
+        inherit (claude-code) version;
+
+        # Overlay-friendly customisation, e.g.
+        #   prev.claude.extend { skills.foo = ./foo; settings.permissions.allow = [ "..." ]; }
+        # attrsets (settings, agents, skills) deep-merge, extraPackages concatenates,
+        # instructions/dataDir are replaced. Results carry `extend` again.
+        extend =
+          cfg:
+          let
+            unknown = lib.subtractLists knownKeys (lib.attrNames cfg);
+          in
+          assert lib.assertMsg (unknown == [ ]) "claude.extend: unknown attributes: ${toString unknown}";
+          build {
+            instructions = cfg.instructions or instructions;
+            dataDir = cfg.dataDir or dataDir;
+            settings = deepMerge settings (cfg.settings or { });
+            # `null` entries remove an agent/skill, e.g. `skills.commit = null;`
+            agents = dropNulls (deepMerge agents (cfg.agents or { }));
+            skills = dropNulls (deepMerge skills (cfg.skills or { }));
+            extraPackages = lib.unique (extraPackages ++ (cfg.extraPackages or [ ]));
+          };
+      };
+
+      meta = claude-code.meta // {
+        mainProgram = "claude";
+      };
+    }
+  );
+in
+build {
+  instructions = if instructions == null then ../../claude/CLAUDE.md else instructions;
+  agents = if agents == null then defaultAgents else agents;
+  skills = if skills == null then defaultSkills else skills;
+  settings = if settings == null then import ../../claude/settings.nix else settings;
+  inherit extraPackages dataDir;
+}

@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: Read-only code reviewer. Use after the coder finishes (or on a diff/branch) to find correctness bugs, regressions, security issues, missing tests and deviations from the plan or codebase conventions. Cannot modify or execute anything.
-tools: Read, Grep, Glob
+tools: Read, Grep, Glob, Skill
 model: opus
 effort: high
 color: orange

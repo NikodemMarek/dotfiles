@@ -10,10 +10,10 @@
 
 Agent worktrees are named `agent-<agent_id>`; SubagentStop's agent_id finds them again. Other
 names (`claude --worktree foo`) get a jj workspace too, but are never squashed automatically.
-The registry lives in ~/.claude/jj-agents/<repo-hash>/<name>.json, written only by `create`
-(which runs with the caller's cwd), so an agent can't redirect the hook. Claude never calls
-WorktreeRemove for agent worktrees, so idle ones are deleted after GC_AGE. A failed or
-conflicted squash keeps the workspace and is reported.
+The registry lives in $CLAUDE_CONFIG_DIR/jj-agents/<repo-hash>/<name>.json (default
+~/.claude/jj-agents), written only by `create` (which runs with the caller's cwd), so an agent
+can't redirect the hook. Claude never calls WorktreeRemove for agent worktrees, so idle ones are
+deleted after GC_AGE. A failed or conflicted squash keeps the workspace and is reported.
 """
 
 import fcntl
@@ -27,8 +27,9 @@ import subprocess
 import sys
 import time
 
-REGISTRY = os.path.expanduser("~/.claude/jj-agents")
-TRANSCRIPTS = os.path.expanduser("~/.claude/projects/*/*/subagents/{name}.jsonl")
+CONFIG_DIR = os.environ.get("CLAUDE_CONFIG_DIR") or os.path.expanduser("~/.claude")
+REGISTRY = os.path.join(CONFIG_DIR, "jj-agents")
+TRANSCRIPTS = os.path.join(CONFIG_DIR, "projects/*/*/subagents/{name}.jsonl")
 GC_AGE = 24 * 3600
 LOCK_TIMEOUT = 120
 AGENT_NAME = re.compile(r"^agent-[0-9a-f]+$")

@@ -1,10 +1,12 @@
-#!/bin/sh
+# Claude Code statusline: reads the session JSON on stdin, prints one line.
+# Best-effort by design: the package enables nounset only (no errexit/pipefail),
+# so a missing tool or odd input degrades the line instead of killing it.
 input=$(cat)
 
 # Directory
 dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
 [ -z "$dir" ] && dir=$(pwd)
-short_dir=$(echo "$dir" | sed "s|^$HOME|~|")
+short_dir="${dir/#"$HOME"/\~}"
 
 # Git info
 git_branch=""

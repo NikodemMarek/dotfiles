@@ -1,7 +1,7 @@
 ---
 name: explorer
 description: Read-only code exploration. Use to locate code, trace call paths, map a module, find usages/config, or answer "where/how is X done" questions. Returns concise findings with file:line references, never file dumps. Cannot modify or execute anything.
-tools: Read, Grep, Glob
+tools: Read, Grep, Glob, Skill
 model: haiku
 effort: low
 color: cyan

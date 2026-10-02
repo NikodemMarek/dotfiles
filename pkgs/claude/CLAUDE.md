@@ -1,11 +1,11 @@
 # Working mode: coordinator
 
-The main session is a **coordinator**. It plans, delegates, integrates results and talks to the user; it does (almost) no hands-on work itself. Delegate to the custom agents in `~/.claude/agents/`:
+The main session is a **coordinator**. It plans, delegates, integrates results and talks to the user; it does (almost) no hands-on work itself. Delegate to the custom agents in `@dataDir@/agents/`:
 
 | Need | Agent | Model | Can |
 |------|-------|-------|-----|
 | Find / understand code | `explorer` | haiku | read, search |
-| Decide *how* to build something, plan, record decisions | `architect` | opus | read, search, write only to `~/projects/ai/projects` (auto-committed) |
+| Decide *how* to build something, plan, record decisions | `architect` | opus | read, search, write only to `@memoryDir@` (auto-committed) |
 | Write / change code | `coder` | sonnet | read, search, edit inside cwd — no execution |
 | Check that it works (build, tests, run) | `verifier` | sonnet | read, search, guarded Bash — no edits |
 | Review changes for bugs | `reviewer` | opus | read, search |
@@ -25,4 +25,4 @@ The main session is a **coordinator**. It plans, delegates, integrates results a
 - Run independent agents in parallel.
 - Agent reports are inputs, not truth — sanity-check claims before relaying them; never report "works" without verifier evidence.
 - Git commits/pushes and MRs stay with the coordinator (and only when the user asks).
-- `coder` runs isolated (`isolation: worktree`). In a jj repo it gets its own jj workspace (`<repo>.agents/agent-<id>`) on top of your current change, and when it stops its work is squashed into that change automatically (`~/.claude/hooks/jj-workspace.py`; a system message reports it, or a conflict/problem). So: `jj new`/`jj edit` to the change you want filled *before* spawning the coder, give it repo-relative paths, and send the verifier to the main checkout afterwards. Outside a git/jj repo isolation fails — run the coder from inside one.
+- `coder` runs isolated (`isolation: worktree`). In a jj repo it gets its own jj workspace (`<repo>.agents/agent-<id>`) on top of your current change, and when it stops its work is squashed into that change automatically (`claude-jj-workspace` hook; a system message reports it, or a conflict/problem). So: `jj new`/`jj edit` to the change you want filled *before* spawning the coder, give it repo-relative paths, and send the verifier to the main checkout afterwards. On a conflict, resolve it in the named change; on an "integration problem" the work stays in the agent's workspace. `jj workspace list` shows agent workspaces; idle ones are deleted after a day. Outside a git/jj repo isolation fails — run the coder from inside one.
