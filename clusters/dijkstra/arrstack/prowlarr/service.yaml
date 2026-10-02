@@ -1,11 +1,9 @@
+# Backend service the KEDA interceptor forwards to.
 apiVersion: v1
 kind: Service
 metadata:
-  name: prowlarr
+  name: prowlarr-app
   namespace: arrstack
-  annotations:
-    tailscale.com/expose: "true"
-    tailscale.com/hostname: "prowlarr"
 spec:
   selector:
     app: prowlarr
@@ -14,3 +12,16 @@ spec:
       protocol: TCP
       port: 80
       targetPort: 9696
+---
+# Keeps the in-cluster name working; traffic goes through the interceptor so it can wake the app.
+apiVersion: v1
+kind: Service
+metadata:
+  name: prowlarr
+  namespace: arrstack
+  annotations:
+    # Recreate instead of failing on the ClusterIP -> ExternalName change.
+    kustomize.toolkit.fluxcd.io/force: enabled
+spec:
+  type: ExternalName
+  externalName: arrstack-interceptor.keda.svc.cluster.local
