@@ -1,11 +1,11 @@
 ---
 name: jj
-description: How to work with Jujutsu (jj) version control non-interactively, and the user's stacked-MR workflow (`jj upload` → one GitLab MR per change). Use whenever the repo has a `.jj` directory (`jj root` succeeds), or the task involves jj, commits/changes in a jj repo, stacking, rebasing, squashing, splitting, describing, reordering or dropping changes, pushing, bookmarks, merge requests, or addressing review feedback. In a jj repo this overrides the git-based commit/stack/mr skills.
+description: How to work with Jujutsu (jj) version control non-interactively, and the user's stacked-MR workflow (`jj upload` → one MR/PR per change, on GitLab or GitHub). Use whenever the repo has a `.jj` directory (`jj root` succeeds), or the task involves jj, commits/changes in a jj repo, stacking, rebasing, squashing, splitting, describing, reordering or dropping changes, pushing, bookmarks, merge requests, or addressing review feedback. In a jj repo this overrides the git-based commit/stack/mr skills.
 ---
 
 # Jujutsu (jj)
 
-jj 0.45, Git backend, remote on GitLab. Config: `~/.config/jj/config.toml`.
+jj 0.45, Git backend, remote on GitLab or GitHub (`jj upload` picks the forge from the remote host, or `upload.forge`). Config: `~/.config/jj/config.toml`.
 
 **Is this a jj repo?** `jj root` succeeds or `.jj/` exists → use `jj` for **every write** (commit, rebase, branch, push). A `.git/` next to it ("colocated") is fine for read-only git tools, but never `git commit/checkout/rebase/reset/stash/push` there. git sees a detached HEAD and that is normal.
 
@@ -105,7 +105,7 @@ Useful template fields: `change_id`, `commit_id`, `description`, `bookmarks`, `l
 Script: `~/.config/jj/scripts/jj-upload.py`. It is configured under `[upload]` in the jj config.
 
 Rules:
-- **The commit message is the source of truth.** Change MR titles or descriptions with `jj describe -r X -m ...` followed by `jj upload`. Never edit them in GitLab or via glab, because the next upload overwrites them.
+- **The commit message is the source of truth.** Change MR titles or descriptions with `jj describe -r X -m ...` followed by `jj upload`. Never edit them in the forge UI or via glab/gh, because the next upload overwrites them.
 - **Bookmarks starting with `nm/` are managed** (`nm/<slug>-<change-id>`). Don't create, rename, move or delete them by hand. To drop an MR, `jj abandon` the change; the next `jj upload` closes it.
 - **Every change needs a description before upload.** Use Conventional Commits (`feat: …`, `fix: …`). Each change should compile and pass tests on its own.
 - **Addressing review feedback on change X:**
@@ -113,7 +113,7 @@ Rules:
   - Or fix on top: make the fix in `@`, then `jj squash --into X <paths> -u`, or let `jj absorb` route it.
   - Then (only if asked) `jj upload`.
 - **After the bottom MR is merged:** run `jj sync`, then `jj upload` to retarget the rest of the stack.
-- **Don't push or upload on your own.** `jj upload`, `jj git push` and anything that touches GitLab is outward-facing. Do it only when the user explicitly asks (in coordinator mode: the coordinator does it, not subagents). `jj git fetch` and `jj upload -n` are safe.
+- **Don't push or upload on your own.** `jj upload`, `jj git push` and anything that touches the forge (GitLab/GitHub) is outward-facing. Do it only when the user explicitly asks (in coordinator mode: the coordinator does it, not subagents). `jj git fetch` and `jj upload -n` are safe.
 
 ## Isolated agents (jj workspaces)
 
