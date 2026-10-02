@@ -11,7 +11,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   storageClassName: nfs
   nfs:
-   server: 100.110.221.34
+   server: 100.100.215.91
    path: /mnt/models
   mountOptions:
     - actimeo=300
