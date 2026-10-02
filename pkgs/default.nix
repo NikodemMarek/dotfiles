@@ -12,7 +12,6 @@
     jujutsu = pkgs.callPackage ./jujutsu {};
     waybar = pkgs.callPackage ./waybar {};
     kanshi = pkgs.callPackage ./kanshi {};
-    claude-code = pkgs.callPackage ./claude-code {};
     signal-desktop = pkgs.callPackage ./signal-desktop {};
   };
 }

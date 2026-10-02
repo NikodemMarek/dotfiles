@@ -10,9 +10,11 @@
       pkgs.wrapped.gitui
       pkgs.wrapped.kanshi
       pkgs.antigravity-cli
-      pkgs.wrapped.claude-code
       pkgs.wrapped.signal-desktop
       pkgs.wrapped.jujutsu
+
+      pkgs.claude
+      pkgs.jj-upload
 
       pkgs.alacritty
       pkgs.remmina

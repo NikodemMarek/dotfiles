@@ -32,6 +32,8 @@
 
     neovim.url = "github:NikodemMarek/neovim";
 
+    ai.url = "github:NikodemMarek/ai";
+
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
