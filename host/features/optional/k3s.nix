@@ -60,6 +60,12 @@
       group = "root";
       mode = "755";
     }
+    {
+      directory = "/var/openebs/local";
+      user = "root";
+      group = "root";
+      mode = "755";
+    }
   ];
 
   networking.firewall = {
