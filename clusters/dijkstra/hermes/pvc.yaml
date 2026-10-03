@@ -12,18 +12,3 @@ spec:
     requests:
       storage: 10Gi
   volumeName: hermes-data-pv
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: hermes-omniverse-pvc
-  namespace: hermes
-spec:
-  accessModes:
-    - ReadWriteOnce
-  storageClassName: openebs-hostpath
-  volumeMode: Filesystem
-  resources:
-    requests:
-      storage: 30Gi
-  volumeName: hermes-omniverse-pv

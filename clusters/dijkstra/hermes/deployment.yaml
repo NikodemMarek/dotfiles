@@ -19,9 +19,13 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: hermes-data-pvc
-        - name: omniverse
-          persistentVolumeClaim:
-            claimName: hermes-omniverse-pvc
+        - name: ssh-key
+          secret:
+            secretName: hermes-secret
+            items:
+              - key: ssh_ed25519_priv
+                path: id_ed25519
+            defaultMode: 0400
       containers:
         - name: hermes
           image: nousresearch/hermes-agent:latest
@@ -30,8 +34,6 @@ spec:
             - containerPort: 8642
             - containerPort: 9119
           env:
-            - name: HERMES_WRITE_SAFE_ROOT
-              value: "/opt/data:/omniverse"
             - name: HERMES_DASHBOARD
               value: "true"
             - name: API_SERVER_ENABLED
@@ -48,8 +50,10 @@ spec:
           volumeMounts:
             - name: data
               mountPath: /opt/data
-            - name: omniverse
-              mountPath: /omniverse
+            - name: ssh-key
+              mountPath: /opt/data/.ssh/id_ed25519
+              subPath: id_ed25519
+              readOnly: true
           resources:
             requests:
               memory: "1Gi"
