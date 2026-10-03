@@ -6,7 +6,6 @@
     ./sops.nix
   ];
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
   programs = {
     git.enable = true;
     neovim.defaultEditor = true;
