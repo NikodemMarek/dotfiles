@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shani
+  namespace: shani
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: shani
+  template:
+    metadata:
+      labels:
+        app: shani
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: triss
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 100
+        # Makes the host key readable by the `users` group (root:100, 0440);
+        # sshd only rejects group-readable keys it owns itself.
+        fsGroup: 100
+        # Skip the recursive chgrp on every start once a volume's root matches.
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile:
+          type: RuntimeDefault
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        - name: home-shani
+          persistentVolumeClaim:
+            claimName: shani-home-pvc
+        - name: omniverse
+          persistentVolumeClaim:
+            claimName: shani-omniverse-pvc
+        - name: host-ssh-key
+          secret:
+            secretName: shani-secret
+            defaultMode: 0400
+      containers:
+        - name: shani
+          image: shani:a2lvlakxzia7jf6wfzs9ff8i1var2n0h
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 2222
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            - name: home-shani
+              mountPath: /home/shani
+            - name: omniverse
+              mountPath: /omniverse
+            - name: host-ssh-key
+              mountPath: /secrets
+              readOnly: true
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "200m"
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
