@@ -129,16 +129,7 @@
       in {
         "/persist/data" = {
           hideMounts = true;
-          directories =
-            [
-              {
-                directory = "/etc/nixos";
-                user = "root";
-                group = "users";
-                mode = "u=rwx,g=rwx,o=rx";
-              }
-            ]
-            ++ cfg.data.directories;
+          directories = cfg.data.directories;
           files = cfg.data.files;
           users = usersCategory "data";
         };
