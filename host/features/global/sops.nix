@@ -1,7 +1,7 @@
 # Provider for the secrets contract (modules/host/secrets.nix): decrypts
 # <host>.yaml from the `secrets` flake input with sops-nix.
 # The file is generated from SecretSpec and injected at build time by
-# `secrets-build` (see shell.nix), it is never committed. Secret names are flat
+# `secrets-build` (see devenv.nix), it is never committed. Secret names are flat
 # top-level keys in it.
 # This is the only place that should know secrets come from sops.
 {

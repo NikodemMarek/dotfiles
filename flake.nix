@@ -8,7 +8,7 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
 
-    # Overridden at build time by `secrets-build`, see shell.nix
+    # Overridden at build time by `secrets-build`, see devenv.nix
     secrets = {
       url = "path:./secrets-stub";
       flake = false;
@@ -73,7 +73,6 @@
 
     overlays = import ./overlays {inherit inputs;};
     packages = forEachSystem (pkgs: pkgs.wrapped);
-    devShells = forEachSystem (pkgs: import ./shell.nix {inherit pkgs;});
 
     nixosConfigurations = let
       mkHost = host: system:
