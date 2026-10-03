@@ -19,10 +19,7 @@ spec:
         runAsNonRoot: true
         runAsUser: 1000
         runAsGroup: 100
-        # Makes the host key readable by the `users` group (root:100, 0440);
-        # sshd only rejects group-readable keys it owns itself.
         fsGroup: 100
-        # Skip the recursive chgrp on every start once a volume's root matches.
         fsGroupChangePolicy: OnRootMismatch
         seccompProfile:
           type: RuntimeDefault
@@ -41,7 +38,7 @@ spec:
             defaultMode: 0400
       containers:
         - name: shani
-          image: shani:a2lvlakxzia7jf6wfzs9ff8i1var2n0h
+          image: shani:zvhkjgv7jhi404sc7d3b8l4l6f877nxk
           imagePullPolicy: Never
           ports:
             - containerPort: 2222
