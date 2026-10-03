@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./hardware-configuration.nix
+    ./secrets.nix
     ./networking.nix
     ./nikodem.nix
 
@@ -29,16 +30,12 @@
   };
 
   nix.settings.trusted-users = ["root" "nikodem"];
-  sops.secrets = {
-    "users/nikodem/password" = {
-      neededForUsers = true;
-    };
-  };
+  secretsRequired.users_nikodem_password.neededForUsers = true;
 
   users.users = {
     nikodem = {
       isNormalUser = true;
-      hashedPasswordFile = config.sops.secrets."users/nikodem/password".path;
+      hashedPasswordFile = config.secrets.users_nikodem_password.path;
       extraGroups = ["wheel" "docker" "libvirtd"];
       shell = pkgs.fish;
       openssh.authorizedKeys.keyFiles = [

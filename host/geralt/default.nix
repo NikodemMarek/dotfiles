@@ -1,6 +1,7 @@
 {pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ./secrets.nix
 
     (import ../features/disko/btrfs-persistence-swapfile.nix {
       device = "nvme0n1";

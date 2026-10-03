@@ -140,7 +140,6 @@
               "/var/log"
               "/var/lib/nixos"
               "/var/lib/systemd"
-              "/var/lib/sops-nix"
             ]
             ++ cfg.generated.directories;
           files =

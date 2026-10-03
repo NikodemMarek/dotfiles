@@ -3,18 +3,12 @@
   pkgs,
   ...
 }: {
-  sops.secrets = {
-    # Generate with `k3s token create`
-    "k3s/token" = {};
-    # Generate in tailscale console Settings > Keys
-    "k3s/tailscale-auth-key" = {};
+  secretsRequired = {
+    k3s_token = {};
+    k3s_vpn_auth = {};
   };
 
-  sops.templates."k3s-vpn-auth".content = "name=tailscale,joinKey=${config.sops.placeholder."k3s/tailscale-auth-key"}";
-
   environment.systemPackages = [
-    pkgs.sops
-    pkgs.age
     pkgs.nfs-utils
   ];
 
@@ -24,7 +18,7 @@
 
   services.k3s = {
     enable = true;
-    tokenFile = config.sops.secrets."k3s/token".path;
+    tokenFile = config.secrets.k3s_token.path;
   };
 
   systemd.services.k3s = {

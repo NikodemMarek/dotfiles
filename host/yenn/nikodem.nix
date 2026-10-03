@@ -114,14 +114,7 @@
     };
   };
 
-  sops.secrets = {
-    "users/nikodem/ssh_id_ed25519" = {
-      mode = "0400";
-      owner = "nikodem";
-      group = "users";
-      path = "/home/nikodem/.ssh/id_ed25519";
-    };
-  };
+  secretsRequired.users_nikodem_ssh_id_ed25519 = {};
   systemd.tmpfiles.rules = [
     "d /home/nikodem/.ssh 0700 nikodem users -"
     "L+ /home/nikodem/.ssh/id_ed25519.pub 0400 nikodem users - ${./user_nikodem_ssh_id_ed25519.pub}"

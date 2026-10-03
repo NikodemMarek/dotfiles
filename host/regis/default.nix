@@ -1,6 +1,7 @@
 {config, ...}: {
   imports = [
     ./hardware-configuration.nix
+    ./secrets.nix
 
     ../features
     ../features/optional/systemd-boot.nix
@@ -53,7 +54,7 @@
       enable = true;
       port = 2222;
       authorizedKeyFiles = [../yenn/user_nikodem_ssh_id_ed25519.pub];
-      hostKeys = [config.sops.secrets."host_ssh_ed25519_priv".path];
+      hostKeys = [config.secrets.host_ssh_ed25519_priv.path];
     };
   };
 
@@ -62,7 +63,7 @@
     serverAddr = "https://100.97.10.25:6443";
     extraFlags = toString [
       "--kube-proxy-arg=proxy-mode=nftables"
-      "--vpn-auth-file=${config.sops.templates."k3s-vpn-auth".path}"
+      "--vpn-auth-file=${config.secrets.k3s_vpn_auth.path}"
       "--node-external-ip=100.100.215.91"
       "--node-ip=100.100.215.91"
       "--kubelet-arg=node-ip=100.100.215.91"
