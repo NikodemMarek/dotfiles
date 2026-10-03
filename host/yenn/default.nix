@@ -19,6 +19,8 @@
   networking.hostName = "yenn";
   time.timeZone = "Europe/Warsaw";
 
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+
   persist = {
     enable = true;
     deviceService = "dev-nvme0n1p2.device";
