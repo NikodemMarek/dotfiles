@@ -12,6 +12,7 @@
       pkgs.antigravity-cli
       pkgs.wrapped.signal-desktop
       pkgs.wrapped.jujutsu
+      pkgs.wrapped.zellij
 
       pkgs.claude
       pkgs.jj-upload
