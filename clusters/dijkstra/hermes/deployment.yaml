@@ -15,6 +15,9 @@ spec:
     spec:
       nodeSelector:
         kubernetes.io/hostname: triss
+      securityContext:
+        fsGroup: 10000
+        fsGroupChangePolicy: OnRootMismatch
       volumes:
         - name: data
           persistentVolumeClaim:
@@ -25,7 +28,10 @@ spec:
             items:
               - key: ssh_ed25519_priv
                 path: id_ed25519
-            defaultMode: 0400
+            defaultMode: 0440
+        - name: ssh-config
+          configMap:
+            name: hermes-ssh-config
       containers:
         - name: hermes
           image: nousresearch/hermes-agent:latest
@@ -53,6 +59,10 @@ spec:
             - name: ssh-key
               mountPath: /opt/data/.ssh/id_ed25519
               subPath: id_ed25519
+              readOnly: true
+            - name: ssh-config
+              mountPath: /opt/data/.ssh/known_hosts
+              subPath: known_hosts
               readOnly: true
           resources:
             requests:
