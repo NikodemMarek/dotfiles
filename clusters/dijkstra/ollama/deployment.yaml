@@ -16,7 +16,7 @@ spec:
       volumes:
         - name: models
           persistentVolumeClaim:
-            claimName: ollama-models-pvc
+            claimName: ollama-local-models-pvc
         - name: data
           persistentVolumeClaim:
             claimName: ollama-data-pvc

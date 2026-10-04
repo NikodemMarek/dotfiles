@@ -22,6 +22,29 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: ollama-local-models-pv
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: openebs-hostpath
+  local:
+    path: /var/openebs/local/ollama-local-models-pv
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - triss
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: ollama-data-pv
 spec:
   capacity:
