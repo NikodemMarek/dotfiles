@@ -102,15 +102,10 @@
       geralt = mkNode "geralt" {};
       roach = mkNode "roach" {};
       regis = mkNode "regis" {};
-      triss = mkNode "triss" {remoteBuild = true;};
+      triss = mkNode "triss" {};
     };
 
     checks = forEachSystem (pkgs:
-      pkgs.deploy-rs.lib.deployChecks {
-        nodes =
-          lib.filterAttrs
-          (host: _: self.nixosConfigurations.${host}.pkgs.stdenv.hostPlatform.system == pkgs.stdenv.hostPlatform.system)
-          self.deploy.nodes;
-      });
+      pkgs.deploy-rs.lib.deployChecks self.deploy);
   };
 }
