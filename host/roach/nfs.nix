@@ -10,7 +10,6 @@
       /mnt/data/photos         100.0.0.0/8(rw,sync,fsid=5,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=5,insecure,no_root_squash,no_subtree_check)
       /mnt/data/files          100.0.0.0/8(rw,sync,fsid=6,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=6,insecure,no_root_squash,no_subtree_check)
 
-      /persist/apps/longhorn   100.0.0.0/8(rw,sync,fsid=20,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=20,insecure,no_root_squash,no_subtree_check)
       /tmp/arrstack/downloads  100.0.0.0/8(rw,sync,fsid=21,insecure,no_root_squash,no_subtree_check) 10.42.0.0/16(rw,sync,fsid=21,insecure,no_root_squash,no_subtree_check)
     '';
   };

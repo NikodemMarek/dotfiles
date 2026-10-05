@@ -18,14 +18,6 @@
     pkgs.nfs-utils
   ];
 
-  services.openiscsi = {
-    enable = true;
-    name = "${config.networking.hostName}-initiatorhost";
-  };
-  systemd.services.iscsid.serviceConfig = {
-    PrivateMounts = "yes";
-    BindPaths = "/run/current-system/sw/bin:/bin";
-  };
   systemd.tmpfiles.rules = [
     "d /run/flannel 0755 root root -"
   ];
@@ -50,12 +42,6 @@
     }
     {
       directory = "/var/lib/kubelet";
-      user = "root";
-      group = "root";
-      mode = "755";
-    }
-    {
-      directory = "/var/lib/longhorn";
       user = "root";
       group = "root";
       mode = "755";
