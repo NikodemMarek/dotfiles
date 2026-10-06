@@ -14,6 +14,31 @@
     "Bash(jj describe:*)"
     "Bash(jj commit:*)"
     "Bash(jj rebase:*)"
+
+    # Read-only glab. Not `glab api` (can POST/PUT), `glab ci view` or
+    # `glab issue board view` (interactive TUIs that can run/retry jobs).
+    "Bash(glab mr list:*)"
+    "Bash(glab mr view:*)"
+    "Bash(glab mr diff:*)"
+    "Bash(glab mr approvers:*)"
+    "Bash(glab mr issues:*)"
+    "Bash(glab mr note list:*)"
+    "Bash(glab issue list:*)"
+    "Bash(glab issue view:*)"
+    "Bash(glab ci list:*)"
+    "Bash(glab ci get:*)"
+    "Bash(glab ci status:*)"
+    "Bash(glab ci trace:*)"
+    "Bash(glab ci lint:*)"
+    "Bash(glab ci config compile:*)"
+    "Bash(glab repo view:*)"
+    "Bash(glab repo list:*)"
+    "Bash(glab repo contributors:*)"
+    "Bash(glab release list:*)"
+    "Bash(glab release view:*)"
+    "Bash(glab label list:*)"
+    "Bash(glab label get:*)"
+
     "Bash(mvn test:*)"
     "Bash(mvn compile:*)"
   ];
