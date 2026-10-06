@@ -1,0 +1,2 @@
+Placeholder for the `secrets` flake input.
+Overridden at build time by `secrets-build` (see shell.nix) with encrypted sops files generated from SecretSpec.

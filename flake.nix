@@ -8,6 +8,12 @@
 
     sops-nix.url = "github:Mic92/sops-nix";
 
+    # Overridden at build time by `secrets-build`, see shell.nix
+    secrets = {
+      url = "path:./secrets-stub";
+      flake = false;
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";

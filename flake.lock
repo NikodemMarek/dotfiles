@@ -963,11 +963,24 @@
         "impermanence": "impermanence",
         "neovim": "neovim",
         "nixpkgs": "nixpkgs_5",
+        "secrets": "secrets",
         "sops-nix": "sops-nix",
         "stylix": "stylix",
         "systems": "systems_6",
         "zen-browser": "zen-browser"
       }
+    },
+    "secrets": {
+      "flake": false,
+      "locked": {
+        "path": "./secrets-stub",
+        "type": "path"
+      },
+      "original": {
+        "path": "./secrets-stub",
+        "type": "path"
+      },
+      "parent": []
     },
     "sops-nix": {
       "inputs": {

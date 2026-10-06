@@ -5,7 +5,6 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./secrets.nix
 
     ../features
     ../features/optional/systemd-boot.nix

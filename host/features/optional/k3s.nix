@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: {
-  secretsRequired = {
+  secrets = {
     k3s_token = {};
     k3s_vpn_auth = {};
   };

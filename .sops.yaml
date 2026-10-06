@@ -41,12 +41,6 @@ creation_rules:
       - *regis
       - *yenn_nikodem
 
-  - path_regex: home/nm1/.+$
-    key_groups:
-    - age:
-      - *super
-      - *LP-043_nm1
-
   - path_regex: host/triss/.+$
     key_groups:
     - age:

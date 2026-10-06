@@ -5,7 +5,6 @@
 }: {
   imports = [
     ./hardware-configuration.nix
-    ./secrets.nix
     ./networking.nix
     ./nikodem.nix
 
@@ -30,7 +29,7 @@
   };
 
   nix.settings.trusted-users = ["root" "nikodem"];
-  secretsRequired.users_nikodem_password.neededForUsers = true;
+  secrets.users_nikodem_password.neededForUsers = true;
 
   users.users = {
     nikodem = {
