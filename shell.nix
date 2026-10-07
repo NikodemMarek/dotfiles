@@ -147,7 +147,7 @@
         # refuse to deploy to a host whose ssh key differs from bitwarden
         for n in "$@"; do
           addr=$(nix eval --raw ".#deploy.nodes.$n.hostname")
-          actual=$(ssh-keyscan -t ed25519 "$addr" 2> /dev/null | cut -d' ' -f2-3)
+          actual=$(ssh-keyscan -t ed25519 "$addr" 2> /dev/null | grep -v '^#' | cut -d' ' -f2-3)
           if [ -z "$actual" ]; then
             echo "$n: could not read the host key of $addr" >&2
             exit 1
