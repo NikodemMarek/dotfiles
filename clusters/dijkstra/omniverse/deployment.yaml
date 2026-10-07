@@ -1,0 +1,137 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: git-sync
+  namespace: omniverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: git-sync
+  template:
+    metadata:
+      labels:
+        app: git-sync
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: triss
+      volumes:
+        - name: omniverse-volume
+          persistentVolumeClaim:
+            claimName: omniverse-pvc
+      containers:
+        - name: git-sync
+          image: alpine/git:latest
+          volumeMounts:
+            - name: omniverse-volume
+              mountPath: /omniverse
+          env:
+            - name: GIT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: git-secret
+                  key: username
+            - name: GIT_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: git-secret
+                  key: token
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "10m"
+            limits:
+              memory: "512Mi"
+              cpu: "300m"
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              cd /omniverse
+
+              git config --global --add safe.directory /omniverse
+              git config --global advice.addEmptyPathspec false
+              git config --global user.email "git-sync@omniverse.local"
+              git config --global user.name "Git Sync"
+
+              if [ ! -d ".git" ]; then
+                echo "Cloning the repository..."
+                git clone https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_USER}/omniverse.git .
+              fi
+
+              # Prevent the Megabyte rounding error (90 MiB = 94371840 bytes)
+              SIZE_LIMIT="94371840c"
+
+              while true; do
+                find . \( -path ./.git -prune \) -o \( -type f -size -${SIZE_LIMIT} -print0 \) | xargs -0 -r git add -f
+
+                git add -u
+
+                if ! git diff --cached --quiet; then
+                  echo "Eligible changes detected. Committing and pushing..."
+                  git commit -m "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+                  git push https://${GIT_USER}:${GIT_TOKEN}@github.com/${GIT_USER}/omniverse.git main
+                else
+                  echo "No eligible changes under ${SIZE_LIMIT} to push."
+                fi
+
+                sleep 60
+              done
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdav
+  namespace: omniverse
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webdav
+  template:
+    metadata:
+      labels:
+        app: webdav
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: triss
+      volumes:
+        - name: omniverse-volume
+          persistentVolumeClaim:
+            claimName: omniverse-pvc
+      containers:
+        - name: webdav
+          image: rclone/rclone:latest
+          args:
+            - serve
+            - webdav
+            - /omniverse
+            - --copy-links
+            - --exclude
+            - .git/
+            - --addr
+            - :80
+            - --user
+            - $(DAV_USER)
+            - --pass
+            - $(DAV_PASS)
+          env:
+            - name: DAV_USER
+              valueFrom:
+                secretKeyRef:
+                  name: webdav-secret
+                  key: user
+            - name: DAV_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: webdav-secret
+                  key: password
+          volumeMounts:
+            - name: omniverse-volume
+              mountPath: /omniverse
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "10m"
+            limits:
+              memory: "512Mi"
+              cpu: "300m"

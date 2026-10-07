@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: navidrome
+  namespace: navidrome
+  labels:
+    app: navidrome
+  annotations:
+    tailscale.com/expose: "true"
+    tailscale.com/hostname: "navidrome"
+spec:
+  selector:
+    app: navidrome
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 4533

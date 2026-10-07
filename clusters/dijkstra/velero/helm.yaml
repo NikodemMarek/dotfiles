@@ -1,0 +1,53 @@
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: velero
+  namespace: velero
+spec:
+  interval: 1h
+  url: https://vmware-tanzu.github.io/helm-charts
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: velero
+  namespace: velero
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: velero
+      version: "12.2.0"
+      sourceRef:
+        kind: HelmRepository
+        name: velero
+        namespace: velero
+  values:
+    configuration:
+      backupStorageLocation:
+        - name: default
+          provider: velero.io/filesystem
+          bucket: openebs-backups
+          config:
+            path: /backups
+    initContainers: []
+    snapshotsEnabled: false
+    deployNodeAgent: true
+    extraVolumes:
+      - name: backups
+        persistentVolumeClaim:
+          claimName: velero-backups-pvc
+    extraVolumeMounts:
+      - name: backups
+        mountPath: /backups
+        subPath: velero
+    nodeAgent:
+      uploaderType: kopia
+      extraVolumes:
+        - name: backups
+          persistentVolumeClaim:
+            claimName: velero-backups-pvc
+      extraVolumeMounts:
+        - name: backups
+          mountPath: /backups
+          subPath: velero

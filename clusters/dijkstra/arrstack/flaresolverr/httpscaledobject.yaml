@@ -1,0 +1,29 @@
+apiVersion: http.keda.sh/v1alpha1
+kind: HTTPScaledObject
+metadata:
+  name: flaresolverr
+  namespace: arrstack
+spec:
+  hosts:
+    - flaresolverr
+    - flaresolverr:8191
+    - flaresolverr.arrstack
+    - flaresolverr.arrstack:8191
+    - flaresolverr.arrstack.svc
+    - flaresolverr.arrstack.svc:8191
+    - flaresolverr.arrstack.svc.cluster.local
+    - flaresolverr.arrstack.svc.cluster.local:8191
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: flaresolverr
+    service: flaresolverr-app
+    port: 8191
+  replicas:
+    min: 0
+    max: 1
+  # Scale to zero after 30 minutes without requests.
+  scaledownPeriod: 1800
+  scalingMetric:
+    concurrency:
+      targetValue: 1

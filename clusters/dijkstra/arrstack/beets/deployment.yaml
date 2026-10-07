@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beets
+  namespace: arrstack
+  labels:
+    app: beets
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: beets
+  template:
+    metadata:
+      labels:
+        app: beets
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: regis
+      volumes:
+        - name: beets-config
+          configMap:
+            name: beets-config
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: arrstack-downloads-pvc
+        - name: music
+          persistentVolumeClaim:
+            claimName: arrstack-music-pvc
+      containers:
+        - name: beets
+          image: lscr.io/linuxserver/beets:latest
+          command: ["python3", "/config/server.py"]
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: PORT
+              value: "8000"
+          ports:
+            - name: http
+              containerPort: 8000
+          volumeMounts:
+            - name: beets-config
+              mountPath: /config/config.yaml
+              subPath: config.yaml
+            - name: beets-config
+              mountPath: /config/server.py
+              subPath: server.py
+            - name: downloads
+              mountPath: /downloads
+            - name: music
+              mountPath: /music
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "128Mi"
+            limits:
+              cpu: "1000m"
+              memory: "1Gi"

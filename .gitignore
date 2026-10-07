@@ -3,3 +3,14 @@ result*
 *.qcow2
 
 host/alp/key
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# pre-commit
+.pre-commit-config.yaml
+
+# configs
+kubeconfig.yaml
