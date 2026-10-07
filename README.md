@@ -1,17 +1,199 @@
-# infra
+# dotfiles
 
-Kubernetes manifests for my clusters.
+Nix flake monorepo: NixOS hosts, the packages and wrappers they use, and the manifests of the k3s cluster (`dijkstra`) that some of those hosts form. Hosts are impermanent (root is wiped on boot), secrets live in Bitwarden and are turned into sops files at build time, and the cluster is reconciled by Flux.
 
-The cluster is managed by [Flux](https://fluxcd.io/) (`clusters/dijkstra/flux-system`), so configs are never applied manually - changes are committed and pushed, and Flux reconciles them every few minutes.
+All commands below are meant to be run from the repo root inside the dev shell.
 
-To apply the changes instantly:
+## Layout
+
+```
+flake.nix              inputs, nixosConfigurations, deploy-rs nodes, packages
+devenv.nix             dev shell: tools and the scripts described below
+secretspec.toml        inventory of every secret of every host (one profile per host)
+.sops.yaml             age recipients: hosts, user, cluster
+secrets-stub/          placeholder for the `secrets` flake input
+host/
+  <name>/              per-host config, hardware, ssh_host_ed25519_key.pub
+  features/
+    default.nix        imported by every host: global + sops/impermanence/disko/stylix + modules/host
+    global/            always on: networking, nix, openssh, sops
+    optional/          opt-in features: k3s, tailscale, docker, libvirt, maintenance, ...
+    disko/             disk layouts, parametrised by device (and swap size)
+modules/host/          own NixOS modules: persist.nix, secrets.nix, battery-notifier.nix
+pkgs/                  wrapped packages (package + bundled config)
+overlays/              exposes pkgs/ as pkgs.wrapped, flake inputs as packages, deploy-rs
+clusters/dijkstra/     Kubernetes manifests, reconciled by Flux
+assets/                wallpaper and the catppuccin palette
+```
+
+## Hosts
+
+| Host | Arch | Role |
+|------|------|------|
+| `yenn` | x86_64 | laptop/desktop (Hyprland), LUKS + btrfs. Not a deploy node, rebuilt with `host-switch` |
+| `geralt` | x86_64 | server/workstation: docker, libvirt, traefik reverse proxy (mostly inactive) |
+| `roach` | x86_64 | k3s agent, NFS server (media), music tooling |
+| `regis` | x86_64 | k3s agent, encrypted ZFS (`rpool` + data pool `tank`), NFS |
+| `triss` | aarch64 | k3s server (control plane), qemu/virtio guest |
+| `alp` | x86_64 | installer ISO, not in `nixosConfigurations` (see `mkiso`) |
+
+`geralt`, `roach`, `regis` and `triss` are deploy-rs nodes (`deploy.nodes` in `flake.nix`): ssh as `maintenance`, interactive sudo.
+
+## Dev shell
+
+`devenv` is loaded by direnv (`.envrc`), or run `devenv shell`. Entering the shell prints the script list and sets `KUBECONFIG=kubeconfig.yaml` (git-ignored). Scripts that touch secrets unlock Bitwarden (`bw`) once and lock it again on exit.
+
+| Script | What it does |
+|--------|--------------|
+| `host-switch [action]` | `nixos-rebuild <action>` (default `switch`) of the current host, with its secrets injected |
+| `host-deploy <node...>` | deploy-rs to the given nodes |
+| `install-remote <host> <user@ip>` | first install with nixos-anywhere + disko |
+| `secrets-build <outdir> <host...>` | build encrypted sops files from Bitwarden (used by the scripts above) |
+| `mkiso` / `writeiso /dev/XXX` | build the `alp` installer ISO / write it to a device |
+| `mksecret <file>` | encrypt a Kubernetes secret in place |
+
+## Installing a new host
+
+1. Add the host: `host/<name>/default.nix`, an entry in `nixosConfigurations` (and `deploy.nodes` if it should be deployed remotely), a disko layout from `host/features/disko/` (or a custom one, see `host/regis/storage.nix`).
+2. Generate its ssh host key. The key doubles as the host's sops identity:
+   ```sh
+   ssh-keygen -t ed25519 -N "" -f host/<name>/ssh_host_ed25519_key
+   ssh-to-age < host/<name>/ssh_host_ed25519_key.pub
+   ```
+   Commit only the `.pub` (the host config reads it). The private half goes to Bitwarden as `HOST_SSH_ED25519_PRIV` (see Secrets). It is not tracked and not git-ignored, so delete the local file after installing.
+3. Put the age key in `.sops.yaml` (an anchor under `&hosts` and a `host/<name>/.+$` creation rule) and add a `[profiles.<name>]` to `secretspec.toml` with the host's items in Bitwarden.
+4. Boot the target from the ISO: `mkiso`, then `writeiso /dev/sdX`. The ISO joins tailscale with an auth key read from `host/alp/key` (git-ignored, create it in the Tailscale console) and accepts the key of `yenn`'s user over ssh.
+5. Put a disk key at `host/<name>/disk.key`. `install-remote` insists on it and passes it to nixos-anywhere as `/tmp/disk.key`; it is not tracked. Only layouts that reference that path use it: `regis`'s `tank` pool (raw key, `dd if=/dev/urandom of=host/regis/disk.key bs=32 count=1`). For such a host, uncomment the zfs lines in `install-remote` (`devenv.nix`) so the key is also copied to `/persist/data/etc/zfs/disk.key`. For other hosts any file will do.
+6. Install:
+   ```sh
+   install-remote <name> root@<ip>
+   ```
+   It builds the host's secrets, copies the host key to `/persist/data/etc/ssh/ssh_host_ed25519_key` on the new disk and runs nixos-anywhere with the disko script and the toplevel as store paths.
+
+## Updating hosts
+
+```sh
+host-switch            # the machine you are on (yenn)
+host-switch test       # any nixos-rebuild action
+host-deploy geralt roach
+```
+
+`host-deploy` builds the secrets for the requested nodes, checks their ssh host keys, answers deploy-rs's sudo prompt with the `maintenance` password from Bitwarden (or asks), and runs `deploy --skip-checks`.
+
+## Secrets
+
+Modules never talk to sops directly. They go through a small contract:
+
+- `modules/host/secrets.nix` defines `config.secrets.<name>` with `owner`, `group`, `mode`, `neededForUsers` and `path` (defaults to `/run/secrets/<name>`). Consumers read only `config.secrets.<name>.path`.
+- `host/features/global/sops.nix` is the only place that knows the provider is sops-nix: it maps every `config.secrets` entry to `sops.secrets` and reads `<host>.yaml` from the `secrets` flake input. The age identity is `/persist/data/etc/ssh/ssh_host_ed25519_key`.
+- `secretspec.toml` is the inventory. The profile named after the host lists its secrets as uppercased names. Evaluation fails if the secrets used by modules and the profile diverge (missing, unused or badly named; names match `^[a-z0-9_]+$`).
+- The values live in Bitwarden, folder `infra/<host>` (`bw://?folder=infra/{profile}`).
+
+`secrets-build <outdir> <host...>` exports each profile with `secretspec`, keeps exactly the secrets the config declares, verifies that ssh private keys match the `.pub` files in the repo and that the host's age key matches `.sops.yaml`, hashes `*_PASSWORD` entries with `mkpasswd`, and writes `<outdir>/<host>.yaml` encrypted for the host (plaintext never touches disk). Keys marked `composed` in `secretspec.toml` (e.g. `K3S_VPN_AUTH`) are assembled from other keys; the inputs are not written.
+
+The `secrets` flake input is `path:./secrets-stub`, a placeholder with no sops files. Every script that builds a host passes `--override-input secrets path:<outdir>`; to build by hand:
+
+```sh
+secrets-build /tmp/s geralt
+nixos-rebuild build --flake .#geralt --override-input secrets path:/tmp/s
+```
+
+`.sops.yaml` holds the age recipients: a `super` key, one key per host, the user keys, and the cluster key. Host files (`host/<name>/...`) are encrypted for super, the host and the user; `clusters/dijkstra/.+\.enc.+` only for the cluster key.
+
+### Adding a secret
+
+1. Declare and use it in the module that needs it:
+   ```nix
+   { config, ... }: {
+     secrets.myservice_token = { owner = "myservice"; mode = "0400"; };
+
+     services.myservice.tokenFile = config.secrets.myservice_token.path;
+   }
+   ```
+   Use `neededForUsers = true` for anything read while users are created (password hashes); the path then is under `/run/secrets-for-users`.
+2. Add it to the profile of every host that imports the module, uppercased:
+   ```toml
+   [profiles.geralt]
+   MYSERVICE_TOKEN = { description = "myservice API token", required = true }
+   ```
+3. Create the matching item in Bitwarden, folder `infra/geralt`.
+4. Check that the config and the inventory agree, then apply:
+   ```sh
+   nix eval .#nixosConfigurations.geralt.config.secrets --apply builtins.attrNames
+   host-deploy geralt
+   ```
+
+## Persistence
+
+Root is rolled back on every boot; state survives only in `/persist`, managed by `modules/host/persist.nix` on top of impermanence.
+
+| Option | Meaning |
+|--------|---------|
+| `persist.enable` | turn the rollback and bind mounts on |
+| `persist.deviceService` | systemd device unit to wait for before the rollback, e.g. `dev-nvme0n1p2.device` |
+| `persist.rootPath` | device holding the root (btrfs top level, e.g. `/dev/nvme0n1p2` or `/dev/mapper/crypted`) |
+| `persist.isCrypted` / `persist.isZfs` | also wait for `cryptsetup.target` / roll back ZFS instead of btrfs |
+| `persist.data.{directories,files}` | state worth keeping, under `/persist/data` |
+| `persist.generated.{directories,files}` | state that can be regenerated, under `/persist/generated` |
+| `persist.users.<user>.{data,generated}` | the same, relative to the user's home |
+
+`generated` always includes `/var/log`, `/var/lib/nixos`, `/var/lib/systemd` and `/etc/machine-id`. On btrfs the old `root` subvolume is moved to `old_roots/<timestamp>` and entries older than 30 days are deleted; on ZFS the rollback is `zfs rollback -r rpool/root@blank` (the snapshot is created by disko in `host/regis/storage.nix`). Home directories are created in both trees on activation.
+
+```nix
+persist.generated.directories = [
+  { directory = "/var/lib/iwd"; user = "root"; group = "root"; }
+];
+persist.users.nikodem.data.directories = [ "projects" ];
+persist.users.nikodem.generated.files = [ ".ssh/known_hosts" ];
+```
+
+## Wrapped packages
+
+`pkgs/<name>/default.nix` wraps an upstream package together with its config, so the config travels with the package instead of living in `$HOME`. The pattern is `symlinkJoin` + `makeWrapper`, with the config copied into `$out`:
+
+```nix
+{pkgs, ...}:
+pkgs.symlinkJoin {
+  name = "rofi";
+  paths = [pkgs.rofi];
+  buildInputs = [pkgs.makeWrapper];
+  postBuild = ''
+    wrapProgram $out/bin/rofi \
+        --suffix PATH : ${pkgs.lib.strings.makeBinPath [pkgs.uwsm]} \
+        --add-flags "-config $out/config/rofi/config.rasi"
+
+    mkdir -p $out/config/rofi
+    cp ${./config.rasi} $out/config/rofi/config.rasi
+  '';
+}
+```
+
+Pointing the program at its config is done with a flag (rofi) or an env var (`git` sets `XDG_CONFIG_HOME=$out/.config`). To add one: create `pkgs/<name>/` with `default.nix` and the config files, register it in `pkgs/default.nix` (`<name> = pkgs.callPackage ./<name> {};`), and use it as `pkgs.wrapped.<name>` (overlay `additions`). The same set is exported as flake `packages`, so `nix build .#<name>` works. Wrapped packages can depend on each other (`hyprland` bundles `waybar`, `rofi`, ...).
+
+Packages: dunst, git, gitui, hypridle, hyprland, hyprlock, hyprpaper, jujutsu, kanshi, rofi, signal-desktop, waybar, zellij.
+
+## Infra
+
+`clusters/dijkstra` is a k3s cluster over tailscale:
+
+| Node | Role |
+|------|------|
+| `triss` | server (traefik and cloud controller disabled) |
+| `roach`, `regis` | agents, join `triss` through its tailscale address |
+
+Node config is in `host/features/optional/k3s.nix` plus the per-host `services.k3s` blocks. The token and tailscale join key come from Bitwarden (`K3S_TOKEN`, `K3S_TAILSCALE_AUTH_KEY`). `roach` and `regis` also export NFS (`nfs.nix`), used for app volumes.
+
+Flux is bootstrapped in `clusters/dijkstra/flux-system` (do not edit `gotk-*.yaml`). It watches `main` of the GitHub repo and applies `./clusters/dijkstra`, so nothing is applied by hand: commit, push, wait. To apply immediately:
+
 ```sh
 flux reconcile kustomization flux-system --namespace flux-system --with-source
 ```
 
-## Secrets
+Each app is a directory: `arrstack` (sonarr, radarr, lidarr, prowlarr, bazarr, qbittorrent, beets, flaresolverr), `cloudflare` (tunnel), `cron`, `hermes`, `immich`, `jellyfin`, `keda`, `navidrome` (with audiomuse-ai), `ollama`, `omniverse`, `openebs`, `proxy` (traefik, gateway), `shani`, `tailscale` (operator), `velero`. Shared: `storageclass.yaml`.
 
-Secrets are encrypted with [SOPS](https://github.com/getsops/sops) using the cluster's age key (see `.sops.yaml`); Flux decrypts them when applying. Encrypted files must match `*.enc.*`, e.g. `secret.enc.yaml`. To create one, write a plain `Secret` manifest with `stringData`, then encrypt it in place with the devenv script:
+### Kubernetes secrets
+
+Encrypted with SOPS using the cluster's age key (`.sops.yaml`); Flux decrypts them when applying (`sops-age` secret). Files must match `*.enc.*`, e.g. `secret.enc.yaml`. Write a plain `Secret` with `stringData`, then encrypt it in place (only `data` and `stringData` are encrypted):
 
 ```yaml
 apiVersion: v1
@@ -28,4 +210,4 @@ stringData:
 mksecret clusters/dijkstra/<app>/secret.enc.yaml
 ```
 
-To change an existing secret, edit it with `sops clusters/dijkstra/<app>/secret.enc.yaml` (requires the age private key).
+To change an existing one, run `sops clusters/dijkstra/<app>/secret.enc.yaml` (needs the cluster's age private key, e.g. via `SOPS_AGE_KEY_FILE`).
