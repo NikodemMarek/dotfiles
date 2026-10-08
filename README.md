@@ -9,7 +9,7 @@ All commands below are meant to be run from the repo root inside the dev shell.
 ```
 flake.nix              inputs, nixosConfigurations, deploy-rs nodes, packages
 devenv.nix             dev shell: tools and the scripts described below
-secretspec.toml        inventory of every secret of every host (one profile per host, plus `dijkstra` for the cluster)
+secretspec.toml        inventory of every secret: one profile per host, `dijkstra` for the cluster key, `dijkstra-<ns>` for the Secret `secrets` of each namespace
 .sops.yaml             age recipients: hosts, user, cluster
 secrets-stub/          placeholder for the `secrets` flake input
 host/
@@ -51,7 +51,8 @@ assets/                wallpaper, the catppuccin palette and starship.toml
 | `install-remote <host> <user@ip>` | first install with nixos-anywhere + disko |
 | `secrets-build <outdir> <host...>` | build encrypted sops files from Bitwarden (used by the scripts above) |
 | `mkiso` / `writeiso /dev/XXX` | build the `alp` installer ISO / write it to a device |
-| `mksecret <file>` | encrypt a Kubernetes secret in place |
+| `cluster-secrets-build [--check]` | build the cluster's Kubernetes secrets from Bitwarden (see Kubernetes secrets) |
+| `mksecret <file>` | encrypt a Kubernetes secret in place (legacy, replaced by `cluster-secrets-build`) |
 
 ## Installing a new host
 
@@ -215,21 +216,15 @@ Each app is a directory: `arrstack` (sonarr, radarr, lidarr, prowlarr, bazarr, q
 
 ### Kubernetes secrets
 
-Encrypted with SOPS using the cluster's age key (`.sops.yaml`); Flux decrypts them when applying (`sops-age` secret). Files must match `*.enc.*`, e.g. `secret.enc.yaml`. Write a plain `Secret` with `stringData`, then encrypt it in place (only `data` and `stringData` are encrypted):
+Encrypted with SOPS using the cluster's age key (`.sops.yaml`); Flux decrypts them when applying (`sops-age` secret). Files must match `*.enc.*`. Only `data` and `stringData` are encrypted.
 
-```yaml
-apiVersion: v1
-kind: Secret
-metadata:
-  name: myapp-secret
-  namespace: myapp
-type: Opaque
-stringData:
-  api_key: changeme
-```
+They are generated from Bitwarden by `cluster-secrets-build`, one namespace at a time. The secretspec profile `dijkstra-<ns>` is the Secret `secrets` of namespace `<ns>`, written to `clusters/dijkstra/secrets/<ns>.enc.yaml`. The profile `dijkstra` itself is cluster-level (the age key) and is never rendered.
 
-```sh
-mksecret clusters/dijkstra/<app>/secret.enc.yaml
-```
+1. Add the key to `[profiles."dijkstra-<ns>"]` in `secretspec.toml`, e.g. `API_KEY`. Only `[a-z0-9_]` keys are allowed (case aside), and two keys must not differ only by case. As for hosts, a key that only feeds a `composed` key is an input and is not written.
+2. Create the Bitwarden item `API_KEY` in the folder `infra/dijkstra-<ns>` (i.e. `infra/dijkstra-<ns>/API_KEY`; secretspec escapes a `/` in a profile name, so namespace profiles use `-`).
+3. Run `cluster-secrets-build` and commit `clusters/dijkstra/secrets/`.
+4. Reference it in the manifests as secret `secrets`, key `api_key` (keys are lowercased).
 
-To change an existing one, run `sops clusters/dijkstra/<app>/secret.enc.yaml` (needs the cluster's age private key, e.g. via `SOPS_AGE_KEY_FILE`).
+The namespace must be created by a `kind: Namespace` manifest in `clusters/dijkstra`. The script decrypts with the cluster key from Bitwarden (`FLUX_SOPS_AGE_KEY`), rewrites only files whose content or age recipient changed, lists each file as `new`, `changed`, `stale` or `unchanged` and never prints values. A key declared in the profile but missing from Bitwarden, or with an empty value, fails; Bitwarden items the profile does not declare are ignored. `cluster-secrets-build --check` writes nothing and exits 1 if any file is out of date; it needs Bitwarden and the cluster private key, so it runs only where those are available. To drop a namespace's secrets, remove its profile: the next run deletes the file.
+
+To rotate the cluster key: put the new age public key in the `&dijkstra_cluster` anchor of `.sops.yaml` and the new private key in the Bitwarden item `FLUX_SOPS_AGE_KEY`, delete `clusters/dijkstra/secrets/*.enc.yaml` (the script refuses to run against files encrypted to the old key), run `cluster-secrets-build`, deploy `triss` (`host-deploy triss`, `flux-sops-age` applies the new key), then commit and push.

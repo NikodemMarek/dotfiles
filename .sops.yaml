@@ -52,6 +52,7 @@ creation_rules:
       - *yenn_nikodem
 
   - path_regex: clusters/dijkstra/.+\.enc.+$
+    encrypted_regex: ^(data|stringData)$
     key_groups:
     - age:
       - *dijkstra_cluster

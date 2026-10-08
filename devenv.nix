@@ -69,6 +69,9 @@
 
     # [file] key type and body of a public key (from stdin without a file), without the comment
     pubkey() { cut -d' ' -f1-2 "$@"; }
+
+    # [anchor] the age recipient behind &anchor in .sops.yaml
+    sops_recipient() { sed -n "s/.*&$1 \(age1[0-9a-z]*\).*/\1/p" .sops.yaml; }
   '';
 
   # Input: `secretspec export` of one profile. $names: the secrets taken from it.
@@ -81,6 +84,18 @@
     | [to_entries[] | select(.value == null or .value == "") | .key] as $empty
     | if $empty != [] then error("empty in bitwarden: \($empty)") end
   '';
+
+  # Input: the secrets of one namespace (output of selectSecrets). $ns: the namespace.
+  # Output: the Secret `secrets` of that namespace.
+  renderSecret = pkgs.writeText "render-secret.jq" ''
+    {
+      apiVersion: "v1",
+      kind: "Secret",
+      metadata: {name: "secrets", namespace: $ns},
+      type: "Opaque",
+      stringData: .
+    }
+  '';
 in {
   packages = [
     inputs.deploy-rs.packages.${pkgs.stdenv.hostPlatform.system}.deploy-rs
@@ -92,6 +107,7 @@ in {
     pkgs.bitwarden-cli
     pkgs.secretspec
     pkgs.jq
+    pkgs.yq-go
     pkgs.mkpasswd
     pkgs.expect
 
@@ -162,7 +178,7 @@ in {
         check_sops_identity() {
           local have want
           have=$(ssh-to-age < "host/$1/ssh_host_ed25519_key.pub")
-          want=$(sed -n "s/.*&$1 \(age1[0-9a-z]*\).*/\1/p" .sops.yaml)
+          want=$(sops_recipient "$1")
           if [ "$have" != "$want" ]; then
             echo "$1: host key is $have, but .sops.yaml has ''${want:-nothing}" >&2
             exit 1
@@ -204,6 +220,121 @@ in {
         done
       '';
       description = "[outdir host...] build encrypted sops files from bitwarden";
+    };
+    cluster-secrets-build = {
+      exec = ''
+        source ${common}
+
+        check=false
+        case "''${1:-}" in
+          --check) check=true ;;
+          "") ;;
+          *)
+            echo "usage: cluster-secrets-build [--check]"
+            exit 1
+            ;;
+        esac
+
+        dir=clusters/dijkstra/secrets
+        tmp=$dir/.build.tmp
+        on_exit "rm -f '$tmp'"
+        dirty=false
+
+        # [name list] whether the newline separated list has the name
+        listed() { printf '%s\n' "$2" | grep -Fx -- "$1" > /dev/null; }
+
+        # [file status] one line per file, never any values
+        report() { printf '%-9s %s\n' "$2" "$1"; }
+
+        bw_unlock
+        bw sync > /dev/null
+
+        # each profile dijkstra-<ns> is the Secret `secrets` of namespace <ns>, made of
+        # exactly the keys it declares (not the ones that only feed a `composed` key, as for
+        # hosts); this is {"<ns>": [lowercase key...]}, names must be [a-z0-9_]+ and unique
+        # assigned first, set -e ignores a failing $(...) inside the arguments below
+        declared=$(nix eval --impure --json --expr '
+          let
+            profiles = (builtins.fromTOML (builtins.readFile ./secretspec.toml)).profiles;
+            keys = profile: let
+              composed = map (spec: spec.composed or "") (builtins.attrValues profile);
+              isInput = key: builtins.any (c: builtins.replaceStrings [("$" + "{" + key + "}")] [""] c != c) composed;
+            in
+              builtins.filter (key: !isInput key) (builtins.attrNames profile);
+          in
+            builtins.mapAttrs (_: keys) profiles
+        ' | jq -c '
+          with_entries(select(.key | startswith("dijkstra-")) | .key |= ltrimstr("dijkstra-") | .value |= map(ascii_downcase))
+          | with_entries(
+            if .value == [] then error("\(.key): no secrets in the profile")
+            elif [.value[] | select(test("^[a-z0-9_]+$") | not)] != [] then error("\(.key): keys must match ^[a-z0-9_]+$ (lowercased)")
+            elif (.value | length) != (.value | unique | length) then error("\(.key): keys collide when lowercased")
+            else . end
+          )
+        ')
+        namespaces=$(printf '%s' "$declared" | jq -r 'keys[]')
+
+        # a Secret for a namespace the cluster does not create would break the whole Flux apply
+        manifests=$(grep -rlx --include='*.yaml' 'kind: Namespace' clusters/dijkstra || true)
+        nsmanifests=$(printf '%s\n' "$manifests" | xargs -r yq eval-all 'select(.kind == "Namespace") | .metadata.name')
+
+        # the cluster key decrypts the existing files, it must be the one behind &dijkstra_cluster
+        key=$(secretspec get --profile dijkstra FLUX_SOPS_AGE_KEY)
+        have=$(printf '%s\n' "$key" | age-keygen -y)
+        want=$(sops_recipient dijkstra_cluster)
+        if [ "$have" != "$want" ]; then
+          echo "FLUX_SOPS_AGE_KEY is $have, but .sops.yaml has ''${want:-nothing}" >&2
+          exit 1
+        fi
+
+        # plaintext only ever lives in shell variables and pipes (printf is a builtin, so
+        # never argv), the key reaches sops through its environment; $(...) strips trailing
+        # newlines, harmless for a whole json document as the values are escaped inside it
+        for ns in $namespaces; do
+          file=$dir/$ns.enc.yaml
+          if ! listed "$ns" "$nsmanifests"; then
+            echo "$ns: no kind: Namespace manifest under clusters/dijkstra" >&2
+            exit 1
+          fi
+
+          names=$(printf '%s' "$declared" | jq -c --arg ns "$ns" '.[$ns]')
+          secret=$(secretspec export --profile "dijkstra-$ns" --format json | jq --argjson names "$names" -f ${selectSecrets} | jq --arg ns "$ns" -f ${renderSecret})
+          wanted=$(printf '%s' "$secret" | jq -S .)
+
+          status=new
+          if [ -f "$file" ]; then
+            # the recipients are plaintext metadata; a file for another key (rotation) is rewritten
+            recipients=$(yq '.sops.age[].recipient' "$file")
+            # a failing decrypt must abort, not count as a change
+            if ! current=$(SOPS_AGE_KEY="$key" sops decrypt --output-type json "$file" | jq -S '{apiVersion, kind, metadata: {name: .metadata.name, namespace: .metadata.namespace}, type, stringData}'); then
+              echo "$file: cannot be decrypted with FLUX_SOPS_AGE_KEY, it is probably encrypted to an old key: delete clusters/dijkstra/secrets/*.enc.yaml and rerun" >&2
+              exit 1
+            fi
+            if [ "$current" = "$wanted" ] && [ "$recipients" = "$want" ]; then status=unchanged; else status=changed; fi
+          fi
+          report "$file" "$status"
+          if [ "$status" = unchanged ]; then continue; fi
+
+          dirty=true
+          if ! $check; then
+            mkdir -p "$dir"
+            printf '%s' "$secret" | sops encrypt --input-type json --output-type yaml \
+              --filename-override "$file" /dev/stdin > "$tmp"
+            mv "$tmp" "$file"
+          fi
+        done
+
+        # files of namespaces that lost their profile
+        for file in "$dir"/*.enc.yaml; do
+          if [ ! -e "$file" ] || listed "$(basename "$file" .enc.yaml)" "$namespaces"; then continue; fi
+          report "$file" stale
+          dirty=true
+          if ! $check; then rm "$file"; fi
+        done
+
+        if $check && $dirty; then exit 1; fi
+      '';
+      description = "[--check] build the cluster's Kubernetes secrets from bitwarden";
     };
     host-switch = {
       exec = ''
