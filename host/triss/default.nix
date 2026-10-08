@@ -54,6 +54,8 @@
     53
   ];
 
+  services.flux-sops-age.enable = true;
+
   services.k3s = {
     role = "server";
     extraFlags = toString [

@@ -9,7 +9,7 @@ All commands below are meant to be run from the repo root inside the dev shell.
 ```
 flake.nix              inputs, nixosConfigurations, deploy-rs nodes, packages
 devenv.nix             dev shell: tools and the scripts described below
-secretspec.toml        inventory of every secret of every host (one profile per host)
+secretspec.toml        inventory of every secret of every host (one profile per host, plus `dijkstra` for the cluster)
 .sops.yaml             age recipients: hosts, user, cluster
 secrets-stub/          placeholder for the `secrets` flake input
 host/
@@ -19,7 +19,7 @@ host/
     global/            always on: networking, nix, openssh, sops
     optional/          opt-in features: k3s, tailscale, docker, libvirt, maintenance, ...
     disko/             disk layouts, parametrised by device (and swap size)
-modules/host/          own NixOS modules: persist.nix, secrets.nix, battery-notifier.nix
+modules/host/          own NixOS modules: persist.nix, secrets.nix, battery-notifier.nix, flux-sops-age.nix
 pkgs/                  wrapped packages (package + bundled config) and own tools
 skills/                Agent Skills (*/SKILL.md), shared by claude and agent-skills
 overlays/              exposes pkgs/ (pkgs.wrapped and the tools), flake inputs as packages, deploy-rs
@@ -202,6 +202,8 @@ Own programs that are not wrappers of an upstream package. They are top-level at
 | `roach`, `regis` | agents, join `triss` through its tailscale address |
 
 Node config is in `host/features/optional/k3s.nix` plus the per-host `services.k3s` blocks. The token and tailscale join key come from Bitwarden (`K3S_TOKEN`, `K3S_TAILSCALE_AUTH_KEY`). `roach` and `regis` also export NFS (`nfs.nix`), used for app volumes.
+
+The age key Flux decrypts sops manifests with is applied as `flux-system/sops-age` by the k3s server (`services.flux-sops-age`, `modules/host/flux-sops-age.nix`). It is the Bitwarden item `infra/dijkstra/FLUX_SOPS_AGE_KEY` (profile `dijkstra`) and must match `&dijkstra_cluster` in `.sops.yaml`, which the unit checks before applying. Enable it only on the k3s server: moving the server role means moving the flag.
 
 Flux is bootstrapped in `clusters/dijkstra/flux-system` (do not edit `gotk-*.yaml`). It watches `main` of the GitHub repo and applies `./clusters/dijkstra`, so nothing is applied by hand: commit, push, wait. To apply immediately:
 
