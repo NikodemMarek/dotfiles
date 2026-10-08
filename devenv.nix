@@ -71,7 +71,7 @@
     pubkey() { cut -d' ' -f1-2 "$@"; }
   '';
 
-  # Input: `secretspec export` of one host. $names: the secrets its config declares.
+  # Input: `secretspec export` of one profile. $names: the secrets taken from it.
   # Output: exactly those secrets, with lowercase names; fails if one is missing or empty.
   selectSecrets = pkgs.writeText "select-secrets.jq" ''
     with_entries(.key |= ascii_downcase)
@@ -118,11 +118,19 @@ in {
         # [json key] value of one secret
         secret() { printf '%s' "$1" | jq -r --arg k "$2" '.[$k]'; }
 
-        # [host] the host's secrets from bitwarden as json, exactly the ones its config declares
+        # [host] the host's secrets from bitwarden as json, exactly the ones its config declares,
+        # each exported from the profile that holds it
         fetch_secrets() {
-          local names
-          names=$(nix eval --json ".#nixosConfigurations.$1.config.secrets" --apply builtins.attrNames)
-          secretspec export --profile "$1" --format json | jq --argjson names "$names" -f ${selectSecrets}
+          local profile_of profiles p names part parts=""
+          # assigned first, set -e ignores a failing $(...) inside the arguments below
+          profile_of=$(nix eval --json ".#nixosConfigurations.$1.config.secrets" --apply 'builtins.mapAttrs (_: s: s.profile)')
+          profiles=$(printf '%s' "$profile_of" | jq -r '[.[]] | unique[]')
+          for p in $profiles; do
+            names=$(printf '%s' "$profile_of" | jq -c --arg p "$p" '[to_entries[] | select(.value == $p) | .key]')
+            part=$(secretspec export --profile "$p" --format json | jq --argjson names "$names" -f ${selectSecrets})
+            parts+=$part$'\n'
+          done
+          printf '%s' "$parts" | jq -s 'add // {}'
         }
 
         # [host key] repo path of the public half of an ssh private key secret
