@@ -185,6 +185,21 @@ in {
           fi
         }
 
+        # [host json] the Flux key must be the identity behind the &dijkstra_cluster anchor in
+        # .sops.yaml, a wrong or rotated key is caught here instead of on the host
+        check_flux_key() {
+          local have want
+          if [ "$(printf '%s' "$2" | jq 'has("flux_sops_age_key")')" = false ]; then
+            return
+          fi
+          have=$(secret "$2" flux_sops_age_key | age-keygen -y)
+          want=$(sops_recipient dijkstra_cluster)
+          if [ "$have" != "$want" ]; then
+            echo "$1: flux_sops_age_key in bitwarden is $have, but .sops.yaml has ''${want:-nothing}" >&2
+            exit 1
+          fi
+        }
+
         # [json] passwords are stored in plain text, hashedPasswordFile needs a hash
         hash_passwords() {
           local json=$1 key hash
@@ -214,6 +229,7 @@ in {
           json=$(fetch_secrets "$h")
           check_ssh_keys "$h" "$json"
           check_sops_identity "$h"
+          check_flux_key "$h" "$json"
           json=$(hash_passwords "$json")
           encrypt "$h" "$json" > "$outdir/.$h.yaml.tmp"
           mv "$outdir/.$h.yaml.tmp" "$outdir/$h.yaml"
