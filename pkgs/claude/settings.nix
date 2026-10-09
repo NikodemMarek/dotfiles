@@ -9,7 +9,25 @@
     command = "claude-statusline";
   };
 
+  # Built-in auto-memory is replaced by the knowledge curator. Both the
+  # setting and the env var, so a wrong key name cannot leave it on.
+  autoMemoryEnabled = false;
+  env = {
+    CLAUDE_CODE_DISABLE_AUTO_MEMORY = "1";
+  };
+
   hooks = {
+    SessionStart = [
+      {
+        hooks = [
+          {
+            type = "command";
+            command = "knowledge hook session-start";
+            timeout = 10;
+          }
+        ];
+      }
+    ];
     WorktreeCreate = [
       {
         hooks = [
@@ -39,6 +57,15 @@
             type = "command";
             command = "claude-jj-workspace stop";
             timeout = 180;
+          }
+        ];
+      }
+      {
+        hooks = [
+          {
+            type = "command";
+            command = "knowledge hook subagent-stop";
+            timeout = 30;
           }
         ];
       }

@@ -11,6 +11,7 @@
   claude-hooks,
   claude-statusline,
   jj-upload,
+  knowledge,
   # CLAUDE.md (path). null -> ../../claude/CLAUDE.md
   instructions ? null,
   # name (without .md) -> path. null -> every .md in ../../claude/agents
@@ -223,6 +224,7 @@ let
                 claude-hooks
                 claude-statusline
                 jj-upload
+                knowledge
               ]
               ++ extraPackages
             )

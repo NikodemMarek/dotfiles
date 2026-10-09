@@ -1,6 +1,7 @@
 # PreToolUse guard for Edit/Write/NotebookEdit in subagents.
 # Usage: claude-guard-writes code    -> allow writes only inside the session cwd, never into config/secrets/.git/architect memory
-#        claude-guard-writes memory  -> allow writes only inside the architect memory repo
+#        claude-guard-writes memory  -> allow writes only to the architect's own files in the memory repo
+#                                       (README.md, INDEX.md, templates/**, projects/<slug>/{overview,decisions,log}.md, projects/<slug>/notes/**)
 # (writeShellApplication prepends the shebang and `set -o errexit -o nounset -o pipefail`)
 MODE="${1:?mode required}"
 CFG="${CLAUDE_CONFIG_DIR:-$HOME/.claude}"
@@ -25,7 +26,13 @@ case "$abs" in */.jj/*|*/.jj) deny "Writing inside .jj is not allowed for this a
 
 if [ "$MODE" = memory ]; then
   under "$MEM" || deny "Architect may only write inside $MEM (got $abs)."
-  exit 0
+  # The curator owns the rest of the repo (KNOWLEDGE.md, SCOPES.toml, global/, lang/, topic/, org/, projects/<slug>/facts/)
+  # and private/ holds credentials: only the architect's own files are allowed.
+  rel="${abs#"$(realpath -m -- "$MEM")"/}"
+  slug='[a-z0-9][a-z0-9-]{0,63}'
+  [[ "$rel" =~ ^(README\.md|INDEX\.md|templates/.+)$ ]] && exit 0
+  [[ "$rel" =~ ^projects/$slug/(overview\.md|decisions\.md|log\.md|notes/.+)$ ]] && exit 0
+  deny "Architect may only write README.md, INDEX.md, templates/**, projects/<slug>/{overview,decisions,log}.md and projects/<slug>/notes/** in $MEM (got $rel); the rest is the curator's or private."
 fi
 
 # MODE=code
