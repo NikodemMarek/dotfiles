@@ -1,7 +1,11 @@
-{pkgs, ...}:
+{
+  pkgs,
+  waybar,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "waybar";
-  paths = [pkgs.waybar];
+  paths = [waybar];
   buildInputs = [pkgs.makeWrapper];
   postBuild = let
     tailscale-status = pkgs.writeShellScriptBin "tailscale-status" ''

@@ -1,7 +1,11 @@
-{pkgs, ...}:
+{
+  pkgs,
+  zellij,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "zellij";
-  paths = [pkgs.zellij];
+  paths = [zellij];
   buildInputs = [pkgs.makeWrapper];
   postBuild = ''
     wrapProgram $out/bin/zellij \

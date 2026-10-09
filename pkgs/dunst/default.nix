@@ -1,7 +1,11 @@
-{pkgs, ...}:
+{
+  pkgs,
+  dunst,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "dunst";
-  paths = [pkgs.dunst];
+  paths = [dunst];
   buildInputs = [pkgs.makeWrapper];
   postBuild = let
     extraPkgs = [pkgs.libnotify];

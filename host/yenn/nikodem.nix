@@ -7,13 +7,13 @@
 
   environment = {
     systemPackages = [
-      pkgs.wrapped.kanshi
+      pkgs.kanshi
       pkgs.antigravity-cli
-      pkgs.wrapped.signal-desktop
-      pkgs.wrapped.jujutsu
-      pkgs.wrapped.zellij
+      pkgs.signal-desktop
+      pkgs.jujutsu
+      pkgs.zellij
 
-      pkgs.wrapped.claude
+      pkgs.claude
       pkgs.jj-upload
       pkgs.jw
       pkgs.git
@@ -102,14 +102,10 @@
     hyprland = {
       enable = true;
       withUWSM = true;
-      package = pkgs.wrapped.hyprland;
       portalPackage = pkgs.xdg-desktop-portal-hyprland;
       xwayland.enable = true;
     };
-    hyprlock = {
-      enable = true;
-      package = pkgs.wrapped.hyprlock;
-    };
+    hyprlock.enable = true;
   };
 
   secrets.users_nikodem_ssh_id_ed25519 = {
@@ -123,10 +119,7 @@
   ];
 
   services = {
-    hypridle = {
-      enable = true;
-      package = pkgs.wrapped.hypridle;
-    };
+    hypridle.enable = true;
     syncthing.user = "nikodem";
   };
 }

@@ -1,10 +1,14 @@
-{pkgs, ...}:
+{
+  pkgs,
+  hypridle,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "hypridle";
-  paths = [pkgs.hypridle];
+  paths = [hypridle];
   buildInputs = [pkgs.makeWrapper];
   postBuild = let
-    extraPkgs = [pkgs.wrapped.hyprlock pkgs.brightnessctl];
+    extraPkgs = [pkgs.hyprlock pkgs.brightnessctl];
   in ''
     wrapProgram $out/bin/hypridle \
         --suffix PATH : ${pkgs.lib.strings.makeBinPath extraPkgs} \

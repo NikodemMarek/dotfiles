@@ -1,7 +1,11 @@
-{pkgs, ...}:
+{
+  pkgs,
+  rofi,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "rofi";
-  paths = [pkgs.rofi];
+  paths = [rofi];
   buildInputs = [pkgs.makeWrapper];
   postBuild = let
     extraPkgs = [pkgs.uwsm];

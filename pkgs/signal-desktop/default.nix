@@ -1,7 +1,11 @@
-{pkgs, ...}:
+{
+  pkgs,
+  signal-desktop,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "signal-desktop";
-  paths = [pkgs.signal-desktop];
+  paths = [signal-desktop];
   buildInputs = [pkgs.makeWrapper];
   postBuild = ''
     wrapProgram $out/bin/signal-desktop \

@@ -1,7 +1,11 @@
-{pkgs, ...}:
+{
+  pkgs,
+  kanshi,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "kanshi";
-  paths = [pkgs.kanshi];
+  paths = [kanshi];
   buildInputs = [pkgs.makeWrapper];
   postBuild = ''
     wrapProgram $out/bin/kanshi \

@@ -1,5 +1,11 @@
 {inputs, ...}: {
-  additions = final: _prev: import ../pkgs {pkgs = final;};
+  # Shadows nixpkgs packages with wrapped ones: apply it after the overlays that
+  # set their upstream packages (inputs-packages: hyprland), see flake.nix.
+  additions = final: prev:
+    import ../pkgs {
+      pkgs = final;
+      inherit prev;
+    };
 
   modifications = final: prev: {};
 

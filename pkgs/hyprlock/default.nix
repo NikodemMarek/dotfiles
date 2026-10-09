@@ -1,11 +1,12 @@
 {
   pkgs,
+  hyprlock,
   wallpaper,
   ...
 }:
 pkgs.symlinkJoin {
   name = "hyprlock";
-  paths = [pkgs.hyprlock];
+  paths = [hyprlock];
   buildInputs = [pkgs.makeWrapper];
   postBuild = ''
     wrapProgram $out/bin/hyprlock \

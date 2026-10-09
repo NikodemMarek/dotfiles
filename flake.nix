@@ -54,6 +54,8 @@
 
     lib = nixpkgs.lib;
 
+    allOverlays = import ./overlays {inherit inputs;};
+
     forEachSystem = f: lib.genAttrs (import systems) (system: f pkgsFor.${system});
     pkgsFor = lib.genAttrs (import systems) (system:
       import nixpkgs {
@@ -62,23 +64,23 @@
           allowUnfree = true;
           allowUnfreePredicate = _: true;
         };
-        overlays = lib.attrValues (import ./overlays {inherit inputs;});
+        # additions last: its wrappers shadow (and wrap) the packages set by the others
+        overlays = lib.attrValues (removeAttrs allOverlays ["additions"]) ++ [allOverlays.additions];
       });
   in {
     inherit lib;
 
     nixosModules = import ./modules/host;
 
-    overlays = import ./overlays {inherit inputs;};
-    packages = forEachSystem (pkgs:
-      pkgs.wrapped
-      // {
-        inherit (pkgs) knowledge jj-upload jw wallpaper claude-hooks claude-statusline agent-skills event-router knowledge-timers;
-        # flake packages must be derivations, not nested sets
-        event-handler-notify = pkgs.event-handlers.notify;
-        event-handler-knowledge = pkgs.event-handlers.knowledge;
-        event-handler-claude = pkgs.event-handlers.claude;
-      });
+    overlays = allOverlays;
+    packages = forEachSystem (pkgs: {
+      inherit (pkgs) zellij hyprland hyprlock hypridle hyprpaper rofi dunst jujutsu waybar kanshi signal-desktop glab claude;
+      inherit (pkgs) knowledge jj-upload jw wallpaper claude-hooks claude-statusline agent-skills event-router knowledge-timers;
+      # flake packages must be derivations, not nested sets
+      event-handler-notify = pkgs.event-handlers.notify;
+      event-handler-knowledge = pkgs.event-handlers.knowledge;
+      event-handler-claude = pkgs.event-handlers.claude;
+    });
 
     nixosConfigurations = let
       mkHost = host: system:

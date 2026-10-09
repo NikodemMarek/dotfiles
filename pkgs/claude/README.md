@@ -1,6 +1,6 @@
 # claude config
 
-`pkgs.wrapped.claude`: a wrapped `claude` (Claude Code) with the whole config bundled in the Nix store: `CLAUDE.md`, agents, skills, settings, hook scripts and the statusline.
+`pkgs.claude`: a wrapped `claude` (Claude Code) with the whole config bundled in the Nix store: `CLAUDE.md`, agents, skills, settings, hook scripts and the statusline.
 
 ```sh
 nix build .#claude                                # build it (from the repo root)
@@ -13,7 +13,7 @@ nix build .#claude                                # build it (from the repo root
 - `pkgs/agent-skills/skills/` - `*/SKILL.md`, tool-agnostic skills shared by Claude and other tools (`jj`, `atomic-commits`, `commit`, `knowledge`); `claude` takes them from the `agent-skills` package
 - `pkgs/knowledge` - the knowledge curator CLI: `knowledge submit`, `curate`, `undo`/`restore`/`drop`, hooks
 - `pkgs/jj-upload`, `pkgs/claude-hooks`, `pkgs/claude-statusline`, `pkgs/agent-skills` - the other tools
-- `pkgs/default.nix` - registers `wrapped.claude` and the tools; `overlays/default.nix` exposes them as the `additions` overlay and `flake.nix` exports them as `packages`
+- `pkgs/default.nix` - registers `claude` and the tools; `overlays/default.nix` exposes them as the `additions` overlay and `flake.nix` exports them as `packages`
 
 `@memoryDir@` and `@dataDir@` in the markdown files and the settings are substituted at build time.
 
@@ -25,7 +25,7 @@ On a NixOS host `pkgs` already has the `additions` overlay (see `flake.nix`), so
 
 ```nix
 environment.systemPackages = [
-  pkgs.wrapped.claude
+  pkgs.claude
   pkgs.jj-upload
 ];
 ```
@@ -50,7 +50,7 @@ Add this repo as an input and apply its `additions` overlay to **your own** nixp
           nixpkgs.overlays = [ dotfiles.overlays.additions ];
           nixpkgs.config.allowUnfreePredicate =
             p: builtins.elem (nixpkgs.lib.getName p) [ "claude-code" "claude" ];
-          environment.systemPackages = [ pkgs.wrapped.claude pkgs.jj-upload ];
+          environment.systemPackages = [ pkgs.claude pkgs.jj-upload ];
         })
       ];
     };
@@ -126,7 +126,7 @@ sync = ["util", "exec", "--", "jj-upload", "sync"]
 
 ```nix
 let
-  claude = pkgs.wrapped.claude.extend {
+  claude = pkgs.claude.extend {
     skills.changelog = ./skills/changelog;
     settings.permissions.allow = [ "mcp__grafana__query_loki_stats" ];
     extraPackages = [ pkgs.glab ];
@@ -137,15 +137,13 @@ in
 }
 ```
 
-Or as an overlay, so every consumer of `pkgs.wrapped.claude` gets the extended one (apply it after `additions`):
+Or as an overlay, so every consumer of `pkgs.claude` gets the extended one (apply it after `additions`):
 
 ```nix
 final: prev: {
-  wrapped = prev.wrapped // {
-    claude = prev.wrapped.claude.extend {
-      skills.changelog = ./skills/changelog;
-      settings.permissions.allow = [ "mcp__grafana__query_loki_stats" ];
-    };
+  claude = prev.claude.extend {
+    skills.changelog = ./skills/changelog;
+    settings.permissions.allow = [ "mcp__grafana__query_loki_stats" ];
   };
 }
 ```
@@ -172,7 +170,7 @@ Keep private settings, skills or agents out of this repo with a separate flake t
       };
     in
     {
-      packages.x86_64-linux.default = pkgs.wrapped.claude.extend {
+      packages.x86_64-linux.default = pkgs.claude.extend {
         skills.team-review = ./skills/team-review;
         settings.permissions.allow = [ "Bash(make lint:*)" ];
       };
@@ -180,4 +178,4 @@ Keep private settings, skills or agents out of this repo with a separate flake t
 }
 ```
 
-Or do the same inside your system / home-manager flake: apply `dotfiles.overlays.additions`, then `home.packages = [ (pkgs.wrapped.claude.extend { ... }) ];`.
+Or do the same inside your system / home-manager flake: apply `dotfiles.overlays.additions`, then `home.packages = [ (pkgs.claude.extend { ... }) ];`.

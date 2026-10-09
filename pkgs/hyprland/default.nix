@@ -1,22 +1,26 @@
-{pkgs, ...}:
+{
+  pkgs,
+  hyprland,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "Hyprland";
-  paths = [pkgs.hyprland];
+  paths = [hyprland];
   buildInputs = [pkgs.makeWrapper];
-  inherit (pkgs.hyprland) passthru version;
+  inherit (hyprland) passthru version;
   meta = {
-    inherit (pkgs.hyprland.meta) description homepage license platforms;
+    inherit (hyprland.meta) description homepage license platforms;
     mainProgram = "Hyprland";
   };
   postBuild = let
     extraPkgs = [
-      pkgs.wrapped.hypridle
-      pkgs.wrapped.hyprlock
-      pkgs.wrapped.hyprpaper
-      pkgs.wrapped.rofi
-      pkgs.wrapped.dunst
-      pkgs.wrapped.waybar
-      pkgs.wrapped.kanshi
+      pkgs.hypridle
+      pkgs.hyprlock
+      pkgs.hyprpaper
+      pkgs.rofi
+      pkgs.dunst
+      pkgs.waybar
+      pkgs.kanshi
 
       pkgs.yazi
       pkgs.zen-browser

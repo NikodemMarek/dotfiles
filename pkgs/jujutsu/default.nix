@@ -1,11 +1,12 @@
 {
   pkgs,
+  jujutsu,
   jj-upload,
   ...
 }:
 pkgs.symlinkJoin {
   name = "jujutsu";
-  paths = [pkgs.jujutsu];
+  paths = [jujutsu];
   buildInputs = [pkgs.makeWrapper];
   postBuild = ''
     # JJ_CONFIG makes this the user config (~/.config/jj/config.toml is not
