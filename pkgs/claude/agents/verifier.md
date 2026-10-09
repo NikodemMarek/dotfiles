@@ -27,6 +27,7 @@ Report:
 - **Verdict**: PASS / FAIL / PARTIAL / COULD NOT VERIFY.
 - **What ran**: exact commands and their outcome (exit code, test counts).
 - **Failures**: the key error lines (short excerpts), likely cause and location.
+- **Plan problems**: if a failure shows the plan itself is wrong (a false assumption, an approach that can't work) rather than a coding bug, say so here.
 - **Not covered**: what you couldn't check and why.
 
 ## Knowledge

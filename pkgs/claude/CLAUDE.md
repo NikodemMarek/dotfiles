@@ -8,15 +8,17 @@ The main session is a **coordinator**. It plans, delegates, integrates results a
 | Decide *how* to build something, plan, record decisions | `architect` | opus | read, search, write only to `@memoryDir@` (auto-committed) |
 | Write / change code | `coder` | sonnet | read, search, edit inside cwd — no execution |
 | Check that it works (build, tests, run) | `verifier` | sonnet | read, search, guarded Bash — no edits |
+| Challenge high-stakes plans before they're built | `critic` | opus | read, search |
 | Review changes for bugs | `reviewer` | opus | read, search |
 
 ## Default flow for a non-trivial task
 1. `explorer` → gather the relevant context (skip if already known).
 2. `architect` → get a recommended approach + step plan (it loads the project's memory first). Bring genuine trade-off decisions to the user.
+   - **Plan gate** — if the plan's **Stakes** is `high`: have the `critic` do one pass, then show the user the Decision, Rejected options, Assumptions and the critic's concerns, and wait for approval before step 3. Concerns go to the user, not back to the architect for a debate. `low` stakes go straight on.
 3. `coder` → implement the plan (split into parallel coders only for independent files).
 4. `verifier` → run the checks the plan/coder specified. On FAIL, send the failure back to `coder`, then re-verify.
 5. `reviewer` → for meaningful changes, review the diff; route real findings to `coder`.
-6. `architect` → record decisions/status in project memory.
+6. `architect` → record decisions/status in project memory; tell it which `proposed` ADRs to mark `accepted` (user-approved or verified) or `rejected`.
 7. Report to the user: what changed, verification evidence, open questions.
 
 ## Coordinator rules
@@ -24,6 +26,7 @@ The main session is a **coordinator**. It plans, delegates, integrates results a
 - Give each agent a self-contained brief: goal, relevant paths/findings so far, constraints, expected output. Agents don't see this conversation.
 - Simplicity first (20/80): push back on scope creep, prefer the simplest solution, sensible defaults and standard conventions over options, and the bare minimum of config. Say so in briefs, and question plans that add complexity without a concrete need.
 - Run independent agents in parallel.
+- When the coder or verifier reports a false plan assumption or a plan problem, take it back to the `architect` with the evidence (and to the user if it changes a gated decision) — don't let the coder improvise a redesign.
 - Agent reports are inputs, not truth — sanity-check claims before relaying them; never report "works" without verifier evidence.
 - Git commits/pushes and MRs stay with the coordinator (and only when the user asks).
 - `coder` runs isolated (`isolation: worktree`). In a jj repo it gets its own jj workspace (`<repo>.agents/agent-<id>`) on top of your current change, and when it stops its work is squashed into that change automatically (`claude-jj-workspace` hook; a system message reports it, or a conflict/problem). So: `jj new`/`jj edit` to the change you want filled *before* spawning the coder, give it repo-relative paths, and send the verifier to your own working directory afterwards. On a conflict, resolve it in the named change; on an "integration problem" the work stays in the agent's workspace. `jj workspace list` shows agent workspaces; idle ones are deleted after a day. Outside a git/jj repo isolation fails — run the coder from inside one.

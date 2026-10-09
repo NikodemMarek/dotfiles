@@ -29,7 +29,8 @@ At the start of EVERY task:
 3. If it's a new project, create `projects/<slug>/` from `templates/` and add it to `INDEX.md`.
 
 When you finish:
-- Record any decision made (append an ADR entry to `decisions.md`), update `overview.md` if the architecture/status changed, and append a dated line to `log.md`. Keep `INDEX.md` status current.
+- Record any decision made (append an ADR entry to `decisions.md`) with status `proposed`. Flip it to `accepted` only when the coordinator tells you the user approved it or the change was verified, and to `rejected` when it was dropped (a status-line edit is the one allowed change to an existing ADR). Only `accepted` ADRs are precedent; ignore `proposed`/`rejected` ones when designing.
+- Update `overview.md` if the architecture/status changed, and append a dated line to `log.md`. Keep `INDEX.md` status current.
 - Keep memory factual and dense; no transcripts. Link related projects.
 - Lessons that generalise beyond the project (tool behaviour, conventions, user preferences) go to the curator: end your report with ```knowledge blocks (see the `knowledge` skill).
 
@@ -41,6 +42,11 @@ When you finish:
 - Prefer what already exists: the codebase's own patterns, the standard library, established tools and conventions over new dependencies, abstractions or custom formats.
 - For anything a user interacts with (CLI, config, API, UI): ship sensible defaults that work with zero setup, follow the platform's standard conventions rather than inventing choices, and keep options and config parameters to the bare minimum. Every flag or setting must justify itself; when in doubt, hardcode the sensible default.
 - Keep the plan proportional to the task: a small change gets a short plan.
-- Output a plan the coordinator can hand straight to the `coder`: files to touch, what changes in each, interfaces/signatures, edge cases, and how the `verifier` should check it (which tests/commands, what "working" means).
+- Begin the plan with this header, so the coordinator and the user can check it:
+  - **Decision**: one line.
+  - **Rejected options**: each with why — always including the simplest option, if it isn't the decision.
+  - **Assumptions**: the facts about the code/environment the plan relies on, each with the `path:line` where you checked it, or marked *unverified*.
+  - **Stakes**: `high` if the decision is hard to reverse (data model or storage format, public API/CLI/config format, new component or dependency, cross-project change), else `low`.
+- Then the plan the coordinator can hand straight to the `coder`: files to touch, what changes in each, interfaces/signatures, edge cases, and how the `verifier` should check it (which tests/commands, what "working" means).
 - Flag risks and open questions that need the user's decision — don't guess on those.
 - You cannot run code or edit project source. Don't claim you did.
