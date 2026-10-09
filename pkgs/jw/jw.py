@@ -17,6 +17,7 @@ import time
 ROOT = os.path.expanduser("~/projects")
 FZF = "fzf"  # the nix package pins the store path
 NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+AGENT = re.compile(r"^agent-[0-9a-f]+$")  # the workspaces of Claude subagents
 
 
 class Fail(Exception):
@@ -165,27 +166,67 @@ def untracked(d):
     return sorted(on_disk - set(jj("--ignore-working-copy", "file", "list", cwd=d).splitlines()))
 
 
+def confirm(question):
+    """Ask on the terminal; Fail unless the answer is y."""
+    sys.stderr.write(question)
+    sys.stderr.flush()  # the question has no newline, and stderr is line-buffered
+    try:
+        with open("/dev/tty") as tty:  # stdout is captured by the fish function
+            answer = tty.readline()
+    except OSError:
+        raise Fail("nothing removed (no terminal to confirm)")
+    if answer.strip().lower() != "y":
+        raise Fail("nothing removed")
+
+
+def rmdir_agents(home):
+    """Remove <repo>.agents if it is empty now."""
+    try:
+        os.rmdir(f"{home}.agents")
+    except OSError:
+        pass
+
+
 def remove(home, name):
     d = f"{home}.agents/{name}"
     jj("status", cwd=d)  # snapshot: its work stays in its change after the workspace is gone
     lost = untracked(d)
     if lost:
         more = f", ... (+{len(lost) - 5} more)" if len(lost) > 5 else ""
-        sys.stderr.write(f"jw: {len(lost)} file(s) in {d} are not tracked by jj (ignored or too large) "
-                         f"and will be lost: {', '.join(lost[:5])}{more}. Delete? [y/N] ")
-        try:
-            with open("/dev/tty") as tty:  # stdout is captured by the fish function
-                answer = tty.readline()
-        except OSError:
-            raise Fail("nothing removed (no terminal to confirm)")
-        if answer.strip().lower() != "y":
-            raise Fail("nothing removed")
+        confirm(f"jw: {len(lost)} file(s) in {d} are not tracked by jj (ignored or too large) "
+                f"and will be lost: {', '.join(lost[:5])}{more}. Delete? [y/N] ")
     jj("--ignore-working-copy", "workspace", "forget", name, cwd=home)
     shutil.rmtree(d)
-    try:
-        os.rmdir(f"{home}.agents")
-    except OSError:
-        pass
+    rmdir_agents(home)
+
+
+def remove_broken(home, name, known):
+    """Delete a workspace jj cannot read (the caller has asked: jj cannot tell what is in there)."""
+    if name in known:
+        try:
+            jj("--ignore-working-copy", "workspace", "forget", name, cwd=home)
+        except Fail:
+            pass  # its directory goes anyway
+    shutil.rmtree(f"{home}.agents/{name}")
+    rmdir_agents(home)
+
+
+def recent(d):
+    """Whether d was modified within the last hour (a running agent may not have edited anything yet)."""
+    mtimes = []
+    for p in (d, f"{d}/.jj/working_copy"):
+        try:
+            mtimes.append(os.path.getmtime(p))
+        except OSError:
+            pass
+    return bool(mtimes) and time.time() - max(mtimes) < 3600
+
+
+def loads(d):
+    """Whether jj can load the workspace at d."""
+    p = subprocess.run(["jj", "--no-pager", "--ignore-working-copy", "log", "--no-graph", "-T", "", "-r", "@"],
+                       cwd=d, capture_output=True)
+    return p.returncode == 0
 
 
 def cmd_rm(a):
@@ -203,18 +244,32 @@ def cmd_rm(a):
 
 
 def cmd_prune(a):
-    """Remove the workspaces that hold nothing: empty, undescribed, a visible head, not in use."""
+    """Remove the session (w-*) and agent (agent-*) workspaces that hold nothing: empty, undescribed, a visible
+    head, not in use. Agent workspaces modified within the last hour stay. Directories jj cannot read (not
+    listed in the repo, or failing to load) are deleted only after asking once for all of them."""
+    broken_ones = []
     for r in repos():
         home = f"{ROOT}/{r}"
         try:
             names = sorted(os.listdir(f"{home}.agents"))
         except OSError:
             continue
+        try:
+            known = jj("--ignore-working-copy", "workspace", "list", "-T", 'name ++ "\\n"', cwd=home).split()
+        except Fail:
+            continue  # jj already said why
         for name in names:
             d = f"{home}.agents/{name}"
-            if not name.startswith("w-") or not os.path.isdir(f"{d}/.jj") or in_use(d):
+            agent = AGENT.match(name)
+            if not (name.startswith("w-") or agent) or not os.path.isdir(f"{d}/.jj") or in_use(d):
                 continue
             try:
+                broken = name not in known or not loads(d)
+                if (broken or agent) and recent(d):
+                    continue
+                if broken:
+                    broken_ones.append((r, home, name, known))
+                    continue
                 # not --ignore-working-copy: snapshot first, so unsnapshotted edits count
                 empty = jj("log", "--no-graph", "-T", "change_id", "-r",
                            '@ & empty() & description(exact:"") & visible_heads()', cwd=d)
@@ -224,6 +279,21 @@ def cmd_prune(a):
                 sys.stderr.write(f"jw: removed {r}.agents/{name}\n")
             except Fail as e:
                 sys.stderr.write(f"jw: kept {r}.agents/{name}" + (f": {e}" if str(e) else "") + "\n")
+    if not broken_ones:
+        return
+    sys.stderr.write("jw: broken workspaces (jj cannot read them, so it cannot tell what is in them):\n")
+    for r, _, name, _ in broken_ones:
+        sys.stderr.write(f"  {r}.agents/{name}\n")
+    try:
+        confirm(f"Delete these {len(broken_ones)}? [y/N] ")
+    except Fail as e:
+        sys.stderr.write(f"jw: kept them: {e}\n")
+        return
+    for r, home, name, known in broken_ones:
+        remove_broken(home, name, known)
+        sys.stderr.write(f"jw: removed {r}.agents/{name}\n")
+    for home in {home for _, home, _, _ in broken_ones}:
+        rmdir_agents(home)
 
 
 def cmd_info(a):
@@ -269,7 +339,7 @@ def parse_args():
     s.add_argument("url")
     s.add_argument("name", nargs="?", help="directory name under ~/projects (default: from the url)")
     s.set_defaults(func=cmd_clone)
-    s = sub.add_parser("prune", help="remove empty workspaces in all repos")
+    s = sub.add_parser("prune", help="remove empty and broken workspaces in all repos")
     s.set_defaults(func=cmd_prune)
     s = sub.add_parser("info", help="print the jj workspace and stack of the current directory as JSON")
     s.set_defaults(func=cmd_info)
