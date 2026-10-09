@@ -43,6 +43,14 @@
     knowledge = pkgs.callPackage ./event-handlers/knowledge {
       claude = pkgs.wrapped.claude;
     };
+    # GitLab event -> Claude session in a zellij tab. glab is passed explicitly so
+    # callPackage does not pick up the upstream one. No gitlab.* routes here (no
+    # GitLab watcher): a layer that has one sets contextTool and adds the routes.
+    claude = pkgs.callPackage ./event-handlers/claude {
+      claude = pkgs.wrapped.claude;
+      glab = pkgs.wrapped.glab;
+      notify = pkgs.event-handlers.notify;
+    };
   };
 
   # `handlers` stays explicit so `.override (old: {handlers = old.handlers // ...})`

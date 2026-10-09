@@ -77,6 +77,7 @@
         # flake packages must be derivations, not nested sets
         event-handler-notify = pkgs.event-handlers.notify;
         event-handler-knowledge = pkgs.event-handlers.knowledge;
+        event-handler-claude = pkgs.event-handlers.claude;
       });
 
     nixosConfigurations = let

@@ -189,6 +189,7 @@ Own programs that are not wrappers of an upstream package. They are top-level at
 | `event-router` | local HTTP inbox (`event-router emit <type>`) that runs a handler per event type; ships a systemd user service. Handlers are the `handlers` argument, extend it with `.override` |
 | `event-handlers.notify` | router handler: desktop notification with an "Open" action (flake: `event-handler-notify`; `notify-critical` is its critical-urgency variant) |
 | `event-handlers.knowledge` | router handler for `knowledge.submit` and `knowledge.curate[.weekly]` (flake: `event-handler-knowledge`) |
+| `event-handlers.claude` | GitLab event → Claude session: opens a zellij tab with Claude in the project's checkout under `$HOME/<projectsDir>`; `contextTool` (a `gitlab-context prepare` compatible package, default none: plain Claude in the main checkout), `extraPackages`, the `gitlab.*` routes and the watcher are supplied by the work layer (flake: `event-handler-claude`) |
 | `knowledge-timers` | systemd user timers that emit `knowledge.curate` every 6 hours and `knowledge.curate.weekly` on Sundays |
 
 ## Infra
