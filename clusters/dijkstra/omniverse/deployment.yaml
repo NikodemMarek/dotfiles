@@ -29,13 +29,13 @@ spec:
             - name: GIT_USER
               valueFrom:
                 secretKeyRef:
-                  name: git-secret
-                  key: username
+                  name: secrets
+                  key: git_username
             - name: GIT_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: git-secret
-                  key: token
+                  name: secrets
+                  key: git_token
           resources:
             requests:
               memory: "128Mi"
@@ -118,13 +118,13 @@ spec:
             - name: DAV_USER
               valueFrom:
                 secretKeyRef:
-                  name: webdav-secret
-                  key: user
+                  name: secrets
+                  key: webdav_user
             - name: DAV_PASS
               valueFrom:
                 secretKeyRef:
-                  name: webdav-secret
-                  key: password
+                  name: secrets
+                  key: webdav_password
           volumeMounts:
             - name: omniverse-volume
               mountPath: /omniverse

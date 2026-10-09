@@ -24,7 +24,7 @@ spec:
             claimName: hermes-data-pvc
         - name: ssh-key
           secret:
-            secretName: hermes-secret
+            secretName: secrets
             items:
               - key: ssh_ed25519_priv
                 path: id_ed25519
@@ -51,7 +51,7 @@ spec:
             - name: API_SERVER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: hermes-secret
+                  name: secrets
                   key: api_server_key
           volumeMounts:
             - name: data

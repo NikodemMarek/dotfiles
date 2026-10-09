@@ -26,12 +26,12 @@ spec:
             - name: DAV_USER
               valueFrom:
                 secretKeyRef:
-                  name: books-webdav-auth
+                  name: secrets
                   key: user
             - name: DAV_PASS
               valueFrom:
                 secretKeyRef:
-                  name: books-webdav-auth
+                  name: secrets
                   key: password
           args:
             - serve

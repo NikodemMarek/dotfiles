@@ -34,7 +34,7 @@ spec:
             claimName: shani-omniverse-pvc
         - name: host-ssh-key
           secret:
-            secretName: shani-secret
+            secretName: secrets
             defaultMode: 0400
       containers:
         - name: shani

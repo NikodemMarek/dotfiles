@@ -65,8 +65,8 @@ spec:
             - name: TS_AUTHKEY
               valueFrom:
                 secretKeyRef:
-                  name: qbittorrent-tailscale-auth
-                  key: authkey
+                  name: secrets
+                  key: qbittorrent_authkey
             - name: TS_HOSTNAME
               value: qbittorrent-tailscale
             - name: TS_USERSPACE

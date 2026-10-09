@@ -39,10 +39,10 @@ spec:
           cpu: "300m"
   valuesFrom:
     - kind: Secret
-      name: tailscale-operator-oauth
-      valuesKey: client-id
+      name: secrets
+      valuesKey: client_id
       targetPath: oauth.clientId
     - kind: Secret
-      name: tailscale-operator-oauth
-      valuesKey: client-secret
+      name: secrets
+      valuesKey: client_secret
       targetPath: oauth.clientSecret

@@ -36,5 +36,10 @@ spec:
       name: audiomuse-ai-config
       valuesKey: values.yaml
     - kind: Secret
-      name: audiomuse-ai-secrets
-      valuesKey: values.yaml
+      name: secrets
+      valuesKey: audiomuse_navidrome_user
+      targetPath: navidrome.user
+    - kind: Secret
+      name: secrets
+      valuesKey: audiomuse_navidrome_password
+      targetPath: navidrome.password

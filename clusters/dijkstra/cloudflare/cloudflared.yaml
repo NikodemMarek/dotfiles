@@ -71,4 +71,7 @@ spec:
             name: cloudflared-config
         - name: creds
           secret:
-            secretName: tunnel-credentials
+            secretName: secrets
+            items:
+              - key: credentials_json
+                path: credentials.json
