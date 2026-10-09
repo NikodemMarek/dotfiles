@@ -92,7 +92,7 @@ Useful template fields: `change_id`, `commit_id`, `description`, `bookmarks`, `l
 
 ## The user's stacked-MR workflow
 
-**One change = one merge request.** The commit's first line becomes the MR title and its body becomes the MR description. Each MR targets the branch of the change below it, and the bottom MR targets trunk.
+**One change = one merge request.** The commit's first line becomes the MR title and its body becomes the MR description when the MR is created; after that the forge's title and description win (see Rules). Each MR targets the branch of the change below it, and the bottom MR targets trunk.
 
 | Command | What it does |
 |---|---|
@@ -105,7 +105,7 @@ Useful template fields: `change_id`, `commit_id`, `description`, `bookmarks`, `l
 Script: `~/.config/jj/scripts/jj-upload.py`. It is configured under `[upload]` in the jj config.
 
 Rules:
-- **The commit message is the source of truth.** Change MR titles or descriptions with `jj describe -r X -m ...` followed by `jj upload`. Never edit them in the forge UI or via glab/gh, because the next upload overwrites them.
+- **Once an MR exists, the forge's title and description are the source of truth.** `jj upload` pulls them into the commit description, overwriting local `jj describe` edits to changes that already have an MR (it only maintains the stack list in the MR description). Edit title/description on the forge; edit the commit message locally only before the first upload.
 - **Bookmarks starting with `nm/` are managed** (`nm/<slug>-<change-id>`). Don't create, rename, move or delete them by hand. To drop an MR, `jj abandon` the change; the next `jj upload` closes it.
 - **Every change needs a description before upload.** Use Conventional Commits (`feat: …`, `fix: …`). Each change should compile and pass tests on its own.
 - **Addressing review feedback on change X:**

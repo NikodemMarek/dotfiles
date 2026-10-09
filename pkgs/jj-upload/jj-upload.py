@@ -7,8 +7,10 @@ Works with any forge that has a backend below (GitLab via `glab`, GitHub via
 Every change in the revset gets its own bookmark (= git branch) and its own MR.
 Each MR targets the branch of its parent change, or the trunk branch for the
 bottom of the stack.  Running it again force-pushes rewritten changes and syncs
-MR title / description / target branch with the commits.  Changes you abandoned
-or squashed away get their MR closed and their branch deleted.
+the MR target branch.  Once an MR exists, its title and description on the forge
+win: they are pulled into the commit description (local edits are overwritten)
+and jj upload only maintains the stack list in the description.
+Changes you abandoned or squashed away get their MR closed and their branch deleted.
 
 Usage:  jj upload [-r REVSET]... [--draft] [--dry-run]
 
@@ -357,6 +359,26 @@ def strip_stack(text):
 
 # ---------------------------------------------------------------- main
 
+def pull_descriptions(commits, fg, prefix, pushed, dry_run):
+    """The forge wins: copy title + description of existing MRs into the commits."""
+    pulled = False
+    for c in commits:
+        branch, _ = choose_bookmark(c, prefix)
+        mr = fg.find(branch) if branch in pushed else None
+        if not mr or mr["state"] == "merged":
+            continue
+        remote_desc = mr["title"].strip()
+        body = strip_stack(mr["description"])
+        if body:
+            remote_desc += "\n\n" + body
+        if remote_desc != c["description"].strip():
+            info(f"  pulled title/description of {mr['ref']} into {c['change'][:8]}")
+            if not dry_run:
+                jj("describe", "-r", c["change"], "-m", remote_desc)
+                pulled = True
+    return pulled
+
+
 def main():
     ap = argparse.ArgumentParser(prog="jj upload", description=__doc__.split("\n\n")[1],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -385,6 +407,12 @@ def main():
         if len(c["parents"]) != 1:
             die(f"{short} is a merge commit; stacked MRs need a linear history")
 
+    fg = make_forge(remote)
+    t = fg.term
+    pushed = remote_branches(remote)
+    if pull_descriptions(commits, fg, prefix, pushed, args.dry_run):
+        commits = load_commits(revset)  # describing rewrote them (and their descendants)
+
     trunk = trunk_branch(remote)
     selected = {c["commit"]: c for c in commits}
     outside = [p for c in commits for p in c["parents"] if p not in selected]
@@ -396,7 +424,6 @@ def main():
                           "-T", 'commit_id ++ "\\n"').split())
         for c in load_commits(f"({ids}) ~ ::trunk()"):
             outside_bookmarks[c["commit"]] = c["bookmarks"]
-    pushed = remote_branches(remote)
 
     # 1. decide bookmarks and MR targets
     plan, to_delete = [], []
@@ -423,8 +450,6 @@ def main():
     for e in plan:
         info(f"  {e['change'][:8]}  {e['branch']}  ->  {e['target']}   {e['title']}")
 
-    fg = make_forge(remote)
-    t = fg.term
     stale = sorted(set(to_delete) | set(deleted_managed_bookmarks(prefix, remote)))
     if stale:
         info(f"Closing {t}s / deleting branches of dropped changes: " + ", ".join(stale))
@@ -464,18 +489,15 @@ def main():
             info(f"  updated {mr['ref']}  {mr['url']}")
         e["mr"] = mr
 
-    # 4. stack overview in every MR description
-    if len(plan) > 1:
-        for e in plan:
-            if e["mr"]["state"] == "merged":
-                continue
-            desc = (e["body"] + "\n\n" + stack_section(plan, e["branch"], t)).strip()
-            if e["mr"]["description"].strip() != desc:
-                fg.update(e["mr"], description=desc)
-    else:
-        e = plan[0]
-        if e["mr"]["state"] != "merged" and strip_stack(e["mr"]["description"]) != e["body"]:
-            fg.update(e["mr"], description=e["body"])
+    # 4. stack overview in every MR description; the rest of the description is
+    # left as it is on the forge (it is pulled into the commit above)
+    for e in plan:
+        if e["mr"]["state"] == "merged":
+            continue
+        section = stack_section(plan, e["branch"], t) if len(plan) > 1 else ""
+        desc = (strip_stack(e["mr"]["description"]) + "\n\n" + section).strip()
+        if (e["mr"]["description"] or "").strip() != desc:
+            fg.update(e["mr"], description=desc)
 
     # 5. dropped changes: close MR, then delete branch (after children were retargeted)
     if stale:
