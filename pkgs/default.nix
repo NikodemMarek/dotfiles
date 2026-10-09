@@ -8,8 +8,6 @@
     hyprpaper = pkgs.callPackage ./hyprpaper {};
     rofi = pkgs.callPackage ./rofi {};
     dunst = pkgs.callPackage ./dunst {};
-    git = pkgs.callPackage ./git {};
-    gitui = pkgs.callPackage ./gitui {};
     jujutsu = pkgs.callPackage ./jujutsu {};
     waybar = pkgs.callPackage ./waybar {};
     kanshi = pkgs.callPackage ./kanshi {};

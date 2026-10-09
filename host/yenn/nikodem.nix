@@ -7,7 +7,6 @@
 
   environment = {
     systemPackages = [
-      pkgs.wrapped.gitui
       pkgs.wrapped.kanshi
       pkgs.antigravity-cli
       pkgs.wrapped.signal-desktop
@@ -17,6 +16,7 @@
       pkgs.wrapped.claude
       pkgs.jj-upload
       pkgs.jw
+      pkgs.git
 
       pkgs.alacritty
       pkgs.remmina
@@ -65,17 +65,11 @@
       l = "eza -la --icons --group-directories-first --git";
       lt = "eza -laT --icons --group-directories-first --git";
       n = "nvim";
-      g = "git";
-      gi = "gitui";
       zj = "zellij";
     };
   };
 
   programs = {
-    git = {
-      enable = true;
-      package = pkgs.wrapped.git;
-    };
     fish = {
       enable = true;
       interactiveShellInit = ''
