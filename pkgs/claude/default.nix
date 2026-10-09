@@ -8,6 +8,7 @@
   writeShellScript,
   coreutils,
   findutils,
+  jq,
   claude-hooks,
   claude-statusline,
   jj-upload,
@@ -245,6 +246,12 @@ let
           esac
           [ -n "$__claude_root" ] || return 0
           case "$(${coreutils}/bin/dirname "$__claude_root")" in ?*.agents) return 0 ;; esac
+          # claude refuses --worktree until this repo itself is trusted (a trusted parent dir doesn't count)
+          if ! ${jq}/bin/jq -e --arg p "$__claude_root" '.projects[$p].hasTrustDialogAccepted == true' \
+            "$CLAUDE_CONFIG_DIR/.claude.json" >/dev/null 2>&1; then
+            echo "claude: $__claude_root is not trusted yet; running here without a workspace this once" >&2
+            return 0
+          fi
           __claude_ws="s-$(${coreutils}/bin/date +%m%d-%H%M%S)-$RANDOM"
         }
         __claude_workspace "$@" || true
