@@ -52,8 +52,6 @@ assets/                wallpaper, the catppuccin palette and starship.toml
 | `secrets-build <outdir> <host...>` | build encrypted sops files from Bitwarden (used by the scripts above) |
 | `mkiso` / `writeiso /dev/XXX` | build the `alp` installer ISO / write it to a device |
 | `cluster-secrets-build [--check]` | build the cluster's Kubernetes secrets from Bitwarden (see Kubernetes secrets) |
-| `mksecret <file>` | encrypt a Kubernetes secret in place (legacy, replaced by `cluster-secrets-build`) |
-
 ## Installing a new host
 
 1. Add the host: `host/<name>/default.nix`, an entry in `nixosConfigurations` (and `deploy.nodes` if it should be deployed remotely), a disko layout from `host/features/disko/` (or a custom one, see `host/regis/storage.nix`).

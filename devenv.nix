@@ -482,10 +482,6 @@ in {
       '';
       description = "[/dev/XXX] write iso file to device";
     };
-    mksecret = {
-      exec = "sops --encrypt --encrypted-regex '^(data|stringData)$' --in-place $1";
-      description = "[file] encrypt a kubernetes secret in place";
-    };
   };
 
   enterShell = ''
