@@ -6,6 +6,7 @@ Everything else goes to stderr.
 """
 
 import argparse
+import json
 import os
 import re
 import shutil
@@ -30,6 +31,14 @@ def jj(*args, cwd=None):
     return p.stdout
 
 
+def layout(root):
+    """(repo, workspace name, home = root of the main workspace) of the workspace at root."""
+    parent = os.path.dirname(root)
+    if re.search(r".\.agents$", parent):
+        return os.path.basename(parent).removesuffix(".agents"), os.path.basename(root), parent.removesuffix(".agents")
+    return os.path.basename(root), "default", root
+
+
 def locate():
     """(root of the current workspace, home = root of the main workspace)."""
     p = subprocess.run(["jj", "--ignore-working-copy", "workspace", "root"],
@@ -37,9 +46,7 @@ def locate():
     if p.returncode != 0:
         raise Fail("not in a jj repo")
     root = p.stdout.strip()
-    parent = os.path.dirname(root)
-    home = parent.removesuffix(".agents") if re.search(r".\.agents$", parent) else root
-    return root, home
+    return root, layout(root)[2]
 
 
 def repos():
@@ -219,7 +226,33 @@ def cmd_prune(a):
                 sys.stderr.write(f"jw: kept {r}.agents/{name}" + (f": {e}" if str(e) else "") + "\n")
 
 
-def main():
+def cmd_info(a):
+    """Print the workspace and stack of the current directory as JSON (the prompt runs this, so keep it fast)."""
+    root = os.getcwd()
+    while not os.path.isdir(f"{root}/.jj"):
+        if root == "/":
+            raise Fail()  # not in a jj repo
+        root = os.path.dirname(root)
+    repo, workspace, _ = layout(root)
+    info = {"repo": repo, "workspace": workspace, "root": root,
+            "subdir": os.getcwd()[len(root):].lstrip("/"), "change": None, "stack": None}
+    try:
+        # same revset as `jj log` in the starship prompt: the stack to trunk() plus @, minus other workspaces' empty working copies
+        p = subprocess.run(["jj", "--no-pager", "--ignore-working-copy", "--color=never", "log", "--no-graph",
+                            "-r", "(trunk()..(@::) ~ ((working_copies() ~ @) & empty())) | @",
+                            "-T", 'if(current_working_copy, change_id.shortest(), "-") ++ '
+                                  'if(self.contained_in("trunk()..@"), " y", " n") ++ "\\n"'],
+                           cwd=root, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    except OSError:
+        p = None  # no jj
+    if p and p.returncode == 0:
+        rows = [line.split() for line in p.stdout.splitlines()]
+        info["change"] = next((r[0] for r in rows if r[0] != "-"), None)
+        info["stack"] = {"index": sum(r[1] == "y" for r in rows), "size": len(rows)}
+    print(json.dumps(info))
+
+
+def parse_args():
     p = argparse.ArgumentParser(prog="jw", description=__doc__.splitlines()[0])
     sub = p.add_subparsers(dest="cmd")
     s = sub.add_parser("new", aliases=["n"], help="create a workspace in a repo and go there")
@@ -238,8 +271,15 @@ def main():
     s.set_defaults(func=cmd_clone)
     s = sub.add_parser("prune", help="remove empty workspaces in all repos")
     s.set_defaults(func=cmd_prune)
+    s = sub.add_parser("info", help="print the jj workspace and stack of the current directory as JSON")
+    s.set_defaults(func=cmd_info)
     sub.add_parser("ls", help="list the workspaces")
-    a = p.parse_args()
+    return p.parse_args()
+
+
+def main():
+    # info runs on every prompt: skip building the parser
+    a = argparse.Namespace(func=cmd_info) if sys.argv[1:] == ["info"] else parse_args()
     try:
         if not hasattr(a, "func"):
             sys.stdout.write(jj("--ignore-working-copy", "workspace", "list"))
