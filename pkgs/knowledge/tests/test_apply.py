@@ -9,7 +9,7 @@ import pytest
 
 from knowledge import locks, rejected
 from knowledge.apply import ApplyContext, ApplyError, apply_decision, recover
-from knowledge.config import ai_repo, state_dir
+from knowledge.config import skills_dir, state_dir
 from knowledge.entry import Entry, Source
 from knowledge.gitops import Git, GitError
 from knowledge.ops import (
@@ -698,7 +698,7 @@ def test_a_skill_op_writes_the_idea_and_commits_it(ctx: ApplyContext, memory_rep
         "<!-- skill idea of the knowledge curator, 2026-10-06: new skill\n"
         "why: add strings\n"
         "sources: lang/typescript/no-enums.md\n"
-        "Copy to ~/projects/ai/skills/strings/SKILL.md without this comment, "
+        "Copy to the skills/ dir of your Claude config repo as strings/SKILL.md without this comment, "
         "then `knowledge drop --taken skill-ideas/strings.md`; or `knowledge drop skill-ideas/strings.md` to reject the idea. -->\n"
     )
     assert stat.S_IMODE(path.stat().st_mode) == 0o644
@@ -733,7 +733,7 @@ def test_a_later_idea_of_the_same_name_overwrites_the_file(ctx: ApplyContext, me
 
 
 def test_an_existing_skill_makes_the_idea_an_update(ctx: ApplyContext, memory_repo: Path):
-    skill = ai_repo() / "skills" / "strings" / "SKILL.md"
+    skill = skills_dir() / "strings" / "SKILL.md"
     skill.parent.mkdir(parents=True)
     skill.write_text("---\nname: strings\ndescription: Use when x.\n---\n\nDo x.\n")
     apply_decision(ctx, decision([skill_op()], verdict="skill"))

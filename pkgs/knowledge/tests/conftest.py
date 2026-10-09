@@ -16,7 +16,7 @@ def isolated_env(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("XDG_RUNTIME_DIR", str(tmp_path / "run"))
     monkeypatch.setenv("CLAUDE_CONFIG_DIR", str(tmp_path / "claude"))
     monkeypatch.setenv("CLAUDE_MEMORY_DIR", str(tmp_path / "memory"))
-    monkeypatch.setenv("KNOWLEDGE_AI_REPO", str(tmp_path / "ai"))
+    monkeypatch.setenv("KNOWLEDGE_SKILLS_DIR", str(tmp_path / "skills"))
     monkeypatch.setenv("EVENT_ROUTER_URL", "http://127.0.0.1:9")  # the discard port: nothing answers
     monkeypatch.setenv("GIT_CONFIG_GLOBAL", os.devnull)  # the user's hooks, signing and identity stay out
     monkeypatch.setenv("GIT_CONFIG_NOSYSTEM", "1")

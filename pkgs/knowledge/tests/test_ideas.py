@@ -36,7 +36,7 @@ def test_render_is_a_skill_file_with_the_note_of_the_curator():
         "<!-- skill idea of the knowledge curator, 2026-10-06: new skill\n"
         "why: three entries agree on TypeScript style\n"
         "sources: lang/typescript/no-enums.md, lang/typescript/pascal-case.md\n"
-        "Copy to ~/projects/ai/skills/typescript-style/SKILL.md without this comment, "
+        "Copy to the skills/ dir of your Claude config repo as typescript-style/SKILL.md without this comment, "
         "then `knowledge drop --taken skill-ideas/typescript-style.md`; "
         "or `knowledge drop skill-ideas/typescript-style.md` to reject the idea. -->\n"
     )

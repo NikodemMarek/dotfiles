@@ -19,7 +19,7 @@ the model sees in the next call. The file `last_failed_call` dates the last fail
 within BACKOFF of it.
 
 A skill op is written as a draft to `skill-ideas/<name>.md` in the memory repo (`ideas.py`), in the commit of its decision;
-the run never changes a skill. The model may read the skills of the ai repo, and sees the ideas that wait in
+the run never changes a skill. The model may read the skills of the Claude config (`config.skills_dir()`), and sees the ideas that wait in
 `skill-ideas/` so that it does not draft them again.
 
 Retention (`retention.py`) runs twice, after the recovery and after the decisions: what lost its place to a
@@ -204,7 +204,7 @@ class _Run:
         self.dry_run = dry_run
         self.now = now
         self.run_id = f"r-{now:%Y%m%dT%H%M%SZ}"
-        self.skills_dir = config.ai_repo() / "skills"  # the model may read it, if it exists
+        self.skills_dir = config.skills_dir()  # the model may read it, if it exists
         self.memory = config.memory_dir()
         self.tun = config.tunables()
         self.git = Git(self.memory, locks.memory_lock())

@@ -218,6 +218,7 @@ let
         wrapProgram $out/bin/claude \
           --run "source ${preamble}" \
           --set-default DISABLE_AUTOUPDATER 1 \
+          --set-default KNOWLEDGE_SKILLS_DIR ${config}/skills \
           --prefix PATH : ${
             lib.makeBinPath (
               [

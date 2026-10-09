@@ -1382,7 +1382,7 @@ def skill_add(sources: list[str]) -> dict:
 def test_a_skill_idea_is_written_and_the_rest_of_the_decision_applies(memory_repo: Path):
     submit(1)
     llm = FakeLlm(lambda m: answer(decision(sid(1), "create", [entry_op(SKILL_PATH), skill_add([SKILL_PATH])])))
-    summary = run(llm)  # the ai repo of the tests does not exist: no skills to read
+    summary = run(llm)  # the skills dir of the tests does not exist: no skills to read
     assert (summary.applied, summary.skipped) == (1, None)
     [d] = Decisions().all()
     assert (d.id, d.outcome, d.paths) == (sid(1), "applied", (SKILL_PATH, IDEA_PATH))
@@ -1422,8 +1422,8 @@ def test_a_new_idea_sends_no_notification(memory_repo: Path, monkeypatch: pytest
     assert router.events == []
 
 
-def test_the_skills_of_the_ai_repo_are_readable_by_the_model(memory_repo: Path):
-    skills = config.ai_repo() / "skills"
+def test_the_skills_dir_is_readable_by_the_model(memory_repo: Path):
+    skills = config.skills_dir()
     (skills / "x").mkdir(parents=True)
     (skills / "x" / "SKILL.md").write_text("---\nname: x\ndescription: Use when x.\n---\n\nDo x.\n")
     llm = FakeLlm()

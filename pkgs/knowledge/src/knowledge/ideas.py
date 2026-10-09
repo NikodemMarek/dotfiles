@@ -28,7 +28,7 @@ def rel(name: str) -> str:
 
 
 def render(op: SkillOp, today: datetime.date, existing: bool) -> str:
-    """The file of an idea. `existing`: a skill of this name is in the ai repo already, so this is an update of it."""
+    """The file of an idea. `existing`: a skill of this name is in the skills dir already, so this is an update of it."""
     head = data.dump_yaml({"name": op.name, "description": op.description}, block=True)
     what = f"update of the existing skill skills/{op.name}" if existing else "new skill"
     sources = ", ".join(op.sources) or "-"
@@ -37,7 +37,7 @@ def render(op: SkillOp, today: datetime.date, existing: bool) -> str:
         f"<!-- skill idea of the knowledge curator, {today.isoformat()}: {what}\n"
         f"why: {op.summary}\n"
         f"sources: {sources}\n"
-        f"Copy to ~/projects/ai/skills/{op.name}/SKILL.md without this comment, "
+        f"Copy to the skills/ dir of your Claude config repo as {op.name}/SKILL.md without this comment, "
         f"then `knowledge drop --taken {rel(op.name)}`; "
         f"or `knowledge drop {rel(op.name)}` to reject the idea. -->\n"
     )

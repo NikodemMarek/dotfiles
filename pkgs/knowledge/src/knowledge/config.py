@@ -45,10 +45,11 @@ def runtime_dir() -> Path:
     return (Path(base) if base else Path("/tmp") / f"user-{os.getuid()}") / "knowledge"
 
 
-def ai_repo() -> Path:
-    if (v := _env("KNOWLEDGE_AI_REPO")) is not None:
+def skills_dir() -> Path:
+    """The skills of the deployed Claude config."""
+    if (v := _env("KNOWLEDGE_SKILLS_DIR")) is not None:
         return Path(v)
-    return Path.home() / "projects" / "ai"
+    return claude_config_dir() / "skills"
 
 
 def router_url() -> str:

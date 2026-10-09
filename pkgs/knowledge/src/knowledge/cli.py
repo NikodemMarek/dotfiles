@@ -107,7 +107,7 @@ def _paths() -> Obj:
         "state_dir": str(config.state_dir()),
         "inbox": str(config.inbox_dir()),
         "runtime_dir": str(config.runtime_dir()),
-        "ai_repo": str(config.ai_repo()),
+        "skills_dir": str(config.skills_dir()),
         "router_url": config.router_url(),
         "claude": config.claude_bin(),
         "memory_lock": str(locks.memory_lock()),

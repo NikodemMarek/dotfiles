@@ -11,7 +11,7 @@ from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 from . import data, ideas, rejected, secrets
-from .config import ai_repo, ensure_private, state_dir
+from .config import ensure_private, skills_dir, state_dir
 from .data import Json, Obj
 from .entry import MAX_EVIDENCE, Entry, EntryError, Source, max_trust, min_trust, render_entry, split_rel
 from .gitops import Git
@@ -222,7 +222,7 @@ def _prepare(ctx: ApplyContext, decision: Decision, record: Record | None) -> _P
             _guard_private(ctx, record, op)
             plan.private.append(op)
         else:
-            exists = (ai_repo() / "skills" / op.name / "SKILL.md").is_file()
+            exists = (skills_dir() / op.name / "SKILL.md").is_file()
             plan.ideas[ideas.rel(op.name)] = ideas.render(op, _today(ctx), exists)
     _check_entries(ctx, plan)
     return plan

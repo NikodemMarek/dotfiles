@@ -45,10 +45,12 @@ def test_paths_are_not_created_until_asked(tmp_path: Path):
     assert d.is_dir() and d.stat().st_mode & 0o077 == 0
 
 
-def test_ai_repo(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
-    assert config.ai_repo() == tmp_path / "ai"
-    monkeypatch.delenv("KNOWLEDGE_AI_REPO")
-    assert config.ai_repo() == tmp_path / "home" / "projects" / "ai"
+def test_skills_dir(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    assert config.skills_dir() == tmp_path / "skills"
+    monkeypatch.delenv("KNOWLEDGE_SKILLS_DIR")
+    assert config.skills_dir() == tmp_path / "claude" / "skills"
+    monkeypatch.delenv("CLAUDE_CONFIG_DIR")
+    assert config.skills_dir() == tmp_path / "home" / ".local" / "share" / "claude" / "skills"
 
 
 def test_router_url_and_claude_bin(monkeypatch: pytest.MonkeyPatch):
