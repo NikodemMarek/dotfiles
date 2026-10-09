@@ -7,6 +7,24 @@ name = "NikodemMarek"
 [ui]
 default-command = "log"
 
+[git]
+track-default-bookmark-on-clone = false
+
+[remotes.origin]
+auto-track-bookmarks = "nm1/*"
+auto-track-created-bookmarks = "*"
+fetch-tags = "v*"
+
+[snapshot]
+auto-update-stale = true
+
 [aliases]
-upload = ["util", "exec", "--", "jj-upload"]
-sync = ["util", "exec", "--", "jj-upload", "sync"]
+upload = ["util", "exec", "--", "@jjUpload@"]
+sync = ["util", "exec", "--", "@jjUpload@", "sync"]
+stack = ["log", "-r", "stack()"]
+
+[revset-aliases]
+"stack()" = "trunk() | trunk()..(@::)"
+
+[upload]
+bookmark-prefix = "nm1/"

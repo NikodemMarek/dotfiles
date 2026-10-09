@@ -1,13 +1,19 @@
-{pkgs, ...}:
+{
+  pkgs,
+  jj-upload,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "jujutsu";
   paths = [pkgs.jujutsu];
   buildInputs = [pkgs.makeWrapper];
   postBuild = ''
-    wrapProgram $out/bin/jj \
-        --add-flags "--config-file $out/.config/jujutsu/config.toml"
+    # JJ_CONFIG makes this the user config (~/.config/jj/config.toml is not
+    # read) and, unlike --config-file, lets it define aliases.
+    wrapProgram $out/bin/jj --set JJ_CONFIG $out/.config/jujutsu/config.toml
 
     mkdir -p $out/.config/jujutsu
-    cp ${./config.toml} $out/.config/jujutsu/config.toml
+    substitute ${./config.toml} $out/.config/jujutsu/config.toml \
+      --subst-var-by jjUpload ${jj-upload}/bin/jj-upload
   '';
 }
