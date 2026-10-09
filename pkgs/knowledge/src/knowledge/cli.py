@@ -7,7 +7,7 @@ import os
 import sys
 from pathlib import Path
 
-from . import config, curate, data, decisions, emit, importer, index, locks, records, retention
+from . import config, curate, data, decisions, emit, hooks, importer, index, locks, records, retention
 from .config import UsageError
 from .data import Json, Obj, ParseError, dumps
 from .entry import KINDS
@@ -46,6 +46,7 @@ class Args(argparse.Namespace):
     path: str
     reason: str | None
     taken: bool
+    hook_name: str
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -94,6 +95,8 @@ def _parser() -> argparse.ArgumentParser:
         action="store_true",
         help="a skill idea you adopted as a skill: delete it without telling the curator to leave it alone (plain drop rejects it)",
     )
+    hook = sub.add_parser("hook", help="a Claude Code hook: reads the hook input on stdin, prints its JSON output, always exits 0")
+    hook.add_argument("hook_name", choices=hooks.HOOKS, metavar="HOOK", help="session-start (curated knowledge for the directory) or subagent-stop (submit the knowledge blocks of the last message)")
     return p
 
 
@@ -315,6 +318,17 @@ def _curate(args: Args) -> tuple[Obj | str, int]:
     return (curate.summary_obj(summary) if summary.text is None else summary.text), code
 
 
+def _hook(name: str) -> None:
+    """Print what the hook has to say, if anything. Whatever happens, the exit code is 0: a hook must not block the session."""
+    out = hooks.run(name)
+    if out is None:
+        return
+    try:
+        print(dumps(out), flush=True)
+    except (OSError, ValueError) as e:  # a closed pipe; text that cannot be written out
+        log.warning("hook %s: cannot print its output: %s", name, e)
+
+
 def main() -> None:
     args = _parser().parse_args(namespace=Args())
     logging.basicConfig(
@@ -322,6 +336,9 @@ def main() -> None:
         format="%(levelname)s %(message)s",
         stream=sys.stderr,
     )
+    if args.command == "hook":
+        _hook(args.hook_name)
+        return
     code = 0
     try:
         result: Obj | str
