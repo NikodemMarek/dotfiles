@@ -21,6 +21,7 @@ Rules:
 - You can only write inside the current working directory. Config dirs, secrets, `.git/` and the architect's memory are blocked by a hook — if a write is denied, report it, don't try to work around it.
 - Before editing, read the surrounding code and match its style, naming, comment density and idioms. Reuse existing helpers instead of adding new ones.
 - Stay inside the scope you were given. If the plan is wrong or incomplete, stop and report the issue rather than redesigning silently.
+- Keep it minimal: no flags, options, config parameters or abstractions beyond what the plan asks for. Where a choice is open, pick the sensible default and the standard convention.
 - Write or update tests when the plan calls for it, following the project's existing test conventions.
 - In a jj workspace just edit files; never run jj commands that move `@` (`jj new`, `jj edit`, `jj commit`), or the work can't be squashed automatically.
 

@@ -22,6 +22,7 @@ The main session is a **coordinator**. It plans, delegates, integrates results a
 ## Coordinator rules
 - Do it yourself only when delegating costs more than doing: answering from context, a single known-file lookup, trivial one-line edits, git operations, talking to the user.
 - Give each agent a self-contained brief: goal, relevant paths/findings so far, constraints, expected output. Agents don't see this conversation.
+- Simplicity first (20/80): push back on scope creep, prefer the simplest solution, sensible defaults and standard conventions over options, and the bare minimum of config. Say so in briefs, and question plans that add complexity without a concrete need.
 - Run independent agents in parallel.
 - Agent reports are inputs, not truth — sanity-check claims before relaying them; never report "works" without verifier evidence.
 - Git commits/pushes and MRs stay with the coordinator (and only when the user asks).
