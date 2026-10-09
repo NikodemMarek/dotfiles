@@ -17,7 +17,7 @@ import time
 ROOT = os.path.expanduser("~/projects")
 FZF = "fzf"  # the nix package pins the store path
 NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
-AGENT = re.compile(r"^agent-[0-9a-f]+$")  # the workspaces of Claude subagents
+AGENT = re.compile(r"^(agent-[0-9a-f]+|s-[0-9]+-[0-9]+-[0-9]+)$")  # the workspaces of Claude subagents and sessions
 
 
 class Fail(Exception):
@@ -244,8 +244,8 @@ def cmd_rm(a):
 
 
 def cmd_prune(a):
-    """Remove the session (w-*) and agent (agent-*) workspaces that hold nothing: empty, undescribed, a visible
-    head, not in use. Agent workspaces modified within the last hour stay. Directories jj cannot read (not
+    """Remove the session (w-*) and Claude (agent-*, s-*) workspaces that hold nothing: empty, undescribed, a visible
+    head, not in use. Claude workspaces modified within the last hour stay. Directories jj cannot read (not
     listed in the repo, or failing to load) are deleted only after asking once for all of them."""
     broken_ones = []
     for r in repos():

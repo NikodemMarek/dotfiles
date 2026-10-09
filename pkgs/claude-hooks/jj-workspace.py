@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 """Claude Code hooks: run isolated subagents in their own jj workspace.
 
-  create  (WorktreeCreate)  jj repo: `jj workspace add` at <repo>.agents/<name>, whose @ is a new
+  create  (WorktreeCreate)  jj repo: `jj workspace add` at <repo>.agents/<name> (repo = the main
+                            workspace, even when called from a secondary one), whose @ is a new
                             change on top of the caller's current change (the "base"); sessions
-                            (non-agent names) start on trunk() instead. Prints the directory. Not a jj repo: plain git worktree, like Claude's default.
+                            (non-agent names) start on trunk() instead, or on the change in
+                            $CLAUDE_WORKSPACE_BASE (the claude wrapper sets it for a w-* workspace).
+                            Prints the directory. Not a jj repo: plain git worktree, like Claude's default.
   stop    (SubagentStop)    the stopping agent owns a workspace: squash its work into the base
                             change. The workspace stays, so the agent can be resumed.
   remove  (WorktreeRemove)  integrate leftovers, forget the workspace, delete its directory.
@@ -77,6 +80,17 @@ def workspace_root(path):
     p = subprocess.run(["jj", "--no-pager", "--ignore-working-copy", "workspace", "root"], cwd=path,
                        capture_output=True, text=True, stdin=subprocess.DEVNULL)
     return p.stdout.strip() if p.returncode == 0 else None
+
+
+def home_of(ws_root):
+    """Root of the main workspace: secondary ones live in <home>.agents/<name> (like `jw`)."""
+    parent = os.path.dirname(ws_root)
+    return parent.removesuffix(".agents") if re.search(r".\.agents$", parent) else ws_root
+
+
+def agents_of(st):
+    """The <home>.agents directory the workspace was created in (older entries lack the key)."""
+    return st.get("agents") or os.path.dirname(st["dir"])
 
 
 def store_of(ws_root):
@@ -215,10 +229,11 @@ def integrate(st):
 
 
 def delete_workspace(reg, st):
-    agents = os.path.realpath(st["root"] + ".agents")
+    agents = os.path.realpath(agents_of(st))
     d = os.path.realpath(st["dir"])
-    if os.path.dirname(d) != agents or not VALID_NAME.match(os.path.basename(d)):
-        raise Fail(f"refusing to delete {d}: not a workspace directly under {agents}")
+    if (os.path.dirname(d) != agents or not agents.endswith(".agents")
+            or not VALID_NAME.match(os.path.basename(d))):
+        raise Fail(f"refusing to delete {d}: not a workspace directly under a <repo>.agents directory")
     jj(st["root"], "--ignore-working-copy", "workspace", "forget", st["name"], check=False)
     shutil.rmtree(d, ignore_errors=True)
     drop(reg, st["name"])
@@ -273,19 +288,29 @@ def create(inp):
             drop(reg, name)
         elif name in jj(root, "workspace", "list", "-T", 'name ++ "\\n"').split():
             raise Fail(f"a jj workspace named {name!r} already exists and isn't managed by this hook")
-        d = f"{root}.agents/{name}"
+        agents = f"{home_of(root)}.agents"  # flat, even when the caller is itself in a workspace
+        d = f"{agents}/{name}"
         if os.path.lexists(d):
             raise Fail(f"{d} already exists")
         kind = "agent" if AGENT_NAME.match(name) else "session"
-        # a session must not build on the caller's @: that may be another session's work
-        base = kind == "session" and jj(root, "--ignore-working-copy", "log", "--no-graph", "-r", "trunk()",
-                                        "-T", 'if(root, "", change_id)', check=False).strip()
+        # a session must not build on the caller's @: that may be another session's work. It starts
+        # on trunk(), or on CLAUDE_WORKSPACE_BASE (the wrapper sets it in a human w-* workspace).
+        base = ""
+        if kind == "session":
+            want = os.environ.get("CLAUDE_WORKSPACE_BASE") or ""
+            if re.fullmatch(r"[a-z]+", want) and len(jj(
+                    root, "--ignore-working-copy", "log", "--no-graph", "-r", f"change_id({want})",
+                    "-T", 'change_id ++ "\\n"', check=False).split()) == 1:
+                base = want
+            else:
+                base = jj(root, "--ignore-working-copy", "log", "--no-graph", "-r", "trunk()",
+                          "-T", 'if(root, "", change_id)', check=False).strip()
         if not base:
             base = jj(root, "log", "--no-graph", "-r", "@", "-T", "change_id").strip()  # snapshots
         os.makedirs(os.path.dirname(d), exist_ok=True)
         jj(root, "workspace", "add", f"--name={name}", "-r", f"change_id({base})", d)
         try:
-            save(reg, {"name": name, "root": root, "dir": d, "base": base,
+            save(reg, {"name": name, "root": root, "dir": d, "agents": agents, "base": base,
                        "kind": kind,
                        "touched": time.time()})
         except Exception:

@@ -214,6 +214,10 @@ let
       # Sourced after the preamble: a plain interactive `claude [prompt]` in a repo's main jj
       # workspace runs in its own one (`--worktree`, see claude-jj-workspace). Anything with
       # flags or a subcommand, or already in a <repo>.agents/<name> workspace, runs as is.
+      # Exception: the human's <repo>.agents/w-* workspaces (`jw new`) are never worked in by
+      # claude directly; there it starts from the main workspace (the one whose trust counts)
+      # and the session workspace begins on the w-* workspace's current change
+      # (CLAUDE_WORKSPACE_BASE, read by claude-jj-workspace).
       # CLAUDE_NO_WORKSPACE=1 opts out. Always (unless already set) exports
       # CLAUDE_CODE_PROJECT_DIR_NAME as the main repo's session key, so all of a repo's
       # workspaces share one session list (`--resume`).
@@ -245,12 +249,26 @@ let
             agents|attach|auth|auto-mode|doctor|gateway|import|install|logs|mcp|plugin|plugins|purge|respawn|rm|setup-token|stop|kill|ultrareview|update|upgrade) return 0 ;;
           esac
           [ -n "$__claude_root" ] || return 0
-          case "$(${coreutils}/bin/dirname "$__claude_root")" in ?*.agents) return 0 ;; esac
+          local main="$__claude_root" base=""
+          case "$(${coreutils}/bin/dirname "$__claude_root")" in
+            ?*.agents)
+              # only the human's w-* workspaces get a session workspace; agent-*, s-* etc. run as is
+              case "$(${coreutils}/bin/basename "$__claude_root")" in w-*) ;; *) return 0 ;; esac
+              main="$(${coreutils}/bin/dirname "$__claude_root")"; main="''${main%.agents}"
+              ;;
+          esac
           # claude refuses --worktree until this repo itself is trusted (a trusted parent dir doesn't count)
-          if ! ${jq}/bin/jq -e --arg p "$__claude_root" '.projects[$p].hasTrustDialogAccepted == true' \
+          if ! ${jq}/bin/jq -e --arg p "$main" '.projects[$p].hasTrustDialogAccepted == true' \
             "$CLAUDE_CONFIG_DIR/.claude.json" >/dev/null 2>&1; then
-            echo "claude: $__claude_root is not trusted yet; running here without a workspace this once" >&2
+            echo "claude: $main is not trusted yet; running here without a workspace this once" >&2
             return 0
+          fi
+          if [ "$main" != "$__claude_root" ]; then
+            # snapshots the w-* workspace, so unsaved edits are part of the base change
+            base="$(jj -R "$__claude_root" log --no-graph -r @ -T change_id 2>/dev/null)" || return 0
+            [ -n "$base" ] || return 0
+            cd "$main" || return 0
+            export CLAUDE_WORKSPACE_BASE="$base"
           fi
           __claude_ws="s-$(${coreutils}/bin/date +%m%d-%H%M%S)-$RANDOM"
         }
