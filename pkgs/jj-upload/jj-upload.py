@@ -11,8 +11,12 @@ the MR target branch.  Once an MR exists, its title and description on the forge
 win: they are pulled into the commit description (local edits are overwritten)
 and jj upload only maintains the stack list in the description.
 Changes you abandoned or squashed away get their MR closed and their branch deleted.
+Before pushing, it syncs: fetch, rebase onto trunk, and pull commits that exist only
+on a change's remote branch into the change (or, if both sides changed, into a
+"remote changes on <branch>" change after it, and stop).
 
 Usage:  jj upload [-r REVSET]... [--draft] [--dry-run]
+        jj upload sync                              (alias: jj sync)
 
 Config (all optional, set with `jj config set --user <key> <value>`):
   upload.remote          git remote to push to             (default: origin)
@@ -38,6 +42,7 @@ DEFAULT_REVSET = 'trunk()..(@::) ~ (empty() & description(exact:""))'
 STACK_START = "<!-- jj-stack:start -->"
 STACK_END = "<!-- jj-stack:end -->"
 FS, RS = "\x1f", "\x1e"
+REMOTE_TITLE = "remote changes on "
 
 
 def die(msg):
@@ -110,10 +115,22 @@ def trunk_branch(remote):
     die(f"cannot find a {remote} bookmark on trunk(); set upload.target-branch")
 
 
+def log_ids(revset, field="commit_id"):
+    """`field` of each commit in revset, newest first."""
+    return jj("log", "--no-graph", "-r", revset, "-T", f'{field} ++ "\\n"').split()
+
+
 def remote_branches(remote):
+    """-> {branch: commit id} of the bookmarks present on `remote`."""
     out = jj("bookmark", "list", "--all-remotes", "-T",
-             'if(remote, name ++ "@" ++ remote ++ "\\n")')
-    return {l.rpartition("@")[0] for l in out.splitlines() if l.rpartition("@")[2] == remote}
+             'if(remote && present, name ++ "\\x1f" ++ remote ++ "\\x1f"'
+             ' ++ normal_target.commit_id() ++ "\\n")')
+    tips = {}
+    for line in out.splitlines():
+        name, rem, commit = line.split(FS)
+        if rem == remote:
+            tips[name] = commit
+    return tips
 
 
 def deleted_managed_bookmarks(prefix, remote):
@@ -379,7 +396,105 @@ def pull_descriptions(commits, fg, prefix, pushed, dry_run):
     return pulled
 
 
+def sync(remote, prefix, revset):
+    """Fetch, rebase onto trunk, reconcile each change with its remote branch.
+
+    L = the local commit, R = the remote branch tip, X = the last pushed version
+    of L (newest commit of ::R outside trunk that is in L's evolog), T = a new
+    "remote changes on <branch>" commit holding what R has beyond X (or L).
+    Returns failure messages; changes that could not be reconciled get a T after them.
+    """
+    before = load_commits(revset)
+    names = {c["change"]: choose_bookmark(c, prefix)[0] for c in before if c["bookmarks"]}
+    jj("git", "fetch")
+    tips = remote_branches(remote)
+    branch = {}
+    for c in before:
+        b = names.get(c["change"])
+        if b not in tips:
+            b = next((n for n in tips if n.startswith(prefix) and n.endswith("-" + c["change"][:8])), None)
+        if b:
+            branch[c["change"]] = (b, tips[b])
+
+    # the fetch can bring back old versions of our changes as visible commits
+    if branch:
+        remote_tips = " | ".join(r for _, r in branch.values())
+        mine = " | ".join(c["commit"] for c in before)
+        revived = f"((::({remote_tips}) ~ ::trunk() ~ ::({mine})) & ::visible_heads())"
+        if log_ids(revived):
+            jj("abandon", revived)
+
+    jj("rebase", "-b", "@", "-o", "trunk()", "--skip-emptied")
+
+    failures = []
+    for c in reversed(load_commits(revset)):  # children first: parents' ids stay valid
+        if c["change"] not in branch:
+            continue
+        L, (b, R) = c["commit"], branch[c["change"]]
+        l8 = c["change"][:8]
+        jj("bookmark", "set", b, "-r", L, "--allow-backwards")
+        if R == L:
+            continue
+        marker = f'description(substring:"{REMOTE_TITLE}{b}")'
+        left = log_ids(f"{L}:: & {marker}", "change_id")
+        if left:
+            failures.append(f"unresolved {left[0][:8]} for {b}; squash or abandon it first")
+            continue
+        remote_only = log_ids(f"::{R} ~ ::trunk()")
+        if not remote_only:
+            continue
+        evo = set(jj("evolog", "-r", L, "--no-graph", "-T", 'commit.commit_id() ++ "\\n"').split())
+        X = next((i for i in remote_only if i in evo), None)
+        if R == X:
+            continue
+
+        base = X or L
+        if X:
+            what = f"Commits on {remote}/{b} that are not in this change, squashed (remote {R[:12]})."
+        else:
+            what = (f"{remote}/{b} shares no version with this change; this is the whole-tree "
+                    f"difference to it (remote {R[:12]}) and may revert newer trunk changes.")
+        jj("new", base, "--no-edit", "-m", f"{REMOTE_TITLE}{b}\n\n{what}")
+        # T is addressed by change id: restore and rebase rewrite its commit
+        T = log_ids(f"latest(children({base}) & {marker})", "change_id")[0]
+        jj("restore", "--from", R, "--into", T)
+        if base != L:
+            jj("rebase", "-r", T, "-o", L)
+            jj("abandon", X)  # `jj new` on the hidden X made it visible (and L divergent) again
+
+        t8 = T[:8]
+        if log_ids(T, 'if(empty, "1", "0")') == ["1"]:
+            jj("abandon", T)
+            continue
+        conflicted = log_ids(T, 'if(conflict, "1", "0")') == ["1"]
+        if X and not conflicted and not jj("interdiff", "--from", X, "--to", L, "--summary").strip():
+            jj("squash", "--from", T, "--into", L, "-u")
+            info(f"pulled remote commits of {b} into {l8}")
+            continue
+        jj("rebase", "-r", T, "-A", L)
+        if X:
+            msg = (f"{b}: the remote has commits not in {l8}; they are in {t8} after it. "
+                   f"Take them: `jj squash -r {t8} -u`. "
+                   f"Discard them: `jj abandon {t8}; jj git push --remote {remote} -b exact:{b}` "
+                   "(overwrites the remote).")
+        else:
+            msg = (f"{b}: {remote}/{b} differs and shares no version with {l8} (rewritten on the "
+                   f"forge, or amended by someone else). Inspect {t8} (whole-tree difference, may "
+                   f"revert newer trunk). Move what you need into {l8} by hand, then "
+                   f"`jj abandon {t8}` and push with `jj git push --remote {remote} -b exact:{b}`.")
+        failures.append(msg + (" (has conflicts)" if conflicted else ""))
+    return failures
+
+
 def main():
+    remote = jj_config("upload.remote") or "origin"
+    prefix = jj_config("upload.bookmark-prefix") or default_prefix()
+    if sys.argv[1:2] == ["sync"]:
+        failures = sync(remote, prefix, DEFAULT_REVSET)
+        for f in failures:
+            info(f)
+        sys.exit(1 if failures else 0)
+
     ap = argparse.ArgumentParser(prog="jj upload", description=__doc__.split("\n\n")[1],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("-r", "--revisions", action="append",
@@ -388,10 +503,17 @@ def main():
     ap.add_argument("-n", "--dry-run", action="store_true", help="only print what would happen")
     args = ap.parse_args()
 
-    remote = jj_config("upload.remote") or "origin"
-    prefix = jj_config("upload.bookmark-prefix") or default_prefix()
     draft = args.draft if args.draft is not None else jj_config("upload.draft") == "true"
     revset = " | ".join(f"({r})" for r in args.revisions) if args.revisions else DEFAULT_REVSET
+
+    if args.dry_run:
+        info("dry run: not syncing (run `jj sync` first)")
+    else:
+        failures = sync(remote, prefix, revset)
+        if failures:
+            for f in failures:
+                info(f)
+            die("sync could not reconcile remote changes; nothing pushed")
 
     commits = load_commits(revset)
     if not commits:
@@ -400,6 +522,8 @@ def main():
         short = c["change"][:8]
         if c["immutable"]:
             die(f"{short} is immutable (already in trunk?)")
+        if c["description"].startswith(REMOTE_TITLE):
+            die(f"{short} holds remote changes; squash or abandon it first")
         if c["conflict"]:
             die(f"{short} has conflicts; resolve them first")
         if not c["description"]:
@@ -474,7 +598,7 @@ def main():
     for e in plan:
         mr = fg.find(e["branch"])
         if mr and mr["state"] == "merged":
-            info(f"  {mr['ref']} {e['branch']} is already merged; run `jj sync` to drop it")
+            info(f"  {mr['ref']} {e['branch']} is already merged; abandon the change if trunk has it")
             e["mr"] = mr
             continue
         if mr and mr["state"] == "closed":

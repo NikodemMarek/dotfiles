@@ -96,13 +96,13 @@ Useful template fields: `change_id`, `commit_id`, `description`, `bookmarks`, `l
 
 | Command | What it does |
 |---|---|
-| `jj upload -n` | dry run: prints the plan (bookmark → target, title) and changes nothing |
-| `jj upload` | uploads the whole stack around `@`: sets bookmarks, force-pushes, creates/updates MRs, retargets after reordering, closes MRs and deletes branches of abandoned or squashed-away changes |
+| `jj upload -n` | dry run: prints the plan (bookmark → target, title) and changes nothing; does not sync; refuses if a `remote changes on …` change exists |
+| `jj upload` | runs `jj sync` first and stops if it fails; then uploads the whole stack around `@`: sets bookmarks, force-pushes, creates/updates MRs, retargets after reordering, closes MRs and deletes branches of abandoned or squashed-away changes |
 | `jj upload -r '<revset>'` | uploads only those changes (the ones below them must be in trunk or already uploaded) |
 | `jj upload --draft` | new MRs open as Draft |
-| `jj sync` | fetch, rebase the stack onto trunk, drop changes that became empty (merged) |
+| `jj sync` | fetches, cleans up commits the fetch revived, rebases the stack onto trunk (dropping merged changes), and reconciles each MR branch: commits that exist only on the remote are squashed into the change if it is unchanged locally since the last push; if both changed, a `remote changes on <branch>` change is put after it and sync fails |
 
-Script: `~/.config/jj/scripts/jj-upload.py`. It is configured under `[upload]` in the jj config.
+Script: the `jj-upload` package, with the jj aliases `upload` and `sync`. It is configured under `[upload]` in the jj config.
 
 Rules:
 - **Once an MR exists, the forge's title and description are the source of truth.** `jj upload` pulls them into the commit description, overwriting local `jj describe` edits to changes that already have an MR (it only maintains the stack list in the MR description). Edit title/description on the forge; edit the commit message locally only before the first upload.
@@ -112,7 +112,8 @@ Rules:
   - Edit in place: `jj edit X`, change the files, `jj new <top-of-stack>` to go back.
   - Or fix on top: make the fix in `@`, then `jj squash --into X <paths> -u`, or let `jj absorb` route it.
   - Then (only if asked) `jj upload`.
-- **After the bottom MR is merged:** run `jj sync`, then `jj upload` to retarget the rest of the stack.
+- **After the bottom MR is merged:** just run `jj upload` (it syncs first and retargets the rest of the stack).
+- **A `remote changes on <branch>` change means sync could not reconcile the remote branch with the change before it.** Inspect it with `jj show`. If the sync message offers a squash, run `jj squash -r <T> -u`. Never discard it or push over the remote without the user's OK.
 - **Don't push or upload on your own.** `jj upload`, `jj git push` and anything that touches the forge (GitLab/GitHub) is outward-facing. Do it only when the user explicitly asks (in coordinator mode: the coordinator does it, not subagents). `jj git fetch` and `jj upload -n` are safe.
 
 ## Finishing a task in a jj repo

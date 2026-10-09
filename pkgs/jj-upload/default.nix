@@ -6,8 +6,9 @@
   jujutsu,
 }:
 
-# Used through a jj alias: `jj util exec -- jj-upload`. glab / gh are not
-# bundled; they are the user's own and are looked up on PATH.
+# Used through the jj aliases `upload` (`jj util exec -- jj-upload`) and `sync`
+# (`jj util exec -- jj-upload sync`). glab / gh are not bundled; they are the
+# user's own and are looked up on PATH.
 stdenvNoCC.mkDerivation {
   pname = "jj-upload";
   version = "0.1.0";

@@ -6,3 +6,7 @@ name = "NikodemMarek"
 
 [ui]
 default-command = "log"
+
+[aliases]
+upload = ["util", "exec", "--", "jj-upload"]
+sync = ["util", "exec", "--", "jj-upload", "sync"]

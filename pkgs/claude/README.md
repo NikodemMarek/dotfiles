@@ -117,6 +117,7 @@ Managed entries are symlinks refreshed on every launch; stale ones from older bu
 ```toml
 [aliases]
 upload = ["util", "exec", "--", "jj-upload"]
+sync = ["util", "exec", "--", "jj-upload", "sync"]
 ```
 
 ## Extending
