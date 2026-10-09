@@ -209,6 +209,31 @@ let
         __claude_setup || true
         unset -f __claude_link __claude_prune __claude_adopt_settings __claude_setup
       '';
+
+      # Sourced after the preamble: a plain interactive `claude [prompt]` in a repo's main jj
+      # workspace runs in its own one (`--worktree`, see claude-jj-workspace). Anything with
+      # flags or a subcommand, or already in a <repo>.agents/<name> workspace, runs as is.
+      # CLAUDE_NO_WORKSPACE=1 opts out.
+      workspace = writeShellScript "claude-workspace" ''
+        __claude_ws=""
+        __claude_workspace() {
+          [ -t 0 ] && [ -t 1 ] && [ -z "''${CLAUDE_NO_WORKSPACE:-}" ] || return 0
+          local a root
+          for a in "$@"; do
+            case "$a" in -*) return 0 ;; esac
+          done
+          case "''${1:-}" in
+            agents|attach|auth|auto-mode|doctor|gateway|import|install|logs|mcp|plugin|plugins|purge|respawn|rm|setup-token|stop|kill|ultrareview|update|upgrade) return 0 ;;
+          esac
+          root="$(jj --ignore-working-copy workspace root 2>/dev/null)" || return 0
+          case "$(${coreutils}/bin/dirname "$root")" in ?*.agents) return 0 ;; esac
+          __claude_ws="s-$(${coreutils}/bin/date +%m%d-%H%M%S)-$RANDOM"
+        }
+        __claude_workspace "$@" || true
+        [ -z "$__claude_ws" ] || set -- --worktree "$__claude_ws" "$@"
+        unset -f __claude_workspace
+        unset __claude_ws
+      '';
     in
     symlinkJoin {
       name = "claude-${claude-code.version}";
@@ -217,6 +242,7 @@ let
       postBuild = ''
         wrapProgram $out/bin/claude \
           --run "source ${preamble}" \
+          --run "source ${workspace}" \
           --set-default DISABLE_AUTOUPDATER 1 \
           --set-default KNOWLEDGE_SKILLS_DIR ${config}/skills \
           --prefix PATH : ${

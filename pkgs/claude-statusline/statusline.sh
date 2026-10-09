@@ -8,10 +8,19 @@ dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
 [ -z "$dir" ] && dir=$(pwd)
 short_dir="${dir/#"$HOME"/\~}"
 
-# Git info
+# jj info: workspace (<repo>.agents/<name>, else default) and @; never snapshots
+jj_info=""
+jj_root=$(cd "$dir" 2>/dev/null && jj --ignore-working-copy workspace root 2>/dev/null)
+if [ -n "$jj_root" ]; then
+  ws=default
+  case "$(dirname "$jj_root")" in ?*.agents) ws=$(basename "$jj_root") ;; esac
+  jj_info="ws:$ws @$(jj --ignore-working-copy -R "$jj_root" log --no-graph -r @ -T 'change_id.short(8)' 2>/dev/null)"
+fi
+
+# Git info (jj repos show jj info instead)
 git_branch=""
 git_dirty=""
-if command -v git >/dev/null 2>&1 && git -C "$dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+if [ -z "$jj_info" ] && command -v git >/dev/null 2>&1 && git -C "$dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   git_branch=$(git -C "$dir" branch --show-current 2>/dev/null)
   if [ -n "$(git -C "$dir" status --porcelain 2>/dev/null)" ]; then
     git_dirty='[$]'
@@ -56,6 +65,7 @@ ctx=""
 
 # Build output: starship-like
 out="$short_dir"
+[ -n "$jj_info" ] && out="$out $jj_info"
 [ -n "$git_branch" ] && out="$out on  $git_branch $git_dirty"
 [ -n "$pkg_ver" ] && out="$out | v$pkg_ver"
 [ -n "$java_ver" ] && out="$out via v$java_ver"

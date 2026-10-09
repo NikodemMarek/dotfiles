@@ -2,8 +2,8 @@
 """Claude Code hooks: run isolated subagents in their own jj workspace.
 
   create  (WorktreeCreate)  jj repo: `jj workspace add` at <repo>.agents/<name>, whose @ is a new
-                            change on top of the caller's current change (the "base"). Prints the
-                            directory. Not a jj repo: plain git worktree, like Claude's default.
+                            change on top of the caller's current change (the "base"); sessions
+                            (non-agent names) start on trunk() instead. Prints the directory. Not a jj repo: plain git worktree, like Claude's default.
   stop    (SubagentStop)    the stopping agent owns a workspace: squash its work into the base
                             change. The workspace stays, so the agent can be resumed.
   remove  (WorktreeRemove)  integrate leftovers, forget the workspace, delete its directory.
@@ -73,7 +73,8 @@ def inside(path, parent):
 # ------------------------------------------------------------------ registry
 
 def workspace_root(path):
-    p = subprocess.run(["jj", "--no-pager", "-R", path, "workspace", "root"],
+    """Root of the jj workspace containing path (`-R` would not search parent directories)."""
+    p = subprocess.run(["jj", "--no-pager", "--ignore-working-copy", "workspace", "root"], cwd=path,
                        capture_output=True, text=True, stdin=subprocess.DEVNULL)
     return p.stdout.strip() if p.returncode == 0 else None
 
@@ -218,7 +219,7 @@ def delete_workspace(reg, st):
     d = os.path.realpath(st["dir"])
     if os.path.dirname(d) != agents or not VALID_NAME.match(os.path.basename(d)):
         raise Fail(f"refusing to delete {d}: not a workspace directly under {agents}")
-    jj(st["root"], "workspace", "forget", st["name"], check=False)
+    jj(st["root"], "--ignore-working-copy", "workspace", "forget", st["name"], check=False)
     shutil.rmtree(d, ignore_errors=True)
     drop(reg, st["name"])
     try:
@@ -268,22 +269,27 @@ def create(inp):
             save(reg, st)
             return st["dir"]
         if st:  # registered, but its directory is gone
-            jj(st["root"], "workspace", "forget", name, check=False)
+            jj(st["root"], "--ignore-working-copy", "workspace", "forget", name, check=False)
             drop(reg, name)
         elif name in jj(root, "workspace", "list", "-T", 'name ++ "\\n"').split():
             raise Fail(f"a jj workspace named {name!r} already exists and isn't managed by this hook")
         d = f"{root}.agents/{name}"
         if os.path.lexists(d):
             raise Fail(f"{d} already exists")
-        base = jj(root, "log", "--no-graph", "-r", "@", "-T", "change_id").strip()  # snapshots
+        kind = "agent" if AGENT_NAME.match(name) else "session"
+        # a session must not build on the caller's @: that may be another session's work
+        base = kind == "session" and jj(root, "--ignore-working-copy", "log", "--no-graph", "-r", "trunk()",
+                                        "-T", 'if(root, "", change_id)', check=False).strip()
+        if not base:
+            base = jj(root, "log", "--no-graph", "-r", "@", "-T", "change_id").strip()  # snapshots
         os.makedirs(os.path.dirname(d), exist_ok=True)
         jj(root, "workspace", "add", f"--name={name}", "-r", f"change_id({base})", d)
         try:
             save(reg, {"name": name, "root": root, "dir": d, "base": base,
-                       "kind": "agent" if AGENT_NAME.match(name) else "session",
+                       "kind": kind,
                        "touched": time.time()})
         except Exception:
-            jj(root, "workspace", "forget", name, check=False)
+            jj(root, "--ignore-working-copy", "workspace", "forget", name, check=False)
             shutil.rmtree(d, ignore_errors=True)
             raise
         log(f"created jj workspace {name} at {d} on top of {base[:8]}")
@@ -370,7 +376,7 @@ def remove(inp):
                     return
                 delete_workspace(reg, st)
             return
-    if workspace_root(path):
+    if os.path.realpath(workspace_root(path) or "/nonexistent") == os.path.realpath(path):
         return  # a jj workspace this hook doesn't manage
     if not git(path, "status", "--porcelain").strip():
         git(path, "worktree", "remove", path)
