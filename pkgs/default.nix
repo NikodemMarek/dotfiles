@@ -14,6 +14,9 @@
     waybar = pkgs.callPackage ./waybar {};
     kanshi = pkgs.callPackage ./kanshi {};
     signal-desktop = pkgs.callPackage ./signal-desktop {};
+    # `pkgs.glab` is the upstream package here (wrapped.glab is not top level);
+    # passed explicitly, and never aliased top-level (callPackage would recurse).
+    glab = pkgs.callPackage ./glab {inherit (pkgs) glab;};
     # The nulls pin the "use the bundled default" arguments so a same-named
     # top-level package (e.g. `skills`) is never auto-injected by callPackage.
     claude = pkgs.callPackage ./claude {

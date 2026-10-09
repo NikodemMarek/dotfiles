@@ -171,7 +171,7 @@ pkgs.symlinkJoin {
 
 Pointing the program at its config is done with a flag (rofi) or an env var (`git` sets `XDG_CONFIG_HOME=$out/.config`). To add one: create `pkgs/<name>/` with `default.nix` and the config files, register it in `pkgs/default.nix` (`<name> = pkgs.callPackage ./<name> {};`), and use it as `pkgs.wrapped.<name>` (overlay `additions`). The same set is exported as flake `packages`, so `nix build .#<name>` works. Wrapped packages can depend on each other (`hyprland` bundles `waybar`, `rofi`, ...).
 
-Packages: claude, dunst, git, gitui, hypridle, hyprland, hyprlock, hyprpaper, jujutsu, kanshi, rofi, signal-desktop, waybar, zellij.
+Packages: claude, dunst, git, gitui, glab, hypridle, hyprland, hyprlock, hyprpaper, jujutsu, kanshi, rofi, signal-desktop, waybar, zellij.
 
 `wrapped.claude` (`pkgs/claude`) is Claude Code with its config bundled: `CLAUDE.md`, `agents/`, `settings.nix` and `permissions.nix` live next to `default.nix`, the skills come from the top-level `skills/`. It puts the tools below on its `PATH`, taken from the package set, so overriding one of them propagates. The package is customisable with `.extend { skills.foo = ./foo; settings = ...; }` (see `pkgs/claude/README.md`).
 
