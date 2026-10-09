@@ -1,0 +1,33 @@
+format = "${custom.jj}$all"
+
+# Replaced by custom.jj, which prints the directory itself.
+[directory]
+disabled = true
+
+# Colocated jj repos have a detached HEAD.
+[git_branch]
+only_attached = true
+
+[git_commit]
+disabled = true
+
+# Directory + jj state from `jw info` (JSON, never snapshots): `repo [⎇ workspace]  ◆ N/M change-id`
+# (N = changes in trunk()..@, M = in trunk()..(@::) minus other workspaces' empty working copies). Workspaces are `<repo>.agents/<name>`.
+# Outside a jj repo `jw info` fails and the directory is printed instead.
+[custom.jj]
+when = true
+shell = ["bash", "--noprofile", "--norc"]
+unsafe_no_escape = true
+format = "$output "
+command = '''
+if ! info=$(jw info 2>/dev/null); then
+  case $PWD in "$HOME"|"$HOME"/*) p="~${PWD#"$HOME"}";; *) p=$PWD;; esac
+  printf '\033[1;36m%s\033[0m' "$p"
+  exit
+fi
+jq -j '
+  "\u001b[1;36m" + .repo + (if .subdir != "" then "/" + .subdir else "" end)
+  + (if .workspace != "default" then " ⎇ " + .workspace else "" end) + "\u001b[0m"
+  + (if .change then "  \u001b[35m◆ \(.stack.index)/\(.stack.size) \(.change)\u001b[0m" else "" end)
+' <<< "$info"
+'''

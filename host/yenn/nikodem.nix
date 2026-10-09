@@ -101,7 +101,10 @@
       enableFishIntegration = true;
       enableBashIntegration = true;
     };
-    starship.enable = true;
+    starship = {
+      enable = true;
+      settings = builtins.fromTOML (builtins.readFile ../../assets/starship.toml);
+    };
     hyprland = {
       enable = true;
       withUWSM = true;

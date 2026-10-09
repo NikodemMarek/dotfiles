@@ -24,7 +24,7 @@ pkgs/                  wrapped packages (package + bundled config) and own tools
 skills/                Agent Skills (*/SKILL.md), shared by claude and agent-skills
 overlays/              exposes pkgs/ (pkgs.wrapped and the tools), flake inputs as packages, deploy-rs
 clusters/dijkstra/     Kubernetes manifests, reconciled by Flux
-assets/                wallpaper and the catppuccin palette
+assets/                wallpaper, the catppuccin palette and starship.toml
 ```
 
 ## Hosts
