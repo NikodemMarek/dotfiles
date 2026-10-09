@@ -13,7 +13,17 @@
   jujutsu,
   stdenvNoCC,
   makeWrapper,
+  # Repos that code-mode agents may only edit when their cwd is inside them.
+  # Entries may contain a literal $HOME, expanded by the script at runtime (not by Nix).
+  protectedRepos ? [
+    "$HOME/projects/real-dotfiles"
+    "$HOME/projects/dotfiles"
+  ],
 }:
+
+# an entry like ~/x or ${HOME}/x would resolve against the agent's cwd and protect nothing
+assert lib.assertMsg (lib.all (r: lib.hasPrefix "/" r || lib.hasPrefix "$HOME/" r) protectedRepos)
+  "claude-hooks: protectedRepos entries must start with / or $HOME/";
 
 let
   shellHook =
@@ -22,13 +32,24 @@ let
       src,
       runtimeInputs,
       bashOptions ? null,
+      # placeholder -> replacement, applied to the script text
+      replacements ? { },
     }:
     writeShellApplication (
       {
         inherit name runtimeInputs;
-        text = builtins.readFile src;
+        text = builtins.replaceStrings (builtins.attrNames replacements) (builtins.attrValues replacements) (
+          builtins.readFile src
+        );
       }
       // lib.optionalAttrs (bashOptions != null) { inherit bashOptions; }
+    );
+
+  # Shell word with everything single-quoted except a literal $HOME, which is left to expand at runtime
+  quoteKeepingHome =
+    s:
+    lib.concatStringsSep ''"$HOME"'' (
+      map (part: lib.optionalString (part != "") (lib.escapeShellArg part)) (lib.splitString "$HOME" s)
     );
 
   guardWrites = shellHook {
@@ -38,6 +59,7 @@ let
       jq
       coreutils
     ];
+    replacements."@protectedRepos@" = lib.concatMapStringsSep " " quoteKeepingHome protectedRepos;
   };
 
   verifierGuard = shellHook {
