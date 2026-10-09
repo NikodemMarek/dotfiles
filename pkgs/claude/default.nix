@@ -213,26 +213,44 @@ let
       # Sourced after the preamble: a plain interactive `claude [prompt]` in a repo's main jj
       # workspace runs in its own one (`--worktree`, see claude-jj-workspace). Anything with
       # flags or a subcommand, or already in a <repo>.agents/<name> workspace, runs as is.
-      # CLAUDE_NO_WORKSPACE=1 opts out.
+      # CLAUDE_NO_WORKSPACE=1 opts out. Always (unless already set) exports
+      # CLAUDE_CODE_PROJECT_DIR_NAME as the main repo's session key, so all of a repo's
+      # workspaces share one session list (`--resume`).
       workspace = writeShellScript "claude-workspace" ''
         __claude_ws=""
+        __claude_root="$(jj --ignore-working-copy workspace root 2>/dev/null)" || true
+        __claude_project() {
+          [ -z "''${CLAUDE_CODE_PROJECT_DIR_NAME:-}" ] && [ -n "$__claude_root" ] || return 0
+          local main="$__claude_root" key sum
+          case "$(${coreutils}/bin/dirname "$main")" in
+            ?*.agents) main="$(${coreutils}/bin/dirname "$main")"; main="''${main%.agents}" ;;
+          esac
+          # claude's default key, but it must fit in 64 chars: keep the tail plus a checksum
+          key="''${main//[^A-Za-z0-9]/-}"
+          if [ "''${#key}" -gt 64 ]; then
+            sum="$(printf %s "$main" | ${coreutils}/bin/cksum)"
+            key="''${key: -50}-''${sum%% *}"
+          fi
+          export CLAUDE_CODE_PROJECT_DIR_NAME="$key"
+        }
+        __claude_project || true
         __claude_workspace() {
           [ -t 0 ] && [ -t 1 ] && [ -z "''${CLAUDE_NO_WORKSPACE:-}" ] || return 0
-          local a root
+          local a
           for a in "$@"; do
             case "$a" in -*) return 0 ;; esac
           done
           case "''${1:-}" in
             agents|attach|auth|auto-mode|doctor|gateway|import|install|logs|mcp|plugin|plugins|purge|respawn|rm|setup-token|stop|kill|ultrareview|update|upgrade) return 0 ;;
           esac
-          root="$(jj --ignore-working-copy workspace root 2>/dev/null)" || return 0
-          case "$(${coreutils}/bin/dirname "$root")" in ?*.agents) return 0 ;; esac
+          [ -n "$__claude_root" ] || return 0
+          case "$(${coreutils}/bin/dirname "$__claude_root")" in ?*.agents) return 0 ;; esac
           __claude_ws="s-$(${coreutils}/bin/date +%m%d-%H%M%S)-$RANDOM"
         }
         __claude_workspace "$@" || true
         [ -z "$__claude_ws" ] || set -- --worktree "$__claude_ws" "$@"
-        unset -f __claude_workspace
-        unset __claude_ws
+        unset -f __claude_project __claude_workspace
+        unset __claude_ws __claude_root
       '';
     in
     symlinkJoin {
