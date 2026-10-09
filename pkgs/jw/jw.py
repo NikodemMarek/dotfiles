@@ -53,19 +53,6 @@ def repos():
                   and os.path.isdir(f"{e.path}/.jj"))
 
 
-def workspaces():
-    """Every repo and every workspace of it, relative to ROOT."""
-    found = []
-    for r in repos():
-        found.append(r)
-        try:
-            subs = os.scandir(f"{ROOT}/{r}.agents")
-        except OSError:
-            continue
-        found += [f"{r}.agents/{s.name}" for s in subs if os.path.isdir(f"{s.path}/.jj")]
-    return sorted(found)
-
-
 def pick(items, query=""):
     """Let the user choose with fzf (it draws on /dev/tty, so the fish function can capture stdout)."""
     if not items:
@@ -80,15 +67,18 @@ def pick(items, query=""):
 
 
 def repo_home(arg):
-    """The repo to act on: the named/picked one, else the current one, else a picked one."""
-    if arg:
-        if os.path.isdir(f"{ROOT}/{arg}/.jj"):
-            return f"{ROOT}/{arg}"
-        return f"{ROOT}/{pick(repos(), arg)}"
+    """The repo to act on: the named one, else a picked one (the current repo listed first)."""
+    if arg and os.path.isdir(f"{ROOT}/{arg}/.jj"):
+        return f"{ROOT}/{arg}"
+    items = repos()
     try:
-        return locate()[1]
+        current = os.path.relpath(locate()[1], ROOT)
+        if current in items:
+            items.remove(current)
+            items.insert(0, current)
     except Fail:
-        return f"{ROOT}/{pick(repos())}"
+        pass  # not in a repo
+    return f"{ROOT}/{pick(items, arg or '')}"
 
 
 def in_use(d):
@@ -128,7 +118,7 @@ def cmd_new(a):
 
 def cmd_cd(a):
     if not a.name:
-        print(os.path.join(ROOT, pick(workspaces())))
+        print(os.path.join(ROOT, pick(repos())))
         return
     try:
         _, home = locate()
@@ -138,7 +128,7 @@ def cmd_cd(a):
             return
     except Fail:
         pass  # not in a repo
-    print(os.path.join(ROOT, pick(workspaces(), a.name)))
+    print(os.path.join(ROOT, pick(repos(), a.name)))
 
 
 def cmd_clone(a):
@@ -233,10 +223,10 @@ def main():
     p = argparse.ArgumentParser(prog="jw", description=__doc__.splitlines()[0])
     sub = p.add_subparsers(dest="cmd")
     s = sub.add_parser("new", aliases=["n"], help="create a workspace in a repo and go there")
-    s.add_argument("repo", nargs="?", help="repo under ~/projects (default: the current one)")
+    s.add_argument("repo", nargs="?", help="repo under ~/projects (default: pick one, the current one first)")
     s.add_argument("-r", "--revision", default="trunk()", help="start from (default: trunk())")
     s.set_defaults(func=cmd_new)
-    s = sub.add_parser("cd", aliases=["c"], help="go to a workspace (default: pick one)")
+    s = sub.add_parser("cd", aliases=["c"], help="go to a workspace of this repo, or to a repo (default: pick one)")
     s.add_argument("name", nargs="?")
     s.set_defaults(func=cmd_cd)
     s = sub.add_parser("rm", help="forget a workspace and delete its directory (its work stays)")
