@@ -8,18 +8,16 @@ dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
 [ -z "$dir" ] && dir=$(pwd)
 short_dir="${dir/#"$HOME"/\~}"
 
-# jj info: project, workspace (<repo>.agents/<name>, else default) and @; never snapshots
+# jj info from `jw info` (never snapshots): project, workspace, @ and its place in the stack.
+# Show only the project (plus any subdirectory), not the full path.
 jj_info=""
-jj_root=$(cd "$dir" 2>/dev/null && jj --ignore-working-copy workspace root 2>/dev/null)
-if [ -n "$jj_root" ]; then
-  project=$(basename "$jj_root")
-  ws=default
-  case "$(dirname "$jj_root")" in
-    ?*.agents) ws=$project; project=$(basename "$(dirname "$jj_root")" .agents) ;;
-  esac
-  # Show only the project (plus any subdirectory), not the full path
-  short_dir="$project${dir#"$jj_root"}"
-  jj_info="ws:$ws @$(jj --ignore-working-copy -R "$jj_root" log --no-graph -r @ -T 'change_id.short(8)' 2>/dev/null)"
+if info=$(cd "$dir" 2>/dev/null && jw info 2>/dev/null); then
+  {
+    read -r short_dir
+    read -r jj_info
+  } < <(echo "$info" | jq -r '
+    .repo + (if .subdir != "" then "/" + .subdir else "" end),
+    "ws:\(.workspace) @\(.change // "")" + (if .stack then " \(.stack.index)/\(.stack.size)" else "" end)')
 fi
 
 # Git info (jj repos show jj info instead)

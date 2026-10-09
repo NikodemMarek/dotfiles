@@ -1,6 +1,7 @@
 {
   writeShellApplication,
   jq,
+  jw,
   git,
   gnugrep,
   gnused,
@@ -9,8 +10,10 @@
 
 writeShellApplication {
   name = "claude-statusline";
+  # jj is not here: jw takes it from the user's PATH.
   runtimeInputs = [
     jq
+    jw
     git
     gnugrep
     gnused
