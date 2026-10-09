@@ -3,13 +3,18 @@
 import argparse
 import datetime
 import logging
+import os
 import sys
 from pathlib import Path
 
-from . import config, index, locks, retention
+from . import config, curate, data, decisions, emit, importer, index, locks, records, retention
 from .config import UsageError
 from .data import Json, Obj, ParseError, dumps
+from .entry import KINDS
 from .gitops import Git, GitError
+from .inbox import Inbox
+from .ops import MODES
+from .records import Origin
 from .scopes import DEFAULT_SCOPES_TOML, SCOPES_FILE
 from .store import Store, atomic_write
 
@@ -23,6 +28,20 @@ FILE_MODE = 0o644
 class Args(argparse.Namespace):
     command: str
     verbose: bool
+    title: str
+    kind: str | None
+    scope: str | None
+    evidence: str | None
+    file: str | None
+    user: bool
+    paths: list[str]
+    trust: str
+    sid: str
+    mode: str
+    weekly: bool
+    if_idle: bool
+    dry_run: bool
+    print_prompt: bool
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -33,6 +52,30 @@ def _parser() -> argparse.ArgumentParser:
     sub.add_parser("init", help="prepare the memory repo: SCOPES.toml, .gitignore and KNOWLEDGE.md, committed")
     sub.add_parser("index", help="regenerate KNOWLEDGE.md and commit it if it changed")
     sub.add_parser("lint", help="check the store, SCOPES.toml and the budgets; exit 1 if anything is wrong")
+    submit = sub.add_parser("submit", help="send what you learned to the curator through the event router; the body is read from stdin")
+    submit.add_argument("--title", required=True, help="one line")
+    submit.add_argument("--kind", choices=KINDS)
+    submit.add_argument("--scope", help="a hint, e.g. topic/jj; the curator decides")
+    submit.add_argument("--evidence", help="where it was observed")
+    submit.add_argument("--file", help="read the body from this file instead of stdin (not inside Claude Code: pipe the body there)")
+    submit.add_argument("--user", action="store_true", help="a submission of the user, stored directly with user trust; needs a terminal")
+    sub.add_parser("receive", help="store a knowledge.submit event read from stdin (run by the event router)")
+    imp = sub.add_parser("import", help="submit notes (e.g. Claude Code auto-memory files) to the curator, stored directly")
+    imp.add_argument("paths", nargs="+", metavar="PATH", help="markdown files, or directories of them (MEMORY.md is skipped)")
+    imp.add_argument(
+        "--trust",
+        choices=("user", "agent"),
+        default="user",
+        help="user (the default) asks for confirmation and needs a terminal; agent needs neither",
+    )
+    status = sub.add_parser("status", help="what became of a submission: applied, rejected, failed, pending, bad or unknown")
+    status.add_argument("sid", metavar="ID", help="the id `knowledge submit` printed")
+    cur = sub.add_parser("curate", help="run the curator over the pending submissions: one model call, then apply its decisions")
+    cur.add_argument("--mode", choices=MODES, default="intake", help="weekly also maintains the store (stale entries, budgets, skill ideas)")
+    cur.add_argument("--weekly", action="store_true", help="same as --mode weekly")
+    cur.add_argument("--if-idle", action="store_true", help="do nothing, and exit 0, if another run is going (the default is to wait for it)")
+    cur.add_argument("--dry-run", action="store_true", help="call the model and print what it decided; change nothing")
+    cur.add_argument("--print-prompt", action="store_true", help="print the system prompt and the message, without calling the model")
     return p
 
 
@@ -117,6 +160,143 @@ def _lint() -> tuple[Obj, int]:
     return {"ok": not problems, "problems": listed}, 1 if problems else 0
 
 
+def _read_body(file: str | None, terminal: bool = False) -> str:
+    """From the file, else stdin; `terminal`: a terminal is read too (up to end of input, Ctrl-D)."""
+    if file is None:
+        if terminal and data.stdin_is_tty():
+            log.info("type the body, then Ctrl-D")
+        body = data.read_stdin(terminal)
+    else:
+        try:
+            body = Path(file).read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as e:
+            raise UsageError(f"cannot read {file}: {e}") from e
+    if not body.strip():
+        raise UsageError("empty body: pipe it on stdin or pass --file")
+    return body
+
+
+def _require_tty(what: str, hint: str) -> None:
+    """Trust `user` is only for a person at a terminal."""
+    if not data.stdin_is_tty():
+        raise UsageError(f"{what} needs a terminal: {hint}")
+
+
+def _require_human(what: str, hint: str) -> None:
+    """Trust `user` is not for an agent: refuse inside an event-launched run, an event workspace or Claude Code.
+
+    This raises the bar rather than sealing it: a process of the same uid can still write the inbox directly, or
+    unset these variables.
+    """
+    if config.origin() is not None:
+        raise UsageError(f"{what} is not for agents: KNOWLEDGE_ORIGIN is set (an event launched this run); {hint}")
+    if records.in_agent_workspace(os.getcwd()):
+        raise UsageError(f"{what} is not for agents: this is the workspace of an event-launched agent; {hint}")
+    if config.in_claude_code():
+        raise UsageError(f"{what} is not for agents: CLAUDECODE is set (this runs inside Claude Code); {hint}")
+
+
+def _submit(args: Args) -> str:
+    """Post the submission to the router, or with --user put it in the inbox; its id."""
+    if args.file is not None and config.in_claude_code():  # an agent could send any file it names without a Read prompt
+        raise UsageError("submit --file is not for agents: CLAUDECODE is set (this runs inside Claude Code); pipe the body on stdin")
+    if args.user:
+        _require_human("submit --user", "submit without --user")
+        _require_tty("submit --user", "run it in one, or submit without --user")
+        origin = Origin(via="user", agent=None, cwd=os.getcwd(), event=None, session=None)
+    else:
+        origin = Origin(via="cli", agent=config.agent_name(), cwd=os.getcwd(), event=config.origin(), session=None)
+    rec = records.from_event(
+        {
+            "title": args.title,
+            "body": _read_body(args.file, terminal=args.user),
+            "kind": args.kind,
+            "scope": args.scope,
+            "evidence": args.evidence,
+            "origin": records.origin_obj(origin),
+        },
+        via_router=False,
+    )
+    if args.scope is not None and rec.scope is None:
+        log.warning("ignoring scope %r: not a valid scope", args.scope)
+    if (secret := emit.hard_secret(rec)) is not None:
+        raise UsageError(f"refusing to submit: looks like a secret ({secret})")
+    if args.user:
+        Inbox().put(rec)  # no router: the trust is that of the terminal
+    else:
+        emit.post(emit.build_event(rec), config.router_url())
+    return rec.id
+
+
+def _import(args: Args) -> tuple[Obj, int]:
+    """Put the notes in the inbox as submissions, with the trust asked for (`user` after a confirmation)."""
+    if args.trust == "user":
+        _require_human("import with --trust user", "pass --trust agent")
+        _require_tty("import with --trust user", "run it in one, or pass --trust agent")
+    origin = Origin(via="import", agent=None, cwd=os.getcwd(), event=config.origin(), session=None)
+    files = importer.collect(args.paths)
+    if not files:
+        raise UsageError("no markdown files to import")
+    if args.trust == "user":
+        answer = data.ask(f"Import {len(files)} file(s) as knowledge you vouch for (trust user)? [y/N] ")
+        if answer.strip().lower() not in ("y", "yes"):
+            log.error("aborted: nothing imported")
+            return {"imported": 0, "skipped": 0, "ids": []}, 1
+    return importer.result_obj(importer.import_files(files, args.trust, Inbox(), origin)), 0
+
+
+def _receive() -> Obj:
+    """Put the event from the router in the inbox, unless it looks like a secret."""
+    event = data.as_obj(data.loads(data.read_stdin()), "event")
+    type_ = data.get_str(event, "type")
+    if type_ != emit.EVENT_TYPE:
+        raise UsageError(f"expected an event of type {emit.EVENT_TYPE}, got {type_!r}")
+    rec = records.from_event(event, via_router=True)
+    if (secret := emit.hard_secret(rec)) is not None:
+        log.warning("dropping submission %s: looks like a secret (%s)", rec.id, secret)
+        return {"id": rec.id, "stored": False}
+    inbox = Inbox()
+    if (state := inbox.state(rec.id)) is not None:  # the first post wins: a replay must not reset the attempt count of a
+        log.info("submission %s is queued already (%s)", rec.id, state)  # pending record, or bring back a failed or bad one
+    else:
+        inbox.put(rec)
+    _curate_if_due(inbox)
+    return {"id": rec.id, "stored": True}
+
+
+def _curate_if_due(inbox: Inbox) -> None:
+    """Enough submissions are pending: run the curator in this process, unless another run is going.
+
+    Not within an hour of a failed call: the next try is left to the timers. The submission is stored already, so
+    whatever goes wrong here is logged and `receive` still succeeds.
+    """
+    try:
+        if inbox.count() < config.tunables().trigger_count:
+            return
+        if curate.in_backoff():
+            log.info("the last curator call failed less than an hour ago; not running it again from here")
+            return
+        summary = curate.run_pending(if_idle=True)  # more than one run if records of several trusts wait
+        log.info("curator run %s: %s", summary.run, dumps(curate.summary_obj(summary)))
+    except Exception:  # anything: the router's handler must not fail once the submission is stored
+        log.exception("curator run failed")
+
+
+def _status(args: Args) -> Obj:
+    return decisions.status(args.sid, decisions.Decisions(), Inbox().state(args.sid))
+
+
+def _curate(args: Args) -> tuple[Obj | str, int]:
+    """Run the curator; the summary, or the prompt/preview a flag asks for. Exit 1 if the model call failed."""
+    weekly = args.weekly or args.mode == "weekly"
+    if args.dry_run or args.print_prompt:  # these change nothing, so there is no next run to go on with
+        summary = curate.run(weekly=weekly, if_idle=args.if_idle, dry_run=args.dry_run, print_prompt=args.print_prompt)
+    else:
+        summary = curate.run_pending(weekly=weekly, if_idle=args.if_idle)
+    code = 1 if summary.skipped in curate.FAILURES else 0
+    return (curate.summary_obj(summary) if summary.text is None else summary.text), code
+
+
 def main() -> None:
     args = _parser().parse_args(namespace=Args())
     logging.basicConfig(
@@ -126,7 +306,7 @@ def main() -> None:
     )
     code = 0
     try:
-        result: Obj
+        result: Obj | str
         if args.command == "paths":
             result = _paths()
         elif args.command == "init":
@@ -135,12 +315,28 @@ def main() -> None:
             result = _index()
         elif args.command == "lint":
             result, code = _lint()
+        elif args.command == "submit":
+            result = _submit(args)  # the id alone, for scripts and agents
+        elif args.command == "receive":
+            result = _receive()
+        elif args.command == "import":
+            result, code = _import(args)
+        elif args.command == "status":
+            result = _status(args)
+        elif args.command == "curate":
+            result, code = _curate(args)
         else:  # argparse accepts only the commands above
             raise UsageError(f"unknown command {args.command}")
-        print(dumps(result), flush=True)
+        print(result if isinstance(result, str) else dumps(result), flush=True)
     except (ParseError, UsageError) as e:
         log.error("%s", e)
         sys.exit(2)
+    except emit.EmitError as e:
+        if e.permanent:
+            log.error("knowledge: router rejected the submission (%s); knowledge NOT stored", e)
+            sys.exit(2)
+        log.error("knowledge: router unreachable (%s); knowledge NOT stored", e)
+        sys.exit(1)
     except (OSError, ValueError, GitError, locks.LockTimeout) as e:  # ValueError: text that cannot be written out
         log.error("%s", e)
         sys.exit(1)
