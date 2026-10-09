@@ -16,6 +16,7 @@
 
       pkgs.wrapped.claude
       pkgs.jj-upload
+      pkgs.jw
 
       pkgs.alacritty
       pkgs.remmina

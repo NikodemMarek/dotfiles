@@ -30,6 +30,7 @@
   # Standalone tools. claude takes knowledge, claude-hooks, claude-statusline
   # and jj-upload from the package set, so overrides of them propagate.
   jj-upload = pkgs.callPackage ./jj-upload {};
+  jw = pkgs.callPackage ./jw {};
   agent-skills = pkgs.callPackage ./agent-skills {};
   claude-hooks = pkgs.callPackage ./claude-hooks {};
   claude-statusline = pkgs.callPackage ./claude-statusline {};
