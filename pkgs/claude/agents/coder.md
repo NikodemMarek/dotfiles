@@ -28,3 +28,7 @@ Finish with:
 1. **Changed files** — each with a one-line summary.
 2. **Deviations from the plan** (if any) and why.
 3. **To verify** — the exact commands/tests the verifier should run and what to look for.
+
+## Knowledge
+- Before starting, check `@memoryDir@/KNOWLEDGE.md` for entries in your language, tool or project scope and read the relevant ones (the `knowledge` skill explains the layout).
+- If you learned something reusable that passes the bar in the `knowledge` skill, end your report with a ```knowledge block (format in the skill). Most tasks produce none; never submit task status.

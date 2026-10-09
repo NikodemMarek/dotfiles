@@ -6,7 +6,7 @@ Nix flake that builds a wrapped `claude` (Claude Code) with the whole config bun
 nix run .#claude                                  # try it
 ```
 
-Packages: `claude`, `claude-hooks`, `claude-statusline`, `jj-upload`, `agent-skills`.
+Packages: `claude`, `claude-hooks`, `claude-statusline`, `jj-upload`, `agent-skills`, `knowledge`.
 
 ## Installing
 
@@ -35,7 +35,7 @@ Add this repo as an input of your system / home-manager flake and use the overla
 
 - `skills/` - `*/SKILL.md`, tool-agnostic skills shared by Claude and other tools
 - `claude/` - `CLAUDE.md`, `agents/*.md`, `settings.nix` (rendered to `settings.json`), `permissions.nix` (imported by `settings.nix`)
-- `pkgs/` - `claude` (the wrapper), `claude-hooks`, `claude-statusline`, `jj-upload`, `agent-skills`
+- `pkgs/` - `claude` (the wrapper), `claude-hooks`, `claude-statusline`, `jj-upload`, `agent-skills`, `knowledge` (the knowledge curator CLI: `knowledge submit`, `curate`, `undo`/`restore`/`drop`, hooks)
 - `nix/overlay.nix` - overlay exposing all of the above
 
 `@memoryDir@` and `@dataDir@` in the markdown files and the settings are substituted at build time.
@@ -57,7 +57,7 @@ Add this repo as an input of your system / home-manager flake and use the overla
 xdg.configFile."opencode/skills".source = "${pkgs.agent-skills}";
 ```
 
-Claude-only frontmatter (`allowed-tools`, and `disable-model-invocation` in `commit`) is ignored by other tools.
+Claude-only frontmatter (`allowed-tools`, and `disable-model-invocation` in `commit`) is ignored by other tools. `skills/knowledge` ships with a literal `@memoryDir@` in `agent-skills` (only the `claude` build substitutes it).
 
 ## Data dir
 
@@ -70,8 +70,10 @@ On launch the wrapper uses `CLAUDE_CONFIG_DIR` (default: the package's `dataDir`
   skills/<name>      -> /nix/store/...-claude-config/skills/<name>
   settings.json      -> /nix/store/...-claude-config/settings.json (read-only)
   backups/           unmanaged settings.json files moved aside on launch
-  memory/            architect's project memory (a git repo, not managed by Nix)
+  memory/            project memory (a git repo, not managed by Nix), shared: the architect owns
+                     projects/<slug>/{overview,decisions,log}.md and notes/, the knowledge curator the rest
   ...                sessions, credentials, etc. (claude's own state)
+~/.local/state/knowledge/   the curator's state (inbox of pending submissions, decisions, rejected.md)
 ```
 
 Managed entries are symlinks refreshed on every launch; stale ones from older builds are pruned. Real files or foreign symlinks are never overwritten (a warning is printed), except `settings.json`, which is moved to `backups/` first.
