@@ -100,7 +100,7 @@ Useful template fields: `change_id`, `commit_id`, `description`, `bookmarks`, `l
 | `jj upload` | runs `jj sync` first and stops if it fails; then uploads the whole stack around `@`: sets bookmarks, force-pushes, creates/updates MRs, retargets after reordering, closes MRs and deletes branches of abandoned or squashed-away changes |
 | `jj upload -r '<revset>'` | uploads only those changes (the ones below them must be in trunk or already uploaded) |
 | `jj upload --draft` | new MRs open as Draft |
-| `jj sync` | fetches, cleans up commits the fetch revived, rebases the stack onto trunk (dropping merged changes), and reconciles each MR branch: commits that exist only on the remote are squashed into the change if it is unchanged locally since the last push; if both changed, a `remote changes on <branch>` change is put after it and sync fails |
+| `jj sync` | fetches, cleans up commits the fetch revived, rebases the stack onto trunk (dropping merged changes), and reconciles each MR branch: commits that exist only on the remote are squashed into the change if it is unchanged locally since the last push; if both changed, a `remote changes on <branch>` change is put after it and sync fails; if it succeeds, pulls the title/description of open MRs into the changes |
 
 Script: the `jj-upload` package, with the jj aliases `upload` and `sync`. It is configured under `[upload]` in the jj config.
 

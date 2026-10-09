@@ -13,7 +13,8 @@ and jj upload only maintains the stack list in the description.
 Changes you abandoned or squashed away get their MR closed and their branch deleted.
 Before pushing, it syncs: fetch, rebase onto trunk, and pull commits that exist only
 on a change's remote branch into the change (or, if both sides changed, into a
-"remote changes on <branch>" change after it, and stop).
+"remote changes on <branch>" change after it, and stop).  `jj sync` alone also
+pulls the MR titles and descriptions.
 
 Usage:  jj upload [-r REVSET]... [--draft] [--dry-run]
         jj upload sync                              (alias: jj sync)
@@ -493,7 +494,11 @@ def main():
         failures = sync(remote, prefix, DEFAULT_REVSET)
         for f in failures:
             info(f)
-        sys.exit(1 if failures else 0)
+        if failures:
+            sys.exit(1)
+        pull_descriptions(load_commits(DEFAULT_REVSET), make_forge(remote), prefix,
+                          remote_branches(remote), False)
+        sys.exit(0)
 
     ap = argparse.ArgumentParser(prog="jj upload", description=__doc__.split("\n\n")[1],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
