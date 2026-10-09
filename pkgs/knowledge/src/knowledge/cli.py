@@ -13,6 +13,7 @@ from .data import Json, Obj, ParseError, dumps
 from .entry import KINDS
 from .gitops import Git, GitError
 from .inbox import Inbox
+from .manual import Manual
 from .ops import MODES
 from .records import Origin
 from .scopes import DEFAULT_SCOPES_TOML, SCOPES_FILE
@@ -42,6 +43,9 @@ class Args(argparse.Namespace):
     if_idle: bool
     dry_run: bool
     print_prompt: bool
+    path: str
+    reason: str | None
+    taken: bool
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -76,6 +80,20 @@ def _parser() -> argparse.ArgumentParser:
     cur.add_argument("--if-idle", action="store_true", help="do nothing, and exit 0, if another run is going (the default is to wait for it)")
     cur.add_argument("--dry-run", action="store_true", help="call the model and print what it decided; change nothing")
     cur.add_argument("--print-prompt", action="store_true", help="print the system prompt and the message, without calling the model")
+    undo = sub.add_parser("undo", help="revert every commit of a submission (one new commit; exit 1 on a conflict)")
+    undo.add_argument("sid", metavar="ID", help="the id `knowledge submit` printed")
+    restore = sub.add_parser("restore", help="bring back an entry from the commit that deleted it")
+    restore.add_argument("path", metavar="PATH", help="the entry, e.g. topic/jj/absorb.md")
+    drop = sub.add_parser(
+        "drop", help="delete an entry of any trust or a skill idea; the curator is told not to take it back"
+    )
+    drop.add_argument("path", metavar="PATH", help="the entry, e.g. topic/jj/absorb.md, or skill-ideas/<name>.md")
+    drop.add_argument("--reason", help="why; kept in the commit message")
+    drop.add_argument(
+        "--taken",
+        action="store_true",
+        help="a skill idea you adopted as a skill: delete it without telling the curator to leave it alone (plain drop rejects it)",
+    )
     return p
 
 
@@ -325,6 +343,12 @@ def main() -> None:
             result = _status(args)
         elif args.command == "curate":
             result, code = _curate(args)
+        elif args.command == "undo":
+            result = Manual(_git(_memory())).undo(args.sid)
+        elif args.command == "restore":
+            result = Manual(_git(_memory())).restore(args.path)
+        elif args.command == "drop":
+            result = Manual(_git(_memory())).drop(args.path, args.reason, args.taken)
         else:  # argparse accepts only the commands above
             raise UsageError(f"unknown command {args.command}")
         print(result if isinstance(result, str) else dumps(result), flush=True)
