@@ -31,4 +31,27 @@
   claude-hooks = pkgs.callPackage ./claude-hooks {};
   claude-statusline = pkgs.callPackage ./claude-statusline {};
   knowledge = pkgs.callPackage ./knowledge {};
+
+  event-handlers = {
+    notify = pkgs.callPackage ./event-handlers/notify {};
+    notify-critical = pkgs.event-handlers.notify.override {urgency = "critical";};
+    # claude is only in `wrapped`: callPackage would not find it (and would
+    # recurse on a top-level alias)
+    knowledge = pkgs.callPackage ./event-handlers/knowledge {
+      claude = pkgs.wrapped.claude;
+    };
+  };
+
+  # `handlers` stays explicit so `.override (old: {handlers = old.handlers // ...})`
+  # can extend it.
+  event-router = pkgs.callPackage ./event-router {
+    handlers = {
+      default = pkgs.event-handlers.notify;
+      knowledge = pkgs.event-handlers.knowledge;
+      # exact type wins over the `knowledge` prefix
+      "knowledge.review_needed" = pkgs.event-handlers.notify;
+    };
+  };
+
+  knowledge-timers = pkgs.callPackage ./knowledge-timers {};
 }

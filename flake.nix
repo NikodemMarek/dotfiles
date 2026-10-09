@@ -73,7 +73,10 @@
     packages = forEachSystem (pkgs:
       pkgs.wrapped
       // {
-        inherit (pkgs) knowledge jj-upload claude-hooks claude-statusline agent-skills;
+        inherit (pkgs) knowledge jj-upload claude-hooks claude-statusline agent-skills event-router knowledge-timers;
+        # flake packages must be derivations, not nested sets
+        event-handler-notify = pkgs.event-handlers.notify;
+        event-handler-knowledge = pkgs.event-handlers.knowledge;
       });
 
     nixosConfigurations = let
