@@ -12,14 +12,14 @@
   claude-statusline,
   jj-upload,
   knowledge,
-  # CLAUDE.md (path). null -> ../../claude/CLAUDE.md
+  # CLAUDE.md (path). null -> ./CLAUDE.md
   instructions ? null,
-  # name (without .md) -> path. null -> every .md in ../../claude/agents
+  # name (without .md) -> path. null -> every .md in ./agents
   agents ? null,
   # name -> directory path. null -> every directory in ../../skills (shared with other tools)
   skills ? null,
   # User settings as a Nix attrset, linked read-only to
-  # $CLAUDE_CONFIG_DIR/settings.json. null -> ../../claude/settings.nix
+  # $CLAUDE_CONFIG_DIR/settings.json. null -> ./settings.nix
   settings ? null,
   # extra packages put on PATH of the wrapped claude
   extraPackages ? [ ],
@@ -32,8 +32,8 @@ let
     dir: lib.filterAttrs (n: t: t == "regular" && lib.hasSuffix ".md" n) (builtins.readDir dir);
 
   defaultAgents = lib.mapAttrs' (
-    n: _: lib.nameValuePair (lib.removeSuffix ".md" n) (../../claude/agents + "/${n}")
-  ) (mdEntries ../../claude/agents);
+    n: _: lib.nameValuePair (lib.removeSuffix ".md" n) (./agents + "/${n}")
+  ) (mdEntries ./agents);
 
   defaultSkills = lib.mapAttrs (n: _: ../../skills + "/${n}") (
     lib.filterAttrs (_: t: t == "directory") (builtins.readDir ../../skills)
@@ -263,9 +263,9 @@ let
   );
 in
 build {
-  instructions = if instructions == null then ../../claude/CLAUDE.md else instructions;
+  instructions = if instructions == null then ./CLAUDE.md else instructions;
   agents = if agents == null then defaultAgents else agents;
   skills = if skills == null then defaultSkills else skills;
-  settings = if settings == null then import ../../claude/settings.nix else settings;
+  settings = if settings == null then import ./settings.nix else settings;
   inherit extraPackages dataDir;
 }

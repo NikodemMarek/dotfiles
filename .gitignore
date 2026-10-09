@@ -1,5 +1,6 @@
 .direnv
 result*
+__pycache__/
 *.qcow2
 
 host/alp/key

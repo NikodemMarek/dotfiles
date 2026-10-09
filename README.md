@@ -20,8 +20,9 @@ host/
     optional/          opt-in features: k3s, tailscale, docker, libvirt, maintenance, ...
     disko/             disk layouts, parametrised by device (and swap size)
 modules/host/          own NixOS modules: persist.nix, secrets.nix, battery-notifier.nix
-pkgs/                  wrapped packages (package + bundled config)
-overlays/              exposes pkgs/ as pkgs.wrapped, flake inputs as packages, deploy-rs
+pkgs/                  wrapped packages (package + bundled config) and own tools
+skills/                Agent Skills (*/SKILL.md), shared by claude and agent-skills
+overlays/              exposes pkgs/ (pkgs.wrapped and the tools), flake inputs as packages, deploy-rs
 clusters/dijkstra/     Kubernetes manifests, reconciled by Flux
 assets/                wallpaper and the catppuccin palette
 ```
@@ -170,7 +171,21 @@ pkgs.symlinkJoin {
 
 Pointing the program at its config is done with a flag (rofi) or an env var (`git` sets `XDG_CONFIG_HOME=$out/.config`). To add one: create `pkgs/<name>/` with `default.nix` and the config files, register it in `pkgs/default.nix` (`<name> = pkgs.callPackage ./<name> {};`), and use it as `pkgs.wrapped.<name>` (overlay `additions`). The same set is exported as flake `packages`, so `nix build .#<name>` works. Wrapped packages can depend on each other (`hyprland` bundles `waybar`, `rofi`, ...).
 
-Packages: dunst, git, gitui, hypridle, hyprland, hyprlock, hyprpaper, jujutsu, kanshi, rofi, signal-desktop, waybar, zellij.
+Packages: claude, dunst, git, gitui, hypridle, hyprland, hyprlock, hyprpaper, jujutsu, kanshi, rofi, signal-desktop, waybar, zellij.
+
+`wrapped.claude` (`pkgs/claude`) is Claude Code with its config bundled: `CLAUDE.md`, `agents/`, `settings.nix` and `permissions.nix` live next to `default.nix`, the skills come from the top-level `skills/`. It puts the tools below on its `PATH`, taken from the package set, so overriding one of them propagates. The package is customisable with `.extend { skills.foo = ./foo; settings = ...; }` (see `pkgs/claude/README.md`).
+
+### Tools
+
+Own programs that are not wrappers of an upstream package. They are top-level attributes (`pkgs.<name>`, `nix build .#<name>`):
+
+| Package | What it is |
+|---------|------------|
+| `knowledge` | knowledge curator CLI (`knowledge submit`, `curate`, ...), keeps the memory repo of claude |
+| `jj-upload` | pushes a stack of jj changes as stacked merge/pull requests (GitLab, GitHub) |
+| `claude-hooks` | hook commands of claude: write/bash guards, architect memory autocommit, jj workspaces for agents |
+| `claude-statusline` | claude's status line |
+| `agent-skills` | `skills/` in the Agent Skills format, to link into the skills directory of other tools (OpenCode, ...) |
 
 ## Infra
 

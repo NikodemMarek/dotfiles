@@ -14,7 +14,7 @@
       pkgs.wrapped.jujutsu
       pkgs.wrapped.zellij
 
-      pkgs.claude
+      pkgs.wrapped.claude
       pkgs.jj-upload
 
       pkgs.alacritty

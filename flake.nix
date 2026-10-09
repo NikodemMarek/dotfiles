@@ -38,8 +38,6 @@
 
     neovim.url = "github:NikodemMarek/neovim";
 
-    ai.url = "github:NikodemMarek/ai";
-
     zen-browser = {
       url = "github:youwen5/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -72,7 +70,11 @@
     nixosModules = import ./modules/host;
 
     overlays = import ./overlays {inherit inputs;};
-    packages = forEachSystem (pkgs: pkgs.wrapped);
+    packages = forEachSystem (pkgs:
+      pkgs.wrapped
+      // {
+        inherit (pkgs) knowledge jj-upload claude-hooks claude-statusline agent-skills;
+      });
 
     nixosConfigurations = let
       mkHost = host: system:
