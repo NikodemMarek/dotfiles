@@ -10,14 +10,14 @@ nix build .#claude                                # build it (from the repo root
 ## Layout
 
 - `pkgs/claude/` - the wrapper (`default.nix`), `CLAUDE.md`, `agents/*.md`, `settings.nix` (rendered to `settings.json`), `permissions.nix` (imported by `settings.nix`) and this README
-- `skills/` (repo root) - `*/SKILL.md`, tool-agnostic skills shared by Claude and other tools (`jj`, `atomic-commits`, `commit`, `knowledge`)
+- `pkgs/agent-skills/skills/` - `*/SKILL.md`, tool-agnostic skills shared by Claude and other tools (`jj`, `atomic-commits`, `commit`, `knowledge`); `claude` takes them from the `agent-skills` package
 - `pkgs/knowledge` - the knowledge curator CLI: `knowledge submit`, `curate`, `undo`/`restore`/`drop`, hooks
 - `pkgs/jj-upload`, `pkgs/claude-hooks`, `pkgs/claude-statusline`, `pkgs/agent-skills` - the other tools
 - `pkgs/default.nix` - registers `wrapped.claude` and the tools; `overlays/default.nix` exposes them as the `additions` overlay and `flake.nix` exports them as `packages`
 
 `@memoryDir@` and `@dataDir@` in the markdown files and the settings are substituted at build time.
 
-The wrapper takes `knowledge`, `claude-hooks`, `claude-statusline` and `jj-upload` from the package set (`callPackage`) and puts them on its `PATH`, so overriding any of them propagates into `claude`. `pkgs/default.nix` passes `null` for `instructions`, `agents`, `skills` and `settings` so that callPackage never injects a same-named package and the bundled defaults are used.
+The wrapper takes `knowledge`, `claude-hooks`, `claude-statusline` and `jj-upload` from the package set (`callPackage`) and puts them on its `PATH`, so overriding any of them propagates into `claude`. Its default skills come from `agent-skills` the same way. `pkgs/default.nix` passes `null` for `instructions`, `agents`, `skills` and `settings` so that callPackage never injects a same-named package and the bundled defaults are used.
 
 ## Using it in this flake
 
@@ -73,13 +73,13 @@ Use the overlay, not `dotfiles.packages.<system>.claude`: the overlay builds the
 
 ## Other tools
 
-`agent-skills` holds the shared skills (`skills/`) in the Agent Skills `SKILL.md` format: `$out/<name>/SKILL.md`. Link its entries into the skills directory of OpenCode (`~/.config/opencode/skills/`) or Antigravity, e.g. with home-manager:
+`agent-skills` holds the shared skills (`pkgs/agent-skills/skills/`) in the Agent Skills `SKILL.md` format: `$out/<name>/SKILL.md`. Link its entries into the skills directory of OpenCode (`~/.config/opencode/skills/`) or Antigravity, e.g. with home-manager:
 
 ```nix
 xdg.configFile."opencode/skills".source = "${pkgs.agent-skills}";
 ```
 
-Claude-only frontmatter (`allowed-tools`, and `disable-model-invocation` in `commit`) is ignored by other tools. `skills/knowledge` ships with a literal `@memoryDir@` in `agent-skills` (only the `claude` build substitutes it).
+Claude-only frontmatter (`allowed-tools`, and `disable-model-invocation` in `commit`) is ignored by other tools. `pkgs/agent-skills/skills/knowledge` ships with a literal `@memoryDir@` in `agent-skills` (only the `claude` build substitutes it).
 
 ## Data dir
 

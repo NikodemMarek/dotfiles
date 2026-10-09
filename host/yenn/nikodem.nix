@@ -103,7 +103,7 @@
     };
     starship = {
       enable = true;
-      settings = builtins.fromTOML (builtins.readFile ../../assets/starship.toml);
+      settings = builtins.fromTOML (builtins.readFile ./starship.toml);
     };
     hyprland = {
       enable = true;

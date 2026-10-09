@@ -1,4 +1,8 @@
-{pkgs, ...}:
+{
+  pkgs,
+  wallpaper,
+  ...
+}:
 pkgs.symlinkJoin {
   name = "hyprpaper";
   paths = [pkgs.hyprpaper];
@@ -9,6 +13,6 @@ pkgs.symlinkJoin {
 
     mkdir -p $out/.config/hypr
     cp ${./config.conf} $out/.config/hypr/hyprpaper.conf
-    cp ${../../assets/background.png} $out/.config/hypr/wallpaper.png
+    cp ${wallpaper} $out/.config/hypr/wallpaper.png
   '';
 }

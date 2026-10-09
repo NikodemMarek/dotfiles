@@ -13,11 +13,12 @@
   claude-statusline,
   jj-upload,
   knowledge,
+  agent-skills,
   # CLAUDE.md (path). null -> ./CLAUDE.md
   instructions ? null,
   # name (without .md) -> path. null -> every .md in ./agents
   agents ? null,
-  # name -> directory path. null -> every directory in ../../skills (shared with other tools)
+  # name -> directory path. null -> every skill in agent-skills (shared with other tools)
   skills ? null,
   # User settings as a Nix attrset, linked read-only to
   # $CLAUDE_CONFIG_DIR/settings.json. null -> ./settings.nix
@@ -36,8 +37,9 @@ let
     n: _: lib.nameValuePair (lib.removeSuffix ".md" n) (./agents + "/${n}")
   ) (mdEntries ./agents);
 
-  defaultSkills = lib.mapAttrs (n: _: ../../skills + "/${n}") (
-    lib.filterAttrs (_: t: t == "directory") (builtins.readDir ../../skills)
+  # names come from the source (no IFD), the paths from the package
+  defaultSkills = lib.mapAttrs (n: _: "${agent-skills}/${n}") (
+    lib.filterAttrs (_: t: t == "directory") (builtins.readDir ../agent-skills/skills)
   );
 
   # attrsets recurse, lists concatenate (deduped), anything else: b wins

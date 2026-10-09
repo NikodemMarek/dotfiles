@@ -20,11 +20,9 @@ host/
     optional/          opt-in features: k3s, tailscale, docker, libvirt, maintenance, ...
     disko/             disk layouts, parametrised by device (and swap size)
 modules/host/          own NixOS modules: persist.nix, secrets.nix, battery-notifier.nix, flux-sops-age.nix
-pkgs/                  wrapped packages (package + bundled config) and own tools
-skills/                Agent Skills (*/SKILL.md), shared by claude and agent-skills
+pkgs/                  wrapped packages (package + bundled config) and own tools (pkgs/agent-skills/skills: Agent Skills, shared by claude and agent-skills)
 overlays/              exposes pkgs/ (pkgs.wrapped and the tools), flake inputs as packages, deploy-rs
 clusters/dijkstra/     Kubernetes manifests, reconciled by Flux
-assets/                wallpaper, the catppuccin palette and starship.toml
 ```
 
 ## Hosts
@@ -172,7 +170,7 @@ Pointing the program at its config is done with a flag (rofi) or an env var (`gi
 
 Packages: claude, dunst, git, gitui, glab, hypridle, hyprland, hyprlock, hyprpaper, jujutsu, kanshi, rofi, signal-desktop, waybar, zellij.
 
-`wrapped.claude` (`pkgs/claude`) is Claude Code with its config bundled: `CLAUDE.md`, `agents/`, `settings.nix` and `permissions.nix` live next to `default.nix`, the skills come from the top-level `skills/`. It puts the tools below on its `PATH`, taken from the package set, so overriding one of them propagates. The package is customisable with `.extend { skills.foo = ./foo; settings = ...; }` (see `pkgs/claude/README.md`).
+`wrapped.claude` (`pkgs/claude`) is Claude Code with its config bundled: `CLAUDE.md`, `agents/`, `settings.nix` and `permissions.nix` live next to `default.nix`, the skills come from the `agent-skills` package (`pkgs/agent-skills/skills/`). It puts the tools below on its `PATH`, taken from the package set, so overriding one of them propagates. The package is customisable with `.extend { skills.foo = ./foo; settings = ...; }` (see `pkgs/claude/README.md`).
 
 ### Tools
 
@@ -182,9 +180,10 @@ Own programs that are not wrappers of an upstream package. They are top-level at
 |---------|------------|
 | `knowledge` | knowledge curator CLI (`knowledge submit`, `curate`, ...), keeps the memory repo of claude |
 | `jj-upload` | pushes a stack of jj changes as stacked merge/pull requests (GitLab, GitHub) |
+| `wallpaper` | the wallpaper image (the store path is the file), used by stylix, hyprpaper and hyprlock |
 | `claude-hooks` | hook commands of claude: write/bash guards, architect memory autocommit, jj workspaces for agents |
 | `claude-statusline` | claude's status line |
-| `agent-skills` | `skills/` in the Agent Skills format, to link into the skills directory of other tools (OpenCode, ...) |
+| `agent-skills` | `pkgs/agent-skills/skills/` in the Agent Skills format, to link into the skills directory of other tools (OpenCode, ...) |
 | `event-router` | local HTTP inbox (`event-router emit <type>`) that runs a handler per event type; ships a systemd user service. Handlers are the `handlers` argument, extend it with `.override` |
 | `event-handlers.notify` | router handler: desktop notification with an "Open" action (flake: `event-handler-notify`; `notify-critical` is its critical-urgency variant) |
 | `event-handlers.knowledge` | router handler for `knowledge.submit` and `knowledge.curate[.weekly]` (flake: `event-handler-knowledge`) |
