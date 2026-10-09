@@ -8,12 +8,17 @@ dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
 [ -z "$dir" ] && dir=$(pwd)
 short_dir="${dir/#"$HOME"/\~}"
 
-# jj info: workspace (<repo>.agents/<name>, else default) and @; never snapshots
+# jj info: project, workspace (<repo>.agents/<name>, else default) and @; never snapshots
 jj_info=""
 jj_root=$(cd "$dir" 2>/dev/null && jj --ignore-working-copy workspace root 2>/dev/null)
 if [ -n "$jj_root" ]; then
+  project=$(basename "$jj_root")
   ws=default
-  case "$(dirname "$jj_root")" in ?*.agents) ws=$(basename "$jj_root") ;; esac
+  case "$(dirname "$jj_root")" in
+    ?*.agents) ws=$project; project=$(basename "$(dirname "$jj_root")" .agents) ;;
+  esac
+  # Show only the project (plus any subdirectory), not the full path
+  short_dir="$project${dir#"$jj_root"}"
   jj_info="ws:$ws @$(jj --ignore-working-copy -R "$jj_root" log --no-graph -r @ -T 'change_id.short(8)' 2>/dev/null)"
 fi
 
