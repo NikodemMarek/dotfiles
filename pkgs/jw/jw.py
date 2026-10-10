@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""jw: quick jj workspaces for the repos under ~/projects, at <repo>.agents/<name> (the layout the claude wrapper uses too).
+"""jw: quick jj workspaces for the repos under one root (~/projects unless the package sets another), at <repo>.agents/<name> (the layout the claude wrapper uses too).
 
 new, cd, rm and clone print the directory to go to on stdout; the `jw` fish function cds there.
 Everything else goes to stderr.
@@ -64,7 +64,7 @@ def repos():
 def pick(items, query=""):
     """Let the user choose with fzf (it draws on /dev/tty, so the fish function can capture stdout)."""
     if not items:
-        raise Fail("no jj repos under ~/projects")
+        raise Fail(f"no jj repos under {ROOT}")
     p = subprocess.run([FZF, "--select-1", "--exit-0", "--query", query],
                        input="\n".join(items), stdout=subprocess.PIPE, text=True)
     if p.returncode == 1:
@@ -326,7 +326,7 @@ def parse_args():
     p = argparse.ArgumentParser(prog="jw", description=__doc__.splitlines()[0])
     sub = p.add_subparsers(dest="cmd")
     s = sub.add_parser("new", aliases=["n"], help="create a workspace in a repo and go there")
-    s.add_argument("repo", nargs="?", help="repo under ~/projects (default: pick one, the current one first)")
+    s.add_argument("repo", nargs="?", help=f"repo under {ROOT} (default: pick one, the current one first)")
     s.add_argument("-r", "--revision", default="trunk()", help="start from (default: trunk())")
     s.set_defaults(func=cmd_new)
     s = sub.add_parser("cd", aliases=["c"], help="go to a workspace of this repo, or to a repo (default: pick one)")
@@ -335,9 +335,9 @@ def parse_args():
     s = sub.add_parser("rm", help="forget a workspace and delete its directory (its work stays)")
     s.add_argument("name", nargs="?")
     s.set_defaults(func=cmd_rm)
-    s = sub.add_parser("clone", help="clone a repo into ~/projects and go there")
+    s = sub.add_parser("clone", help=f"clone a repo into {ROOT} and go there")
     s.add_argument("url")
-    s.add_argument("name", nargs="?", help="directory name under ~/projects (default: from the url)")
+    s.add_argument("name", nargs="?", help=f"directory name under {ROOT} (default: from the url)")
     s.set_defaults(func=cmd_clone)
     s = sub.add_parser("prune", help="remove empty and broken workspaces in all repos")
     s.set_defaults(func=cmd_prune)

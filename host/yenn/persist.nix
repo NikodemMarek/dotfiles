@@ -2,7 +2,6 @@
   persist.users.nikodem = {
     data = {
       directories = [
-        "projects"
         "omniverse"
         "games"
       ];

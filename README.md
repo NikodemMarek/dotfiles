@@ -180,6 +180,7 @@ Own programs that are not wrappers of an upstream package. They are top-level at
 |---------|------------|
 | `knowledge` | knowledge curator CLI (`knowledge submit`, `curate`, ...), keeps the memory repo of claude |
 | `jj-upload` | pushes a stack of jj changes as stacked merge/pull requests (GitLab, GitHub) |
+| `jw` | jj workspaces at `<repo>.agents/<name>` for the repos under `projectsRoot` (default `~/projects`, set with `.override {projectsRoot = ...;}`; `yenn` uses `/persist/data/home/nikodem/projects`), with a fish function and completions |
 | `wallpaper` | the wallpaper image (the store path is the file), used by stylix, hyprpaper and hyprlock |
 | `claude-hooks` | hook commands of claude: write/bash guards, architect memory autocommit, jj workspaces for agents |
 | `claude-statusline` | claude's status line |

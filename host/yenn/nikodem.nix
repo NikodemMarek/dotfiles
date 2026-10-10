@@ -1,4 +1,6 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  projects = "/persist/data/home/nikodem/projects";
+in {
   imports = [
     ../features/optional/syncthing.nix
     ../features/optional/docker.nix
@@ -15,7 +17,7 @@
 
       pkgs.claude
       pkgs.jj-upload
-      pkgs.jw
+      (pkgs.jw.override {projectsRoot = projects;})
       pkgs.git
 
       pkgs.alacritty
@@ -114,6 +116,7 @@
     path = "/home/nikodem/.ssh/id_ed25519";
   };
   systemd.tmpfiles.rules = [
+    "d ${projects} 0755 nikodem users -"
     "d /home/nikodem/.ssh 0700 nikodem users -"
     "L+ /home/nikodem/.ssh/id_ed25519.pub 0400 nikodem users - ${./user_nikodem_ssh_id_ed25519.pub}"
   ];
