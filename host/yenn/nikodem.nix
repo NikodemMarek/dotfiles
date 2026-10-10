@@ -1,5 +1,6 @@
 {pkgs, ...}: let
   projects = "/persist/data/home/nikodem/projects";
+  bitwarden = "/persist/generated/home/nikodem/bitwarden";
 in {
   imports = [
     ../features/optional/syncthing.nix
@@ -18,6 +19,7 @@ in {
       pkgs.claude
       pkgs.jj-upload
       (pkgs.jw.override {projectsRoot = projects;})
+      (pkgs.bitwarden-cli.override {dataDir = bitwarden;})
       pkgs.git
 
       pkgs.alacritty
@@ -118,6 +120,7 @@ in {
   };
   systemd.tmpfiles.rules = [
     "d ${projects} 0755 nikodem users -"
+    "d ${bitwarden} 0700 nikodem users -"
     "d /home/nikodem/.ssh 0700 nikodem users -"
     "L+ /home/nikodem/.ssh/id_ed25519.pub 0400 nikodem users - ${./user_nikodem_ssh_id_ed25519.pub}"
   ];

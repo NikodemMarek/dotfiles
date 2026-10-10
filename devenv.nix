@@ -104,7 +104,6 @@ in {
     pkgs.nixos-anywhere
     pkgs.disko
     pkgs.nixos-generators
-    pkgs.bitwarden-cli
     pkgs.secretspec
     pkgs.jq
     pkgs.yq-go

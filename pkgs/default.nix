@@ -36,6 +36,7 @@
   # jj-upload needs the upstream jj: the wrapped one bundles jj-upload (recursion).
   jj-upload = pkgs.callPackage ./jj-upload {jujutsu = prev.jujutsu;};
   jw = pkgs.callPackage ./jw {};
+  bitwarden-cli = pkgs.callPackage ./bitwarden-cli {bitwarden-cli = prev.bitwarden-cli;};
   wallpaper = pkgs.callPackage ./wallpaper {};
   agent-skills = pkgs.callPackage ./agent-skills {};
   claude-hooks = pkgs.callPackage ./claude-hooks {};
