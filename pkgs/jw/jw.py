@@ -61,10 +61,22 @@ def repos():
                   and os.path.isdir(f"{e.path}/.jj"))
 
 
-def pick(items, query=""):
+def workspaces(first=None):
+    """Labels (repo/name) of the workspaces in the <repo>.agents dirs, those of the repo `first` before the others."""
+    items = []
+    for r in repos():
+        try:
+            names = sorted(os.listdir(f"{ROOT}/{r}.agents"))
+        except OSError:
+            continue
+        items += [f"{r}/{n}" for n in names if os.path.isdir(f"{ROOT}/{r}.agents/{n}/.jj")]
+    return sorted(items, key=lambda i: i.split("/")[0] != first)  # stable
+
+
+def pick(items, query="", empty=None):
     """Let the user choose with fzf (it draws on /dev/tty, so the fish function can capture stdout)."""
     if not items:
-        raise Fail(f"no jj repos under {ROOT}")
+        raise Fail(empty or f"no jj repos under {ROOT}")
     p = subprocess.run([FZF, "--select-1", "--exit-0", "--query", query],
                        input="\n".join(items), stdout=subprocess.PIPE, text=True)
     if p.returncode == 1:
@@ -125,18 +137,17 @@ def cmd_new(a):
 
 
 def cmd_cd(a):
-    if not a.name:
-        print(os.path.join(ROOT, pick(repos())))
-        return
+    current = None
     try:
-        _, home = locate()
-        d = home if a.name == "default" else f"{home}.agents/{a.name}"
-        if os.path.isdir(d):
-            print(d)
+        root, home = locate()
+        if a.name and os.path.isdir(f"{home}.agents/{a.name}"):
+            print(f"{home}.agents/{a.name}")
             return
+        current = layout(root)[0]
     except Fail:
         pass  # not in a repo
-    print(os.path.join(ROOT, pick(repos(), a.name)))
+    repo, name = pick(workspaces(current), a.name or "", "no workspaces").split("/", 1)
+    print(f"{ROOT}/{repo}.agents/{name}")
 
 
 def cmd_clone(a):
@@ -329,7 +340,7 @@ def parse_args():
     s.add_argument("repo", nargs="?", help=f"repo under {ROOT} (default: pick one, the current one first)")
     s.add_argument("-r", "--revision", default="trunk()", help="start from (default: trunk())")
     s.set_defaults(func=cmd_new)
-    s = sub.add_parser("cd", aliases=["c"], help="go to a workspace of this repo, or to a repo (default: pick one)")
+    s = sub.add_parser("cd", aliases=["c"], help="go to a workspace (default: pick one, this repo's first)")
     s.add_argument("name", nargs="?")
     s.set_defaults(func=cmd_cd)
     s = sub.add_parser("rm", help="forget a workspace and delete its directory (its work stays)")
