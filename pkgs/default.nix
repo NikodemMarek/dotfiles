@@ -63,6 +63,4 @@
       "knowledge.review_needed" = pkgs.event-handlers.notify;
     };
   };
-
-  knowledge-timers = pkgs.callPackage ./knowledge-timers {};
 }

@@ -50,28 +50,6 @@ python3Packages.buildPythonApplication {
     url
   ];
 
-  # absolute ExecStart: any handler change changes the unit, so sd-switch
-  # restarts the service
-  postInstall = ''
-    mkdir -p "$out/share/systemd/user"
-    cat > "$out/share/systemd/user/event-router.service" <<EOF
-    [Unit]
-    Description=Dispatch events to handlers
-    After=graphical-session.target
-
-    [Service]
-    ExecStart=$out/bin/event-router serve
-    Restart=on-failure
-    RestartSec=10
-    # handlers may start long-lived processes (e.g. a zellij session); a
-    # restart must not take them down
-    KillMode=process
-
-    [Install]
-    WantedBy=default.target
-    EOF
-  '';
-
   passthru = { inherit handlers handlersDir url; };
 
   meta = {

@@ -19,7 +19,7 @@ host/
     global/            always on: networking, nix, openssh, sops
     optional/          opt-in features: k3s, tailscale, docker, libvirt, maintenance, ...
     disko/             disk layouts, parametrised by device (and swap size)
-modules/host/          own NixOS modules: persist.nix, secrets.nix, battery-notifier.nix, flux-sops-age.nix
+modules/host/          own NixOS modules: persist.nix, secrets.nix, battery-notifier.nix, flux-sops-age.nix, event-router.nix (the router user service and the knowledge curator timers)
 pkgs/                  wrapped packages (package + bundled config) and own tools (pkgs/agent-skills/skills: Agent Skills, shared by claude and agent-skills)
 overlays/              exposes pkgs/ (the wrapped packages, shadowing the nixpkgs ones, and the tools), flake inputs as packages, deploy-rs
 clusters/dijkstra/     Kubernetes manifests, reconciled by Flux
@@ -184,11 +184,10 @@ Own programs that are not wrappers of an upstream package. They are top-level at
 | `claude-hooks` | hook commands of claude: write/bash guards, architect memory autocommit, jj workspaces for agents |
 | `claude-statusline` | claude's status line |
 | `agent-skills` | `pkgs/agent-skills/skills/` in the Agent Skills format, to link into the skills directory of other tools (OpenCode, ...) |
-| `event-router` | local HTTP inbox (`event-router emit <type>`) that runs a handler per event type; ships a systemd user service. Handlers are the `handlers` argument, extend it with `.override` |
+| `event-router` | local HTTP inbox (`event-router emit <type>`) that runs a handler per event type; runs as a systemd user service via the `services.event-router` module. Handlers are the `handlers` argument, extend it with `.override` |
 | `event-handlers.notify` | router handler: desktop notification with an "Open" action (flake: `event-handler-notify`; `notify-critical` is its critical-urgency variant) |
 | `event-handlers.knowledge` | router handler for `knowledge.submit` and `knowledge.curate[.weekly]` (flake: `event-handler-knowledge`) |
 | `event-handlers.claude` | GitLab event → Claude session: opens a zellij tab with Claude in the project's checkout under `$HOME/<projectsDir>`; `contextTool` (a `gitlab-context prepare` compatible package, default none: plain Claude in the main checkout), `extraPackages`, the `gitlab.*` routes and the watcher are supplied by the work layer (flake: `event-handler-claude`) |
-| `knowledge-timers` | systemd user timers that emit `knowledge.curate` every 6 hours and `knowledge.curate.weekly` on Sundays |
 
 ## Infra
 
