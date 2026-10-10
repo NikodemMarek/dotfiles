@@ -15,8 +15,7 @@ summary counts them as `waiting`, and `run_pending` goes on while there are some
 submission of the user rewrite or delete an entry of the user. A failed call counts as an attempt of every record of the
 batch: their files are rewritten with one more attempt like those of an invalid decision, and one that is out of attempts
 ends `failed`. A record that is retried because its decision was refused carries the errors (`Record.last_errors`), which
-the model sees in the next call. The file `last_failed_call` dates the last failed call; `receive` does not start a run
-within BACKOFF of it.
+the model sees in the next call.
 
 A skill op is written as a draft to `skill-ideas/<name>.md` in the memory repo (`ideas.py`), in the commit of its decision;
 the run never changes a skill. The model may read the skills of the Claude config (`config.skills_dir()`), and sees the ideas that wait in
@@ -28,7 +27,6 @@ budget is dropped, in one commit. A weekly run with no submissions asks the mode
 
 import datetime
 import logging
-import os
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass, replace
 from pathlib import Path
@@ -54,9 +52,6 @@ MAX_RETRIES = 2  # how often a record that came back invalid or undecided, or wh
 MAX_LAST_ERRORS = 5  # errors of a refused decision a record carries to the next call
 MAX_ERROR_CHARS = 500  # of each of them
 MAX_RUNS = len(TRUSTS)  # `run_pending`: a run for the records of each trust
-BACKOFF = datetime.timedelta(hours=1)  # `receive` does not start a run this soon after a failed call
-FAILED_CALL_FILE = "last_failed_call"  # in the state dir; its mtime is the time of the last failed call
-FAILED_CALL_MODE = 0o600
 MAX_STALE_REPOS = 5  # repos the model may read to re-check stale entries (each is an --add-dir)
 CHANGED_DAYS = 7  # a weekly run looks at the store again if an entry changed this lately
 ENTRY_DIRS = ("global", "lang", "topic", "org")  # and projects/<slug>/facts
@@ -122,34 +117,6 @@ class _Stale:
 
 def _stamp(at: datetime.datetime) -> str:
     return f"{at:%Y-%m-%dT%H:%M:%SZ}"
-
-
-# the last failed call
-
-
-def _failed_call_path() -> Path:
-    return config.state_dir() / FAILED_CALL_FILE
-
-
-def _mark_failed_call(now: datetime.datetime) -> None:
-    config.ensure_private(config.state_dir())
-    path = _failed_call_path()
-    path.touch(mode=FAILED_CALL_MODE)
-    os.utime(path, (now.timestamp(), now.timestamp()))
-
-
-def _clear_failed_call() -> None:
-    _failed_call_path().unlink(missing_ok=True)
-
-
-def in_backoff(now: datetime.datetime | None = None) -> bool:
-    """A model call failed less than BACKOFF ago: `receive` leaves the next try to the timers."""
-    try:
-        failed_at = _failed_call_path().stat().st_mtime
-    except OSError:  # no failed call, or none that can be read
-        return False
-    age = (now or datetime.datetime.now(datetime.UTC)).timestamp() - failed_at
-    return 0 <= age < BACKOFF.total_seconds()
 
 
 def _is_repo(path: Path) -> bool:
@@ -245,12 +212,9 @@ class _Run:
         if isinstance(response, _Failed):
             if self.read_only:
                 return self.summary(response.reason)
-            _mark_failed_call(self.now)
             for rec in fresh:
                 self._retry(rec, rec.id, _NOT_A_DECISION, "the curator call failed", [response.error])
             return self._finish(response.reason)
-        if not self.read_only:
-            _clear_failed_call()
         vctx = ops.ValidationContext(
             pending_ids=[r.id for r in fresh], project_slugs=store.project_slugs(), mode=self.mode, run_id=self.run_id
         )

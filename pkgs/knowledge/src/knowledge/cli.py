@@ -267,7 +267,7 @@ def _import(args: Args) -> tuple[Obj, int]:
 
 
 def _receive() -> Obj:
-    """Put the event from the router in the inbox, unless it looks like a secret."""
+    """Put the event from the router in the inbox, unless it looks like a secret. The timers start the curator."""
     event = data.as_obj(data.loads(data.read_stdin()), "event")
     type_ = data.get_str(event, "type")
     if type_ != emit.EVENT_TYPE:
@@ -281,26 +281,7 @@ def _receive() -> Obj:
         log.info("submission %s is queued already (%s)", rec.id, state)  # pending record, or bring back a failed or bad one
     else:
         inbox.put(rec)
-    _curate_if_due(inbox)
     return {"id": rec.id, "stored": True}
-
-
-def _curate_if_due(inbox: Inbox) -> None:
-    """Enough submissions are pending: run the curator in this process, unless another run is going.
-
-    Not within an hour of a failed call: the next try is left to the timers. The submission is stored already, so
-    whatever goes wrong here is logged and `receive` still succeeds.
-    """
-    try:
-        if inbox.count() < config.tunables().trigger_count:
-            return
-        if curate.in_backoff():
-            log.info("the last curator call failed less than an hour ago; not running it again from here")
-            return
-        summary = curate.run_pending(if_idle=True)  # more than one run if records of several trusts wait
-        log.info("curator run %s: %s", summary.run, dumps(curate.summary_obj(summary)))
-    except Exception:  # anything: the router's handler must not fail once the submission is stored
-        log.exception("curator run failed")
 
 
 def _status(args: Args) -> Obj:

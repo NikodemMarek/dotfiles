@@ -110,7 +110,6 @@ def _int(name: str, default: int) -> int:
 
 @dataclass(frozen=True)
 class Tunables:
-    trigger_count: int = 25  # pending submissions that start a curator run
     max_batch_bytes: int = 400_000  # size of the submissions in one run
     timeout: int = 900  # seconds, per claude call
     context_bytes: int = 3072  # size of the knowledge block of a session
@@ -121,7 +120,6 @@ class Tunables:
 def tunables() -> Tunables:
     d = Tunables()
     return Tunables(
-        trigger_count=_int("KNOWLEDGE_TRIGGER_COUNT", d.trigger_count),
         max_batch_bytes=_int("KNOWLEDGE_MAX_BATCH_BYTES", d.max_batch_bytes),
         timeout=_int("KNOWLEDGE_TIMEOUT", d.timeout),
         context_bytes=_int("KNOWLEDGE_CONTEXT_BYTES", d.context_bytes),

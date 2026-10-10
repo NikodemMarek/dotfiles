@@ -86,25 +86,21 @@ def test_in_claude_code(monkeypatch: pytest.MonkeyPatch):
 def test_tunable_defaults():
     t = config.tunables()
     assert t == Tunables()
-    assert (t.trigger_count, t.max_batch_bytes) == (25, 400000)
-    assert t.timeout == 900
+    assert (t.max_batch_bytes, t.timeout) == (400000, 900)
     assert (t.context_bytes, t.model, t.effort) == (3072, "sonnet", "medium")
 
 
 def test_tunable_overrides(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("KNOWLEDGE_TRIGGER_COUNT", "3")
     monkeypatch.setenv("KNOWLEDGE_MODEL", "opus")
     monkeypatch.setenv("KNOWLEDGE_EFFORT", "high")
     monkeypatch.setenv("KNOWLEDGE_TIMEOUT", "60")
     t = config.tunables()
-    assert t.trigger_count == 3 and t.model == "opus" and t.effort == "high"
-    assert t.timeout == 60
+    assert (t.model, t.effort, t.timeout) == ("opus", "high", 60)
 
 
 @pytest.mark.parametrize(
     "name",
     [
-        "KNOWLEDGE_TRIGGER_COUNT",
         "KNOWLEDGE_MAX_BATCH_BYTES",
         "KNOWLEDGE_TIMEOUT",
         "KNOWLEDGE_CONTEXT_BYTES",

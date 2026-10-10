@@ -1,7 +1,6 @@
 import datetime
 import io
 import json
-import os
 import subprocess
 from collections.abc import Mapping, Sequence
 from dataclasses import replace
@@ -1094,11 +1093,6 @@ def failing() -> FakeLlm:
     return FakeLlm(error=LlmError("claude exited with status 1"))
 
 
-def marker() -> Path:
-    """The file whose mtime dates the last failed call."""
-    return state_dir() / "last_failed_call"
-
-
 def attempts() -> list[tuple[str, int]]:
     return [(r.id, r.attempt) for r in Inbox().pending(10**6)]
 
@@ -1113,8 +1107,6 @@ def test_a_failed_call_defers_every_record_of_its_batch(memory_repo: Path):
     assert lines[0].notes == ("attempt 1 of 2", "claude exited with status 1")
     assert Decisions().decided_ids() == set()
     assert attempts() == [(sid(1), 1), (sid(2), 1)]  # each file holds the record with one more attempt
-    assert marker().stat().st_mtime == NOW.timestamp()
-    assert oct(marker().stat().st_mode & 0o777) == "0o600"
 
 
 def test_an_unusable_answer_defers_the_records_too(memory_repo: Path):
@@ -1124,7 +1116,6 @@ def test_an_unusable_answer_defers_the_records_too(memory_repo: Path):
     assert (d.id, d.outcome) == (sid(1), "deferred")
     assert "unusable answer" in d.notes[1]
     assert attempts() == [(sid(1), 1)]
-    assert marker().stat().st_mtime == NOW.timestamp()
 
 
 def test_three_failed_calls_end_a_record(memory_repo: Path):
@@ -1167,29 +1158,6 @@ def test_a_failed_dry_run_changes_nothing(memory_repo: Path):
     assert run(failing(), dry_run=True).skipped == "llm-failure"
     assert Decisions().all() == []
     assert attempts() == [(sid(1), 0)]
-    assert not marker().exists()
-
-
-def test_a_working_call_clears_the_marker(memory_repo: Path):
-    submit(1)
-    run(failing())
-    assert marker().exists()
-    run(FakeLlm(keep_all), dry_run=True)
-    assert marker().exists()  # a dry run does not clear it
-    assert run(FakeLlm(keep_all)).applied == 1
-    assert not marker().exists()
-
-
-def test_the_backoff_after_a_failed_call_is_an_hour(memory_repo: Path):
-    assert not curate.in_backoff(NOW)
-    submit(1)
-    run(failing())
-    assert curate.in_backoff(NOW)
-    assert curate.in_backoff(NOW + datetime.timedelta(minutes=59))
-    assert not curate.in_backoff(NOW + datetime.timedelta(minutes=61))
-    assert not curate.in_backoff(NOW - datetime.timedelta(minutes=5))  # a clock that went back
-    run(FakeLlm(keep_all))
-    assert not curate.in_backoff(NOW)
 
 
 # the commands
@@ -1259,36 +1227,6 @@ def test_the_curate_command_rejects_an_unknown_mode(knowledge: Runner):
     assert knowledge("curate", "--mode", "daily") == (2, "")
 
 
-def test_receive_runs_the_curator_at_the_trigger_count(knowledge: Runner, memory_repo: Path, monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("KNOWLEDGE_TRIGGER_COUNT", "2")
-    llm = FakeLlm(keep_all)
-    monkeypatch.setattr(curate, "make_llm", lambda: llm)
-    code, out = knowledge("receive", stdin=event(1))
-    assert (code, json.loads(out)["stored"]) == (0, True)
-    assert llm.calls == []  # one is not enough
-    code, out = knowledge("receive", stdin=event(2))
-    assert (code, json.loads(out)) == (0, {"id": sid(2), "stored": True})  # the output is still the receipt
-    assert len(llm.calls) == 1
-    for n in (1, 2):
-        assert len(commits(memory_repo, sid(n))) == 1
-    assert Inbox().count() == 0
-
-
-def test_receive_goes_on_while_records_of_another_trust_wait(knowledge: Runner, memory_repo: Path, monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("KNOWLEDGE_TRIGGER_COUNT", "2")
-    submit_user(1)
-    llm = FakeLlm(keep_all)
-    monkeypatch.setattr(curate, "make_llm", lambda: llm)
-    code, _ = knowledge("receive", stdin=event(2))  # an agent's record: two are pending
-    assert code == 0
-    assert len(llm.calls) == 2  # the user's record alone, then the agent's, though only one is left after the first run
-    assert sid(1) in llm.calls[0].message and sid(2) not in llm.calls[0].message
-    assert sid(2) in llm.calls[1].message and sid(1) not in llm.calls[1].message
-    assert Inbox().count() == 0
-    for n in (1, 2):
-        assert len(commits(memory_repo, sid(n))) == 1
-
-
 def test_the_curate_command_goes_on_too_but_not_after_a_failed_call(knowledge: Runner, memory_repo: Path, monkeypatch: pytest.MonkeyPatch):
     submit_user(1)
     submit(2)
@@ -1321,47 +1259,14 @@ def test_a_dry_run_curates_one_trust_and_does_not_go_on(knowledge: Runner, memor
     assert Inbox().count() == 2
 
 
-def test_receive_does_not_wait_for_a_run_that_is_going(knowledge: Runner, memory_repo: Path, monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("KNOWLEDGE_TRIGGER_COUNT", "1")
+def test_receive_only_stores_the_submission(knowledge: Runner, memory_repo: Path, monkeypatch: pytest.MonkeyPatch):
     llm = FakeLlm(keep_all)
     monkeypatch.setattr(curate, "make_llm", lambda: llm)
-    with FileLock(locks.curator_lock(), 0.0):
-        code, out = knowledge("receive", stdin=event(1))
-    assert (code, json.loads(out)["stored"]) == (0, True)
-    assert llm.calls == []
-    assert Inbox().count() == 1
-
-
-def test_receive_still_succeeds_when_the_curator_breaks(knowledge: Runner, memory_repo: Path, monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setenv("KNOWLEDGE_TRIGGER_COUNT", "1")
-
-    def broken() -> FakeLlm:
-        raise RuntimeError("no claude")
-
-    monkeypatch.setattr(curate, "make_llm", broken)
-    code, out = knowledge("receive", stdin=event(1))
-    assert (code, json.loads(out)["stored"]) == (0, True)
-    assert Inbox().count() == 1
-
-
-def test_receive_does_not_run_the_curator_within_an_hour_of_a_failed_call(
-    knowledge: Runner, memory_repo: Path, monkeypatch: pytest.MonkeyPatch
-):
-    monkeypatch.setenv("KNOWLEDGE_TRIGGER_COUNT", "1")
-    llm = FakeLlm(error=LlmError("down"))
-    monkeypatch.setattr(curate, "make_llm", lambda: llm)
-    assert knowledge("receive", stdin=event(1))[0] == 0
-    assert len(llm.calls) == 1
-    assert knowledge("receive", stdin=event(2))[0] == 0  # stored, but no run
-    assert len(llm.calls) == 1
-    assert Inbox().count() == 2
-    code, out = knowledge("curate")  # the timers still run
-    assert (code, json.loads(out)["skipped"]) == (1, "llm-failure")
-    assert len(llm.calls) == 2
-    old = datetime.datetime.now(datetime.UTC).timestamp() - 2 * 3600  # the commands run on the real clock
-    os.utime(marker(), (old, old))
-    assert knowledge("receive", stdin=event(3))[0] == 0  # an hour has passed
-    assert len(llm.calls) == 3
+    for n in (1, 2, 3):
+        code, out = knowledge("receive", stdin=event(n))
+        assert (code, json.loads(out)) == (0, {"id": sid(n), "stored": True})
+    assert llm.calls == []  # only the timers start the curator
+    assert Inbox().count() == 3
 
 
 # skills
