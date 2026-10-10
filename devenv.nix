@@ -484,7 +484,7 @@ in {
   };
 
   enterShell = ''
-    export KUBECONFIG=kubeconfig.yaml
+    export KUBECONFIG="$(jj workspace root --name default --ignore-working-copy 2>/dev/null || echo "$DEVENV_ROOT")/kubeconfig.yaml"
 
     printf "\e[33m
     ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: script: "\\e[1m${name}\\e[0m\\e[33m \t\t -> ${script.description}") config.scripts)}
