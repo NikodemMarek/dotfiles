@@ -5,6 +5,10 @@ metadata:
   namespace: ollama
 spec:
   replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: ollama
@@ -17,34 +21,79 @@ spec:
         - name: models
           persistentVolumeClaim:
             claimName: ollama-local-models-pvc
-        - name: data
-          persistentVolumeClaim:
-            claimName: ollama-data-pvc
-      containers:
-        - name: ollama
-          image: ollama/ollama:latest
-          ports:
-            - containerPort: 11434
+      initContainers:
+        - name: fetch-model
+          image: curlimages/curl:8.16.0
+          securityContext:
+            runAsUser: 0
           env:
-            - name: OLLAMA_HOST
-              value: "0.0.0.0"
-            - name: OLLAMA_MODELS
-              value: "/models"
-            - name: OLLAMA_LOAD_TIMEOUT
-              value: "1200"
-            - name: OLLAMA_KEEP_ALIVE
-              value: "4h"
-            - name: OLLAMA_CONTEXT_LENGTH
-              value: "64000"
+            - name: URL
+              value: "https://huggingface.co/google/gemma-4-E4B-it-qat-q4_0-gguf/resolve/4b4a2c1d584be7264f87aac328a1bc739ce81b6c/gemma-4-E4B_q4_0-it.gguf"
+            - name: SHA
+              value: "676c35070db6dbe52f93e9c864ee0fba4eddea94b9c875d9cb10daff453fbaee"
+            - name: F
+              value: "/models/llama.cpp/gemma-4-E4B_q4_0-it.gguf"
+          command:
+            - sh
+            - -c
+            - |
+              set -eu
+              if [ -f "$F" ] && echo "$SHA  $F" | sha256sum -c -; then
+                exit 0
+              fi
+              mkdir -p "$(dirname "$F")"
+              curl -fL --retry 5 --retry-all-errors --speed-limit 1024 --speed-time 60 -C - -o "$F.part" "$URL"
+              echo "$SHA  $F.part" | sha256sum -c - || { rm -f "$F.part"; exit 1; }
+              mv "$F.part" "$F"
           volumeMounts:
             - name: models
               mountPath: /models
-            - name: data
-              mountPath: /root/.ollama
+      containers:
+        - name: llama-server
+          image: ghcr.io/ggml-org/llama.cpp:server-b11541
+          args:
+            - --host
+            - "0.0.0.0"
+            - --port
+            - "8080"
+            - -m
+            - /models/llama.cpp/gemma-4-E4B_q4_0-it.gguf
+            - --alias
+            - gemma4:latest
+            - --ctx-size
+            - "16384"
+            - --parallel
+            - "1"
+            - --swa-full
+            - --flash-attn
+            - "on"
+            - --threads
+            - "3"
+            - --jinja
+            - --temp
+            - "1.0"
+            - --top-k
+            - "64"
+            - --top-p
+            - "0.95"
+            - --min-p
+            - "0"
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: models
+              mountPath: /models
           resources:
             requests:
               memory: "8Gi"
               cpu: "1000m"
             limits:
               memory: "16Gi"
-              cpu: "4000m"
+              cpu: "3000m"
