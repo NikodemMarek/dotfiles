@@ -209,7 +209,7 @@ Flux is bootstrapped in `clusters/dijkstra/flux-system` (do not edit `gotk-*.yam
 flux reconcile kustomization flux-system --namespace flux-system --with-source
 ```
 
-Each app is a directory: `arrstack` (sonarr, radarr, lidarr, prowlarr, bazarr, qbittorrent, beets, flaresolverr), `cloudflare` (tunnel), `cron`, `hermes`, `immich`, `jellyfin`, `keda`, `navidrome` (with audiomuse-ai), `ollama`, `omniverse`, `openebs`, `proxy` (traefik, gateway), `shani`, `tailscale` (operator), `velero`. Shared: `storageclass.yaml`.
+Each app is a directory: `arrstack` (sonarr, radarr, lidarr, prowlarr, bazarr, qbittorrent, beets, flaresolverr), `cloudflare` (tunnel), `cron`, `immich`, `jellyfin`, `keda`, `navidrome` (with audiomuse-ai), `ollama`, `omniverse`, `openebs`, `proxy` (traefik, gateway), `shani`, `tailscale` (operator), `velero`. Shared: `storageclass.yaml`.
 
 ### Kubernetes secrets
 

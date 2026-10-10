@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: hermes-ssh-config
-  namespace: hermes
-data:
-  known_hosts: |
-    shani-service.shani.svc.cluster.local,shani-service.shani ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILlcBTR/MoU6diHG+uNfYUO5Jg5hJDPJ2Z+YG2yQRY1x
