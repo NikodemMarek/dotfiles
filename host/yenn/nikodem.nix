@@ -91,6 +91,7 @@ in {
       enableBashIntegration = true;
       enableFishIntegration = true;
       nix-direnv.enable = true;
+      settings.whitelist.prefix = [projects];
     };
     zoxide = {
       enable = true;
